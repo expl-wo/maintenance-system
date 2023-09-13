@@ -1,0 +1,235 @@
+@import "variable";
+
+.el-table {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+  color: #606266;
+}
+
+.el-form--inline .el-form-item {
+  margin-right: 16px;
+}
+
+.el-sub-menu__title, .el-submenu__title, .el-menu-item {
+  font-size: $xui-common-font-size !important;
+  height: 40px !important;
+  line-height: 40px !important;
+}
+
+.el-pagination {
+  padding-top: 4px;
+}
+
+.el-form-item--small {
+  margin-bottom: 16px;
+}
+
+.el-table thead .cell {
+  color: #048DC8;
+}
+
+.el-table__row-pointer {
+  .el-table__body {
+    .el-table__row {
+      cursor: pointer;
+    }
+  }
+}
+
+.el-form--inline .el-form-item {
+  margin-bottom: 5px !important;
+}
+
+.materialDetailWrapper .el-card__body {
+  padding: 0 !important;
+}
+
+.el-card__body {
+  height: 100%;
+  flex: 1;
+}
+
+.p-lf, .p-rf {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
+
+.el-dialog__header .el-dialog__title {
+  font-size: $title-font-size;
+}
+
+
+.el-button.el-button--text {
+  cursor: default;
+}
+
+
+.el-menu {
+  li.el-menu-item > .el-icon {
+    margin-right: 0;
+  }
+}
+
+.xui-carousel {
+  .el-carousel__indicators--labels .el-carousel__button {
+    height: 20px;
+    width: 20px;
+    padding: 4px 4px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+  }
+}
+
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style-type: none
+}
+
+.el-button.el-button--text {
+  cursor: pointer;
+}
+
+.el-card__body {
+  padding: 0 10px 10px;
+  overflow-y: auto;
+}
+
+.el-carousel__indicators{
+  display: none;
+}
+
+.el-form{
+  font-size: $default-font-size;
+}
+.el-tabs{
+  font-size: $default-font-size;
+}
+
+.el-card__header {
+  padding: 4px 6px;
+
+  .card-header {
+    height: .38rem;
+    min-height: .38rem;
+    padding: 0 .16rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .card-icon {
+    border-radius: .04rem;
+    width: .18rem;
+    height: .18rem;
+    font-size: 0;
+    border-color: transparent;
+    overflow: visible;
+    position: relative;
+    margin-right: .08rem;
+    background-color: rgb(255, 255, 255);
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAAAXNSR0IArs4c6QAAALRJREFUWAntl0EKgDAMBFvxC35Nb/o2j35NH6Eg7KWQrm09bCFeQpsQktntwXiu8x2EvkFolncUH4gp4oScECPA8iMrmPaDlWTz17Zk82lSztSUEDYo3TQlizPrI0fIB4IFrPjZQ2gAL+CMyLyBOhblJCsm9BcJi5QcIR/Ikgr3xR6yXhkatnpMTrJiQq0EQNKK/ROyNkvva0n2S4i9rpRQ7VmOUPR/e6KlnGQ+EFEsOKHuCD2kBxrTcfzeAAAAAABJRU5ErkJggg==");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: rgb(255, 255, 255);
+  }
+
+  .card-title {
+    font-weight: 700;
+    color: #1d1d1d;
+    font-size: .16rem;
+    margin-right: .04rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+
+  .card-header-buttons {
+    margin-left: auto;
+    cursor: pointer;
+    &:hover{
+      color: $hover_color;
+    }
+  }
+}
+
+.el-card{
+  display: flex;
+  flex-direction: column;
+}
+
+.el-card__header {
+  padding: 18px 20px;
+  border-bottom: 1px solid #e6ebf5;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.el-card__body, .el-card__header {
+  padding: 6px 10px!important;
+  font-size: 12px;
+}
+.el-card__header {
+  font-weight: 700;
+  line-height: 26px;
+  color: #e6a23c;
+}
+
+
+.detail-wrapper .el-form-item {
+  margin-bottom: 0;
+}
+
+.el-table.no-flex{
+  flex: none;
+}
+
+.el-tree-option .el-select-dropdown__wrap {
+  max-height: 450px !important;
+}
+
+
+.control-label-height {
+  .el-form-item--small .el-form-item__label {
+    line-height: 13px;
+  }
+
+  .el-form-item__label {
+    align-items: center;
+  }
+}
+
+.el-tabs-min{
+  flex: 1;
+  display: flex;
+  height: calc(100% - 40px);
+  flex-direction: column;
+  .el-tabs__header{
+    height: 26px;
+  }
+
+  .el-tabs__item {
+    padding: 0 10px;
+    font-size: 12px;
+    height: 26px;
+    line-height: 26px;
+  }
+
+  .el-tabs__content{
+    flex: 1;
+    overflow: auto;
+  }
+}

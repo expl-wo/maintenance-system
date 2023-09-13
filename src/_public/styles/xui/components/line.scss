@@ -1,0 +1,12 @@
+@import '../util/bem-mixins';
+
+@include b(line) {
+	margin: 0px;
+	border-bottom: 1px solid rgb(214, 215, 217);
+	width: 100%;
+	transform: scaleY(0.5);
+	border-top-color: rgb(214, 215, 217);
+	border-right-color: rgb(214, 215, 217);
+	border-left-color: rgb(214, 215, 217);
+	vertical-align: middle;
+}

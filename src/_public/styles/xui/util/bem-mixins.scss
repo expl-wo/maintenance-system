@@ -1,0 +1,44 @@
+@import './config';
+
+@mixin b($block) {
+	$B: $namespace + '-' + $block !global;
+	.#{$B} {
+		@content;
+	}
+}
+
+@mixin e($element) {
+	$E: $element !global;
+	$currentSelector: $B + $element-separator + $element;
+	@at-root {
+		.#{$currentSelector} {
+			@content;
+		}
+	}
+}
+
+@mixin e-not-root($element) {
+	$E: $element !global;
+	$currentSelector: $B + $element-separator + $element;
+	.#{$currentSelector} {
+		@content;
+	}
+}
+
+@mixin m($modifier) {
+	$currentSelector: $B + $modifier-separator + $modifier;
+	@at-root {
+		.#{$currentSelector} {
+			@content;
+		}
+	}
+}
+
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}

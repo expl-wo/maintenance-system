@@ -1,0 +1,26 @@
+@import '../util/bem-mixins';
+@import '../util/var';
+
+@include b(text) {
+	display: inline-block;
+	line-height: 1;
+	color: $xui-default-color;
+	text-align: center;
+	box-sizing: border-box;
+	outline: none;
+	margin: 0;
+	padding: 5px 11px;
+
+
+	&.is-primary{
+		color: $xui-primary-color;
+	}
+
+	&.is-default{
+		color: $xui-default-color;
+	}
+
+	&.is-error{
+		color: $xui-error-color;
+	}
+}

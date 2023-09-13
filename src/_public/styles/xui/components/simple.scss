@@ -1,0 +1,241 @@
+@import '../util/bem-mixins';
+@import '../util/var';
+@import "../../common-mixins.scss";
+
+@include b(link) {
+  text-decoration: underline;
+  font-size: $xui-common-font-size;
+}
+
+@include b(location) {
+  @include e(parent) {
+    position: relative;
+    font-size: $xui-common-font-size;
+  }
+
+  @include e(absolute) {
+    position: absolute;
+    font-size: $xui-common-font-size;
+  }
+}
+
+
+
+
+
+@include b(error) {
+  @include e(label) {
+    padding: 3px 0;
+    text-align: left;
+    color: $xui-error-color;
+    font-size: $xui-common-font-size;
+  }
+
+  @include e(tip) {
+    color: $xui-error-color;
+  }
+}
+
+@include b(label-error) {
+  color: $xui-error-color;
+}
+
+@include b(moreTip) {
+  padding: 5px;
+  text-align: center;
+}
+
+@include b(tip-msg){
+  font-size: $xui-button-font-size;
+  color: $xui-error-color
+}
+
+@include b(pic-list) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+
+  @include e(item) {
+    margin: 5px;
+    padding: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 14, 25, .1);
+    border-radius: 4px;;
+  }
+
+  @include e(title) {
+    width: 310px;
+    @include ellipsis-text();
+    font-size: 14px;
+    padding-top: 5px;
+  }
+}
+
+@include b(top-icon) {
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: #4598F0;
+  color: white;
+  border-radius: 3px;
+  line-height: 18px;
+}
+
+@include b(choose-comb) {
+  @include e(input) {
+    flex: 1;
+  }
+
+  @include e(btn) {
+    width: 60px;
+    margin-left: 4px;
+  }
+}
+
+@include b(header) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+
+  @include e(tip) {
+    width: 4px;
+    height: 18px;
+    background: $xui-primary-color;
+  }
+  @include e(title) {
+    font-size: $xui-common-font-size;
+    margin-left: 12px;
+    margin-right: 8px;
+  }
+}
+
+@include b(el-form) {
+  @include e(sep) {
+    height: 18px;
+    font-size: $xui-common-font-size;
+    margin-right: 4px;
+    margin-left: 4px;
+  }
+}
+
+@include b(button) {
+  @include e(wrapper) {
+    margin-bottom: 4px;
+  }
+}
+
+@include b(dialog) {
+  @include e(control) {
+    .el-dialog__body {
+      min-height: 40vh;
+      max-height: 78vh;
+      overflow: auto;
+    }
+  }
+}
+
+@include b(dialog) {
+  @include e(limit) {
+    .el-dialog__body {
+      height: 78vh;
+      overflow: auto;
+    }
+  }
+  @include e(limit-min) {
+    .el-dialog__body {
+      height: 74vh;
+      overflow: auto;
+    }
+  }
+}
+
+@include b(iconSelect) {
+  overflow: hidden;
+  list-style: none;
+  padding: 0 !important;
+  border-top: 1px solid var(--el-border-color);
+  border-left: 1px solid var(--el-border-color);
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  @include e(item) {
+    text-align: center;
+    color: var(--el-text-color-regular);
+    height: 74px;
+    font-size: 13px;
+    padding: 10px 0;
+    border-right: 1px solid var(--el-border-color);
+    border-bottom: 1px solid var(--el-border-color);
+    transition: background-color var(--el-transition-duration);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  @include e(icon) {
+    height: 30px;
+  }
+}
+
+@include b(border) {
+  display: inline-flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1px 11px;
+  background-color: var(--el-input-bg-color, var(--el-fill-color-blank));
+  background-image: none;
+  border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+  transition: var(--el-transition-box-shadow);
+  box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color)) inset;
+  height: var(--el-input-height, 25px);
+}
+
+
+@include b(detail) {
+  @include e(title) {
+    position: relative;
+    border-left: 4px solid #1585ff;
+    padding-left: 5px;
+    font-size: $xui-common-font-size;
+    line-height: 20px;
+  }
+}
+
+@include b(custom-form) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  @include e(half) {
+    width: 49%;
+  }
+
+  @include e(all) {
+    width: 98%;
+  }
+}
+
+
+@include b(border-form){
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid $border-color;
+  background-color: #FFF;
+  transition: 0.3s;;
+}
+
+@include b(tip) {
+  &-success {
+    color: $success;
+  }
+
+  &-error{
+    color: $xui-error-color
+  }
+}
+
+
