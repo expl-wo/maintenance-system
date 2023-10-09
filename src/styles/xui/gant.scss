@@ -1,0 +1,179 @@
+@import './_public/bem-mixins';
+@import "./_public/var";
+
+$xui-gant-border-default-color: #aaa;
+$xui-gant-bg-empty: #26a8ff;
+$xui-gant-bg-full: #e6e6ff;
+$xui-gant-selected: #42d885;
+$xui-gant-interval: 2px;
+
+@include b(gant) {
+  position: relative;
+  @include e(time) {
+    margin-left: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    @include e(time-item) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      flex: 0 0 auto;
+      margin-right: 128px;
+      @include e(time-name) {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      @include e(time-line) {
+        width: 0;
+        height: 600px;
+        border-left: 1px dashed $xui-border-color;
+        &.is-first {
+          border-left-style: solid;
+        }
+      }
+
+      @include e(time-add) {
+        height: 1px;
+        align-self: flex-start;
+      }
+    }
+  }
+
+  @include e(furnace) {
+    position: absolute;
+    left: 0;
+    top: 40px;
+    @include e(furnace-item) {
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      @include e(furnace-name) {
+        font-size: 13px;
+        width: 66px;
+      }
+
+      @include e(furnace-block) {
+        //position: relative;
+
+      }
+    }
+  }
+  @include e(plan) {
+    display: flex;
+    @include e(plan-content) {
+      position: relative;
+      display: flex;
+      margin-right: $xui-gant-interval;
+      margin-left: $xui-gant-interval;
+      border: 1px solid $xui-gant-border-default-color;
+      border-radius: 2px;
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+      &.is-selected{
+        border-color: $xui-gant-selected;
+        outline: $xui-gant-selected;
+        outline-style: solid;
+        outline-width: 3px;
+        //box-shadow: 0 2px 12px 0 rgba(111,111,111,0.3);
+      }
+      @include e(plan-item) {
+        position: relative;
+        flex: 1;
+
+        @include e(plan-block) {
+          cursor: pointer;
+          width:100%;
+          height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          color: #FFF;
+          .item{
+            width:100%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+          }
+          &.border-right{
+            border-right: 1px solid $xui-gant-border-default-color;
+          }
+          background-color: $xui-gant-bg-full;
+          &.empty{
+            background-color: $xui-gant-bg-empty;
+          }
+        }
+        @include e(plan-start-label) {
+          position: absolute;
+          bottom: -20px;
+          left: 2px;
+        }
+        @include e(plan-center-label) {
+          position: absolute;
+          bottom: -20px;
+          transform: translate(-50%);
+          left: 50%;
+        }
+        @include e(plan-end-label) {
+          position: absolute;
+          bottom: -20px;
+          right: 2px;
+        }
+      }
+    }
+
+    @include e(plan-time) {
+      position: absolute;
+      width: 100%;
+      top: 44px;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      @include e(plan_start-time){
+        margin-left: 4px;
+      }
+      @include e(plan_end-time){
+        margin-right: 4px;
+      }
+
+    }
+
+  }
+
+  &.show-more-text{
+    .xui-gant__plan-block {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      width: 100%;
+      height: 70px;
+      line-height: 1.2;
+      .mini{
+        font-size: 12px;
+      }
+    }
+
+    .xui-gant__plan-detailWrapper{
+      display: flex;
+      flex-wrap: wrap;
+      .text-wrap{
+        white-space: initial;
+        word-break: break-all;
+      }
+    }
+
+    .xui-gant__plan-time {
+      position: absolute;
+      width: 100%;
+      top: 74px;
+      margin-top: 4px;
+    }
+  }
+}

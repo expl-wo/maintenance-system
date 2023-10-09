@@ -70,7 +70,7 @@
 
 <script>
 import {dbs, page} from '@/tool/api/generator'
-import {getToken} from "@/_public/utils/auth";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: 'toolGenerator',

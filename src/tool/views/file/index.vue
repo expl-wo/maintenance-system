@@ -53,7 +53,7 @@
 <script>
 import {list} from '@/tool/api/file'
 import UploadFileDialog from "@/tool/views/file/uploadFileDialog";
-import {downloadClick, addDownloadFilePrev} from "@/_public/utils";
+import {downloadClick, addDownloadFilePrev} from "@/utils";
 
 export default {
   name: 'tableManager',
