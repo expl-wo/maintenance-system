@@ -799,7 +799,7 @@ document.webL10n = (function(window, document, undefined) {
     }
 
     /** This is where l10n expressions should be processed.
-      * The plan is to support C-style expressions from the l20n project;
+      * The ps is to support C-style expressions from the l20n project;
       * until then, only two kinds of simple expressions are supported:
       *   {[ index ]} and {{ arguments }}.
       */

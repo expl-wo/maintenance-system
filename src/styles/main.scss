@@ -1,0 +1,22 @@
+@import "./xui/_public/var";
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell{
+  background-color: #f2f2f2;
+}
+
+.el-table__body tr.current-row>td.el-table__cell {
+  background-color: rgb(235,245,255);
+}
+
+.el-table.el-table--striped{
+  font-size: 0.7rem;
+}
+
+.xui-text {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.xui-text.primary {
+  color: $xui-primary-color;
+}

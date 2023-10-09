@@ -1,28 +1,33 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./_public/router";
-import "./_public/utils/router";
+import router from "./router";
+import "./utils/router";
 import ElementPlus from "element-plus";
+import '@/styles/index.scss' // global css
+import '@/styles/x6.scss' // global css
 import "element-plus/dist/index.css";
 import "dayjs/locale/zh-cn";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
-import "@/_public/icons/iconfont/iconfont.css";
-import "@/_public/icons/iconfont/iconfont.js";
-import "@/_public/styles/main.scss";
-import "@/_public/styles/el-reset.scss";
-import "@/_public/styles/xui/xui.scss"
+import 'normalize.css/normalize.css'
+import "@/icons/iconfont/iconfont.css";
+import "@/icons/iconfont/iconfont.js";
+import "@/styles/xui/xui.scss"
+import "@/styles/main.scss";
+import "@/styles/el-reset.scss";
 
-import LayoutStore from "@/_public/layouts";
-import http from "@/_public/utils/http";
+
+import LayoutStore from "@/layouts";
+import http from "@/utils/http";
 import * as Icons from "@element-plus/icons-vue";
-import pinia from "./_public/store/pinia";
-import {install} from '@/_public/components/xui'
+import pinia from "./store/pinia";
+import {install} from '@/components/xui'
 import 'babel-polyfill'
 import Es6Promise from 'es6-promise'
 Es6Promise.polyfill()
-import {isAuth} from "@/_public/utils/control";
+import {isAuth} from "@/utils/control";
 
-import "./_public/setting";
+
+import "./setting";
 
 const app = createApp(App);
 //注册xui组件

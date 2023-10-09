@@ -1,0 +1,22 @@
+@import './_public/bem-mixins';
+@import "./_public/var";
+
+
+@include b(check-panel) {
+  @include e(item) {
+    margin: 10px;
+  }
+
+  @include e(title) {
+    padding: 6px;
+    border-bottom:1px solid $xui-border-color;
+  }
+
+  @include e(content) {
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+

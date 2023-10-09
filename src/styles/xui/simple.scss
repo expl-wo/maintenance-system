@@ -1,0 +1,69 @@
+@import './_public/bem-mixins';
+@import "./_public/var";
+
+@include b(dialog) {
+  @include e(control) {
+    .el-dialog__body {
+      min-height: 40vh;
+      max-height: 64vh;
+      overflow: auto;
+    }
+  }
+
+  @include e(control-header) {
+    .el-dialog__body {
+      min-height: 40vh;
+      max-height: 64vh;
+      overflow: auto;
+    }
+  }
+}
+
+@include b(dialog) {
+  @include e(limit) {
+    .el-dialog__body {
+      height: 70vh;
+      overflow: auto;
+    }
+  }
+  @include e(limit-min) {
+    .el-dialog__body {
+      height: 64vh;
+      overflow: auto;
+    }
+  }
+}
+
+@include b(a) {
+  color: $xui-primary-color!important;
+  text-decoration: underline!important;
+  cursor: pointer;
+}
+
+.limit_form-height{
+  .el-form-item__content {
+    line-height: 28px !important;
+  }
+}
+
+@include b(table) {
+  @include e(height43) {
+    &.el-table {
+      .el-table__cell {
+        height: 43px;
+      }
+    }
+  }
+}
+
+
+@include b(content){
+  @include e(success){
+    color: $xui-success-color;
+  }
+  @include e(fail){
+    color: $xui-fail-color;
+  }
+
+}
+

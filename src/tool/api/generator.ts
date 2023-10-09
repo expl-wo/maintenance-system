@@ -1,4 +1,4 @@
-import request from '@/_public/utils/request'
+import request from '@/utils/request'
 
 export function page (query) {
     return request({
