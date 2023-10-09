@@ -7,7 +7,7 @@ import {RouteRecordRaw} from 'vue-router'
 /**
  * 这里存放一些系统必要的路由，不需要权限控制。如：登录、重定向、404等，可以根据自己的实际情况进行修改
  */
-export const constantRoutes = [
+export const constantRoutes: Array<RouteRecordRaw>  = [
     {
         path: '/showdashboard',
         component: () => import("@/views/dashboard/outindex.vue"),
