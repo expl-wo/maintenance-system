@@ -25,9 +25,10 @@ import store from "../store";
 import {defineComponent, computed, onMounted,ref} from "vue";
 import {getUserInfo} from "@/utils/auth";
 import {useRoute} from "vue-router";
-import {hasDepartPrivilege} from '@/utils'
+import { hasDepartPrivilege, notNullUndefined } from "@/utils";
 import {transformList2Tree} from "@/utils";
 import constants from "@/utils/constants";
+import Constants from "@/utils/constants";
 
 export default defineComponent({
   name: "SideBar",
@@ -40,61 +41,29 @@ export default defineComponent({
   setup() {
     const state = store.state;
     const menuList = ref([])
+    const transformStruct = (list)=> {
+      const haveSub = Array.isArray(list.sub)&&list.sub.length>0;
+      return {
+        id: list.id,
+        pName: list.name,
+        pUrl: list.url,
+        iconName:list.iconName,
+        children: haveSub ? list.sub.map((i) => transformStruct(i)):[],
+      };
+    };
+
     const filterPcMenu = () => {
       let result = [];
       // 从sessionStorage得到菜单结构
-      // const tempMenuList = JSON.parse(sessionStorage.getItem('menuList'));
-      // const rootList = transformList2Tree(tempMenuList, 'id', 'fId');
-      // const menuData = rootList.filter(item=>{
-      //   return constants.isEmpty(item.fId);
-      // })
-      // menuList.value = menuData;
-      menuList.value = [{
-        authType: "menu",
-        belongDepart: "_all",
-        id: "14",
-        pName: "权限管理",
-        orderNum: "1",
-        pUrl: "/system/menu",
-        rankNum: "11",
-        children: [],
-        src: "Grid",
-        type: "pc",
-      },
-        {
-          authType: "menu",
-          belongDepart: "_all",
-          id: "15",
-          pName: "角色分类",
-          orderNum: "2",
-          pUrl: "/permission/roleCate",
-          rankNum: "11",
-          children: [],
-          src: "Grid",
-          type: "pc",
-        },{
-          authType: "menu",
-          belongDepart: "_all",
-          id: "16",
-          pName: "角色管理",
-          orderNum: "3",
-          pUrl: "/permission/roleList",
-          rankNum: "11",
-          children: [],
-          src: "Grid",
-          type: "pc",
-        },{
-          authType: "menu",
-          belongDepart: "_all",
-          id: "17",
-          pName: "角色分配",
-          orderNum: "4",
-          pUrl: "/permission/roleDist",
-          rankNum: "11",
-          children: [],
-          src: "Grid",
-          type: "pc",
-        }]
+      const tempMenuList = JSON.parse(sessionStorage.getItem('menuList'));
+      console.log("菜单",tempMenuList)
+      const rootList = tempMenuList.map((list)=>transformStruct(list));
+      console.log("新菜单",rootList)
+      // const rootList2 = transformList2Tree(tempMenuList, 'id', 'fId');
+      const menuData = rootList.filter(item=>{
+        return constants.isEmpty(item.fId);
+      })
+      menuList.value = menuData;
     }
     filterPcMenu();
     return {

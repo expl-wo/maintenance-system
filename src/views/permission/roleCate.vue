@@ -1,5 +1,4 @@
 <template>
-  <!--角色分类列表-->
   <div class="app-container app-containerC">
 
     <div class="filter-container searchCon">
@@ -8,24 +7,79 @@
           <el-input v-model="listQuery.cName" placeholder="角色分类" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
         <el-form-item size="mini">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item size="mini">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-<!--    <table-simple-->
-<!--      class="otherCon wp"-->
-<!--      :data="tableData"-->
-<!--      :row-header="rowHeader"-->
-<!--      :total="total"-->
-<!--      :page="listQuery.pg_pagenum"-->
-<!--      :limit="listQuery.pg_pagesize"-->
-<!--      @pagination="getList"-->
-<!--    />-->
-
+    <el-table
+      :data="tableData"
+      :border="true"
+      header-cell-class-name="bgblue"
+      style="width: 100%"
+      stripe
+      row-key="id"
+      height="700"
+    >
+      <el-table-column
+        prop="index"
+        label="序号"
+        align="center"
+        min-width="5%"
+        >
+        <template v-slot:default="scope">
+          <span>{{(scope.$index + 1)}} </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="cName"
+        label="分类名称"
+        align="center"
+        min-width="15%"
+      />
+      <el-table-column
+        prop="cIntro"
+        align="center"
+        label="分类描述"
+        min-width="15%"
+      />
+      <el-table-column
+        min-width="6%"
+        align="center"
+        label="操作"
+      >
+        <template v-slot="scope">
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            icon="Edit"
+            @click = "editRole(scope.row)"
+          >
+          </el-button>
+          <el-button
+            size="mini"
+            plain
+            type="danger"
+            icon="Delete"
+            @click="deleteRole(scope.row)"
+          >
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      :current-page="listQuery.pg_pagenum"
+      :page-sizes="[100, 200, 500]"
+      :page-size="listQuery.pg_pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
     <!--弹窗新增或修改角色定义-->
     <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
@@ -49,14 +103,12 @@
 
 <script>
 // import treeTransfer from 'el-tree-transfer' // 引入
-import TableSimple from '../../components/Table/index'
 
 // 角色分类列表分页查询、角色分类列表添加和修改、角色分类删除
 import { getRoleCate, postRoleCate, deleteRoleCate } from '@/api/role'
 
 export default {
   name: 'Table',
-  components: { TableSimple },
   data() {
     return {
       dialogStatus: '', // 角色列表表格新增或者修改状态控制
@@ -92,75 +144,7 @@ export default {
   },
   methods: {
     onload() {
-      const self = this
-      self.rowHeader = [
-        // 未做任何格式化处理的数据
-        {
-          prop: 'index',
-          width: 80,
-          align: 'center',
-          label: '序号'
-        },
-        {
-          prop: 'cName',
-          align: 'center',
-          label: '分类名称'
-        },
-        {
-          prop: 'cIntro',
-          align: 'center',
-          label: '分类描述'
-        },
-        // 添加操作按钮
-        {
-          prop: '',
-          align: 'center',
-          label: '操作',
-          width: 140,
-          render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
-                // style: { marginRight: '0px' },
-                on: {
-                  click: function() {
-                    self.dialogFormVisible = true
-                    self.dialogStatus = 'update'
-                    self.listUpdate = { // 弹窗
-                      cIntro: params.row.cIntro, // 模糊匹配，角色介绍，描述此角色的用途等
-                      cName: params.row.cName // 模糊匹配，角色名称
-                    }
-                    self.dataListUpdate = params.row
-                  }
-                }
-              }, ''),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
-                on: {
-                  click: function() {
-                    self.dataListUpdate = params.row
-                    self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    }).then(() => {
-                      const req = { id: params.row.id }
-                      deleteRoleCate(req).then(response => {
-                        self.$message({ message: '删除成功', type: 'success' })
-                        self.onQuery() // 查询
-                      })
-                    }).catch(() => {
-                      self.$message({ type: 'info', message: '已取消删除' })
-                    })
-                  }
-                }
-              }, '')
-
-            ])
-          }
-        }
-      ]
-      self.onQuery() // 查询
+      this.onQuery() // 查询
     },
     onBtnQuery() {
       this.listQuery.pg_pagenum = 1
@@ -179,11 +163,12 @@ export default {
       })
     },
     // 分页数据发生变化
-    getList(val) {
-      this.listQuery.pg_pagenum = val.page
-      if (val.limit) {
-        this.listQuery.pg_pagesize = val.limit
-      }
+    handleSizeChange(val) {
+      this.listQuery.pg_pagesize = val
+      this.onQuery() // 查询
+    },
+    handleCurrentChange(val) {
+      this.listQuery.pg_pagenum = val
       this.onQuery() // 查询
     },
     // 添加 角色新增与编辑的保存操作
@@ -201,7 +186,6 @@ export default {
     },
     // 角色新增保存数据
     createData(listUpdate) {
-      debugger
       this.$refs[listUpdate].validate((valid) => {
         if (valid) {
           const req = { ...this.listUpdate }
@@ -231,6 +215,33 @@ export default {
           this.$message({ message: '请填写必填项', type: 'warning' })
           return false
         }
+      })
+    },
+    //编辑按钮
+    editRole(row){
+      this.dialogFormVisible = true
+      this.dialogStatus = 'update'
+      this.listUpdate = { // 弹窗
+        cIntro: row.cIntro, // 模糊匹配，角色介绍，描述此角色的用途等
+        cName: row.cName // 模糊匹配，角色名称
+      }
+      this.dataListUpdate = row
+    },
+    //删除按钮
+    deleteRole(row){
+      this.dataListUpdate = row
+      this.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const req = { id: row.id }
+        deleteRoleCate(req).then(response => {
+          this.$message({ message: '删除成功', type: 'success' })
+          this.onQuery() // 查询
+        })
+      }).catch(() => {
+        this.$message({ type: 'info', message: '已取消删除' })
       })
     }
   }

@@ -1,5 +1,4 @@
 <template>
-  <!--菜单列表-->
   <div class="app-container app-containerC">
 
     <div class="filter-container searchCon">
@@ -15,7 +14,6 @@
 
     <el-table stripe  highlight-current-row
       :data="tableData"
-      height="100"
       style="width: 100%;font-size:12px;"
       row-key="id"
       border
@@ -43,10 +41,10 @@
         <template v-slot:default="scope">
           <el-button-group>
             <el-button size="mini" title="添加" v-if="scope.row.type !== 2" type="primary" icon="Plus" @click="onAdd(scope.row.id)">
-              <i icon="el-icon-plus"></i>
+              <i icon="Plus"></i>
             </el-button>
             <el-button size="mini" title="编辑" type="primary" icon="Edit" @click="onUpdate(scope.row)">
-              <i icon="el-icon-edit"></i>
+              <i icon="Edit"></i>
             </el-button>
             <!-- <el-button size="mini" title="删除" type="danger" icon="Delete" @click="handleDeleteDict(scope.row)" /> -->
           </el-button-group>
@@ -69,13 +67,13 @@
             <el-option label="按钮" value="2"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限服务端功能路径:" size="mini">
+        <el-form-item label="权限服务端功能路径:" prop = "url" size="mini">
           <el-input v-model="listUpdate.url" placeholder="权限服务端功能路径" style="width: 360px;" class="filter-item" size="mini" />
         </el-form-item>
         <el-form-item label="权限对应的视图组件路径:" size="mini">
           <el-input v-model="listUpdate.viewPath" placeholder="权限对应的视图组件路径" style="width: 360px;" class="filter-item" size="mini" />
         </el-form-item>
-        <el-form-item label="图标:" size="mini">
+        <el-form-item label="图标:" prop = "iconName" size="mini">
           <el-input v-model="listUpdate.iconName" placeholder="图标" style="width: 360px;" class="filter-item" size="mini" />
         </el-form-item>
         <el-form-item label="请求方式:" prop="method" size="mini">
@@ -139,7 +137,8 @@ export default {
         type: [{ required: true, trigger: 'change', message: '该项为必填项' }],
         method: [{ required: true, trigger: 'change', message: '该项为必填项' }],
         enabled: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        showOrder: [{ required: true, trigger: 'change', message: '该项为必填项' }]
+        showOrder: [{ required: true, trigger: 'change', message: '该项为必填项' }],
+        url: [{ required: true, trigger: 'change', message: '该项为必填项' }]
       },
       listUpdate: { // 弹窗
         code: '', // 是 权限编号,唯一，新增时填写，编辑时不可修改
@@ -161,7 +160,6 @@ export default {
   methods: {
     // 查询
     onQuery() {
-      debugger
       getPermissiontreeList().then(response => {
         this.tableData = response.data
         console.log(this.tableData)
@@ -196,7 +194,6 @@ export default {
     },
     // 添加
     onAdd(fid) {
-      debugger
       this.clearData(fid) // 清空添加的数据
       this.dialogStatus = 'create'
       this.dialogFormVisible = true

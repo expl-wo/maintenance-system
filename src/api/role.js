@@ -3,9 +3,9 @@ import request from '@/utils/request'
 // 角色列表分页查询
 export function getRole(params) {
   return request({
-    url: '/api/gcpermissions/role/query',
+    url: '/api/permissions/role/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       rName: params.rName || '', // 模糊匹配，角色名称
@@ -18,7 +18,7 @@ export function getRole(params) {
 // 角色删除
 export function deleteRole(data) {
   return request({
-    url: '/api/gcpermissions/role/delete',
+    url: '/api/permissions/role/delete',
     method: 'POST',
     data
   })
@@ -27,7 +27,7 @@ export function deleteRole(data) {
 // 角色列表 新增与编辑的保存操作
 export function getRolePost(data) {
   return request({
-    url: '/api/gcpermissions/role/save',
+    url: '/api/permissions/role/save',
     method: 'POST',
     data
   })
@@ -36,9 +36,9 @@ export function getRolePost(data) {
 // 角色列表 新增与编辑的保存操作
 export function getPermtree(params) {
   return request({
-    url: '/api/gcpermissions/rolePerm/queryTree',
+    url: '/api/permissions/rolePerm/queryTree',
     method: 'GET',
-    params: {
+    data: {
       roleId: params.roleId // 角色id
     }
   })
@@ -47,7 +47,7 @@ export function getPermtree(params) {
 // 角色与权限的绑定 保存操作
 export function getPerm(data) {
   return request({
-    url: '/api/gcpermissions/rolePerm/save',
+    url: '/api/permissions/rolePerm/save',
     method: 'POST',
     data
   })
@@ -56,9 +56,9 @@ export function getPerm(data) {
 // 角色分类查询
 export function getRoleCate(params) {
   return request({
-    url: '/api/gcpermissions/roleCate/query',
+    url: '/api/permissions/roleCate/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
       cName: params.cName || '' // 模糊匹配，角色分类名称
@@ -70,7 +70,7 @@ export function getRoleCate(params) {
 export function postRoleCate(data) {
   console.log(data)
   return request({
-    url: '/api/gcpermissions/roleCate/save',
+    url: '/api/permissions/roleCate/save',
     method: 'POST',
     data: data,
   })
@@ -79,7 +79,7 @@ export function postRoleCate(data) {
 // 角色分类删除
 export function deleteRoleCate(data) {
   return request({
-    url: '/api/gcpermissions/roleCate/delete',
+    url: '/api/permissions/roleCate/delete',
     method: 'POST',
     data
   })
@@ -88,9 +88,9 @@ export function deleteRoleCate(data) {
 // 角色用户分页查询
 export function getRoleUser(params) {
   return request({
-    url: '/api/gcpermissions/userRole/query',
+    url: '/api/permissions/userRole/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
       roleId: params.roleId || '', // 模糊匹配，角色主键，一般选择填入，禁止手工填写
@@ -105,7 +105,7 @@ export function getRoleUser(params) {
 // 角色用户分配的新增与修改 保存操作
 export function postRoleUser(data) {
   return request({
-    url: '/api/gcpermissions/userRole/save',
+    url: '/api/permissions/userRole/save',
     method: 'POST',
     data
   })
@@ -114,7 +114,7 @@ export function postRoleUser(data) {
 // 删除角色用户
 export function deleteRoleUser(data) {
   return request({
-    url: '/api/gcpermissions/userRole/delete',
+    url: '/api/permissions/userRole/delete',
     method: 'POST',
     data
   })
@@ -125,7 +125,7 @@ export function getRoleMngneown(params) {
   return request({
     url: '/role/mngneown',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
       roleId: params.roleId || '', // 模糊匹配，角色主键，一般选择填入，禁止手工填写
@@ -139,9 +139,9 @@ export function getRoleMngneown(params) {
 // 角色已包含的权限ID数组集合
 export function getRolePermids(params) {
   return request({
-    url: '/api/gcpermissions/permission/queryIds',
+    url: '/api/permissions/permission/queryIds',
     method: 'get',
-    params: {
+    data: {
       roleId: params.roleId || '' // 精确匹配，角色授权部门的主键，选择填入，禁止手工填写
     }
   })

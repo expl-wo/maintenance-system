@@ -31,7 +31,8 @@
     "vue-class-component": "^8.0.0-0",
     "vue-i18n": "next",
     "vue-router": "^4.0.0-0",
-    "xlsx": "^0.17.0"
+    "xlsx": "^0.17.0",
+    "file-saver": "^2.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

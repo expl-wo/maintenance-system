@@ -13,7 +13,7 @@ import pinia from "@/store/pinia";
 import {getToken} from '@/utils/auth'
 // import {userMenuTree} from "@/sys/api/user";
 import {ElMessage} from 'element-plus'
-// import {initUserPrivilege} from './control'
+import {initUserPrivilege} from './control'
 import constants from "@/utils/constants";
 
 const userStore = useUserStore(pinia);
@@ -137,23 +137,22 @@ router.beforeEach((to, from, next) => {
             });
         } else {
             //判断是否已初始化菜单，如果没有，就获取菜单
-            // if (!hasInitPrivilege) {
-            //     debugger
-            //     initUserPrivilege().then(response => {
-            //         hasInitPrivilege = true;
-            //         const isEmptyRoute = LayoutStore.isEmptyPermissionRoute();
-            //         if (isEmptyRoute) {
-            //             LayoutStore.initPermissionRoute(constantRoutes);
-            //         }
-            //         next();
-            //     }).catch(reason => {
-            //         ElMessage.error(reason);
-            //         next({
-            //             path: "/login",
-            //         })
-            //     })
-            // } else {
-            // }
+            if (!hasInitPrivilege) {
+                debugger
+                initUserPrivilege().then(response => {
+                    hasInitPrivilege = true;
+                    const isEmptyRoute = LayoutStore.isEmptyPermissionRoute();
+                    if (isEmptyRoute) {
+                        LayoutStore.initPermissionRoute(constantRoutes);
+                    }
+                    next();
+                }).catch(reason => {
+                    ElMessage.error(reason);
+                    next({
+                        path: "/login",
+                    })
+                })
+            }
         }
     }
 });

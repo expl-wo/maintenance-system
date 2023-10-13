@@ -32,6 +32,36 @@ export const sysRouter: Array<RouteRecordRaw> = [
           keepAlive: true
         }
       },
+      {
+        path: 'user',
+        name: 'yongHuLB20003',
+        component: () => import('@/views/system/user.vue'),
+        meta: {
+          title: '用户列表',
+          icon: 'sys_003',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'organization',
+        name: 'zuZhiJGLB20004',
+        component: () => import('@/views/system/organization.vue'),
+        meta: {
+          title: '组织结构列表',
+          icon: 'sys_004',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'wkclazz',
+        name: 'bzshezhi20010',
+        component: () => import('@/views/system/wkclazz.vue'),
+        meta: {
+          title: '班组信息',
+          icon: 'sys_004',
+          keepAlive: true
+        }
+      },
     ]
   },
   {
