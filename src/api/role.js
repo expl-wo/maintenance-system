@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 角色列表分页查询
 export function getRole(params) {
   return request({
-    url: '/api/permissions/role/query',
+    url: '/api/pbpermissions/role/query',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -18,7 +18,7 @@ export function getRole(params) {
 // 角色删除
 export function deleteRole(data) {
   return request({
-    url: '/api/permissions/role/delete',
+    url: '/api/pbpermissions/role/delete',
     method: 'POST',
     data
   })
@@ -27,7 +27,7 @@ export function deleteRole(data) {
 // 角色列表 新增与编辑的保存操作
 export function getRolePost(data) {
   return request({
-    url: '/api/permissions/role/save',
+    url: '/api/pbpermissions/role/save',
     method: 'POST',
     data
   })
@@ -36,7 +36,7 @@ export function getRolePost(data) {
 // 角色列表 新增与编辑的保存操作
 export function getPermtree(params) {
   return request({
-    url: '/api/permissions/rolePerm/queryTree',
+    url: '/api/pbpermissions/rolePerm/queryTree',
     method: 'GET',
     data: {
       roleId: params.roleId // 角色id
@@ -47,7 +47,7 @@ export function getPermtree(params) {
 // 角色与权限的绑定 保存操作
 export function getPerm(data) {
   return request({
-    url: '/api/permissions/rolePerm/save',
+    url: '/api/pbpermissions/rolePerm/save',
     method: 'POST',
     data
   })
@@ -56,7 +56,7 @@ export function getPerm(data) {
 // 角色分类查询
 export function getRoleCate(params) {
   return request({
-    url: '/api/permissions/roleCate/query',
+    url: '/api/pbpermissions/roleCate/query',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
@@ -70,7 +70,7 @@ export function getRoleCate(params) {
 export function postRoleCate(data) {
   console.log(data)
   return request({
-    url: '/api/permissions/roleCate/save',
+    url: '/api/pbpermissions/roleCate/save',
     method: 'POST',
     data: data,
   })
@@ -79,7 +79,7 @@ export function postRoleCate(data) {
 // 角色分类删除
 export function deleteRoleCate(data) {
   return request({
-    url: '/api/permissions/roleCate/delete',
+    url: '/api/pbpermissions/roleCate/delete',
     method: 'POST',
     data
   })
@@ -88,7 +88,7 @@ export function deleteRoleCate(data) {
 // 角色用户分页查询
 export function getRoleUser(params) {
   return request({
-    url: '/api/permissions/userRole/query',
+    url: '/api/pbpermissions/userRole/query',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
@@ -105,7 +105,7 @@ export function getRoleUser(params) {
 // 角色用户分配的新增与修改 保存操作
 export function postRoleUser(data) {
   return request({
-    url: '/api/permissions/userRole/save',
+    url: '/api/pbpermissions/userRole/save',
     method: 'POST',
     data
   })
@@ -114,7 +114,7 @@ export function postRoleUser(data) {
 // 删除角色用户
 export function deleteRoleUser(data) {
   return request({
-    url: '/api/permissions/userRole/delete',
+    url: '/api/pbpermissions/userRole/delete',
     method: 'POST',
     data
   })
@@ -139,7 +139,7 @@ export function getRoleMngneown(params) {
 // 角色已包含的权限ID数组集合
 export function getRolePermids(params) {
   return request({
-    url: '/api/permissions/permission/queryIds',
+    url: '/api/pbpermissions/permission/queryIds',
     method: 'get',
     data: {
       roleId: params.roleId || '' // 精确匹配，角色授权部门的主键，选择填入，禁止手工填写

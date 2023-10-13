@@ -13,7 +13,7 @@ export function getInfo(token) {
 export function getUserAll(params) {
   debugger
   return request({
-    url: '/api/permissions/userInfo',
+    url: '/api/pbpermissions/userInfo',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
@@ -29,7 +29,7 @@ export function getUserAll(params) {
 // 分页获取用户列表,不包括不可登陆用户
 export function getUser(params) {
   return request({
-    url: '/api/permissions/userInfo/query',
+    url: '/api/pbpermissions/userInfo/query',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条

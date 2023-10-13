@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 父菜单选择查询
 export function getPermissiontreeList() {
     return request({
-      url: '/api/permissions/permission/queryTree',
+      url: '/api/pbpermissions/permission/queryTree',
       method: 'get'
     })
 }
@@ -32,7 +32,7 @@ export function getPermissiontreeList() {
 // 菜单新增或编辑
 export function getPermissiontreeUpdate(data) {
     return request({
-        url: '/api/permissions/permission/save',
+        url: '/api/pbpermissions/permission/save',
         method: 'post',
         data
     })
@@ -41,7 +41,7 @@ export function getPermissiontreeUpdate(data) {
 //获取菜单
 export function userMenuTree(data) {
   return request({
-    url: '/api/permissions/my/currperm',
+    url: '/api/pbpermissions/my/currperm',
     method: 'get',
     data
   });

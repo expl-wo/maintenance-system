@@ -11,7 +11,7 @@ export function getAlltree() {
 // 查询当前用户所拥有的所有菜单
 export function getHasAllTree() {
   return request({
-    url: '/api/permissions/permission/queryAll',
+    url: '/api/pbpermissions/permission/queryAll',
     method: 'get'
   })
 }
