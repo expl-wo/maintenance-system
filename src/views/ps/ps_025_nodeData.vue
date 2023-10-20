@@ -5,9 +5,6 @@
         <el-form-item label="节点名称" size="mini">
           <el-input v-model="listQuery.name" placeholder="输入节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="车间名称" size="mini">
-          <el-input v-model="listQuery.workshopName" placeholder="输入车间名称" style="width: 180px;" class="filter-item" clearable />
-        </el-form-item>
         <el-form-item label="节点类型" size="mini">
           <el-select v-model="listQuery.type" size="mini" placeholder="节点类型" style="width: 120px;" filterable
             default-first-option>
@@ -15,22 +12,67 @@
           </el-select>
         </el-form-item>
         <el-form-item size="mini">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
-    <table-simple class="otherCon wp" :data="tableData" :row-header="rowHeader" :total="total"
-      :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="getList" />
+    <el-table
+      :data="tableData"
+      :border="true"
+      header-cell-class-name="bgblue"
+      style="width: 100%"
+      stripe
+      row-key="id"
+      height="700"
+    >
+      <el-table-column
+        prop="index"
+        label="序号"
+        align="center"
+        min-width="5%"
+      >
+        <template v-slot:default="scope">
+          <span>{{ (scope.$index + 1) }} </span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="节点名称"
+        align="center"
+        min-width="15%"
+      />
+      <el-table-column
+        prop="type"
+        align="center"
+        label="节点类型"
+        min-width="15%"
+      >
+        <template v-slot:default="scope">
+          <el-tag v-if="scope.row.type ==0 ">设计</el-tag>
+          <el-tag v-else-if="scope.row.type ==1 ">采购</el-tag>
+          <el-tag v-else-if="scope.row.type ==2 ">生产</el-tag>
+          <el-tag v-else-if="scope.row.type ==3 ">BOM</el-tag>
+          <el-tag v-else-if="scope.row.type ==null "></el-tag>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      :current-page="listQuery.pg_pagenum"
+      :page-sizes="[100, 200, 500]"
+      :page-size="listQuery.pg_pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+
   </div>
 </template>
 
 <script>
-import TableSimple from '@/components/Table/index.vue'
 import {findAllNode} from '@/api/plan'
 export default {
-  name: 'Table',
-  components: { TableSimple },
     data() {
       return {
         total: 0, // 角色列表表格总条数
@@ -39,7 +81,6 @@ export default {
           pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
           number: '', //
           name: '', //
-          workshopName: '',
           type: null,
           id: '',
         },
@@ -68,53 +109,7 @@ export default {
     },
     methods: {
       onload() {
-        const self = this
-        self.rowHeader = [
-          // 未做任何格式化处理的数据
-          {
-            prop: 'index',
-            width: 50,
-            align: 'center',
-            label: '序号'
-          },
-          {
-            prop: 'name',
-            align: 'center',
-            label: '节点名称'
-          },
-          {
-            prop: 'workshopName',
-            align: 'center',
-            label: '车间名称'
-          },
-          {
-            prop: 'type',
-            align: 'center',
-            label: '节点类型',
-            render: (h, params) => {
-              var typeHtml = ''
-              switch (params.row.type) {
-                case 0:
-                  typeHtml = '设计'
-                  break
-                case 1:
-                  typeHtml = '采购'
-                  break
-                case 2:
-                  typeHtml = '生产'
-                  break
-                case 3:
-                  typeHtml = 'BOM'
-                  break
-                case null:
-                  typeHtml = ''
-                  break
-              }
-              return h('a', [typeHtml])
-            }
-          },
-        ]
-        self.onQuery() // 查询
+        this.onQuery() // 查询
       },
       // 查询
       onBtnQuery() {
@@ -130,13 +125,14 @@ export default {
         })
       },
       // 分页数据发生变化
-      getList(val) {
-        this.listQuery.pg_pagenum = val.page
-        if (val.limit) {
-          this.listQuery.pg_pagesize = val.limit
-        }
-        this.onQuery() // 查询
-      }
+      handleSizeChange(val) {
+        this.listQuery.pg_pagesize = val;
+        this.onQuery(); // 查询
+      },
+      handleCurrentChange(val) {
+        this.listQuery.pg_pagenum = val;
+        this.onQuery(); // 查询
+      },
     }
   }
 </script>

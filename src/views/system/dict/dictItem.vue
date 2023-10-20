@@ -11,9 +11,9 @@
           <el-input v-model="searchModel.code" @keyup.enter.native="handleSearch"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleSearch" icon="el-icon-search"  size="mini">查询</el-button>
+          <el-button @click="handleSearch" icon="Search"  size="mini">查询</el-button>
           <el-button @click="handleReset" size="mini">重置</el-button>
-          <el-button type="primary" icon="el-icon-plus"  @click="handleAdd" size="mini"
+          <el-button type="primary" icon="Plus"  @click="handleAdd" size="mini"
                      :disabled="disabledAddBtn"
           >新增
           </el-button>
@@ -33,12 +33,12 @@
       <el-table-column prop="sort" label="排序号" width="90" align="center"></el-table-column>
       <el-table-column prop="remark" label="补充字段1" width="180" align="center"></el-table-column>
       <el-table-column label="操作" width="200" align="center">
-        <template slot-scope="scope">
+        <template v-slot="scope">
           <el-button-group>
-            <el-button  type="primary" size="mini" icon="el-icon-edit"
+            <el-button  type="primary" size="mini" icon="Edit"
                         @click="modifyHandle(scope.row)">
             </el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete"
+            <el-button type="danger" size="mini" icon="Delete"
                        @click="deleteHandle(scope.row)">
             </el-button>
           </el-button-group>
@@ -47,7 +47,7 @@
     </el-table>
     <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'"
                v-if="showDialog"
-               :visible.sync="dialogVisible" modal
+               v-model="dialogVisible" modal
     >
       <el-form :model="model" ref="formRef" :rules="rules" label-width="100px">
         <el-row>
@@ -82,10 +82,12 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button size="mini" @click="dialogVisible=false">取消</el-button>
         <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -94,6 +96,7 @@
 import dictHttp from '@/api/sys/dict'
 import { deepClone } from '@/utils'
 import { deleteDictItem } from '@/components/xui/dictionary'
+import Constants from "../../../utils/constants";
 
 export default {
   data() {
@@ -227,11 +230,11 @@ export default {
       this.dialogVisible = true
     },
     deleteHandle(rowData) {
-      this.$confirm(this.$constants.deleteTip).then(() => {
+      this.$confirm(Constants.deleteTip).then(() => {
         dictHttp.delete({
           id: rowData.id
         }).then(response => {
-          if (response.err_code === this.$constants.status.success) {
+          if (response.err_code === Constants.respCode.success) {
             this.$message({
               type: 'success',
               message: '字典项删除成功'

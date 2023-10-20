@@ -97,7 +97,7 @@ export const deleteDictItem = function (itemCode) {
 
 function getDict(key, value) {
     let data = []
-    const url = '/api/admin/dict/getListByItemCode'
+    const url = '/api/pbpermissions/dict/get-detail'
     syncAjax({
         url: url,
         type: 'post',

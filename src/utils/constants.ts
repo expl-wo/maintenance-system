@@ -11,7 +11,7 @@ const isEmptyObj = function(obj){
 
 export default {
   respCode: {
-    success: 200 //成功
+    success: 10000 //成功
   },
   //字典类型
   dictType: {
@@ -65,6 +65,8 @@ export default {
   pageAll: 10000,
   pageMaxAll: 1000000,
   filePreviewUrl: 'fileServer/',
+  //删除提示信息
+  deleteTip: '此操作将永久删除该条信息, 是否继续?',
 
 
   allDepart: {

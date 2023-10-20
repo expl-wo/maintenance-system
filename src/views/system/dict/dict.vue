@@ -13,8 +13,8 @@
                            class="form-control" placeholder="字典代码或名称"></xui-dict-select>
         </el-form-item>-->
         <el-form-item>
-          <el-button @click="handleSearch"  icon="el-icon-search" size="mini">查询</el-button>
-          <el-button type="primary"  icon="el-icon-plus"  @click="handleAdd" size="mini">新增
+          <el-button @click="handleSearch"  icon="Search" size="mini">查询</el-button>
+          <el-button type="primary"  icon="Plus"  @click="handleAdd" size="mini">新增
           </el-button>
         </el-form-item>
       </el-form>
@@ -37,18 +37,27 @@
             <el-table-column prop="code" label="编码" align="center"></el-table-column>
             <el-table-column prop="sort" label="序号" width="50" align="center"></el-table-column>
             <el-table-column label="操作" align="center">
-              <template slot-scope="scope">
+              <template v-slot:default="scope">
                 <el-button-group>
-                  <el-button  type="primary" size="mini" icon="el-icon-edit"
+                  <el-button  type="primary" size="mini" icon="Edit"
                               @click="handleEdit(scope.row)">
                   </el-button>
-                  <el-button type="danger" size="mini" icon="el-icon-delete"
+                  <el-button type="danger" size="mini" icon="Delete"
                              @click="handleDelete(scope.row)">
                   </el-button>
                 </el-button-group>
               </template>
             </el-table-column>
           </el-table>
+          <el-pagination
+            :current-page="searchModel.pg_pagenum"
+            :page-sizes="[100, 200, 500]"
+            :page-size="searchModel.pg_pagesize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          />
         </div>
         <!--<ul class="panel-menu">
           <li v-for="(item, key) in dataList" :class="{'cur': item.id===curId}"
@@ -71,7 +80,7 @@
         </ul>-->
       </div>
 
-    <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" :visible.sync="dialogVisible" modal>
+    <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" v-model="dialogVisible" modal>
       <el-form :model="model" ref="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
@@ -98,10 +107,12 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button size="mini" @click="dialogVisible=false">取消</el-button>
         <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -109,18 +120,20 @@
 <script type="text/jsx">
 import dictHttp from '@/api/sys/dict'
 import { deepClone } from '@/utils'
-import XuiDictSelect from '@/components/xui/select/dict-select'
+import Constants from "../../../utils/constants";
 
 export default {
-  components: { XuiDictSelect },
   data() {
     return {
       curId: '',
       dataList: [],
       dialogVisible: false,
+      total: 0,
       searchModel: {
         keywords: '',
-        opType: ['1','0']
+        opType: ['1','0'],
+        pg_pagenum:1, // 每页显示多少条数据，默认为10条 pg_pagenum
+        pg_pagesize: 50, // 查询第几页数据，默认第一页 pg_pagesize
       },
       model: {
         itemCode: '',
@@ -180,11 +193,11 @@ export default {
       this.dialogVisible = true
     },
     handleDelete(rowData) {
-      this.$confirm(this.$constants.deleteTip).then(() => {
+      this.$confirm(Constants.deleteTip).then(() => {
         dictHttp.delete({
             id: rowData.id
         }).then(response => {
-          if (response.err_code === this.$constants.status.success) {
+          if (response.err_code === Constants.respCode.success) {
             this.$message({
               type: 'success',
               message: '字典项删除成功'
@@ -223,7 +236,16 @@ export default {
           }
         })
       })
-    }
+    },
+    // 分页数据发生变化
+    handleSizeChange(val) {
+      this.listQuery.pg_pagesize = val
+      this.onQuery() // 查询
+    },
+    handleCurrentChange(val) {
+      this.listQuery.pg_pagenum = val
+      this.onQuery() // 查询
+    },
   }
 }
 </script>

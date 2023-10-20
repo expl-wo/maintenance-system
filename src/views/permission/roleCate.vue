@@ -90,12 +90,14 @@
           <el-input v-model="listUpdate.cIntro" placeholder="角色介绍" style="width: 320px;" class="filter-item" size="mini" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate'):updateData('listUpdate')" size="mini">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
   </div>
