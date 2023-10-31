@@ -91,19 +91,20 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="saveData('listUpdate')" size="mini">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-import TreeTable from '../../components/Table/tree-table'
 /**
  * 1.父菜单选择查询
  * 2.菜单新增或编辑
@@ -112,7 +113,6 @@ import { getPermissiontreeList, getPermissiontreeUpdate } from '@/api/permission
 
 export default {
   name: 'Table',
-  components: { TreeTable },
   data() {
     return {
       dialogStatus: '', // 角色列表表格新增或者修改状态控制

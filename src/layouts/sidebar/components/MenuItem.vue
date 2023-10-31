@@ -53,7 +53,6 @@ export default defineComponent({
       return props.showRoute.pUrl;
     }
     function handleClick() {
-      debugger
       if (isExternal(props.showRoute.pUrl)) {
         window.open(props.showRoute.pUrl);
       }else if (

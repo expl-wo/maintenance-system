@@ -111,10 +111,12 @@
           <el-input v-model="userUpdate.userid" placeholder="综合平台员工编号[userid]" style="width: 360px;" class="filter-item" size="mini" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible2 = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="saveData('userUpdate')" size="mini">确定</el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -190,7 +192,6 @@ export default {
     // 查询
     onQuery() {
       this.tableData = []
-      debugger
       getUserAll(this.listQuery).then(response => {
         this.tableData = response.data
         console.log("用户信息,",this.tableData)

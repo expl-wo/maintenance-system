@@ -114,7 +114,8 @@ export const sysRouter: Array<RouteRecordRaw> = [
       title: '计划管理',
       icon: 'qx_003'
     },
-    children: [{
+    children: [
+      {
       path: 'baseData',
       name: '0403_basedata',
       component: () => import('@/views/ps/baseData/index.vue'),
@@ -243,16 +244,15 @@ export const sysRouter: Array<RouteRecordRaw> = [
             icon: 'ps_011'
           }
         },
-        // {
-        //   path: 'ps_024_featureNumberAndNodeContact',
-        //   name: 'mesTZTZHYGXJDGX50024',
-        //   hidden: true,
-        //   component: () => import('@/views/ps/ps_024_featureNumberAndNodeContact'),
-        //   meta: {
-        //     title: '图纸特征号与设计节点',
-        //     icon: 'ps_011'
-        //   }
-        // },
+        {
+          path: 'ps_024_featureNumberAndNodeContact',
+          name: 'mesTZTZHYGXJDGX50024',
+          component: () => import('@/views/ps/ps_024_featureNumberAndNodeContact.vue'),
+          meta: {
+            title: '图纸特征号与设计节点',
+            icon: 'ps_011'
+          }
+        },
         // {
         //   path: 'ps_29_nodeAndPlm',
         //   name: 'mesSYJH50029',
@@ -294,6 +294,26 @@ export const sysRouter: Array<RouteRecordRaw> = [
         //   }
         // },
       ]
-    }],
+    },
+      {
+        path: 'MesOrderPool',
+        name: '0401_orderPools',
+        component: () => import('@/views/ps/timeLimit/HNGCMesOrderPool.vue'),
+        meta: {
+          title: '计划工单池',
+          icon: 'qx_002',
+          keepAlive: true
+        }
+      },
+      {
+        //生产主计划
+        path: 'ps_031_main',
+        name: '0402_mainPlan',
+        component: () => import('@/views/ps/planMain/ps_031_main.vue'),
+        meta: {
+          title: '生产主计划',
+          icon: 'ps_011'
+        }
+      }],
   }
 ]

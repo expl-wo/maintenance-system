@@ -43,7 +43,6 @@ export function queryModelList(params) {
 
 // 删除期量行
 export function delLimitDe(params) {
-  debugger
   return request({
     url: '/api/gcplan/timelimit/delLimitDe',
     method: 'delete',
@@ -98,10 +97,10 @@ export function unBound(params) {
   })
 }
 
-// 查询本部计划工单池
-export function queryHBMesOrderList(params) {
+// 查询计划工单池
+export function queryHNGCMesOrderList(params) {
   return request({
-    url: '/api/gcplan/timelimit/queryHBMesOrderList',
+    url: '/api/gcplan/timelimit/queryHNGCMesOrderList',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条

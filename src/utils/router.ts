@@ -138,7 +138,6 @@ router.beforeEach((to, from, next) => {
         } else {
             //判断是否已初始化菜单，如果没有，就获取菜单
             if (!hasInitPrivilege) {
-                debugger
                 initUserPrivilege().then(response => {
                     hasInitPrivilege = true;
                     const isEmptyRoute = LayoutStore.isEmptyPermissionRoute();

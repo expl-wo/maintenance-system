@@ -174,13 +174,15 @@
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <!-- <el-button size="mini" @click="resetForm('mainRuleForm')">取 消</el-button> -->
         <el-button size="mini" @click="addMainDialogVisible = false">取 消</el-button>
         <el-button type="primary" size="mini" @click="submitForm('mainRuleForm')">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" title="查看期量明细" v-model="detailDialog" width="70%">
@@ -280,13 +282,15 @@
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <!-- <el-button size="mini" @click="resetForm('deRuleForm')">取 消</el-button> -->
         <el-button size="mini" @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary" size="mini" @click="submitForm('deRuleForm')">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!-- 修改节点弹窗 -->
@@ -327,13 +331,15 @@
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <!-- <el-button size="mini" @click="resetForm('deRuleForm')">取 消</el-button> -->
         <el-button size="mini" @click="dialogFormEditVisible = false">取 消</el-button>
         <el-button type="primary" size="mini" @click="submitForm('deRuleForm')">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>

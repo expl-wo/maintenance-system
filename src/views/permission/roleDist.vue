@@ -146,12 +146,14 @@
           </el-checkbox>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="createData('listUpdate')" size="mini">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!--选择角色-->
@@ -235,9 +237,11 @@
         @current-change="(val) => handleCurrentChange('role', val)"
       />
 
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogTableVisible = false" size="mini">关 闭</el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!--选择部门-->
@@ -313,9 +317,11 @@
         @size-change="(val) => handleSizeChange('dept', val)"
         @current-change="(val) => handleCurrentChange('dept', val)"
       />
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogTableDeptVisible = false" size="mini">关 闭</el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!--选择人员-->
@@ -395,12 +401,14 @@
         @current-change="(val) => handleCurrentChange('people', val)"
       />
 
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogTablePeopleVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="createTablePeopleData()" size="mini">
           确 认
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
   </div>
@@ -668,7 +676,6 @@ export default {
     },
     // 确认选择的人员
     createTablePeopleData() {
-      debugger
       if (this.multipleSelection === 0) {
         this.$message({ type: "warning", message: "请选择人员!" });
       } else {
@@ -796,7 +803,6 @@ export default {
       });
     },
     tagClose(item) {
-      // debugger
       const multipleSelection = this.multipleSelection.filter((user) => {
         return item.id === user.id;
       });

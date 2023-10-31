@@ -11,7 +11,10 @@ const isEmptyObj = function(obj){
 
 export default {
   respCode: {
-    success: 10000 //成功
+    success: 200 //成功
+  },
+  statusCode: {
+    success: 10000
   },
   //字典类型
   dictType: {

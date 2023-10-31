@@ -147,13 +147,15 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" size="mini"
                    @click="dialogStatus==='create'?createData('listUpdate'):updateData('listUpdate')">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!--查看-->
@@ -191,9 +193,11 @@
           />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button size="mini" @click="dialogViewVisible = false">关 闭</el-button>
       </div>
+      </template>
     </el-dialog>
 
     <!--包含权限编辑-->
@@ -459,7 +463,6 @@ export default {
       });
     },
     includeEditPermission(row) {
-      debugger
       const req = { roleId: row.id };
       this.defaultCheckedKey = [];
       this.dataTreetransfer = []; // 所有菜单tree
@@ -498,7 +501,6 @@ export default {
       this.dialogPermissionVisible = true;
     },
     queryPermission(row) {
-      debugger
       this.dataTree = [];
       const req = { roleId: row.id };
       // 角色中所包含所有权限的树状查询
@@ -509,7 +511,6 @@ export default {
       this.dialogViewVisible = true;
     },
     editPermission(row) {
-      debugger
       this.onQueryCate(); // 查询角色分类
       this.dialogFormVisible = true;
       this.dialogStatus = "update";

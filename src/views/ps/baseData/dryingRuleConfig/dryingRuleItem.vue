@@ -186,7 +186,7 @@ export default {
     getDataList() {
       let params = this.getParams()
       dryingRuleConfig.findTankTime(params).then(response => {
-        if (response.err_code === Constants.respCode.success) {
+        if (response.err_code === Constants.statusCode.success) {
           this.dataList = response.data
         } else {
           this.$message.error(response.err_msg)
@@ -203,7 +203,7 @@ export default {
           timeLimitId: this.timeLimitId
         }
         dryingRuleConfig.insertTankTime(data).then(response=>{
-          if (response.err_code === Constants.respCode.success) {
+          if (response.err_code === Constants.statusCode.success) {
             this.$message.success('数据保存成功')
             this.getDataList()
             this.dialogVisible =false;
@@ -230,7 +230,7 @@ export default {
         dryingRuleConfig.deleteTankTime({
           id: rowData.id
         }).then(response=>{
-          if (response.err_code === Constants.respCode.success) {
+          if (response.err_code === Constants.statusCode.success) {
             this.$message.success('数据删除成功')
             this.getDataList()
           } else {
@@ -241,7 +241,7 @@ export default {
     },
     handleEdit(rowData){
       dryingRuleConfig.insertTankTime(rowData).then(response=>{
-        if (response.err_code === Constants.respCode.success) {
+        if (response.err_code === Constants.statusCode.success) {
           this.$message.success('数据保存成功')
           this.getDataList()
         } else {

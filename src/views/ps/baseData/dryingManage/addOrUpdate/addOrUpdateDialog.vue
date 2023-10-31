@@ -185,7 +185,7 @@ export default {
           return;
         }
         dryingManage.insertDryingTank(this.model).then(resoponse=>{
-          if(resoponse.err_code === Constants.respCode.success){
+          if(resoponse.err_code === Constants.statusCode.success){
             this.$message.success("数据保存成功");
             this.dialogVisible = false;
             this.$emit('refresh', {})

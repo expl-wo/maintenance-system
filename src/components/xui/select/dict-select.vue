@@ -75,6 +75,7 @@ export default {
     }
   },
   created() {
+
     let dataList = getDictListByKey(this.itemCode)
     if (this.includeAll && !this.multiple) {
       dataList = [{
@@ -83,7 +84,10 @@ export default {
       }].concat(dataList)
     }
     this.dictDataList = dataList
-    this.updateCheckboxStatus();
+    this.$nextTick(()=>{
+      this.currentValue = this.value;
+      this.updateCheckboxStatus();
+    });
   },
   watch: {
     currentValue(newVal) {

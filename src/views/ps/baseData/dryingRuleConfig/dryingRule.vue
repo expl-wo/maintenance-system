@@ -88,7 +88,7 @@ export default {
     getDataList() {
       let params = this.getParams()
       dryingRuleConfig.findAllFurnaceRules(params).then(response => {
-        if (response.err_code === Constants.respCode.success) {
+        if (response.err_code === Constants.statusCode.success) {
           this.dataList = response.data
           this.total = response.total_count;
           if(this.dataList && this.dataList.length > 0){
@@ -107,7 +107,7 @@ export default {
     handleEdit(rowData) {
       let formatData = this.formatSubmitData(rowData)
       dryingRuleConfig.insertFurnaceRules(formatData).then(response => {
-        if (response.err_code === Constants.respCode.success) {
+        if (response.err_code === Constants.statusCode.success) {
           this.$message.success('数据保存成功')
           this.getDataList()
         } else {

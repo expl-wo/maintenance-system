@@ -53,7 +53,6 @@ export default defineComponent({
     };
 
     const filterPcMenu = () => {
-      debugger
       let result = [];
       let rootList = [];
       // 从sessionStorage得到菜单结构

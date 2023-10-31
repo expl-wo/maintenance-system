@@ -161,9 +161,11 @@
           </template>
         </el-table-column>
       </el-table>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button size="mini" @click="dialogFileFormVisible = false">关闭</el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>

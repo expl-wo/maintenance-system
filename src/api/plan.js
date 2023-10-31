@@ -97,3 +97,32 @@ export function insertMaterialNode(data) {
     data
   })
 }
+
+//删除节点与图纸特征号关系
+export function deleteDrawingNode(data) {
+  return request({
+    url: '/api/gcplan/drawingnode/deleteDrawingNode',
+    method: 'post',
+    data
+  })
+}
+
+//添加节点与与图纸特征号关系
+export function insertDrawingNode(data) {
+  return request({
+    url: '/api/gcplan/drawingnode/insertDrawingNode',
+    method: 'post',
+    data
+  })
+}
+
+//根据节点获取图纸图纸数据
+export function queryDrawByNode(data) {
+  return request({
+    url: '/api/gcplan/drawingnode/queryListDrawingNode',
+    method: 'get',
+    data: {
+      nodeId: data,
+    }
+  })
+}

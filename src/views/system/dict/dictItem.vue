@@ -234,7 +234,7 @@ export default {
         dictHttp.delete({
           id: rowData.id
         }).then(response => {
-          if (response.err_code === Constants.respCode.success) {
+          if (response.err_code === Constants.statusCode.success) {
             this.$message({
               type: 'success',
               message: '字典项删除成功'

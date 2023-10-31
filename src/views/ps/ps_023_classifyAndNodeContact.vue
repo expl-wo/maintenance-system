@@ -104,9 +104,11 @@
       <div>
         <el-tag v-for="x in checkboxRuleConfigList" :key="x.materialCode" style="margin-right:10px;">{{x.materialName}}</el-tag>
       </div>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
       </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -271,7 +273,6 @@
       },
       // 保存
       saveItemData(classzzItem) {
-        debugger
         console.log('ssdasdasd',classzzItem)
         let params = {
           nodeId:this.nowChooseData.id,

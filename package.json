@@ -34,7 +34,8 @@
     "vue-i18n": "next",
     "vue-router": "^4.0.0-0",
     "xlsx": "^0.17.0",
-    "file-saver": "^2.0.5"
+    "file-saver": "^2.0.5",
+    "moment": "^2.29.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

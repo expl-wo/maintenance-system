@@ -55,7 +55,6 @@ const exSlot = {
   },
 
   render: (h, data) => {
-    debugger
     const params = {
       row: data.props.row,
       index: data.props.index

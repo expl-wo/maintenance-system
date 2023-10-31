@@ -73,12 +73,14 @@
               </el-select>
           </el-form-item>
         </el-form>
-        <div slot="footer" class="dialog-footer">
+        <template #footer>
+          <div class="dialog-footer">
           <el-button size="mini" @click="resetForm('limitModel')">取 消</el-button>
           <el-button type="primary" size="mini" @click="submitForm('limitModel')">
             保存
           </el-button>
         </div>
+        </template>
       </el-dialog>
   </div>
 </template>
@@ -192,7 +194,6 @@ export default {
         if(this.selectList.length === 0) {
           this.$message.error("请选择数据！");
         } else {
-          debugger
           const req = JSON.parse(JSON.stringify([...this.selectList]))
           unBound(req).then(res=>{
             if(res.err_code===10000){

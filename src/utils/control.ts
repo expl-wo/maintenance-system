@@ -6,7 +6,6 @@ export const initUserPrivilege = () => {
     return new Promise((resolve, reject) => {
 
         userMenuTree().then(response => {
-            debugger
             const menuList = [], btnList = [], otherList = [];
             response.data.forEach(item => {
                 if (item.type === 1) {

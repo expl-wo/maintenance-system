@@ -11,7 +11,6 @@ export function getInfo(token) {
 
 // 分页获取用户列表，所有用户
 export function getUserAll(params) {
-  debugger
   return request({
     url: '/api/pbpermissions/userInfo',
     method: 'get',
