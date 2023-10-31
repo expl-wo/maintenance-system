@@ -31,7 +31,7 @@ export default {
       default: true
     },
     itemCode: String,
-    value: [String, Number, Array],
+    modelValue: [String, Number, Array],
     split: {
       type: String,
       default: ','
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       dictDataList: [],
-      currentValue: this.value,
+      currentValue: this.modelValue,
       checked: false,
       indeterminate: false
     }
@@ -85,7 +85,7 @@ export default {
     }
     this.dictDataList = dataList
     this.$nextTick(()=>{
-      this.currentValue = this.value;
+      this.currentValue = this.modelValue;
       this.updateCheckboxStatus();
     });
   },
@@ -93,7 +93,7 @@ export default {
     currentValue(newVal) {
       this.$emit('input', newVal)
     },
-    value(newVal) {
+    modelValue(newVal) {
       this.currentValue = newVal
       this.updateCheckboxStatus();
     }

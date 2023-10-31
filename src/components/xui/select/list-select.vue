@@ -23,7 +23,7 @@
 export default {
   name: 'xuiListSelect',
   props: {
-    value: [String, Number, Array],
+    modelValue: [String, Number, Array],
     split: {
       type: String,
       default: ','
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      currentValue: this.value,
+      currentValue: this.modelValue,
       checked: false,
       indeterminate: false
     }
@@ -78,7 +78,7 @@ export default {
     currentValue(newVal) {
       this.$emit('input', newVal)
     },
-    value(newVal) {
+    modelValue(newVal) {
       this.currentValue = newVal
       this.updateCheckboxStatus();
     }
