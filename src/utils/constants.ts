@@ -35,6 +35,7 @@ export default {
     y: '1',
     n: '0'
   },
+  pageEntryCount: 1000,
   defaultMainPath: '/main',
   fileType: {
     video: 'video',

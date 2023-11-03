@@ -76,7 +76,7 @@
             fixed
             width="90"
           >
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <xui-dictionary itemCode="dryingClassification" :code="scope.row.classification"></xui-dictionary>
             </template>
           </el-table-column>
@@ -88,7 +88,7 @@
             property="dryingMethod"
             width="90"
           >
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <xui-dictionary itemCode="dryingMethod" :code="scope.row.dryingMethod"></xui-dictionary>
             </template>
           </el-table-column>
@@ -173,7 +173,7 @@
           >
           </el-table-column>
           <el-table-column label="操作" align="center"  fixed="right">
-            <template slot-scope="scope">
+            <template v-slot="scope">
               <el-button-group>
                 <el-button  type="primary" size="mini" icon="el-icon-edit"
                             @click="handleEdit(scope.row)">
