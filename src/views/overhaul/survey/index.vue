@@ -416,9 +416,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(div.el-dialog) {
-  width: 50%;
-}
 ::v-deep(.el-input) {
   width: unset;
 }

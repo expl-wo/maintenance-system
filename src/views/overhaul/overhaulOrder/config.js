@@ -482,7 +482,6 @@ const BOM_STATUS = {
     2: "已复核",
     3: "复核不通过"
 }
-const COMMON_FORMAT = "yyyy-MM-dd HH:mm:ss" //统一时间格式
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,
@@ -491,6 +490,5 @@ export {
     ORDER_COLUMNS,
     TAB_LIST_MAP, //工序的tab相关枚举
     RETURN_COLUMNS,
-    BOM_STATUS,
-    COMMON_FORMAT
+    BOM_STATUS
 };

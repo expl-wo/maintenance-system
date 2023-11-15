@@ -40,7 +40,7 @@
           accept=".doc,.docx,.pdf"
         >
           <el-button size="small" type="primary"
-            ><el-icon><UploadFilled /></el-icon>上传</el-button
+            ><el-icon class="el-icon--left"><UploadFilled /></el-icon>上传</el-button
           >
         </el-upload>
       </el-col>

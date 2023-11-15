@@ -58,7 +58,7 @@ export default defineComponent({
       // 从sessionStorage得到菜单结构
       const tempMenuList = JSON.parse(sessionStorage.getItem('menuList'));
       console.log("菜单",tempMenuList)
-      rootList = tempMenuList.map((list)=>transformStruct(list));
+      rootList = (tempMenuList||[]).map((list)=>transformStruct(list));
       console.log("新菜单",rootList)
       // const rootList2 = transformList2Tree(tempMenuList, 'id', 'fId');
       const menuData = rootList.filter(item=>{

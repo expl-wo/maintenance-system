@@ -148,7 +148,7 @@ import {
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { COMMON_FORMAT } from "../config";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import { UploadFilled } from '@element-plus/icons-vue'
 import moment from "moment";
 const MODAL_TYPE = {

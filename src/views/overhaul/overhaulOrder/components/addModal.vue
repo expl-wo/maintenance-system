@@ -146,7 +146,7 @@ import {
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import { UploadFilled } from "@element-plus/icons-vue";
-import { COMMON_FORMAT } from "../config";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import moment from "moment";
 const MODAL_TYPE = {
   update: "编辑工单",

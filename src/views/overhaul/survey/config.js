@@ -241,11 +241,9 @@ const ORDER_COLUMNS = [
         fixed: "right"
     },
 ]
-const COMMON_FORMAT = "yyyy-MM-dd HH:mm:ss" //统一时间格式
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,
     PROCESS_COLUMNS_MAP,
     ORDER_COLUMNS,
-    COMMON_FORMAT
 };
