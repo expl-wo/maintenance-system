@@ -81,15 +81,14 @@ export default {
   },
   methods: {
     async init(params){
-      debugger
       this.params = params;
       this.setBaseColumnList();
       // this.setMoreColumnList();
       let response = await pageset.my({
         pageId: params.pageId
       })
-      if(response.data && response.data.length > 0){
-        let data = response.data[0];
+      if(response.data){
+        let data = response.data;
         this.id = data.id;
         let obj = JSON.parse(data.columnProperty);
         if(obj.baseCheckedKey !== undefined){

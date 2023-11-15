@@ -35,7 +35,6 @@ export default {
       })
     },
     async getHeaderParams(nodeId=null) { //如果nodeId存在，就把此工序排在最前面
-      debugger
       return new Promise((resolve, reject) => {
         planWeekHttp.findByType({
           type: this.processType
@@ -56,7 +55,6 @@ export default {
     },
     //初始化所有的列
     initAllColumnList(tempMoreHeaders){
-      debugger
       let normalColumnList = columnConfig.getNormalColumnList();
       let otherColumnList = [];
       let productColumnList = {

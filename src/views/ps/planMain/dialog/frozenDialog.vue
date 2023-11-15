@@ -27,8 +27,8 @@
 </template>
 
 <script>
-// import planWeekHttp from '@/api/plan/planWeek'
-// import freezeReason from '@/api/plan/freezeReason'
+import planWeekHttp from '@/api/plan/planWeek'
+import freezeReason from '@/api/plan/freezeReason'
 
 export default {
   name: 'frozenDialog',

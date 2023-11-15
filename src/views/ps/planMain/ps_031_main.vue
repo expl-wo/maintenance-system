@@ -69,11 +69,11 @@
           <el-button @click="handleAddRemark" v-if="$isAuth('mainPlan_editData')">添加备注</el-button>
           <el-button @click="handleShowRemarkList" v-if="$isAuth('mainPlan_none')">查看历史备注</el-button>
           <el-button @click="handleShowHistoryChangeDelivery" v-if="$isAuth('mainPlan_none')">查看厂内完工时间申请记录</el-button>
-          <el-button @click="handleChangeRepairStatus" v-if="$isAuth('mainPlan_editData')">返修</el-button>
+<!--          <el-button @click="handleChangeRepairStatus" v-if="$isAuth('mainPlan_editData')">返修</el-button>-->
           <el-button @click="handleChangeCompletionTime" v-if="false">修改生产完工时间</el-button>
           <el-button @click="exportMainPlan" v-if="$isAuth('mainPlan_editData')">导出</el-button>
           <el-button @click="exportBomSum" v-if="$isAuth('mainPlan-exportBom')">导出BOM汇总</el-button>
-          <el-button @click="handleChangeLimitRelationStatus" v-if="$isAuth('mainPlan_editData')">设置工序限制</el-button>
+<!--          <el-button @click="handleChangeLimitRelationStatus" v-if="$isAuth('mainPlan_editData')">设置工序限制</el-button>-->
         </el-form-item>
       </el-form>
     </div>
@@ -236,7 +236,7 @@
             header-align="center"
             align="center"
             label="状态"
-            property="stateName"
+            property="schedulingStatusName"
             width="70"
           >
           </el-table-column>
@@ -488,7 +488,6 @@ export default {
     //   })
     // },
     async getDataList() {
-      debugger
       this.dataList = [];
       let response = await planWeekHttp.planListWithNodes(this.getParams());
       this.total = response.total_count;
@@ -501,7 +500,6 @@ export default {
     //格式化数据
     formatSearchData(dataList) {
       try{
-        debugger
         console.log('格式化数据',dataList)
         dataList.forEach((item, index) => {
           let nodeList = item.nodeList;
@@ -797,7 +795,7 @@ export default {
       this.$refs.historyFrozenDialogRef.init(selectedData)
     },
     canOnlySelectedOneRow(){
-      let selectedData = this.$refs.tableRef.selection;
+      let selectedData = this.$refs.tableRef.getSelectionRows();
       if(!selectedData || selectedData.length === 0){
         this.$message({ message: '请选择要处理的数据', type: 'warning' })
         return null;
@@ -808,7 +806,7 @@ export default {
       return selectedData[0];
     },
     handleAddRemark() {
-      let selectedData = this.$refs.tableRef.selection;
+      let selectedData = this.$refs.tableRef.getSelectionRows();
       if(!selectedData || selectedData.length === 0){
         this.$message({ message: '请选择要处理的数据', type: 'warning' })
         return;
@@ -891,7 +889,7 @@ export default {
         })
       }
       return new Promise((resolve, reject)=>{
-        let selectedData = this.$refs.tableRef.selection;
+        let selectedData = this.$refs.tableRef.getSelectionRows();
         if(!selectedData || selectedData.length === 0){
           this.$message({ message: '请选择要处理的数据', type: 'warning' })
           return resolve([]);

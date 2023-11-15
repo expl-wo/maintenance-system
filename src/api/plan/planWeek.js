@@ -48,6 +48,13 @@ export default {
       data: params
     })
   },
+  freezeWork(params) {
+    return request({
+      url: url.freezeWork,
+      method: 'post',
+      data: params
+    })
+  },
   unfreezeWork(params){
     return request({
       url: url.unfreezeWork,

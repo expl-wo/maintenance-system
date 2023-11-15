@@ -335,7 +335,6 @@ export default {
       this.onQuery();
     },
     toMesOrder(row){
-      debugger
       toMesOrder({"productNo": row.productNo,"isOrder":this.handQuery.isOrder}).then(res=>{
         if(res.err_code===10000){
           this.$message.success("同步成功！");

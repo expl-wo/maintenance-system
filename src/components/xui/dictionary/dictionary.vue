@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     transformContent() {
-      debugger
       let value = transformDictDetail(this.itemCode, this.code)
       if (this.nullToDefault && value === '') {
         this.dictLabel = this.code

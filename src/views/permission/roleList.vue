@@ -463,7 +463,6 @@ export default {
       });
     },
     includeEditPermission(row) {
-      debugger
       const req = { roleId: row.id };
       this.defaultCheckedKey = [];
       this.dataTreetransfer = []; // 所有菜单tree
@@ -471,14 +470,12 @@ export default {
       this.dataHistorySelectedId = []; // 原有权限id集合
       // 角色中所包含所有权限的树状查询
       getRolePermids(req).then(response => {
-        debugger
         this.dataHistorySelectedId = response.data;
         this.defaultCheckedKey = JSON.parse(JSON.stringify([...this.dataHistorySelectedId]));
         console.log(this.defaultCheckedKey)
       });
 
       getHasAllTree().then(response => {
-        debugger
         const data = response.data;
         this.dataTreetransfer = response.data;
         console.log(data)
