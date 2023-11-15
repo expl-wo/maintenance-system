@@ -83,6 +83,8 @@ import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import SurveyReport from "./surveyReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { Pointer } from "@element-plus/icons-vue";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import dayjs from 'dayjs';
 export default {
   components: {
     ProcessInfo,
@@ -195,7 +197,7 @@ export default {
         );
         item.isActive = false;
         if (!arr) return;
-        item.timestamp = arr.editTime;
+        item.timestamp = dayjs(arr.editTime).format(COMMON_FORMAT);
         item.otherInfo = arr.appointee;
         item.isActive = true;
       });

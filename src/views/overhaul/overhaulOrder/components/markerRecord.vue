@@ -88,7 +88,7 @@
 </template>
 <script>
 import { Delete, Edit } from "@element-plus/icons-vue";
-import moment from "moment";
+import dayjs from "dayjs";
 import EditMarkerModal from "./editMarkerRecord.vue";
 import Pagination from "@/components/Pagination"; // 分页
 export default {
@@ -109,8 +109,8 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          moment().startOf().format("YYYY-MM-DD HH:mm:ss"),
-          moment().endOf().format("YYYY-MM-DD HH:mm:ss"),
+          dayjs().startOf().format("YYYY-MM-DD HH:mm:ss"),
+          dayjs().endOf().format("YYYY-MM-DD HH:mm:ss"),
         ],
       },
       //全选相关数据

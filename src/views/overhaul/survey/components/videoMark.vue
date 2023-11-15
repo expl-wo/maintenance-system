@@ -74,7 +74,7 @@
 <script>
 import DHPlayer from "@/components/DHPlayer/index";
 import { Search, RefreshLeft } from "@element-plus/icons-vue";
-import moment from "moment";
+import dayjs from "dayjs";
 const testTreeData = [
   {
     procedureCode: "",
@@ -229,8 +229,8 @@ export default {
       channelCodesOptions: [{ label: "视频1", value: 1 }],
       videoForm: {
         channelCodes: undefined,
-        videoStartTime: moment().startOf("day"),
-        videoEndTime: moment().startOf("day"),
+        videoStartTime: dayjs().startOf("day"),
+        videoEndTime: dayjs().startOf("day"),
       },
     };
   },

@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import dayjs from "dayjs";
 import { requiredVerify } from "@/common/js/validator";
 export default {
   props: {
@@ -163,7 +163,7 @@ export default {
         members: [],
         assistantGroupLeader: [],
         groupLeader: [],
-        date: moment(),
+        date: dayjs(),
       },
       rules: {
         channelCodes: requiredVerify(),

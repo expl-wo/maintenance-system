@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import moment from "moment";
+import dayjs from "dayjs";
 import Pagination from "@/components/Pagination"; // 分页
 import { ISSUE_COLUMNS } from "./config.js";
 import { Search } from "@element-plus/icons-vue";
@@ -123,8 +123,8 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          moment().startOf().format("YYYY-MM-DD HH:mm:ss"),
-          moment().endOf().format("YYYY-MM-DD HH:mm:ss"),
+          dayjs().startOf().format("YYYY-MM-DD HH:mm:ss"),
+          dayjs().endOf().format("YYYY-MM-DD HH:mm:ss"),
         ],
         searchKey: "",
         issue: undefined,

@@ -150,7 +150,7 @@ import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import { UploadFilled } from '@element-plus/icons-vue'
-import moment from "moment";
+import dayjs from "dayjs";
 const MODAL_TYPE = {
   update: "编辑工单",
   add: "新增工单",
@@ -238,7 +238,7 @@ export default {
     },
     //禁用时间主要用于禁止开始时间早于结束时间
     disabledDate(Date) {
-      return moment(Date).isBefore(moment(this.form.planStartTime));
+      return dayjs(Date).isBefore(dayjs(this.form.planStartTime));
     },
     /**
      * 获取商机订单的方法

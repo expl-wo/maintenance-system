@@ -98,6 +98,8 @@ import MiddleWare from "../modules/middleWare.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP } from "../config";
 import { Pointer } from "@element-plus/icons-vue";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import dayjs from 'dayjs';
 //外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
 const TAB_LIST = [
   {
@@ -242,7 +244,7 @@ export default {
         );
         item.isActive = false;
         if (!arr) return;
-        item.timestamp = arr.editTime;
+        item.timestamp = dayjs(arr.editTime).format(COMMON_FORMAT);
         item.otherInfo = arr.appointee;
         item.isActive = true;
       });
