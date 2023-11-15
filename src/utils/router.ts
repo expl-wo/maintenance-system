@@ -91,7 +91,6 @@ function hasToken(): boolean {
 
 router.beforeEach((to, from, next) => {
     NProgress.start();
-    next();
     const query = to.query;
     if (query && constants.isNotEmptyObj(query) && query.ticket) {
         //说明是单点登录跳转页面
@@ -117,7 +116,7 @@ router.beforeEach((to, from, next) => {
     } else {
         if (to.path.indexOf("/login")===0) {
             if(hasToken()){
-                return next(constants.defaultMainPath);
+                return next('/dashboard');
             }else{
                 return next();
             }
@@ -152,6 +151,7 @@ router.beforeEach((to, from, next) => {
                     })
                 })
             }
+            next();
         }
     }
 });

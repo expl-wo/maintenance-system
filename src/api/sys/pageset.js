@@ -5,9 +5,9 @@ import request from '@/utils/request'
 
 const url = {
   //查询用户界面列设置 	GET
-  my: '/pageset/my',
+  my: '/api/gcplan/pageset/my',
   //新增或编辑用户列设置	POST
-  set: '/pageset/set',
+  set: '/api/gcplan/pageset/set',
 }
 
 export default {
@@ -16,7 +16,7 @@ export default {
     return request({
       url: url.my,
       method: 'get',
-      params
+      data: params
     })
   },
   set(params) {

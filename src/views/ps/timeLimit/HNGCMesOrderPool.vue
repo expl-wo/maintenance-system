@@ -62,14 +62,14 @@
         prop="customerName"
         align="center"
         label="用户单位"
-        min-width="5%"
+        min-width="15%"
       />
       <el-table-column
         header-align="center"
         align="center"
-        label="不含税产值(万元)"
+        label="不含税产值"
         property="noTaxAmount"
-        width="90"
+        width="150"
       >
         <template v-slot="scope">
           {{numFilter(scope.row.noTaxAmount)}}
@@ -95,7 +95,7 @@
         prop="factoryStorageDate"
         align="center"
         label="厂内完成时间"
-        min-width="5%"
+        min-width="10%"
       >
         <template v-slot="scope">
           {{timeTranslate(scope.row.factoryStorageDate)}}
@@ -105,13 +105,13 @@
         prop="limitName"
         align="center"
         label="期量"
-        min-width="5%"
+        min-width="15%"
       />
     </el-table>
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                 @pagination="getList" />
 
-  <el-dialog v-dialogDrag  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="90%" class="roleDialog800">
+  <el-dialog v-dialogDrag  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
     <el-form :inline="true" :model="handQuery" class="demo-form-inline demo-form-zdy">
       <el-form-item label="数据来源:" size="mini" prop="nodeType">
         <el-select v-model="handQuery.isOrder" placeholder="请选择节点类型">
@@ -140,7 +140,7 @@
       style="width: 100%"
       stripe
       row-key="id"
-      height="700"
+      height="500"
     >
       <el-table-column
         prop="index"
@@ -153,72 +153,72 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="PRODUCTNO"
+        prop="productNo"
         label="生产号"
         align="center"
-        min-width="15%"
+        min-width="10%"
       />
       <el-table-column
-        prop="PRODUCTMODEL"
+        prop="productModel"
         align="center"
         label="型号"
         min-width="15%"
       />
       <el-table-column
-        prop="DRAWINGNO"
+        prop="drawingNo"
         align="center"
         label="图号"
-        min-width="5%"
+        min-width="15%"
       />
       <el-table-column
-        prop="QUANTITY"
+        prop="quantity"
         align="center"
         label="台量"
-        min-width="5%"
+        min-width="8%"
       />
       <el-table-column
-        prop="CUSTOMERNAME"
+        prop="customerName"
         align="center"
         label="用户单位"
-        min-width="5%"
+        min-width="20%"
       />
       <el-table-column
         header-align="center"
         align="center"
-        label="不含税产值(万元)"
-        property="NOTAXAMOUNT"
-        width="90"
+        label="不含税产值"
+        property="noTaxAmount"
+        width="140"
       >
         <template v-slot="scope">
-          {{numFilter(scope.row.NOTAXAMOUNT)}}
+          {{numFilter(scope.row.noTaxAmount)}}
         </template>
       </el-table-column>
       <el-table-column
-        prop="OUTPUT"
+        prop="outPut"
         align="center"
         label="产量"
-        min-width="5%"
+        min-width="8%"
       />
       <el-table-column
-        prop="PROJECTNAME"
+        prop="projectName"
         align="center"
         label="项目名称"
-        min-width="5%"
+        min-width="20%"
       />
       <el-table-column
-        prop="LIMITNAME"
+        prop="limitName"
         align="center"
         label="期量"
-        min-width="5%"
+        min-width="10%"
       />
       <el-table-column
-        prop="REMARKS"
+        prop="remarks"
         align="center"
         label="备注"
-        min-width="5%"
+        min-width="8%"
       />
       <el-table-column
-        min-width="20%"
+        min-width="10%"
         align="center"
         label="操作"
       >
@@ -247,7 +247,6 @@
 </template>
 
 <script>
-  import timeTranslate from '@/utils/common';
   import Pagination from '@/components/Pagination'
   import { ElMessage } from "element-plus";
   import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder } from '@/api/timeLimit';
@@ -336,7 +335,8 @@ export default {
       this.onQuery();
     },
     toMesOrder(row){
-      toMesOrder({"productNo": row.PRODUCTNO,"isOrder":this.handQuery.isOrder}).then(res=>{
+      debugger
+      toMesOrder({"productNo": row.productNo,"isOrder":this.handQuery.isOrder}).then(res=>{
         if(res.err_code===10000){
           this.$message.success("同步成功！");
           this.getToMesOrder();
@@ -348,6 +348,24 @@ export default {
       let tempVal = parseFloat(value).toFixed(3);
       let realVal = tempVal.substring(0, tempVal.length - 1);
       return realVal;
+    },
+    timeTranslate(dateValue) {
+      var date = dateValue ? new Date(dateValue) : new Date()
+      var seperator1 = '-'
+      var seperator2 = ':'
+      var month = date.getMonth() + 1
+      var strDate = date.getDate()
+      if (month >= 1 && month <= 9) {
+        month = '0' + month
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = '0' + strDate
+      }
+      var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+      // var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+      //     + " " + date.getHours() + seperator2 + date.getMinutes()
+      //     + seperator2 + date.getSeconds();
+      return currentdate
     },
     // 分页数据发生变化
     handleSizeChange(val) {

@@ -6,17 +6,10 @@ export const initUserPrivilege = () => {
     return new Promise((resolve, reject) => {
 
         userMenuTree().then(response => {
-            const menuList = [], btnList = [], otherList = [];
-            response.data.forEach(item => {
-                if (item.type === 1) {
-                    menuList.push(item);
-                } else if (item.type === '2') {
-                    btnList.push(item.pCode)
-                } else {
-                    otherList.push(item);
-                }
-            })
-            console.log("原始菜单",menuList)
+            let result = [], menuList = [], btnList = [], otherList = [];
+            result  = getMenuList(response.data);
+            menuList = result[0];
+            btnList = result[1];
             sessionStorage.setItem("menuList", JSON.stringify(menuList));
             sessionStorage.setItem("btnList", JSON.stringify(btnList));
             sessionStorage.setItem("otherList", JSON.stringify(otherList));
@@ -33,4 +26,31 @@ export const initUserPrivilege = () => {
 //
 export const isAuth = (key) => {
     return JSON.parse(sessionStorage.getItem('btnList') || '[]').indexOf(key) !== -1 || false
+}
+
+const getMenuList = menuList => {
+    let result = []
+    let menuRresult = [];
+    let btnResult = [];
+    menuList.forEach((item) => {
+        _getMenuList(item, menuRresult,btnResult);
+    })
+    result.push(menuRresult)
+    result.push(btnResult)
+    return result;
+}
+
+const _getMenuList = (item, menuRresult,btnResult)=>{
+    if(item.type == 1){
+        let subList = [];
+        if(item.sub && item.sub.length > 0){
+            item.sub.forEach(subItem=>{
+                _getMenuList(subItem, subList,btnResult);
+            })
+        }
+        item.sub = subList;
+        menuRresult.push(item);
+    }else if(item.type == 2){
+        btnResult.push(item.code);
+    }
 }

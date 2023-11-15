@@ -32,10 +32,12 @@
         </el-form-item>
       </div>
     </el-form>
-    <div slot="footer">
+    <template #footer>
+      <div class="dialog-footer">
       <el-button size="mini" @click="dialogVisible=false">取消</el-button>
       <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -87,7 +89,7 @@ export default {
       this.$refs.formRef.validate(valid => {
         if (valid) {
           planWeekHttp.changeNodeStartDateOrCancel(this.model).then(response => {
-            if (response.err_code === this.$constants.status.success) {
+            if (response.err_code === this.$constants.statusCode.success) {
               this.$message.success('数据提交成功')
               this.$emit('refresh', {})
               this.dialogVisible = false

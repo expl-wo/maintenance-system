@@ -14,6 +14,7 @@ import "@/icons/iconfont/iconfont.js";
 import "@/styles/xui/xui.scss"
 import "@/styles/main.scss";
 import "@/styles/el-reset.scss";
+import Constants from '@/utils/constants'
 
 
 import LayoutStore from "@/layouts";
@@ -51,6 +52,7 @@ app.use(LayoutStore, {
   },
 });
 app.config.globalProperties.$isAuth = isAuth;
+app.config.globalProperties.$constants = Constants;
 app.use(pinia).use(router);
 app.use(ElementPlus, {
   locale: zhCn,

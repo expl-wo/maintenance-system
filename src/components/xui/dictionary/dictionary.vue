@@ -53,24 +53,12 @@ export default {
   },
   methods: {
     transformContent() {
-      if(this.dataList && this.dataList.length > 0){
-        let item = this.dataList.find(item=>{
-          return item[this.valueKey] == this.code;
-        })
-        if(item){
-          this.dictLabel = item[this.labelKey];
-        }else{
-          this.dictLabel = ''
-        }
-      }else if(this.itemCode){
-        let value = transformDictDetail(this.itemCode, this.code)
-        if (this.nullToDefault && value === '') {
-          this.dictLabel = this.code
-        } else {
-          this.dictLabel = value
-        }
-      }else{
-        this.dictLabel = ''
+      debugger
+      let value = transformDictDetail(this.itemCode, this.code)
+      if (this.nullToDefault && value === '') {
+        this.dictLabel = this.code
+      } else {
+        this.dictLabel = value
       }
     }
   },

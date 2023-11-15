@@ -44,12 +44,12 @@ export default defineComponent({
     const transformStruct = (list)=> {
       const haveSub = Array.isArray(list.sub)&&list.sub.length>0;
       return {
-        id: list.id,
-        pName: list.name,
-        pUrl: list.url,
-        iconName:list.iconName,
-        children: haveSub ? list.sub.map((i) => transformStruct(i)):[],
-      };
+          id: list.id,
+          pName: list.name,
+          pUrl: list.url,
+          iconName:list.iconName,
+          children: haveSub ? list.sub.map((i) => transformStruct(i)):[],
+        };
     };
 
     const filterPcMenu = () => {

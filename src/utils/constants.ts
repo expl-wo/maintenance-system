@@ -66,6 +66,47 @@ export default {
   department: {
     rootId: '21'
   },
+  opType: {
+    //0:设计 1：采购 2：生产
+    design: 0,
+    purchase: 1,
+    product: 2
+  },
+  confirmStatus: {
+    //Reject(-1,"驳回"),Normal(0,"待排"),Beforehand(1,"预排"),Apply(2,"待审批"),Pass(3,"通过");
+    reject: '-1',
+    normal: '0',
+    beforehand: '1',
+    apply: '2',
+    pass: '3',
+
+    suspended: 4, //暂停
+    canAdd: ['-1', '0'], //是否能加入处理
+    canAddDesc: '驳回或待排',
+    canApproval: ['1'], //是否可预排
+    canApprovalDesc: '预排',
+    waitApproval: ['2'], //是否可待审批处理
+    waitApprovalDesc: '待审批',
+    freeze:['0','1','2','3','10'],
+    canFreezeDesc:'待排产，粗排，已下发，生成工序计划或已开工',
+    unfreeze:['-2'],
+    canUnFreezeDesc:'冻结',
+    canSelect: ['-1', '0','1', '2'], //是否可选中
+    planPageSelected: ['-1', '0','1', '2'],//周计划预排选择框默认选中内容
+    conStatus:['3'],
+    approvalPageSelected: ['2'],//周计划审批选择框默认选中内容
+    completionTime:['0','1','2','3','10','-2','-1'],
+    canCompletionTime:'非完工',
+    previewStatus: [],
+    overOaStatus:[]
+  },
+
+  // 0:设计 1：采购 2：生产 为空则查询所有分类的节点
+  processType: {
+    design: 0,
+    purchase: 1,
+    product: 2
+  },
   pageAll: 10000,
   pageMaxAll: 1000000,
   filePreviewUrl: 'fileServer/',

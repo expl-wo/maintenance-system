@@ -128,7 +128,7 @@ export function queryHandToMesOrder(params) {
 export function toMesOrder(params) {
   return request({
     url: '/api/gcplan/timelimit/toMesOrder',
-    method: 'post',
+    method: 'get',
     data: params
   })
 }

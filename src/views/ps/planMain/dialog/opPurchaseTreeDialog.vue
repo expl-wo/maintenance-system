@@ -36,15 +36,18 @@
           property="isMatch"
           label="是否齐套"
           min-width="40%">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <span v-if="scope.row.isMatch === '0'">不齐套</span>
             <span v-if="scope.row.isMatch === '1'">齐套</span>
           </template>
         </el-table-column>
       </el-table></div>
-    <div slot="footer">
+    <template #footer>
+      <div class="dialog-footer">
       <el-button size="mini" @click="dialogVisible=false">关闭</el-button>
-    </div></el-dialog>
+    </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
@@ -80,7 +83,7 @@ export default {
     getDataList() {
       this.dataList = []
       planWeekHttp.findMaterialMatch(this.params).then(response => {
-        if (response.err_code === this.$constants.status.success) {
+        if (response.err_code === this.$constants.statusCode.success) {
           const res = response.data
           res._showChildren = true
           this.dataList = res

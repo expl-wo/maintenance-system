@@ -20,6 +20,9 @@ export default {
       borderHighlightClassName: 'xui-table__highlight-lr'
     }
   },
+  mounted() {
+    this.initData();
+  },
   methods: {
     async initData() {
       await this.initColumnList();
@@ -32,13 +35,16 @@ export default {
       })
     },
     async getHeaderParams(nodeId=null) { //如果nodeId存在，就把此工序排在最前面
+      debugger
       return new Promise((resolve, reject) => {
         planWeekHttp.findByType({
           type: this.processType
         }).then(response => {
-          if (response.err_code === this.$constants.status.success) {
+          if (response.err_code === this.$constants.statusCode.success) {
             let header = response.data
+            console.log('表头1:',header)
             this.moreHeaders = this.formatHeader(header, nodeId);
+            console.log('表头2:',this.moreHeaders)
             this.initAllColumnList(this.moreHeaders);
             resolve()
           }
@@ -50,6 +56,7 @@ export default {
     },
     //初始化所有的列
     initAllColumnList(tempMoreHeaders){
+      debugger
       let normalColumnList = columnConfig.getNormalColumnList();
       let otherColumnList = [];
       let productColumnList = {
@@ -58,59 +65,79 @@ export default {
         children: []
       };
       tempMoreHeaders.forEach((item, index) =>{
-        if(index === 0 || index === 1){
-          otherColumnList.push(item)
-        }else{
-          productColumnList.children.push(item);
-        }
+        otherColumnList.push(item)
+        // if(index === 0 || index === 1){
+        //   otherColumnList.push(item)
+        // }else{
+        //   productColumnList.children.push(item);
+        // }
       })
       normalColumnList = normalColumnList.concat(otherColumnList);
-      normalColumnList.push(productColumnList);
+      // normalColumnList.push(productColumnList);
       this.showColumnConfigBtn = true;
-      console.log(normalColumnList);
+      console.log('normalColumnList',normalColumnList);
       this.allColumnList = normalColumnList;
     },
     //生成更多内容的表头
     formatHeader(headerData, nodeId) {
-      let tableHeader = []
-      let designHeader = {
-        opType: this.$constants.opType.design,
-        property: '_design',
-        label: transformDictDetail('opType', this.$constants.opType.design),
-        children: []
-      }
-      let purchaseHeader = {
-        opType: this.$constants.opType.purchase,
-        property: '_purchase',
-        label: transformDictDetail('opType', this.$constants.opType.purchase),
-        children: []
-      }
-      let productTypeList = []
-      headerData.forEach(item => {
-        if (item.type === this.$constants.opType.design) {
-          this.addSignHeader(item, designHeader, this.$constants.opType.design)
-        } else if (item.type === this.$constants.opType.purchase) {
-          this.addSignHeader(item, purchaseHeader, this.$constants.opType.purchase)
-        } else  if (item.type === this.$constants.opType.product) {
-          productTypeList.push(item)
+      try{
+        let tableHeader = []
+        let designHeader = {
+          opType: this.$constants.opType.design,
+          property: '_design',
+          label: transformDictDetail('opType', this.$constants.opType.design),
+          children: []
         }
-      })
-      if (designHeader.children.length > 0) {
-        tableHeader.push(designHeader)
-      }
-      if (purchaseHeader.children.length > 0) {
-        tableHeader.push(purchaseHeader)
-      }
-      if (productTypeList.length > 0) {
-        let productHeaders = this.formatProductHeader(productTypeList, nodeId)
-        if (productHeaders.length > 0) {
-          tableHeader = tableHeader.concat(productHeaders)
+        console.log('opType:',this.$constants.opType.design)
+        console.log('label:',transformDictDetail('opType', this.$constants.opType.design))
+        let purchaseHeader = {
+          opType: this.$constants.opType.purchase,
+          property: '_purchase',
+          label: transformDictDetail('opType', this.$constants.opType.purchase),
+          children: []
         }
+        let productHeader = {
+          opType: this.$constants.opType.product,
+          property: '_product',
+          label: transformDictDetail('opType', this.$constants.opType.product),
+          children: []
+        }
+        let productTypeList = []
+        headerData.forEach(item => {
+          if (item.type === this.$constants.opType.design) {
+            this.addSignHeader(item, designHeader, this.$constants.opType.design)
+          } else if (item.type === this.$constants.opType.purchase) {
+            this.addSignHeader(item, purchaseHeader, this.$constants.opType.purchase)
+          } else  if (item.type === this.$constants.opType.product) {
+            // productTypeList.push(item)
+            this.addSignHeader(item, productHeader, this.$constants.opType.product)
+          }
+        })
+        if (designHeader.children.length > 0) {
+          tableHeader.push(designHeader)
+        }
+        if (purchaseHeader.children.length > 0) {
+          tableHeader.push(purchaseHeader)
+        }
+        if (productHeader.children.length > 0) {
+          tableHeader.push(productHeader)
+        }
+        // if (productTypeList.length > 0) {
+        //   tableHeader.push(purchaseHeader)
+          // let productHeaders = this.formatProductHeader(productTypeList, nodeId)
+          // if (productHeaders.length > 0) {
+          //   tableHeader = tableHeader.concat(productHeaders)
+          // }
+        // }
+        /*tableHeader.forEach(firstItem=>{
+          this.setNeedIntervalClass(firstItem);
+        })*/
+        console.log('表头:',tableHeader)
+        return tableHeader
+      }catch (e){
+        console.error(e);
+        return [];
       }
-      /*tableHeader.forEach(firstItem=>{
-        this.setNeedIntervalClass(firstItem);
-      })*/
-      return tableHeader
     },
 /*    setNeedIntervalClass(data){
       data.className = this.borderHighlightClassName;
