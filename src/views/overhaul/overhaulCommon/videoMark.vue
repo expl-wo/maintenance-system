@@ -278,6 +278,9 @@ $left-title-height: 36px;
 $left-search-height: 36px;
 $left-width: 255px;
 $left-search-time: 200px;
+::v-deep(.el-input) {
+  width: 220px;
+}
 .video-box {
   width: 100%;
   height: 100%;

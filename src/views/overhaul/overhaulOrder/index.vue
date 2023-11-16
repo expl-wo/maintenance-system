@@ -4,6 +4,7 @@
       <span class="mrl10">生产号:</span>
       <el-input
         size="small"
+        style="width: unset"
         v-model="queryParams.prodNumber"
         clearable
         @keyup.enter="handleFilter"
@@ -11,6 +12,7 @@
       <span class="mrl25">项目名称:</span
       ><el-input
         size="small"
+        style="width: unset"
         v-model="queryParams.projName"
         clearable
         @keyup.enter="handleFilter"
@@ -45,6 +47,7 @@
       style="width: 100%"
       height="calc(100% - 150px)"
       @selection-change="handleSelectionChange"
+      @sort-change="sortChanged"
       @filter-change="filterChanged"
     >
       <template v-for="item in ORDER_COLUMNS" :key="item.prop">
@@ -75,12 +78,13 @@
                 </el-button>
                 <el-button
                   size="small"
-                  title="暂停"
+                  :title="row.orderStatus === 4 ? '激活' : '暂停'"
                   type="danger"
                   :disabled="[4].includes(row.orderStatus)"
                   @click="pauseTask(row)"
                 >
-                  <el-icon><VideoPause /></el-icon>
+                  <el-icon v-if="row.orderStatus === 4"><VideoPlay /></el-icon>
+                  <el-icon v-else><VideoPause /></el-icon>
                 </el-button>
 
                 <el-button
@@ -164,6 +168,7 @@ import {
   Search,
   View,
   VideoPause,
+  VideoPlay,
   CircleClose,
 } from "@element-plus/icons-vue";
 export default {
@@ -175,6 +180,7 @@ export default {
     Delete,
     Edit,
     Search,
+    VideoPlay,
     View,
     VideoPause,
     CircleClose,
@@ -217,6 +223,21 @@ export default {
       this.queryParams = {
         ...this.queryParams,
         orderStatusList: val.orderStatus,
+      };
+      this.handleFilter();
+    },
+    //排序
+    sortChanged({ column, prop, order }) {
+      let sortParmas = {};
+      if (order) {
+        sortParmas = {
+          sort: prop,
+          sortType: order === "descending" ? "DESC" : "ASC",
+        };
+      }
+      this.queryParams = {
+        ...this.queryParams,
+        ...sortParmas,
       };
       this.handleFilter();
     },
@@ -374,12 +395,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(.el-input) {
-  width: unset;
-}
-::v-deep(.el-input--small .el-input__inner) {
-  width: 200px;
-}
 ::v-deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;
 }

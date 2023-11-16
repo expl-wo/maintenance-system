@@ -78,7 +78,7 @@ export default {
     },
     nodeKey: {
       type: String,
-      default: "id",
+      default: "treeId",
     },
     treeData: {
       type: Array,
@@ -101,8 +101,8 @@ export default {
       type: Object,
       default() {
         return {
-          children: "children",
-          label: "label",
+          children: "childList",
+          label: "treeName",
         };
       },
     },

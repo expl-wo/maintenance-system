@@ -2,6 +2,7 @@
   <el-dialog
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
+    :close-on-click-modal="false"
     :destroy-on-close="true"
     @close="handleClose"
   >
@@ -24,19 +25,19 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="projName">
-            <el-input v-model="form.projName" />
+            <el-input v-model="form.projName" disabled />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
           <el-form-item label="生产号" prop="prodNumber">
-            <el-input v-model="form.prodNumber" />
+            <el-input v-model="form.prodNumber" disabled />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="客户名称" prop="customName">
-            <el-input v-model="form.customName" />
+            <el-input v-model="form.customName" disabled />
           </el-form-item>
         </el-col>
       </el-row>
@@ -47,6 +48,7 @@
               v-model="form.prodCategory"
               class="filter-item"
               placeholder="请选择"
+              disabled
             >
               <el-option
                 v-for="item in prodCategoryOptions"
@@ -59,19 +61,19 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="电压等级" prop="voltageLevel">
-            <el-input v-model="form.voltageLevel" />
+            <el-input v-model="form.voltageLevel" disabled />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
           <el-form-item label="产品型号" prop="prodModel">
-            <el-input v-model="form.prodModel" />
+            <el-input v-model="form.prodModel" disabled />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="厂商" prop="manufacturer">
-            <el-input v-model="form.manufacturer" />
+            <el-input v-model="form.manufacturer" disabled />
           </el-form-item>
         </el-col>
       </el-row>
@@ -82,6 +84,7 @@
               v-model="form.planStartTime"
               type="datetime"
               placeholder="开始时间"
+              disabled
               :value-format="COMMON_FORMAT"
               @change="planStartTimeChange"
             />
@@ -91,7 +94,7 @@
           <!-- 必须先选择开始时间 -->
           <el-form-item label="计划完成时间">
             <el-date-picker
-              :disabled="!form.planStartTime"
+              disabled
               v-model="form.planEndTime"
               :value-format="COMMON_FORMAT"
               type="datetime"
@@ -142,17 +145,17 @@ import {
   addWorkOrder,
   editWorkOrder,
   findWorkOrder,
+  getBusinessOrderList,
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import { UploadFilled } from "@element-plus/icons-vue";
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import { COMMON_FORMAT, MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
 const MODAL_TYPE = {
   update: "编辑工单",
   add: "新增工单",
 };
-const MAX_IMG_SIZE = 10 * 1024 * 1024;
 export default {
   components: {
     SelectPage,
@@ -241,15 +244,21 @@ export default {
      * 获取商机订单的方法
      */
     getBusinessOrderOptions(pageOptions) {
+      const { pageNum, pageSize, searchKey } = pageOptions;
+      let queryParms = {
+        pageNum,
+        pageSize,
+        searchKey,
+      };
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        getBusinessOrderList(queryParms).then((res) => {
+          debugger;
           resolve({
             options: this.businessOrderOptions,
             totalPage: 5,
           });
-        }, 1000);
+        });
       });
-      debugger;
     },
     /**
      * 上传时校验文件大小
@@ -304,6 +313,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep(.el-input) {
+  width: 220px;
+}
+::v-deep(.el-input__wrapper) {
+  width: 220px;
+}
 ::v-deep(.el-input--small .el-input__inner) {
   width: 220px;
 }

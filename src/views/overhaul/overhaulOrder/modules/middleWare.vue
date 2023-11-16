@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import VideoMark from "../components/videoMark.vue";
-import TemplateReport from "../components/templateReport.vue"; //报告相关的内容
-import MarkerRecord from "../components/markerRecord.vue"; //标记记录
+import VideoMark from "@/views/overhaul/overhaulCommon/videoMark.vue";
+import TemplateReport from "@/views/overhaul/overhaulCommon/templateReport.vue"; //报告相关的内容
+import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
 import ProcessInfo from "../components/processInfo.vue"; //工序信息
 import BomVue from "../components/bom/index.vue"; //bom
 import DeviceList from "../components/deviceList/index.vue"; //设备清单
@@ -33,7 +33,7 @@ export default {
     //取的tabName 对应TAB_LIST_MAP的key
     tabList: {
       type: Array,
-      default: [],
+      default: () => [],
     },
     //父级的name
     name: {

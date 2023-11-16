@@ -4,6 +4,7 @@
       <span class="mrl10">生产号:</span>
       <el-input
         size="small"
+        style="width: unset"
         v-model="queryParams.prodNumber"
         clearable
         @keyup.enter="handleFilter"
@@ -11,6 +12,7 @@
       <span class="mrl25">项目名称:</span
       ><el-input
         size="small"
+        style="width: unset"
         v-model="queryParams.projName"
         clearable
         @keyup.enter="handleFilter"
@@ -47,6 +49,7 @@
       style="width: 100%"
       height="calc(100% - 150px)"
       @filter-change="filterChanged"
+      @sort-change="sortChanged"
       @selection-change="handleSelectionChange"
     >
       <template v-for="item in ORDER_COLUMNS" :key="item.prop">
@@ -86,12 +89,13 @@
                 </el-button>
                 <el-button
                   size="small"
-                  title="暂停"
-                  :disabled="[4].includes(row.orderStatus)"
+                  :title="row.orderStatus === 4 ? '激活' : '暂停'"
                   type="danger"
+                  :disabled="[4].includes(row.orderStatus)"
                   @click="pauseTask(row)"
                 >
-                  <el-icon><VideoPause /></el-icon>
+                  <el-icon v-if="row.orderStatus === 4"><VideoPlay /></el-icon>
+                  <el-icon v-else><VideoPause /></el-icon>
                 </el-button>
                 <el-button
                   size="small"
@@ -174,6 +178,7 @@ import {
   Search,
   View,
   Plus,
+  VideoPlay,
   VideoPause,
   CircleClose,
   DocumentChecked,
@@ -186,6 +191,7 @@ export default {
     DetailModal,
     Delete,
     Edit,
+    VideoPlay,
     Search,
     View,
     Plus,
@@ -231,6 +237,21 @@ export default {
       this.queryParams = {
         ...this.queryParams,
         orderStatusList: val.orderStatus,
+      };
+      this.handleFilter();
+    },
+    //排序
+    sortChanged({ column, prop, order }) {
+      let sortParmas = {};
+      if (order) {
+        sortParmas = {
+          sort: prop,
+          sortType: order === "descending" ? "DESC" : "ASC",
+        };
+      }
+      this.queryParams = {
+        ...this.queryParams,
+        ...sortParmas,
       };
       this.handleFilter();
     },
@@ -416,15 +437,6 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(.el-input) {
-  width: unset;
-}
-::v-deep(.el-input__wrapper) {
-  width: 220px;
-}
-::v-deep(.el-input--small .el-input__inner) {
-  width: 220px;
-}
 .mrb15 {
   margin-bottom: 15px;
 }

@@ -74,6 +74,7 @@
             <middle-ware
               v-else
               v-bind="item"
+              :workOrderType="2"
               :tabList="TAB_LIST_MAP[item.name]"
             ></middle-ware>
           </el-tab-pane>
@@ -83,6 +84,7 @@
     <dispatch-modal
       v-if="showAppoint"
       :operateRow="operateRow"
+      :workClazzType="workClazzType"
       modalName="showAppoint"
       @closeModal="closeModal"
       @onSave="dispatchOnsave"
@@ -91,41 +93,51 @@
 </template>
 
 <script>
-import { WORK_ORDER_STATUS } from "../config.js";
+import { WORK_ORDER_STATUS, TIME_LINE } from "../config.js";
 import TimeLine from "@/components/TimeLine/index.vue";
-import DispatchModal from "@/views/overhaul/overhaulOrder/components/dispatchModal"; //指派
+import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
 import MiddleWare from "../modules/middleWare.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP } from "../config";
 import { Pointer } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 //外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
 const TAB_LIST = [
   {
     label: "现场勘查",
     name: "surveyItem",
+    workClazzType: "survey", //班组字段
     hiddenAssign: true,
   },
-  { label: "现场检修", name: "siteOverhaul", hiddenAssign: false },
+  {
+    label: "现场检修",
+    name: "siteOverhaul",
+    hiddenAssign: false,
+    workClazzType: "overhaulGroup",
+  },
   {
     label: "返厂检修-现场拆解",
     name: "siteDismantle",
     hiddenAssign: false,
+    workClazzType: "overhaulGroup",
   },
   {
     label: "返厂检修-厂内拆解",
     name: "factoryDismantle",
+    workClazzType: "assembleGroup",
     hiddenAssign: false,
   },
   {
     label: "返厂检修-厂内生产",
     name: "factoryCreate",
+    workClazzType: "prodDeptGroup",
     hiddenAssign: false,
   },
   {
     label: "返厂检修-试验",
     name: "experiment",
+    workClazzType: "experimentalGroup",
     hiddenAssign: false,
   },
   {
@@ -163,63 +175,17 @@ export default {
       activeName: "surveyItem", //选项卡
       tabList: [], //外层tab
       //时间轴详情
-      timeLineData: [
-        // {
-        //   content: "创建工单",
-        //   timestamp: "",
-        //   otherInfo: "",
-        //   processState: 1,
-        //   isActive: false,
-        // },
-        // {
-        //   content: "审批完成",
-        //   timestamp: "",
-        //   otherInfo: "",
-        //   processState: 2,
-        //   isActive: false,
-        // },
-        {
-          content: "指派项目经理",
-          timestamp: "",
-          otherInfo: "",
-          processState: 3,
-          isActive: false,
-        },
-        {
-          content: "指派组员",
-          timestamp: "",
-          otherInfo: "",
-          isActive: false,
-          processState: 4,
-        },
-        {
-          content: "工序执行",
-          timestamp: "",
-          otherInfo: "",
-          isActive: false,
-          processState: 5,
-        },
-        {
-          content: "检修报告",
-          timestamp: "",
-          otherInfo: "",
-          isActive: false,
-          processState: 6,
-        },
-        {
-          content: "报告审批",
-          timestamp: "",
-          otherInfo: "",
-          isShowLine: false,
-          processState: 7,
-          isActive: false,
-        },
-      ],
+      timeLineData: [],
+      workClazzType: "", //工序指派字段
+      overhaulType: 1, //检修类型
     };
   },
   async mounted() {
     try {
       const { data } = await findWorkOrder(this.operateRow.id);
+      //根据不同的检修类型定义不同的时间轴
+      this.overhaulType = 1; //现场检修
+      this.timeLineData = TIME_LINE[this.overhaulType];
       this.initBaseInfo(data);
       this.dealProcess(data.timelineList);
     } catch (error) {
@@ -232,7 +198,13 @@ export default {
      * 获取当前用户的工序权限
      */
     dealTabList() {
-      this.tabList = TAB_LIST;
+      //现场检修
+      if (this.overhaulType === 1) {
+        this.tabList = TAB_LIST.slice(0, 2);
+      } else {
+        //返厂检修
+        this.tabList = TAB_LIST.filter((item) => item.name !== "siteOverhaul");
+      }
     },
     /**
      * 处理事件轴顺序
@@ -329,13 +301,12 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    handleOk() {
-     
-    },
+    handleOk() {},
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);
     },
     openModal(row, modalName) {
+      this.workClazzType = row.workClazzType; //班组字段
       this.activeName = row.name;
       this.$nextTick(() => {
         this[modalName] = true;
@@ -364,9 +335,9 @@ export default {
 
 <style lang="scss" scoped>
 $conent-padding: 15px;
-::v-deep(.el-input--small .el-input__inner) {
-  width: 220px;
-}
+// ::v-deep(.el-input--small .el-input__inner) {
+//   width: 220px;
+// }
 ::v-deep(.el-descriptions__body) {
   margin-left: 20px;
 }

@@ -1,7 +1,11 @@
 <template>
   <div class="detail-box">
-    <header class="detail-box-header ">
-      <img src="@/icons/svg/back.svg" class="detail-svg" @click="handleClose" /><span>工单详情</span>
+    <header class="detail-box-header">
+      <img
+        src="@/icons/svg/back.svg"
+        class="detail-svg"
+        @click="handleClose"
+      /><span>工单详情</span>
     </header>
 
     <section class="detail-box-content">
@@ -48,7 +52,7 @@
             type="primary"
             @click="openModal(row, 'showAppoint')"
           >
-           <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
+            <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
           </el-button>
         </div>
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -58,7 +62,7 @@
             :key="item.name"
             :name="item.name"
             lazy
-            ><component :is="item.components"
+            ><component :is="item.components" :workOrderType="1"
           /></el-tab-pane>
         </el-tabs>
       </div>
@@ -66,6 +70,7 @@
     <dispatch-modal
       v-if="showAppoint"
       :operateRow="operateRow"
+      workClazzType="survey"
       modalName="showAppoint"
       @closeModal="closeModal"
     ></dispatch-modal>
@@ -73,18 +78,18 @@
 </template>
 
 <script>
-import { WORK_ORDER_STATUS } from "../config.js";
+import { WORK_ORDER_STATUS, TIME_LINE } from "../config.js";
 import ProcessInfo from "./processInfo.vue"; //工序信息
 import TimeLine from "@/components/TimeLine/index.vue";
-import MarkerRecord from "./markerRecord.vue"; //标记记录
-import DispatchModal from "@/views/overhaul/survey/components/dispatchModal"; //指派
-import VideoMark from "./videoMark.vue";
+import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
+import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
+import VideoMark from "@/views/overhaul/overhaulCommon/videoMark.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
-import SurveyReport from "./surveyReport.vue";
+import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { Pointer } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 export default {
   components: {
     ProcessInfo,
@@ -94,7 +99,7 @@ export default {
     VideoMark,
     SurveyReport,
     IssueTable,
-    Pointer
+    Pointer,
   },
   props: {
     //操作行
@@ -123,58 +128,7 @@ export default {
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
       ],
-      timeLineData: [
-        {
-          content: "创建工单",
-          timestamp: "",
-          otherInfo: "",
-          processState: 1,
-          isActive: true,
-        },
-        {
-          content: "审批完成",
-          timestamp: "",
-          otherInfo: "",
-          processState: 2,
-          isActive: true,
-        },
-        {
-          content: "指派项目经理",
-          timestamp: "",
-          otherInfo: "",
-          processState: 3,
-          isActive: true,
-        },
-        {
-          content: "指派组员",
-          timestamp: "",
-          otherInfo: "",
-          isActive: true,
-          processState: 4,
-        },
-        {
-          content: "现场勘查",
-          timestamp: "",
-          otherInfo: "",
-          isActive: true,
-          processState: 5,
-        },
-        {
-          content: "勘查报告",
-          timestamp: "",
-          otherInfo: "",
-          isActive: false,
-          processState: 6,
-        },
-        {
-          content: "报告审批",
-          timestamp: "",
-          otherInfo: "",
-          isShowLine: false,
-          processState: 7,
-          isActive: false,
-        },
-      ],
+      timeLineData: TIME_LINE,
     };
   },
   async mounted() {
@@ -285,7 +239,7 @@ export default {
       debugger;
     },
     handleClose(isSearch = false) {
-      debugger
+      debugger;
       this.$emit("closeModal", this.modalName, isSearch);
     },
     openModal(row, modalName) {
@@ -303,9 +257,9 @@ export default {
 
 <style lang="scss" scoped>
 $conent-padding: 15px;
-::v-deep(.el-input--small .el-input__inner) {
-  width: 220px;
-}
+// ::v-deep(.el-input--small .el-input__inner) {
+//   width: 220px;
+// }
 ::v-deep(.el-descriptions__body) {
   margin-left: 20px;
 }

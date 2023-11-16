@@ -86,7 +86,7 @@ export default {
   mounted() {
     if (this.operateType === "update") {
       this.form.bomNode = 1;
-      this.form.bomNodeName = this.operateRow.data.procedureName;
+      this.form.bomNodeName = this.operateRow.data.treeName;
     }
   },
   methods: {

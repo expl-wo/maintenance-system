@@ -4,6 +4,7 @@
       <span class="mrl10">设备名称:</span
       ><el-input
         size="small"
+        style="width:unset"
         v-model="queryParams.deviceName"
         clearable
         @keyup.enter="handleFilter"

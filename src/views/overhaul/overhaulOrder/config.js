@@ -1,33 +1,150 @@
+//检修工单对应的状态
+
 const WORK_ORDER_MAP = {
-    'waitCheck': {
+    'createOrder': {
         value: 1,
-        text: '指派项目经理',
-        tagType: 'warning'
-    },
-    'check': {
-        value: 2,
-        text: '指派组员',
+        text: '创建工单',
         tagType: ''
     },
-    'underway': {
+    'pointManager': {
         value: 3,
+        text: '指派项目经理',
+        tagType: 'waning'
+    },
+    'pointMembers': {
+        value: 4,
+        text: '指派组员',
+        tagType: 'waning'
+    },
+    'workExecution': {
+        value: 8,
         text: '工序执行',
+        tagType: ''
+    },
+    'completionReport': {
+        value: 9,
+        text: '竣工报告',
+        tagType: 'waning'
+    },
+    'checkCompletionReport': {
+        value: 10,
+        text: '竣工报告审批',
+        tagType: 'success'
+    },
+    'siteDismantle': {
+        value: 11,
+        text: '返厂检修现场拆解',
+        tagType: ''
+    },
+    'factoryDismantle': {
+        value: 12,
+        text: '返厂检修厂内拆解',
+        tagType: ''
+    },
+
+    'factoryCreate': {
+        value: 13,
+        text: '厂内生产',
+        tagType: ''
+    },
+    'experiment': {
+        value: 14,
+        text: '试验',
+        tagType: ''
+    },
+    'finishReport': {
+        value: 15,
+        text: '检修报告',
         tagType: 'success'
     },
     'finish': {
-        value: 4,
-        text: '检修报告',
+        value: 16,
+        text: '结束',
         tagType: 'info'
     },
     'pause': {
-        value: 5,
-        text: '报告审批',
+        value: 17,
+        text: '暂停',
         tagType: 'danger'
     },
 }
+// 时间轴枚举
+const TIME_LINE = {
+    1: [{
+        content: "指派项目经理",
+        timestamp: "",
+        otherInfo: "",
+        processState: 3,
+        isActive: false,
+    },
+    {
+        content: "指派组员",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 4,
+    },
+    {
+        content: "工序执行",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 8,
+    },
+    {
+        content: "竣工报告",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 9,
+    },
+    {
+        content: "竣工报告审批",
+        timestamp: "",
+        otherInfo: "",
+        isShowLine: false,
+        processState: 10,
+        isActive: false,
+    }],
+    2: [{
+        content: "返厂检修现场拆解",
+        timestamp: "",
+        otherInfo: "",
+        processState: 11,
+        isActive: false,
+    },
+    {
+        content: "返厂检修厂内拆解",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 12,
+    },
+    {
+        content: "厂内生产",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 13,
+    },
+    {
+        content: "试验",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 14,
+    },
+    {
+        content: "检修报告",
+        timestamp: "",
+        otherInfo: "",
+        isShowLine: false,
+        processState: 15,
+        isActive: false,
+    }]
+}
 const WORK_ORDER_STATUS = {}
 Object.values(WORK_ORDER_MAP).forEach(item => (WORK_ORDER_STATUS[item.value] = { text: item.text, tagType: item.tagType })); //处理状态数据
-
 // 现场勘查表格项
 const PROCESS_COLUMNS_MAP = {
     //工序
@@ -244,27 +361,27 @@ const ORDER_COLUMNS = [
     {
         prop: "planStartTime",
         label: "计划开始时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
     {
         prop: "planEndTime",
         label: "计划完成时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
     {
         prop: "actualStartTime",
         label: "实际开始时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     }, {
         prop: "actualEndTime",
         label: "实际完成时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
@@ -482,6 +599,7 @@ const BOM_STATUS = {
     2: "已复核",
     3: "复核不通过"
 }
+
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,
@@ -490,5 +608,6 @@ export {
     ORDER_COLUMNS,
     TAB_LIST_MAP, //工序的tab相关枚举
     RETURN_COLUMNS,
-    BOM_STATUS
+    BOM_STATUS,
+    TIME_LINE
 };

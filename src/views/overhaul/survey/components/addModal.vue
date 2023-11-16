@@ -3,6 +3,7 @@
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
     :destroy-on-close="true"
+    :close-on-click-modal="false"
     @close="handleClose"
   >
     <el-form
@@ -148,18 +149,17 @@ import {
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import { UploadFilled } from '@element-plus/icons-vue'
+import { COMMON_FORMAT, MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
+import { UploadFilled } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 const MODAL_TYPE = {
   update: "编辑工单",
   add: "新增工单",
 };
-const MAX_IMG_SIZE = 10 * 1024 * 1024;
 export default {
   components: {
     SelectPage,
-    UploadFilled
+    UploadFilled,
   },
   props: {
     //操作行
@@ -180,7 +180,7 @@ export default {
   },
   data() {
     return {
-      defaultTime:new Date(0,0,0,23,59,59),//默认时间
+      defaultTime: new Date(0, 0, 0, 23, 59, 59), //默认时间
       COMMON_FORMAT,
       maxUpload: 2,
       saveLoading: false,
@@ -244,15 +244,21 @@ export default {
      * 获取商机订单的方法
      */
     getBusinessOrderOptions(pageOptions) {
+      const { pageNum, pageSize, searchKey } = pageOptions;
+      let queryParms = {
+        pageNum,
+        pageSize,
+        searchKey,
+      };
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        getBusinessOrderList(queryParms).then((res) => {
+          debugger;
           resolve({
             options: this.businessOrderOptions,
             totalPage: 5,
           });
-        }, 1000);
+        });
       });
-      debugger;
     },
     /**
      * 上传时校验文件大小
@@ -307,6 +313,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+::v-deep(.el-input) {
+  width: 220px;
+}
+::v-deep(.el-input__wrapper) {
+  width: 220px;
+}
 ::v-deep(.el-input--small .el-input__inner) {
   width: 220px;
 }

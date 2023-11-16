@@ -83,7 +83,6 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import AddModal from "@/views/overhaul/overhaulOrder/components/addModal"; // 新增和编辑弹窗
-import DispatchModal from "@/views/overhaul/overhaulOrder/components/dispatchModal"; //指派
 import DetailModal from "@/views/overhaul/overhaulOrder/components/detailModal"; //工单详情
 import { RETURN_COLUMNS, BOM_STATUS } from "../config.js";
 import { Download, Refresh, Stamp } from "@element-plus/icons-vue";
@@ -93,7 +92,6 @@ export default {
     Pagination,
     AddModal,
     DetailModal,
-    DispatchModal,
     Download,
     Refresh,
     Stamp,

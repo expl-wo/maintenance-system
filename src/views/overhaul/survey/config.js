@@ -1,26 +1,100 @@
+//勘查工单时间轴
+const TIME_LINE = [
+    {
+        content: "创建工单",
+        timestamp: "",
+        otherInfo: "",
+        processState: 1,
+        isActive: true,
+    },
+    {
+        content: "审批完成",
+        timestamp: "",
+        otherInfo: "",
+        processState: 2,
+        isActive: true,
+    },
+    {
+        content: "指派项目经理",
+        timestamp: "",
+        otherInfo: "",
+        processState: 3,
+        isActive: true,
+    },
+    {
+        content: "指派组员",
+        timestamp: "",
+        otherInfo: "",
+        isActive: true,
+        processState: 4,
+    },
+    {
+        content: "现场勘查",
+        timestamp: "",
+        otherInfo: "",
+        isActive: true,
+        processState: 5,
+    },
+    {
+        content: "勘查报告",
+        timestamp: "",
+        otherInfo: "",
+        isActive: false,
+        processState: 6,
+    },
+    {
+        content: "报告审批",
+        timestamp: "",
+        otherInfo: "",
+        isShowLine: false,
+        processState: 7,
+        isActive: false,
+    }
+]
+//勘查工单对应的工单状态
 const WORK_ORDER_MAP = {
-    'waitCheck': {
+    'createOrder': {
         value: 1,
-        text: '待审批',
-        tagType: 'warning'
+        text: '创建工单',
+        tagType: ''
     },
     'check': {
         value: 2,
-        text: '申请中',
-        tagType: ''
+        text: '审批完成',
+        tagType: 'success'
+    },
+    'pointManager': {
+        value: 3,
+        text: '指派项目经理',
+        tagType: 'waning'
+    },
+    'pointMembers': {
+        value: 4,
+        text: '指派组员',
+        tagType: 'waning'
     },
     'underway': {
-        value: 3,
-        text: '勘查中',
+        value: 5,
+        text: '现场勘查',
+        tagType: ''
+    },
+    'surveyReport': {
+        value: 6,
+        text: '勘查报告',
+        tagType: 'success'
+    },
+    'checkReport': {
+        value: 7,
+        text: '报告审批',
         tagType: 'success'
     },
     'finish': {
-        value: 4,
-        text: '勘察结束',
+        value: 16,
+        text: '结束',
         tagType: 'info'
     },
     'pause': {
-        value: 5,
+        value: 17,
         text: '暂停',
         tagType: 'danger'
     },
@@ -209,27 +283,27 @@ const ORDER_COLUMNS = [
     {
         prop: "planStartTime",
         label: "计划开始时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
     {
         prop: "planEndTime",
         label: "计划完成时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
     {
         prop: "actualStartTime",
         label: "实际开始时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     }, {
         prop: "actualEndTime",
         label: "实际完成时间",
-        sortable: true,
+        sortable: 'custom',
         align: "center",
         width: 180,
     },
@@ -241,9 +315,11 @@ const ORDER_COLUMNS = [
         fixed: "right"
     },
 ]
+
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,
     PROCESS_COLUMNS_MAP,
     ORDER_COLUMNS,
+    TIME_LINE
 };
