@@ -59,11 +59,14 @@
           <template #default="{ row }">
             <div class="operate-wrap">
               <el-button-group>
+                <!-- 一直能操作 -->
                 <el-button
                   size="small"
                   title="编辑"
                   type="primary"
-                  :disabled="![1].includes(row.orderStatus)"
+                  :disabled="
+                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
+                  "
                   @click="handleCreate(row, 'update')"
                 >
                   <el-icon><Edit /></el-icon>
@@ -76,18 +79,14 @@
                 >
                   <el-icon><View /></el-icon>
                 </el-button>
+                <!-- 暂停和结束的工单状态不能进行操作 -->
                 <el-button
-                  size="small"
-                  :title="row.orderStatus === 4 ? '激活' : '暂停'"
-                  type="danger"
-                  :disabled="[4].includes(row.orderStatus)"
-                  @click="pauseTask(row)"
-                >
-                  <el-icon v-if="row.orderStatus === 4"><VideoPlay /></el-icon>
-                  <el-icon v-else><VideoPause /></el-icon>
-                </el-button>
-
-                <el-button
+                  :disabled="
+                    [
+                      WORK_ORDER_MAP['pause'].value,
+                      WORK_ORDER_MAP['finish'].value,
+                    ].includes(row.orderStatus)
+                  "
                   size="small"
                   title="删除"
                   type="danger"
@@ -98,6 +97,12 @@
                   size="small"
                   title="结束"
                   type="danger"
+                  :disabled="
+                    [
+                      WORK_ORDER_MAP['pause'].value,
+                      WORK_ORDER_MAP['finish'].value,
+                    ].includes(row.orderStatus)
+                  "
                   @click="closeTask(row)"
                   ><el-icon><CircleClose /></el-icon>
                 </el-button>
@@ -167,8 +172,6 @@ import {
   Edit,
   Search,
   View,
-  VideoPause,
-  VideoPlay,
   CircleClose,
 } from "@element-plus/icons-vue";
 export default {
@@ -180,14 +183,13 @@ export default {
     Delete,
     Edit,
     Search,
-    VideoPlay,
     View,
-    VideoPause,
     CircleClose,
   },
   data() {
     return {
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
+      WORK_ORDER_MAP,
       dialogStatus: "add",
       showAdd: false,
       operateRow: null, //操作行
@@ -300,38 +302,6 @@ export default {
           });
         });
     },
-    //暂停工单
-    pauseTask(row) {
-      this.$confirm("此操作将暂停工单流程, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        closeOnClickModal: false,
-        type: "error",
-      })
-        .then(() => {
-          setWorkOrderStatus({
-            orderId: row.id,
-            orderStatus: WORK_ORDER_MAP["pasue"].value,
-          })
-            .then(() => {
-              this.$message({
-                type: "success",
-                message: "暂停成功!",
-              });
-              this.getList();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "操作已取消!",
-          });
-        });
-    },
-
     //删除工单
     handleDelete(row, index) {
       this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {

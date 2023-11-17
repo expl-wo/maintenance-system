@@ -9,6 +9,7 @@
     <el-row type="flex" justify="start">
       <el-col :span="4">
         模板选择：<el-select
+          :disabled="isPause"
           size="small"
           v-model="templateChoose"
           class="filter-item"
@@ -24,18 +25,34 @@
         </el-select>
       </el-col>
       <el-col :span="10">
-        <el-button type="primary" size="small" @click="saveFile">
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="isPause"
+          @click="saveFile"
+        >
           <el-icon class="el-icon--left"><Document /></el-icon>保存
         </el-button>
-        <el-button type="primary" size="small" @click="checkFile">
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="isPause"
+          @click="checkFile"
+        >
           <el-icon class="el-icon--left"><Stamp /></el-icon> 审核
         </el-button>
-        <el-button type="primary" size="small" @click="downLoadFile">
-          <el-icon class="el-icon--left"><Download /></el-icon>下载模板
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="isPause"
+          @click="downLoadFile"
+        >
+          <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
           class="upload-demo upload-report"
           :limit="1"
+          :disabled="isPause"
           v-model:file-list="fileList"
           :before-upload="beforeUpload"
           :http-request="uploadFile"
@@ -43,7 +60,7 @@
           :auto-upload="true"
           accept=".doc,.docx,.pdf"
         >
-          <el-button size="small" type="primary"
+          <el-button size="small" type="primary" :disabled="isPause"
             ><el-icon class="el-icon--left"><UploadFilled /></el-icon
             >上传</el-button
           >
@@ -94,15 +111,22 @@ export default {
     Document,
   },
   props: {
-    //报告类型
+    //报告模板类型类型
     workType: {
-      type: String,
+      type: [Number, String],
       default: "1",
+    },
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
     },
     //工单类型
     workOrderType: {
-      type: String,
-      default: "1",
+      type: Number,
+      default: 1,
     },
   },
 
@@ -120,6 +144,12 @@ export default {
         { label: "模板2", value: 2 },
       ],
     };
+  },
+  computed: {
+    //暂停
+    isPause() {
+      return this.workOrderInfo.orderStatus === 17;
+    },
   },
   async mounted() {
     try {

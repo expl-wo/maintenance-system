@@ -32,7 +32,7 @@ export const ISSUE_COLUMNS = [
     },
     {
         prop: "createTime",
-        label: "发生时间",
+        label: "上报时间",
         align: "center",
 
     },
@@ -46,11 +46,5 @@ export const ISSUE_COLUMNS = [
         label: "通知人",
         align: "center",
 
-    },
-    {
-        prop: "issueStatus",
-        label: "问题状态",
-        align: "center",
-
-    },
+    }
 ]

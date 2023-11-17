@@ -20,24 +20,37 @@
             <select-page
               v-model="form.businessOrder"
               :getOptions="getBusinessOrderOptions"
+              :disabled="onlyEditFile"
             />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="projName">
-            <el-input v-model="form.projName" clearable />
+            <el-input
+              v-model="form.projName"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
           <el-form-item label="生产号" prop="prodNumber">
-            <el-input v-model="form.prodNumber" clearable />
+            <el-input
+              v-model="form.prodNumber"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="客户名称" prop="customName">
-            <el-input v-model="form.customName" clearable />
+            <el-input
+              v-model="form.customName"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -46,6 +59,7 @@
           <el-form-item label="产品大类" prop="prodCategory">
             <el-select
               v-model="form.prodCategory"
+              :disabled="onlyEditFile"
               class="filter-item"
               placeholder="请选择"
               clearable
@@ -61,19 +75,31 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="电压等级" prop="voltageLevel">
-            <el-input v-model="form.voltageLevel" clearable />
+            <el-input
+              v-model="form.voltageLevel"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
           <el-form-item label="产品型号" prop="prodModel">
-            <el-input v-model="form.prodModel" clearable />
+            <el-input
+              v-model="form.prodModel"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="厂商" prop="manufacturer">
-            <el-input v-model="form.manufacturer" clearable />
+            <el-input
+              v-model="form.manufacturer"
+              clearable
+              :disabled="onlyEditFile"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -85,6 +111,7 @@
               type="datetime"
               placeholder="开始时间"
               :value-format="COMMON_FORMAT"
+              :disabled="onlyEditFile"
               clearable
               @change="planStartTimeChange"
             />
@@ -94,7 +121,7 @@
           <!-- 必须先选择开始时间 -->
           <el-form-item label="计划完成时间">
             <el-date-picker
-              :disabled="!form.planStartTime"
+              :disabled="!form.planStartTime || onlyEditFile"
               v-model="form.planEndTime"
               :value-format="COMMON_FORMAT"
               type="datetime"
@@ -148,6 +175,7 @@ import {
   findWorkOrder,
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
+import { WORK_ORDER_MAP } from "../config.js";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import { COMMON_FORMAT, MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
 import { UploadFilled } from "@element-plus/icons-vue";
@@ -227,6 +255,14 @@ export default {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
     }
+  },
+  computed: {
+    //再工单结束时仅能新增附件无法删除附件
+    onlyEditFile() {
+      return this.operateRow
+        ? this.operateRow.orderStatus === WORK_ORDER_MAP["finish"].value
+        : false;
+    },
   },
   methods: {
     //开始时间改变时

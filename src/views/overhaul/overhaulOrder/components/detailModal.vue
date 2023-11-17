@@ -75,6 +75,7 @@
               v-else
               v-bind="item"
               :workOrderType="2"
+              :workOrderInfo="info"
               :tabList="TAB_LIST_MAP[item.name]"
             ></middle-ware>
           </el-tab-pane>
@@ -178,14 +179,17 @@ export default {
       timeLineData: [],
       workClazzType: "", //工序指派字段
       overhaulType: 1, //检修类型
+      info: {},
     };
   },
   async mounted() {
     try {
       const { data } = await findWorkOrder(this.operateRow.id);
+      this.info = data;
       //根据不同的检修类型定义不同的时间轴
       this.overhaulType = 1; //现场检修
       this.timeLineData = TIME_LINE[this.overhaulType];
+
       this.initBaseInfo(data);
       this.dealProcess(data.timelineList);
     } catch (error) {

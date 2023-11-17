@@ -43,11 +43,16 @@
           </el-descriptions-item>
         </el-descriptions>
       </div>
-      <div class="detail-box-survey">
+      <!-- 审批完成之前均不能进行下一步 -->
+      <div
+        class="detail-box-survey"
+        v-if="![WORK_ORDER_MAP['createOrder'].value].includes(info.orderStatus)"
+      >
         <div class="el-descriptions__title">
           现场勘查
           <el-button
             size="small"
+            v-if="[WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
             title="工序指派"
             type="primary"
             @click="openModal(row, 'showAppoint')"
@@ -55,14 +60,22 @@
             <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
           </el-button>
         </div>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs
+          v-model="activeName"
+          @tab-click="handleClick"
+          v-if="![WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
+        >
           <el-tab-pane
             v-for="item in tabList"
             :label="item.label"
             :key="item.name"
             :name="item.name"
             lazy
-            ><component :is="item.components" :workOrderType="1"
+            ><component
+              :is="item.components"
+              :workOrderInfo="info"
+              :workOrderType="1"
+              :workType="item.workType"
           /></el-tab-pane>
         </el-tabs>
       </div>
@@ -78,8 +91,8 @@
 </template>
 
 <script>
-import { WORK_ORDER_STATUS, TIME_LINE } from "../config.js";
-import ProcessInfo from "./processInfo.vue"; //工序信息
+import { WORK_ORDER_STATUS, TIME_LINE, WORK_ORDER_MAP } from "../config.js";
+import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import TimeLine from "@/components/TimeLine/index.vue";
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
 import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
@@ -124,16 +137,24 @@ export default {
         { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
         //IssueTable
         { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
-        { label: "勘查报告", name: "report", components: "SurveyReport" },
+        {
+          label: "勘查报告",
+          name: "report",
+          components: "SurveyReport",
+          workType: 1,
+        },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
       ],
       timeLineData: TIME_LINE,
+      info: {},
+      WORK_ORDER_MAP,
     };
   },
   async mounted() {
     try {
       const { data } = await findWorkOrder(this.operateRow.id);
+      this.info = { ...data };
       this.initBaseInfo(data);
       this.dealProcess(data.timelineList);
     } catch (error) {

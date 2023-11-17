@@ -61,11 +61,14 @@
           <template #default="{ row }">
             <div class="operate-wrap">
               <el-button-group>
+                <!-- 暂停能操作 -->
                 <el-button
                   size="small"
                   title="编辑"
                   type="primary"
-                  :disabled="![1].includes(row.orderStatus)"
+                  :disabled="
+                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
+                  "
                   @click="handleCreate(row, 'update')"
                 >
                   <el-icon><Edit /></el-icon>
@@ -78,35 +81,64 @@
                 >
                   <el-icon><View /></el-icon>
                 </el-button>
+                <!-- 暂停或者说非创建工单均不能操作 -->
                 <el-button
                   size="small"
                   title="发起审核"
-                  :disabled="![1].includes(row.orderStatus)"
+                  :disabled="
+                    ![WORK_ORDER_MAP['createOrder'].value].includes(
+                      row.orderStatus
+                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus
+                  "
                   type="primary"
                   @click="handleApproval(row)"
                 >
                   <el-icon><DocumentChecked /></el-icon>
                 </el-button>
+                <!-- 工单结束之后不能再操作 -->
                 <el-button
                   size="small"
-                  :title="row.orderStatus === 4 ? '激活' : '暂停'"
+                  :title="
+                    row.orderStatus === WORK_ORDER_MAP['pause'].value
+                      ? '激活'
+                      : '暂停'
+                  "
+                  :disabled="
+                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)
+                  "
                   type="danger"
-                  :disabled="[4].includes(row.orderStatus)"
                   @click="pauseTask(row)"
                 >
-                  <el-icon v-if="row.orderStatus === 4"><VideoPlay /></el-icon>
+                  <el-icon
+                    v-if="row.orderStatus === WORK_ORDER_MAP['pause'].value"
+                    ><VideoPlay
+                  /></el-icon>
                   <el-icon v-else><VideoPause /></el-icon>
                 </el-button>
+                <!-- 工单结束和暂停之后不能再操作 -->
                 <el-button
                   size="small"
+                  :disabled="
+                    [
+                      WORK_ORDER_MAP['pause'].value,
+                      WORK_ORDER_MAP['finish'].value,
+                    ].includes(row.orderStatus)
+                  "
                   title="删除"
                   type="danger"
                   @click="handleDelete(row)"
                   ><el-icon><Delete /></el-icon>
                 </el-button>
+                <!-- 工单结束和暂停之后不能再操作 -->
                 <el-button
                   size="small"
                   title="结束"
+                  :disabled="
+                    [
+                      WORK_ORDER_MAP['pause'].value,
+                      WORK_ORDER_MAP['finish'].value,
+                    ].includes(row.orderStatus)
+                  "
                   type="danger"
                   @click="closeTask(row)"
                   ><el-icon><CircleClose /></el-icon>
@@ -227,6 +259,7 @@ export default {
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
       //状态下拉筛选
       satusFilterList: Object.values(WORK_ORDER_MAP),
+      WORK_ORDER_MAP,
     };
   },
   created() {
@@ -315,15 +348,21 @@ export default {
     },
     //暂停工单
     pauseTask(row) {
-      this.$confirm("此操作将暂停工单流程, 是否继续?", "提示", {
+      let orderStatus = WORK_ORDER_MAP["pause"].value;
+      let tips = WORK_ORDER_MAP["pause"].text;
+      if (row.orderStatus === orderStatus) {
+        orderStatus = 18;
+        tips = "激活";
+      }
+      this.$confirm(`此操作将${tips}工单流程, 请确认操作?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "error",
+        type: "warning",
       })
         .then(() => {
           setWorkOrderStatus({
             orderId: row.id,
-            orderStatus: WORK_ORDER_MAP["pause"].value,
+            orderStatus: orderStatus,
           })
             .then(() => {
               this.$message({

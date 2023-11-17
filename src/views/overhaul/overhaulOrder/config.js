@@ -1,20 +1,10 @@
+import { COMMOM_WORK_ORDER_MAP } from '@/views/overhaul/constants.js';
 //检修工单对应的状态
-
 const WORK_ORDER_MAP = {
     'createOrder': {
         value: 1,
         text: '创建工单',
         tagType: ''
-    },
-    'pointManager': {
-        value: 3,
-        text: '指派项目经理',
-        tagType: 'waning'
-    },
-    'pointMembers': {
-        value: 4,
-        text: '指派组员',
-        tagType: 'waning'
     },
     'workExecution': {
         value: 8,
@@ -57,16 +47,7 @@ const WORK_ORDER_MAP = {
         text: '检修报告',
         tagType: 'success'
     },
-    'finish': {
-        value: 16,
-        text: '结束',
-        tagType: 'info'
-    },
-    'pause': {
-        value: 17,
-        text: '暂停',
-        tagType: 'danger'
-    },
+    ...COMMOM_WORK_ORDER_MAP
 }
 // 时间轴枚举
 const TIME_LINE = {
@@ -145,133 +126,6 @@ const TIME_LINE = {
 }
 const WORK_ORDER_STATUS = {}
 Object.values(WORK_ORDER_MAP).forEach(item => (WORK_ORDER_STATUS[item.value] = { text: item.text, tagType: item.tagType })); //处理状态数据
-// 现场勘查表格项
-const PROCESS_COLUMNS_MAP = {
-    //工序
-    1: [
-        {
-            prop: "measureName",
-            label: "标准工序名称",
-        },
-        {
-            prop: "measureCode",
-            label: "标准工序编号",
-        },
-        {
-            prop: "measure",
-            label: "标准要求",
-        },
-        {
-            prop: "groupLeader",
-            label: "组长",
-        },
-        {
-            prop: "assistantGroupLeader",
-            label: "副组长",
-        },
-        {
-            prop: "members",
-            label: "成员",
-        },
-        {
-            prop: "finishStatus",
-            label: "完工状态",
-        },
-        {
-            prop: "approvalStatus",
-            label: "复核状态",
-        },
-        {
-            prop: "process",
-            label: "工序进度",
-        },
-        {
-            prop: "startTime",
-            label: "开工时间",
-        },
-        {
-            prop: "endTime",
-            label: "完工时间",
-        },
-        {
-            prop: "operation",
-            label: "操作",
-            width: 150,
-        },
-    ],
-    //子工序头
-    2: [
-        {
-            prop: "subProcessName",
-            label: "子工序名头称",
-        },
-        {
-            prop: "groupLeader",
-            label: "组长",
-        },
-        {
-            prop: "assistantGroupLeader",
-            label: "副组长",
-        },
-        {
-            prop: "members",
-            label: "成员",
-        },
-        {
-            prop: "process",
-            label: "子工序行完成度",
-        },
-        {
-            prop: "finishStatus",
-            label: "完工状态",
-        },
-        {
-            prop: "approvalStatus",
-            label: "复核状态",
-        },
-        {
-            prop: "operation",
-            label: "操作",
-            width: 150,
-        },
-    ],
-    //子工序行
-    3: [
-        {
-            prop: "processRowName",
-            label: "子工序行名称",
-        },
-        {
-            prop: "groupLeader",
-            label: "组长",
-        },
-        {
-            prop: "assistantGroupLeader",
-            label: "副组长",
-        },
-        {
-            prop: "members",
-            label: "成员",
-        },
-        {
-            prop: "frequency",
-            label: "频次",
-        },
-        {
-            prop: "finishStatus",
-            label: "当前状态",
-        },
-        {
-            prop: "approvalStatus",
-            label: "复核状态",
-        },
-        {
-            prop: "operation",
-            label: "操作",
-            width: 150,
-        },
-    ]
-}
 //设备清单列表
 const DEVICE_COLUMNS = [
     { type: "selection", width: 50, align: "center" },
@@ -403,11 +257,13 @@ const TAB_LIST_MAP = {
             label: "试验作业指导书",
             name: "experimentInstruction",
             components: "TemplateReport",
+            workType:12,
         },
         {
             label: "试验报告 ",
             name: "experimentReport",
             components: "TemplateReport",
+            workType:13,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -417,7 +273,7 @@ const TAB_LIST_MAP = {
         { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
         { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
         {
-            label: "拆解作业BOM",
+            label: "厂内作业BOM",
             name: "BomVue",
             components: "BomVue",
         },
@@ -425,12 +281,14 @@ const TAB_LIST_MAP = {
             label: "生产作业指导书",
             name: "createInstruction",
             components: "TemplateReport",
+            workType:10,
         },
 
         {
             label: "生产作业执行报告",
             name: "createReport",
             components: "TemplateReport",
+            workType:11,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -439,15 +297,16 @@ const TAB_LIST_MAP = {
     factoryDismantle: [
         { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
         { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        // {
+        //     label: "施工方案",
+        //     name: "constructionScheme",
+        //     components: "TemplateReport",
+        // },
         {
-            label: "施工方案",
-            name: "constructionScheme",
-            components: "TemplateReport",
-        },
-        {
-            label: "返厂拆解作业指导书",
+            label: "厂内拆解作业指导书",
             name: "returnInstruction",
             components: "TemplateReport",
+            workType:8,
         },
         {
             label: "厂内拆解BOM",
@@ -458,6 +317,7 @@ const TAB_LIST_MAP = {
             label: "解体分析报告",
             name: "BreakdownReport",
             components: "TemplateReport",
+            workType:9,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -470,11 +330,13 @@ const TAB_LIST_MAP = {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
+            workType:6,
         },
         {
             label: "装运拆解作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
+            workType:7,
         },
         {
             label: "设备清单",
@@ -496,6 +358,7 @@ const TAB_LIST_MAP = {
             label: "现场拆解报告",
             name: "siteDisassemblyReport",
             components: "TemplateReport",
+            workType:15,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -508,11 +371,13 @@ const TAB_LIST_MAP = {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
+            workType:2,
         },
         {
             label: "现场检修作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
+            workType:3,
         },
         {
             label: "设备清单",
@@ -523,11 +388,13 @@ const TAB_LIST_MAP = {
             label: "现场检修试验报告",
             name: "testInstruction",
             components: "TemplateReport",
+            workType:4,
         },
         {
             label: "现场检修竣工报告",
             name: "finishReport",
             components: "TemplateReport",
+            workType:5,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -536,13 +403,13 @@ const TAB_LIST_MAP = {
     surveyItem: [
         { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
         { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
-        { label: "勘查报告", name: "report", components: "TemplateReport" },
+        { label: "勘查报告", name: "report", components: "TemplateReport", workType: 1, },
         { label: "录像标记", name: "videoAndImg", components: "VideoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
     ],
     //返厂检修-检修报告
     finishReport: [
-        { label: "检修报告", name: "factoryFinishReport", components: "TemplateReport" },
+        { label: "检修报告", name: "factoryFinishReport", components: "TemplateReport", workType: 14, },
     ]
 }
 // 返厂清单表格项
@@ -603,7 +470,6 @@ const BOM_STATUS = {
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,
-    PROCESS_COLUMNS_MAP,
     DEVICE_COLUMNS,
     ORDER_COLUMNS,
     TAB_LIST_MAP, //工序的tab相关枚举

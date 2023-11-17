@@ -38,28 +38,26 @@
         v-if="form.markType === 2"
         type="flex"
         align="middle"
-        justify="space-between"
+        justify="start"
       >
-        <el-col :span="12">
-          <el-form-item label="录像开始时间" required>
-            <el-input-number
-              v-model="form.beforeTime"
-              :step="1"
-              :min="0"
-            ></el-input-number
-            >秒
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="录像结束时间" required>
-            <el-input-number
-              v-model="form.affterTime"
-              :step="1"
-              :min="0"
-            ></el-input-number
-            >秒
-          </el-form-item>
-        </el-col>
+        <el-form-item label="录像前后时间" required>
+          <el-input-number
+            v-model="form.beforeTime"
+            :step="1"
+            :min="0"
+            :max="20"
+          ></el-input-number
+          >秒
+        </el-form-item>
+        <el-form-item label-width="20" required>
+          <el-input-number
+            v-model="form.affterTime"
+            :step="1"
+            :min="0"
+            :max="20"
+          ></el-input-number
+          >秒
+        </el-form-item>
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
@@ -158,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep(.el-input-number .el-input--small .el-input__inner) {
-  width: inherit;
-}
+// ::v-deep(.el-input-number .el-input--small .el-input__inner) {
+//   width: inherit;
+// }
 </style>

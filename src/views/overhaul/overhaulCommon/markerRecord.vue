@@ -2,7 +2,12 @@
   <div class="mark-box">
     <div class="mark-warp">
       <div>
-        <el-button type="primary" size="small" @click="handleDelete('', true)">
+        <el-button
+          type="primary"
+          size="small"
+          :disabled="isPause"
+          @click="handleDelete('', true)"
+        >
           <el-icon class="el-icon--left"><Delete /></el-icon>删除
         </el-button>
         <el-checkbox
@@ -33,19 +38,33 @@
     <div class="mark-list">
       <div class="card-list" v-for="(item, index) in markList" :key="index">
         <div class="image">
-          <img
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-          />
+          <img :src="item.markImg" @click="openImgViewer([item.markImg])" />
+          <el-image-viewer
+            v-if="showImgViewer"
+            :url-list="imgViewerList"
+            @close="showImgViewer = false"
+          ></el-image-viewer>
         </div>
 
         <div class="card-list-content">
-          <div class="card-list-content-title card-list-content-item">
-            这是标记名称
+          <div
+            class="card-list-content-title card-list-content-item"
+            :title="item.markName"
+          >
+            {{ item.markName }}
           </div>
-          <div class="card-list-content-item">标记时间:2022-02-13 19:22:22</div>
-          <div class="card-list-content-item">关联工序:子工序头111</div>
-          <div class="card-list-content-item">所属通道:通道11</div>
-          <div class="card-list-content-item">备注:这是备注</div>
+          <div class="card-list-content-item" :title="item.captureTime">
+            标记时间:{{ item.captureTime }}
+          </div>
+          <div class="card-list-content-item" :title="item.process">
+            关联工序:{{ item.process }}
+          </div>
+          <div class="card-list-content-item" :title="item.channelList">
+            所属通道:{{ item.channelList }}
+          </div>
+          <div class="card-list-content-item" :title="item.demo">
+            备注:{{ item.demo }}
+          </div>
         </div>
         <div class="card-list-footer">
           <el-checkbox
@@ -53,7 +72,7 @@
             :value="checkList.includes(item.id)"
             @change="checkBoxChange($event, item.id)"
           ></el-checkbox>
-          <div class="footer-warp">
+          <div class="footer-warp" v-if="!isPause">
             <el-icon
               class="el-icon--left"
               title="编辑"
@@ -98,8 +117,26 @@ export default {
     Delete,
     Edit,
   },
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    //工单类型
+    workOrderType: {
+      type: String,
+      default: "1",
+    },
+  },
   data() {
     return {
+      showImgViewer: false,
+      testImg:
+        "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      imgViewerList: [], //图片预览列表
       //分页参数
       pageOptions: {
         total: 1,
@@ -116,14 +153,7 @@ export default {
       //全选相关数据
       checkAll: false,
       isIndeterminate: false,
-      markList: [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 },
-        { id: 6 },
-      ],
+      markList: [],
       //选择项
       checkList: [],
       //日期选择框
@@ -167,12 +197,81 @@ export default {
       console.log(val);
     },
   },
+  computed: {
+    //暂停
+    isPause() {
+      return this.workOrderInfo.orderStatus === 17;
+    },
+  },
+  mounted() {
+    this.getList();
+  },
   methods: {
+    //打开图片预览
+    openImgViewer(urlList) {
+      this.imgViewerList = urlList;
+      this.showImgViewer = true;
+    },
     /**
      * 获取分页列表
      */
     getList() {
-      debugger;
+      this.markList = [
+        {
+          id: 1,
+          markName: "测试标记名称1",
+          process: "子工序1",
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+          markImg: this.testImg,
+        },
+        {
+          id: 2,
+          markName: "测试标记名称1",
+          markImg: this.testImg,
+          process: "子工序1",
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+        },
+        {
+          id: 3,
+          markName: "测试标记名称1",
+          process: "子工序1",
+          markImg: this.testImg,
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+        },
+        {
+          id: 4,
+          markName: "测试标记名称1",
+          process: "子工序1",
+          markImg: this.testImg,
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+        },
+        {
+          id: 5,
+          markName: "测试标记名称1",
+          process: "子工序1",
+          markImg: this.testImg,
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+        },
+        {
+          id: 6,
+          markName: "测试标记名称1",
+          process: "子工序1",
+          markImg: this.testImg,
+          demo: "这是配置",
+          channelList: "视频通道1",
+          captureTime: "2023-11-17 10:22:23",
+        },
+      ];
     },
     /**
      * 关闭弹窗
@@ -259,6 +358,9 @@ $card-footer-height: 40px;
 ::v-deep(.pagination-container) {
   padding: 0;
 }
+::v-deep(.el-image-viewer__mask) {
+  background-color: #00000047;
+}
 .mark-box {
   height: 100%;
   width: 100%;
@@ -295,7 +397,8 @@ $card-footer-height: 40px;
           border-radius: 4px;
           transition: all 0.2s linear;
           &:hover {
-            transform: scale(1.1, 1.1);
+            cursor: pointer;
+            transform: scale(1.1, 1.3);
             filter: contrast(130%);
           }
         }
@@ -306,13 +409,17 @@ $card-footer-height: 40px;
         align-items: flex-start;
         justify-content: flex-start;
         height: calc(100% - #{$card-img-height} - #{$card-footer-height});
-        padding: 0 16px;
+        padding: 8px 16px 0 16px;
         font-size: 14px;
         &-title {
           font-weight: 700;
         }
         &-item {
           flex: 1;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          word-break: keep-all;
         }
       }
       &-footer {

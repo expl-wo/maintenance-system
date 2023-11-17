@@ -2,7 +2,7 @@
   <div class="app-container order-list-box">
     <el-row class="mrb15" type="flex" align="middle" justify="start">
       <div class="mrl10">
-        时间段:
+        上报时间:
         <el-date-picker
           v-model="queryParams.time"
           size="small"
@@ -32,7 +32,7 @@
         </el-select>
       </div>
       <div class="mrl10">
-        工序/提交人名称:
+        问题所属/提交人:
         <el-input
           size="small"
           v-model="queryParams.searchKey"

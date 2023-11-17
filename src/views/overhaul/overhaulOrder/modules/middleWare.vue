@@ -12,6 +12,7 @@
           :ref="item.name"
           :is="item.components"
           :onlyTabName="onlyTabName"
+          :workType="item.workType"
           v-bind="$attrs"
         />
       </el-tab-pane>
@@ -23,7 +24,7 @@
 import VideoMark from "@/views/overhaul/overhaulCommon/videoMark.vue";
 import TemplateReport from "@/views/overhaul/overhaulCommon/templateReport.vue"; //报告相关的内容
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
-import ProcessInfo from "../components/processInfo.vue"; //工序信息
+import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import BomVue from "../components/bom/index.vue"; //bom
 import DeviceList from "../components/deviceList/index.vue"; //设备清单
 import ReturnList from "../components/returnList.vue"; //返厂清单

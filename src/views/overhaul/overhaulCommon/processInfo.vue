@@ -1,20 +1,35 @@
 <template>
   <div class="process-box">
-    模板选择：<el-select
-      size="small"
-      v-model="templateChoose"
-      class="filter-item"
-      placeholder="请选择"
-      @change="handleTemplateChange"
+    <template
+      v-if="
+        [COMMOM_WORK_ORDER_MAP['pointManager'].value].includes(
+          workOrderInfo.orderStatus
+        )
+      "
     >
-      <el-option
-        v-for="item in templateOptions"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
-    </el-select>
-    <div class="process-content" v-if="templateChoose">
+      模板选择：<el-select
+        size="small"
+        v-model="templateChoose"
+        class="filter-item"
+        placeholder="请选择"
+        @change="handleTemplateChange"
+      >
+        <el-option
+          v-for="item in templateOptions"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        />
+      </el-select>
+    </template>
+    <div
+      class="process-content"
+      v-if="
+        ![COMMOM_WORK_ORDER_MAP['pointManager'].value].includes(
+          workOrderInfo.orderStatus
+        ) || templateChoose
+      "
+    >
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">工序结构</div>
         <div class="process-content-left-search">
@@ -35,6 +50,7 @@
             :expand-on-click-node="false"
             :data="treeData"
             :props="defaultProps"
+            highlight-current
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
@@ -47,6 +63,7 @@
           <el-button
             type="primary"
             size="small"
+            :disabled="isPause"
             @click="openModal('', 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Setting /></el-icon>
@@ -66,6 +83,7 @@
                   size="small"
                   type="primary"
                   title="添加问题"
+                  :disabled="isPause"
                   @click="openModal(row, 'issueModal')"
                 >
                   <el-icon><DocumentAdd /></el-icon>
@@ -74,18 +92,13 @@
                 <el-button
                   size="small"
                   type="primary"
-                  v-if="currentSelectNode.type === 3"
+                  :disabled="isPause"
+                  v-if="currentSelectNode.type === 2"
                   title="复核"
+                  @click="check"
                 >
                   <el-icon><Stamp /></el-icon>
                 </el-button>
-                <!-- <el-button
-                  size="small"
-                  type="primary"
-                  icon="el-icon-tickets"
-                  title="执行记录"
-                >
-                </el-button> -->
               </template>
             </el-table-column>
             <el-table-column
@@ -131,8 +144,12 @@
 <script>
 import AddIssue from "@/views/overhaul/workIssueCommon/addIssue.vue";
 import DistributeModal from "./distributeModal.vue"; //派工配置弹窗
-import { PROCESS_COLUMNS_MAP } from "../config.js";
+import {
+  COMMON_PROCESS_COLUMNS_MAP,
+  COMMOM_WORK_ORDER_MAP,
+} from "@/views/overhaul/constants.js";
 import { Setting, Stamp, DocumentAdd } from "@element-plus/icons-vue";
+import { ElMessageBox } from "element-plus";
 
 const testTreeData = [
   {
@@ -285,6 +302,20 @@ const testTableData = [
 ];
 export default {
   name: "ProcessInfo",
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    //工单类型
+    workOrderType: {
+      type: Number,
+      default: 1,
+    },
+  },
   components: {
     DistributeModal,
     AddIssue,
@@ -294,6 +325,7 @@ export default {
   },
   data() {
     return {
+      COMMOM_WORK_ORDER_MAP,
       //表格loading效果
       tableListLoading: false,
       //tree的loading效果
@@ -325,13 +357,30 @@ export default {
       this.$refs["treeRef"].filter(val);
     },
   },
+  mounted() {
+    this.getTreeData();
+  },
   computed: {
+    isPause() {
+      return (
+        this.workOrderInfo.orderStatus === COMMOM_WORK_ORDER_MAP["pause"].value
+      );
+    },
     //表格渲染列表
     columns() {
-      return PROCESS_COLUMNS_MAP[this.currentSelectNode.type || 1];
+      return COMMON_PROCESS_COLUMNS_MAP[this.currentSelectNode.type || 0];
     },
   },
   methods: {
+    check() {
+      ElMessageBox.confirm("是否确认复核?", "复核", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {})
+        .catch(() => {});
+    },
     /**
      * 模板选择发生改变时
      */
@@ -379,8 +428,8 @@ export default {
      * 树节点选中时操作
      */
     handleNodeClick(data) {
-      if (data.type) {
-        this.currentSelectNode = data;
+      if (data.procedureType) {
+        this.currentSelectNode = { ...data, type: +data.procedureType };
       }
     },
     /**
@@ -388,7 +437,6 @@ export default {
      */
     handleCheckClick(data) {
       this.currentNodeKey = this.$refs["treeRef"].getCheckedNodes();
-      console.log("?????????", this.currentNodeKey);
     },
     /**
      * 获取树的 数据
@@ -397,7 +445,8 @@ export default {
       this.treeLoading = true;
       this.treeData = testTreeData;
       this.$nextTick(() => {
-        this.$refs["treeRef"].setCurrentKey("001");
+        this.$refs["treeRef"] &&
+          this.$refs["treeRef"].setCurrentKey(this.treeData[0].uniqueCode);
         this.getList();
       });
       setTimeout(() => {

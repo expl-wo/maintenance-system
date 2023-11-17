@@ -42,7 +42,7 @@
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="24">
-          <el-form-item label="任务班组">
+          <el-form-item label="任务班组"  prop="taskTeam">
             <el-select-v2
               v-model="form.taskTeam"
               class="filter-item"
@@ -107,11 +107,11 @@ export default {
         projectManager: undefined,
         phuocManager: undefined,
         taskTeam: undefined,
-        taskDescription: "",
+        // taskDescription: "",
       },
       rules: {
         projectManager: safeLimit("", true),
-        taskDescription: safeLimit("", false),
+        taskTeam: safeLimit("", true),
       },
       projectManagerOptions: [{ label: "刘德华", value: 1 }],
       phuocManagerOptions: [{ label: "张学友", value: 1 }],
@@ -194,6 +194,7 @@ export default {
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) return;
         debugger;
+        this.$emit("onSave", this.modalName);
         this.$emit("closeModal", this.modalName);
       });
     },
