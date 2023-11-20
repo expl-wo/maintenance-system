@@ -71,7 +71,7 @@
               title="编辑"
               @click="openModal(row, 'showEdit')"
             >
-              <el-icon class="el-icon--left"><Edit /></el-icon>
+              <el-icon ><Edit /></el-icon>
             </el-button>
             <el-button
               size="small"
@@ -79,7 +79,7 @@
               title="删除"
               @click="handleDelete(row)"
             >
-              <el-icon class="el-icon--left"><Delete /></el-icon>
+              <el-icon><Delete /></el-icon>
             </el-button>
           </template>
         </el-table-column>

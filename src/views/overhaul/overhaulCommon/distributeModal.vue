@@ -124,6 +124,7 @@
           </el-form-item>
         </el-col>
       </el-row>
+      {{ workOrderInfo }}
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -139,14 +140,20 @@
 <script>
 import dayjs from "dayjs";
 import { requiredVerify } from "@/common/js/validator";
+import { bindWorkInfo } from "@/api/overhaul/workOrderApi.js";
 export default {
   props: {
-    //操作行
-    operateRow: {
+    //当前工单的详情
+    workOrderInfo: {
       type: Object,
       default() {
-        return null;
+        return {};
       },
+    },
+    //工单类型
+    workOrderType: {
+      type: Number,
+      default: 1,
     },
     modalName: {
       type: String,

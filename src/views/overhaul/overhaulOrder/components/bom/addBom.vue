@@ -4,6 +4,7 @@
     :model-value="true"
     class="overhaul-bom-modal"
     :destroy-on-close="true"
+    width="500"
     @close="handleClose"
   >
     <el-form
@@ -16,7 +17,24 @@
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="24">
-          <el-form-item label="节点类型" prop="bomNode">
+          <el-form-item label="节点类型" prop="bomNodeType">
+            <el-select v-model="form.bomNodeType" placeholder="请选择">
+              <el-option
+                v-for="item in bomNodeTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item
+            :label="form.bomNodeType === 1 ? '大部件' : '物料类别'"
+            prop="bomNode"
+          >
             <el-select v-model="form.bomNode" placeholder="请选择" clearable>
               <el-option
                 v-for="item in bomNodeOptions"
@@ -73,14 +91,23 @@ export default {
   data() {
     return {
       form: {
-        bomNode: undefined,
+        bomNode: 1,
+        bomNodeType: 1,
         bomNodeName: "",
       },
       rules: {
         bomNode: requiredVerify(),
+        bomNodeType: requiredVerify(),
         bomNodeName: safeLimit("", true),
       },
-      bomNodeOptions: [{ label: "大部件", value: 1 }],
+      bomNodeTypeOptions: [
+        { label: "大部件", value: 1 },
+        { label: "物料类别", value: 2 },
+      ],
+      bomNodeOptions: [
+        { label: "电容", value: 1 },
+        { label: "测试", value: 2 },
+      ],
     };
   },
   mounted() {
@@ -102,9 +129,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-div.overhaul-bom-modal {
-  width: 600px !important;
-}
-</style>

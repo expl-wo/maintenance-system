@@ -1,12 +1,6 @@
 <template>
   <div class="process-box">
-    <template
-      v-if="
-        [COMMOM_WORK_ORDER_MAP['pointManager'].value].includes(
-          workOrderInfo.orderStatus
-        )
-      "
-    >
+    <template v-if="isRoleContorl.isCanChoose">
       模板选择：<el-select
         size="small"
         v-model="templateChoose"
@@ -22,14 +16,7 @@
         />
       </el-select>
     </template>
-    <div
-      class="process-content"
-      v-if="
-        ![COMMOM_WORK_ORDER_MAP['pointManager'].value].includes(
-          workOrderInfo.orderStatus
-        ) || templateChoose
-      "
-    >
+    <div class="process-content" v-if="isRoleContorl.isCanOperate">
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">工序结构</div>
         <div class="process-content-left-search">
@@ -45,7 +32,6 @@
           <el-tree
             ref="treeRef"
             default-expand-all
-            :check-strictly="true"
             show-checkbox
             :expand-on-click-node="false"
             :data="treeData"
@@ -61,6 +47,7 @@
       <div class="process-content-right" v-loading="tableListLoading">
         <div class="operate-wrap">
           <el-button
+            v-if="btnRoleList.includes('setBtn')"
             type="primary"
             size="small"
             :disabled="isPause"
@@ -80,6 +67,7 @@
             >
               <template #default="{ row }">
                 <el-button
+                  v-if="btnRoleList.includes('addBtn')"
                   size="small"
                   type="primary"
                   title="添加问题"
@@ -93,7 +81,10 @@
                   size="small"
                   type="primary"
                   :disabled="isPause"
-                  v-if="currentSelectNode.type === 2"
+                  v-if="
+                    btnRoleList.includes('checkBtn') &&
+                    currentSelectNode.type === 2
+                  "
                   title="复核"
                   @click="check"
                 >
@@ -125,7 +116,7 @@
         <!-- 派工配置 -->
         <distribute-modal
           v-if="distributeModalFlag"
-          :operateRow="operateRow"
+          :workOrderInfo="workOrderInfo"
           modalName="distributeModalFlag"
           @closeModal="closeModal"
         ></distribute-modal>
@@ -310,10 +301,9 @@ export default {
         return {};
       },
     },
-    //工单类型
-    workOrderType: {
-      type: Number,
-      default: 1,
+    onlyTabName: {
+      type: String,
+      default: "",
     },
   },
   components: {
@@ -365,6 +355,31 @@ export default {
       return (
         this.workOrderInfo.orderStatus === COMMOM_WORK_ORDER_MAP["pause"].value
       );
+    },
+    //有权限的按钮
+    btnRoleList() {
+      // if (this.onlyTabName === "001") return [];
+      return ["setBtn", "addBtn", "checkBtn"];
+    },
+    //来控制下拉框和工序的显影
+    isRoleContorl() {
+      let isCanChoose, isCanOperate;
+      if (+this.workOrderInfo.workOrderType === 1) {
+        isCanChoose = [COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
+          this.workOrderInfo.orderStatus
+        );
+        isCanOperate =
+          ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
+            this.workOrderInfo.orderStatus
+          ) || this.templateChoose;
+      } else {
+        isCanChoose = false;
+        isCanOperate = true;
+      }
+      return {
+        isCanChoose,
+        isCanOperate,
+      };
     },
     //表格渲染列表
     columns() {
@@ -437,6 +452,7 @@ export default {
      */
     handleCheckClick(data) {
       this.currentNodeKey = this.$refs["treeRef"].getCheckedNodes();
+      debugger;
     },
     /**
      * 获取树的 数据

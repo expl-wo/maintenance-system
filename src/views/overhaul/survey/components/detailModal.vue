@@ -1,5 +1,22 @@
 <template>
   <div class="detail-box">
+    <!-- 固定锚点 -->
+    <el-affix :offset="280" class="affix-box">
+      <div class="affix-anchor-box">
+        <div class="affix-anchor" v-if="isOpen">
+          <el-tree
+            :data="affixTreeData"
+            @node-click="toViewMenu"
+            highlight-current
+            default-expand-all
+          />
+        </div>
+        <el-button style="margin-right: 80px" @click="isOpen = !isOpen"
+          ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
+          <el-icon v-else size="22"> <Fold /></el-icon>
+        </el-button>
+      </div>
+    </el-affix>
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -21,7 +38,7 @@
           :isActive="item.isActive"
         ></time-line>
       </div>
-      <div class="detail-box-base-info">
+      <div class="detail-box-base-info" id="surveyBaseInfoId">
         <el-descriptions
           title="基本信息"
           labelClassName="detail-box-base-info--label"
@@ -43,9 +60,11 @@
           </el-descriptions-item>
         </el-descriptions>
       </div>
+
       <!-- 审批完成之前均不能进行下一步 -->
       <div
         class="detail-box-survey"
+        id="surveyProcessInfo"
         v-if="![WORK_ORDER_MAP['createOrder'].value].includes(info.orderStatus)"
       >
         <div class="el-descriptions__title">
@@ -74,7 +93,7 @@
             ><component
               :is="item.components"
               :workOrderInfo="info"
-              :workOrderType="1"
+              :onlyTabName="item.name"
               :workType="item.workType"
           /></el-tab-pane>
         </el-tabs>
@@ -100,7 +119,7 @@ import VideoMark from "@/views/overhaul/overhaulCommon/videoMark.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
-import { Pointer } from "@element-plus/icons-vue";
+import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
 export default {
@@ -113,6 +132,8 @@ export default {
     SurveyReport,
     IssueTable,
     Pointer,
+    Expand,
+    Fold,
   },
   props: {
     //操作行
@@ -129,6 +150,7 @@ export default {
   },
   data() {
     return {
+      isOpen: true, //是否展开
       WORK_ORDER_STATUS,
       baseInfo: [],
       showAppoint: false, //指派弹窗
@@ -143,8 +165,8 @@ export default {
           components: "SurveyReport",
           workType: 1,
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
       ],
       timeLineData: TIME_LINE,
       info: {},
@@ -161,7 +183,45 @@ export default {
       // this.handleClose(true);
     }
   },
+  computed: {
+    affixTreeData() {
+      let surveyChildren = this.tabList.map((item) => {
+        return {
+          label: item.label,
+          tabName: item.name,
+          anchorId: "surveyProcessInfo",
+        };
+      });
+      return [
+        {
+          label: "基本信息",
+          anchorId: "surveyBaseInfoId",
+        },
+        {
+          label: "现场勘查",
+          anchorId: "surveyProcessInfo",
+          children: surveyChildren,
+        },
+      ];
+    },
+  },
   methods: {
+    /**
+     * 锚点定位
+     */
+    toViewMenu(node) {
+      let dom = document.querySelector(`#${node.anchorId}`);
+      if (dom) {
+        dom.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+        if (node.tabName) {
+          this.activeName = node.tabName;
+        }
+      }
+    },
     /**
      * 处理事件轴顺序
      */
@@ -286,6 +346,24 @@ $conent-padding: 15px;
 }
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
+}
+.affix-box {
+  height: 0;
+  text-align: right;
+  .affix-anchor-box {
+    position: relative;
+  }
+  .affix-anchor {
+    display: inline-block;
+    position: absolute;
+    width: 170px;
+    height: fit-content;
+    top: 25px;
+    right: 75px;
+    background-color: #ffffff;
+    box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
+    border-radius: 4px;
+  }
 }
 .detail-box {
   width: 100%;

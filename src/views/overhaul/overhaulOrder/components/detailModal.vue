@@ -1,5 +1,23 @@
 <template>
   <div class="detail-box">
+    <!-- 固定锚点 -->
+    <el-affix :offset="280" class="affix-box">
+      <div class="affix-anchor-box">
+        <div class="affix-anchor" v-if="isOpen">
+          <el-tree
+            :data="affixTreeData"
+            @node-click="toViewMenu"
+            highlight-current
+            default-expand-all
+          />
+        </div>
+        <el-button style="margin-right: 80px"
+         @click="isOpen = !isOpen"
+          ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
+          <el-icon v-else size="22"> <Fold /></el-icon>
+        </el-button>
+      </div>
+    </el-affix>
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -21,7 +39,7 @@
           :isActive="item.isActive"
         ></time-line>
       </div>
-      <div class="detail-box-base-info">
+      <div class="detail-box-base-info" id="overhaulBaseInfoId">
         <el-descriptions
           title="基本信息"
           labelClassName="detail-box-base-info--label"
@@ -43,7 +61,7 @@
           </el-descriptions-item>
         </el-descriptions>
       </div>
-      <div class="detail-box-survey">
+      <div class="detail-box-survey" id="overhaulProcessInfo">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane
             v-for="item in tabList"
@@ -100,7 +118,7 @@ import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指
 import MiddleWare from "../modules/middleWare.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP } from "../config";
-import { Pointer } from "@element-plus/icons-vue";
+import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
 //外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
@@ -153,6 +171,8 @@ export default {
     TimeLine,
     DispatchModal,
     Pointer,
+    Expand,
+    Fold,
   },
   props: {
     //操作行
@@ -169,6 +189,7 @@ export default {
   },
   data() {
     return {
+      isOpen: true, //是否展开
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
       TAB_LIST_MAP: Object.freeze(TAB_LIST_MAP),
       baseInfo: [],
@@ -187,7 +208,7 @@ export default {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.info = data;
       //根据不同的检修类型定义不同的时间轴
-      this.overhaulType = 1; //现场检修
+      this.overhaulType = 2; //现场检修
       this.timeLineData = TIME_LINE[this.overhaulType];
 
       this.initBaseInfo(data);
@@ -197,7 +218,45 @@ export default {
     }
     this.dealTabList(); //获取当前用户的工序权限
   },
+  computed: {
+    affixTreeData() {
+      let surveyChildren = this.tabList.map((item) => {
+        return {
+          label: item.label,
+          tabName: item.name,
+          anchorId: "overhaulProcessInfo",
+        };
+      });
+      return [
+        {
+          label: "基本信息",
+          anchorId: "overhaulBaseInfoId",
+        },
+        {
+          label: "工序执行",
+          anchorId: "overhaulProcessInfo",
+          children: surveyChildren,
+        },
+      ];
+    },
+  },
   methods: {
+    /**
+     * 锚点定位
+     */
+    toViewMenu(node) {
+      let dom = document.querySelector(`#${node.anchorId}`);
+      if (dom) {
+        dom.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+        if (node.tabName) {
+          this.activeName = node.tabName;
+        }
+      }
+    },
     /**
      * 获取当前用户的工序权限
      */
@@ -347,6 +406,24 @@ $conent-padding: 15px;
 }
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
+}
+.affix-box {
+  height: 0;
+  text-align: right;
+  .affix-anchor-box {
+    position: relative;
+  }
+  .affix-anchor {
+    display: inline-block;
+    position: absolute;
+    width: 170px;
+    height: fit-content;
+    top: 25px;
+    right: 75px;
+    background-color: #ffffff;
+    box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
+    border-radius: 4px;
+  }
 }
 .detail-box {
   width: 100%;
