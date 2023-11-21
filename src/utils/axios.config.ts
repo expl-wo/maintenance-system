@@ -30,6 +30,7 @@ service.interceptors.request.use(
     if(token){
         config.headers['Authorization'] = token;
     }
+    config.headers['userId'] = localStorage.getItem('userId');//检修后端需要使用
     return config;
   },
   (error) => {

@@ -327,6 +327,74 @@ export const sysRouter: Array<RouteRecordRaw> = [
     },
     children: [
       {
+        path: 'device',
+        name: 'deviceList',
+        component: () => import('@/views/overhaul/device/index.vue'),
+        meta: {
+          title: '视频设备列表',
+          icon: 'sys_005',
+          keepAlive: true
+        }
+      },
+      {
+        path: 'templateLib',
+        component: Layout,
+        redirect: '/overhaul/templateLib/safetyInstruction',
+        name: '模板库管理',
+        meta: {
+          title: '模板库管理',
+          icon: 'excel'
+        },
+        children: [
+          {
+            path: 'safetyInstruction',
+            component: () => import('@/views/overhaul/templateLib/safetyInstruction/index.vue'),
+            name: '安全须知模板',
+            meta: {
+              title: '安全须知模板', icon: 'sys_005',
+              keepAlive: true
+            }
+          },
+          {
+            path: 'doc',
+            component: () => import('@/views/overhaul/templateLib/docTemp/index.vue'),
+            name: '文档模板',
+            meta: {
+              title: '文档模板', icon: 'sys_005',
+              keepAlive: true
+            }
+          },
+          {
+            path: 'deviceListTemp',
+            component: () => import('@/views/overhaul/templateLib/deviceListTemp/index.vue'),
+            name: '设备清单模板',
+            meta: {
+              title: '设备清单模板', icon: 'sys_005',
+              keepAlive: true
+            }
+          },
+          {
+            path: 'bomTemp',
+            component: () => import('@/views/overhaul/templateLib/bomTemp/index.vue'),
+            name: '拆解BOM模板',
+            meta: {
+              title: '拆解BOM模板', icon: 'sys_005',
+              keepAlive: true
+            }
+          },
+        ]
+      },
+      {
+        path: 'sysConfig',
+        name: 'businessTeamConfig',
+        component: () => import('@/views/overhaul/sysConfig/businessTeamConfig/index.vue'),
+        meta: {
+          title: '业务班组配置',
+          icon: 'sys_005',
+          keepAlive: true
+        }
+      },
+      {
         path: 'survey',
         name: 'survey',
         component: () => import('@/views/overhaul/survey/index.vue'),
@@ -345,7 +413,67 @@ export const sysRouter: Array<RouteRecordRaw> = [
           icon: 'sys_005',
           keepAlive: true
         }
-      }
+      },
+      // 日志管理
+      {
+        path: 'log',
+        name: 'log',
+        redirect: '/overhaul/log/operation',
+        meta: {
+          title: '日志管理',
+          icon: 'el-icon-notebook-2'
+        },
+        children: [
+          {
+            path: 'operation',
+            name: '操作日志',
+            component: () => import('@/views/overhaul/log/operation/index.vue'),
+            meta: {
+              title: '操作日志', icon: 'sys_005',
+              keepAlive: true
+            },
+          },
+          {
+            path: 'clockIn',
+            name: '打卡日志',
+            component: () => import('@/views/overhaul/log/clockIn/index.vue'),
+            meta: {
+              title: '打卡日志', icon: 'sys_005',
+              keepAlive: true
+            },
+          }
+        ]
+      },
+       // 个人中心
+       {
+        path: 'profile',
+        name: 'profile',
+        redirect: '/overhaul/profile/myNotice',
+        meta: {
+          title: '个人中心',
+          icon: 'el-icon-notebook-2'
+        },
+        children: [
+          {
+            path: 'myNotice',
+            name: '我的通知',
+            component: () => import('@/views/overhaul/profile/myNotice/index.vue'),
+            meta: {
+              title: '我的通知', icon: 'sys_005',
+              keepAlive: true
+            },
+          },
+          {
+            path: 'myTask',
+            name: '我的任务',
+            component: () => import('@/views/overhaul/profile/myTask/index.vue'),
+            meta: {
+              title: '我的任务', icon: 'sys_005',
+              keepAlive: true
+            },
+          }
+        ]
+      },
     ]
   },
 ]

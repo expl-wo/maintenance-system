@@ -1,0 +1,105 @@
+<template>
+  <el-dialog
+    title="复制模板"
+    width="30%"
+    :model-value="visible"
+    :close-on-click-modal="false"
+    :destroy-on-close="true"
+    @close="handleClose"
+  >
+    <el-form
+      ref="copyForm"
+      :model="copyForm"
+      :rules="rules"
+      label-width="100px"
+    >
+      <el-row>
+        <el-col :span="24">
+          <el-form-item size="small" label="模板名称" prop="templateName">
+            <el-input v-model="copyForm.templateName"> </el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button size="small" @click="handleClose">取 消</el-button>
+        <el-button
+          size="small"
+          type="primary"
+          :loading="loading"
+          @click="handleConfirm"
+          >确 定</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
+</template>
+<script>
+import { safeLimit } from "@/common/js/validator";
+import { addOrEditTemplate } from "@/api/overhaul/templateLib";
+
+export default {
+  props: {
+    visible: {
+      type: Boolean,
+      default: false,
+    },
+    info: {
+      type: Object,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      copyForm: {
+        templateName: "",
+      },
+      rules: {
+        templateName: safeLimit("名称", true),
+      },
+      loading: false,
+    };
+  },
+  watch: {
+    visible(newVal) {
+      if (newVal && this.info) {
+        this.copyForm.templateName = this.info.templateName + "_副本";
+      }
+    },
+  },
+  methods: {
+    // 关闭
+    handleClose() {
+      this.$refs.copyForm.resetFields();
+      this.$emit("closeModal", "copy", false);
+    },
+    // 确定
+    handleConfirm() {
+      this.$refs.copyForm.validate((valid) => {
+        if (!valid) return;
+        this.loading = true;
+        let params = {
+          docId: "",
+          type: this.info.type,
+          name: this.copyForm.templateName,
+          content: this.info.content,
+          contentStr: this.info.contentStr,
+          createrId: localStorage.getItem("userId"),
+        };
+        addOrEditTemplate(params)
+          .then((res) => {
+            if (res.success) {
+              this.$message.success("操作成功");
+              this.$refs.copyForm.resetFields();
+              this.$emit("closeModal", "copy", true);
+            }
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      });
+    },
+  },
+};
+</script>

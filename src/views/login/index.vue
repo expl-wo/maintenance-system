@@ -92,7 +92,8 @@ export default defineComponent({
           return;
         }
         const req = { username: model.username, password: md5(model.password), type: '0' }
-          userStore.login(req).then(() => {
+          userStore.login(req).then( () => {
+            localStorage.setItem('userId', model.username);//检修后端需要用到这个字段
             // eslint-disable-next-line no-debugger
             router
                 .replace({
