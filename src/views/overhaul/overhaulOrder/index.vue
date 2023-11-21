@@ -79,13 +79,12 @@
                 >
                   <el-icon><View /></el-icon>
                 </el-button>
-                <!-- 暂停和结束的工单状态不能进行操作 -->
+                <!-- 工单审批之后就不能删除了 -->
                 <el-button
                   :disabled="
-                    [
-                      WORK_ORDER_MAP['pause'].value,
-                      WORK_ORDER_MAP['finish'].value,
-                    ].includes(row.orderStatus)
+                    ![WORK_ORDER_MAP['createOrder'].value].includes(
+                      row.orderStatus
+                    )
                   "
                   size="small"
                   title="删除"
@@ -109,6 +108,13 @@
               </el-button-group>
             </div>
           </template>
+        </el-table-column>
+        <el-table-column
+          v-else-if="item.type === 'selection'"
+          type="selection"
+          :width="item.width"
+          :selectable="selectable"
+        >
         </el-table-column>
         <el-table-column
           v-else-if="item.prop === 'orderStatus'"
@@ -221,6 +227,12 @@ export default {
     this.getList();
   },
   methods: {
+    /**
+     * row 所选行 审批之后不能删除
+     */
+    selectable(row, index) {
+      return [WORK_ORDER_MAP["createOrder"].value].includes(row.orderStatus);
+    },
     filterChanged(val) {
       this.queryParams = {
         ...this.queryParams,

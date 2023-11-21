@@ -156,14 +156,25 @@ export default {
       showAppoint: false, //指派弹窗
       activeName: "processInfo", //选项卡
       tabList: [
-        { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
+        {
+          label: "工序信息",
+          name: "processInfo",
+          components: "ProcessInfo",
+          menuCode: "2004_survey_btn_info",
+        },
         //IssueTable
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        {
+          label: "工序问题查看",
+          name: "issueTable",
+          components: "IssueTable",
+          menuCode: "2004_survey_btn_issue",
+        },
         {
           label: "勘查报告",
           name: "report",
           components: "SurveyReport",
           workType: 1,
+          menuCode: "2004_survey_btn_report",
         },
         // { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         // { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
@@ -171,12 +182,17 @@ export default {
       timeLineData: TIME_LINE,
       info: {},
       WORK_ORDER_MAP,
+      menuList: [],
     };
   },
   async mounted() {
     try {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.info = { ...data };
+      this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
+      this.tabList = this.tabList.filter((item) =>
+        this.menuList.includes(item.menuCode)
+      );
       this.initBaseInfo(data);
       this.dealProcess(data.timelineList);
     } catch (error) {
@@ -320,7 +336,6 @@ export default {
       debugger;
     },
     handleClose(isSearch = false) {
-      debugger;
       this.$emit("closeModal", this.modalName, isSearch);
     },
     openModal(row, modalName) {

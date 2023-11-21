@@ -81,12 +81,12 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             width: 150,
         },
     ],
-    //子工序头
+    //中工序
     1: [
         { type: "selection", width: 30 },
         {
             prop: "subProcessName",
-            label: "子工序名头称",
+            label: "中工序名称",
         },
         {
             prop: "groupLeader",
@@ -102,7 +102,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
         {
             prop: "process",
-            label: "子工序行完成度",
+            label: "工步完成度",
         },
         {
             prop: "finishStatus",
@@ -118,12 +118,12 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             width: 150,
         },
     ],
-    //子工序行
+    //工步
     2: [
         { type: "selection", width: 30 },
         {
             prop: "processRowName",
-            label: "子工序行名称",
+            label: "工步名称",
         },
         {
             prop: "groupLeader",

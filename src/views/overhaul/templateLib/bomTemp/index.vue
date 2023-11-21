@@ -19,7 +19,6 @@
           ref="bomTempTable"
           v-loading="loading"
           :data="tableData"
-          size="medium"
           border
           @sort-change="sortChange"
           @selection-change="selectionChange"
@@ -40,12 +39,12 @@
           <el-table-column label="操作" width="240">
             <template #default="scope">
               <el-button-group>
-                <!-- <el-button type="primary" size="mini" icon="el-icon-view" title="查看" @click="openModal(scope.$index, scope.row, 'preview')"></el-button> -->
-                <el-button type="primary" size="mini" title="编辑" @click="openModal(scope.$index, scope.row, 'add')"><el-icon><Edit /></el-icon
+                <!-- <el-button type="primary" size="small" icon="el-icon-view" title="查看" @click="openModal(scope.$index, scope.row, 'preview')"></el-button> -->
+                <el-button type="primary" size="small" title="编辑" @click="openModal(scope.$index, scope.row, 'add')"><el-icon><Edit /></el-icon
               ></el-button>
-                <el-button type="primary" size="mini" title="复制" @click="openModal(scope.$index, scope.row, 'copy')"><el-icon><DocumentCopy /></el-icon
+                <el-button type="primary" size="small" title="复制" @click="openModal(scope.$index, scope.row, 'copy')"><el-icon><DocumentCopy /></el-icon
               ></el-button>
-                <el-button type="danger" size="mini" title="删除" @click="singleDel(scope.$index, scope.row)"><el-icon><Delete /></el-icon
+                <el-button type="danger" size="small" title="删除" @click="singleDel(scope.$index, scope.row)"><el-icon><Delete /></el-icon
               ></el-button>
               </el-button-group>
             </template>

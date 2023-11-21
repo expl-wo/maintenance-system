@@ -22,6 +22,7 @@
       </el-button>
       <el-button
         size="small"
+        v-if="menuList.includes('2004_survey_btn_add')"
         class="mrl10"
         type="primary"
         @click="handleCreate(null, 'add')"
@@ -29,6 +30,7 @@
         <el-icon class="el-icon--left"><Plus /></el-icon>新增
       </el-button>
       <el-button
+        v-if="menuList.includes('2004_survey_btn_del')"
         :disabled="!selectRowList.length"
         size="small"
         title="删除"
@@ -66,6 +68,7 @@
                   size="small"
                   title="编辑"
                   type="primary"
+                  v-if="menuList.includes('2004_survey_btn_edit')"
                   :disabled="
                     [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
                   "
@@ -85,6 +88,7 @@
                 <el-button
                   size="small"
                   title="发起审核"
+                  v-if="menuList.includes('2004_survey_btn_add')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
@@ -98,6 +102,7 @@
                 <!-- 工单结束之后不能再操作 -->
                 <el-button
                   size="small"
+                  v-if="menuList.includes('2004_survey_btn_pause')"
                   :title="
                     row.orderStatus === WORK_ORDER_MAP['pause'].value
                       ? '激活'
@@ -115,14 +120,14 @@
                   /></el-icon>
                   <el-icon v-else><VideoPause /></el-icon>
                 </el-button>
-                <!-- 工单结束和暂停之后不能再操作 -->
+                <!-- 工单审批之后就不能删除了 -->
                 <el-button
                   size="small"
+                  v-if="menuList.includes('2004_survey_btn_del')"
                   :disabled="
-                    [
-                      WORK_ORDER_MAP['pause'].value,
-                      WORK_ORDER_MAP['finish'].value,
-                    ].includes(row.orderStatus)
+                    ![WORK_ORDER_MAP['createOrder'].value].includes(
+                      row.orderStatus
+                    )
                   "
                   title="删除"
                   type="danger"
@@ -133,6 +138,7 @@
                 <el-button
                   size="small"
                   title="结束"
+                  v-if="menuList.includes('2004_survey_btn_close')"
                   :disabled="
                     [
                       WORK_ORDER_MAP['pause'].value,
@@ -160,6 +166,13 @@
               {{ WORK_ORDER_STATUS[row.orderStatus].text }}
             </el-tag>
           </template>
+        </el-table-column>
+        <el-table-column
+          v-else-if="item.type === 'selection'"
+          type="selection"
+          :width="item.width"
+          :selectable="selectable"
+        >
         </el-table-column>
         <el-table-column
           v-bind="item"
@@ -260,12 +273,20 @@ export default {
       //状态下拉筛选
       satusFilterList: Object.values(WORK_ORDER_MAP),
       WORK_ORDER_MAP,
+      menuList: [],
     };
   },
   created() {
+    this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
     this.getList();
   },
   methods: {
+    /**
+     * row 所选行 审批之后不能删除
+     */
+    selectable(row, index) {
+      return [WORK_ORDER_MAP["createOrder"].value].includes(row.orderStatus);
+    },
     filterChanged(val) {
       this.queryParams = {
         ...this.queryParams,

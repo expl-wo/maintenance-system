@@ -136,23 +136,12 @@
       <el-row type="flex" align="middle" justify="start">
         <el-col :span="12">
           <el-form-item label="附件上传">
-            <el-upload
-              :data="dataObj"
-              :auto-upload="false"
-              multiple
-              :before-upload="beforeUpload"
-              :on-change="uploadChange"
-              action="https://upload.qbox.me"
-              drag
+            <multi-upload-vue
               :limit="maxUpload"
-              accept=".doc,.docx,.pdf,.xlsx,.xls"
-              :on-exceed="handleExceed"
-            >
-              <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-              <div class="el-upload__text">
-                将文件拖到此处，或<em>点击上传</em>
-              </div>
-            </el-upload>
+              :fileUrl="fileUrl"
+              :fileName="fileName"
+              @uploadSuccess="uploadSuccess"
+            ></multi-upload-vue>
           </el-form-item>
         </el-col>
       </el-row>
@@ -173,13 +162,14 @@ import {
   addWorkOrder,
   editWorkOrder,
   findWorkOrder,
+  getBusinessOrderList,
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import { WORK_ORDER_MAP } from "../config.js";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { COMMON_FORMAT, MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
-import { UploadFilled } from "@element-plus/icons-vue";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
+import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 const MODAL_TYPE = {
   update: "编辑工单",
   add: "新增工单",
@@ -187,7 +177,7 @@ const MODAL_TYPE = {
 export default {
   components: {
     SelectPage,
-    UploadFilled,
+    multiUploadVue,
   },
   props: {
     //操作行
@@ -210,7 +200,6 @@ export default {
     return {
       defaultTime: new Date(0, 0, 0, 23, 59, 59), //默认时间
       COMMON_FORMAT,
-      maxUpload: 2,
       saveLoading: false,
       MODAL_TYPE,
       //form表格数据
@@ -226,7 +215,13 @@ export default {
         planStartTime: "",
         planEndTime: "",
         workOrderType: 1,
+        attachmentName: "",
+        attachmentUrl: "",
       },
+      fileList: [],
+      fileUrl: "",
+      fileName: "",
+      maxUpload: 30,
       rules: {
         businessOrder: requiredVerify(),
         projName: safeLimit("", true),
@@ -247,24 +242,32 @@ export default {
         { label: "浙江大华7", value: 7 },
         { label: "浙江大华8", value: 8 },
       ],
-      dataObj: { token: "", key: "" },
     };
   },
   async mounted() {
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
+      this.fileName = this.form.attachmentName;
+      this.fileUrl = this.form.attachmentUrl;
     }
   },
   computed: {
     //再工单结束时仅能新增附件无法删除附件
     onlyEditFile() {
       return this.operateRow
-        ? this.operateRow.orderStatus === WORK_ORDER_MAP["finish"].value
+        ? !(this.operateRow.orderStatus === WORK_ORDER_MAP["createOrder"].value)
         : false;
     },
   },
   methods: {
+    uploadSuccess(fileName, fileList) {
+      this.fileList = fileList;
+      this.form.attachmentName = fileName;
+      this.form.attachmentUrl = fileList
+        .map((item) => item.fileUrl || [])
+        .join("|");
+    },
     //开始时间改变时
     planStartTimeChange(val) {
       if (!val) {
@@ -288,35 +291,12 @@ export default {
       };
       return new Promise((resolve, reject) => {
         getBusinessOrderList(queryParms).then((res) => {
-          debugger;
           resolve({
             options: this.businessOrderOptions,
             totalPage: 5,
           });
         });
       });
-    },
-    /**
-     * 上传时校验文件大小
-     */
-    beforeUpload(file) {
-      if (file.size > MAX_IMG_SIZE) {
-        this.$message.error("图片大小请勿超过10M");
-        return false;
-      }
-      return true;
-    },
-    /**
-     * 上传文件时的操作
-     */
-    uploadChange(file, fileList) {
-      console.log(file, fileList);
-    },
-    /**
-     * 限制时间
-     */
-    handleExceed() {
-      this.$message.error(`最大限制上传${this.maxUpload}个附件 `);
     },
     handleOk() {
       this.$refs["dataForm"].validate(async (valid) => {

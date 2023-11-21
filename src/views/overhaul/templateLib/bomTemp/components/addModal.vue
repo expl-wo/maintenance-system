@@ -9,7 +9,7 @@
     @close="handleClose"
   >
     <div>
-      <el-form ref="bomForm" size="small" :model="bomForm" label-width="120px">
+      <el-form ref="bomForm" :model="bomForm" label-width="120px">
         <el-row>
           <el-col :span="12">
             <el-form-item
@@ -189,8 +189,8 @@ export default {
     return {
       loading: false,
       // 1-查看 2-新增 3-更新
-      operateType: "",
-      nodeInfo: null,
+      operateType: 1,
+      nodeInfo: {},
       bomForm: {
         id: "",
         templateName: "",
@@ -264,6 +264,7 @@ export default {
     },
     // 添加节点
     addNode(node, data) {
+
       let resetData = {
         name: "",
         nodeType: "",
@@ -275,6 +276,7 @@ export default {
     },
     // 更新节点
     updateNode(node, data) {
+
       this.bomForm = {
         ...this.bomForm,
         name: data.treeName,
@@ -320,7 +322,7 @@ export default {
         })
       ).then((errorMessage) => {
         let valid = errorMessage.every((item) => {
-          return item == "";
+          return item;
         });
         if (!valid) return;
         this.confirmLoading = true;
@@ -377,7 +379,7 @@ export default {
         })
       ).then((errorMessage) => {
         let valid = errorMessage.every((item) => {
-          return item == "";
+          return item;
         });
         if (!valid) return;
         this.loading = true;

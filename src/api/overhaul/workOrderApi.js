@@ -75,7 +75,7 @@ export function bindWorkInfo(data) {
 //根据文档类型查询文档模板
 export function getWorkDocmentTemplate(docType) {
     return request({
-        url: '/template-manage/query-by-type',
+        url: '/evo-ims-overhaul/template-manage/query-by-type',
         method: 'get',
         data: { docType }
     })

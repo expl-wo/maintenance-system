@@ -26,6 +26,7 @@
       </el-col>
       <el-col :span="10">
         <el-button
+          v-if="isHiddenHeader"
           type="primary"
           size="small"
           :disabled="isPause"
@@ -34,12 +35,13 @@
           <el-icon class="el-icon--left"><Document /></el-icon>保存
         </el-button>
         <el-button
+          v-if="isHiddenHeader"
           type="primary"
           size="small"
           :disabled="isPause"
           @click="checkFile"
         >
-          <el-icon class="el-icon--left"><Stamp /></el-icon> 审核
+          <el-icon class="el-icon--left"><Stamp /></el-icon> 发起审核
         </el-button>
         <el-button
           type="primary"
@@ -50,6 +52,7 @@
           <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
+          v-if="isHiddenHeader"
           class="upload-demo upload-report"
           :limit="1"
           :disabled="isPause"
@@ -146,6 +149,13 @@ export default {
     };
   },
   computed: {
+    //隐藏header
+    isHiddenHeader() {
+      if (this.workOrderType === 2 && this.workType === 1) {
+        return false;
+      }
+      return true;
+    },
     //暂停
     isPause() {
       return this.workOrderInfo.orderStatus === 17;
@@ -156,6 +166,7 @@ export default {
       const {
         data: { value },
       } = await getWorkDocmentTemplate(this.workType);
+      debugger;
       // this.templateOptions = value.map((item) => ({
       //   label: item.name,
       //   value: item.id,

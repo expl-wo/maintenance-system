@@ -1,11 +1,14 @@
 <template>
   <div class="bom-box">
-    <span class="mrl10">设备清单模板:</span>
-    <select-page
-      v-model="templateChoose"
-      :getOptions="getTemplateOptions"
-      @change="handleTemplateChange"
-    />
+    <template v-show="isShowTemplate">
+      <span class="mrl10">设备清单模板:</span>
+      <select-page
+        v-model="templateChoose"
+        :getOptions="getTemplateOptions"
+        @change="handleTemplateChange"
+      />
+    </template>
+
     <div class="bom-content" v-if="templateChoose">
       <div class="bom-content-left">
         <div class="bom-content-left-title">BOM结构</div>
@@ -92,10 +95,9 @@ import { MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
 export default {
   name: "Bom",
   props: {
-    //是否显示模板选择
-    isShowTemplate: {
-      type: Boolean,
-      default: false,
+    onlyTabName: {
+      type: String,
+      default: "",
     },
   },
   components: {
@@ -137,9 +139,10 @@ export default {
     },
   },
   computed: {
-    //表格渲染列表
-    columns() {
-      return PROCESS_COLUMNS_MAP[this.currentSelectNode.type || 1];
+    isShowTemplate() {
+      return ["siteDismantle-BomVue", "siteOverhaul-BomVue"].includes(
+        this.onlyTabName
+      );
     },
   },
   methods: {
@@ -197,13 +200,17 @@ export default {
           templateName: searchKey,
         };
         getBomTemplate(queryParms).then((res) => {
+          let options = (res.data.pageList || []).map((item) => ({
+            label: item.templateName,
+            value: item.id,
+          }));
           resolve({
-            options: (res.data.pageList || []).map((item) => ({
-              label: item.templateName,
-              value: item.id,
-            })),
+            options: options,
             totalPage: res.data.total,
           });
+          //test
+          this.templateChoose = options[0].value;
+          this.handleTemplateChange();
         });
       });
     },

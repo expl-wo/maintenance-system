@@ -257,13 +257,13 @@ const TAB_LIST_MAP = {
             label: "试验作业指导书",
             name: "experimentInstruction",
             components: "TemplateReport",
-            workType:12,
+            workType: 12,
         },
         {
             label: "试验报告 ",
             name: "experimentReport",
             components: "TemplateReport",
-            workType:13,
+            workType: 13,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -281,14 +281,14 @@ const TAB_LIST_MAP = {
             label: "生产作业指导书",
             name: "createInstruction",
             components: "TemplateReport",
-            workType:10,
+            workType: 10,
         },
 
         {
             label: "生产作业执行报告",
             name: "createReport",
             components: "TemplateReport",
-            workType:11,
+            workType: 11,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -306,7 +306,7 @@ const TAB_LIST_MAP = {
             label: "厂内拆解作业指导书",
             name: "returnInstruction",
             components: "TemplateReport",
-            workType:8,
+            workType: 8,
         },
         {
             label: "厂内拆解BOM",
@@ -317,7 +317,7 @@ const TAB_LIST_MAP = {
             label: "解体分析报告",
             name: "BreakdownReport",
             components: "TemplateReport",
-            workType:9,
+            workType: 9,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -330,13 +330,13 @@ const TAB_LIST_MAP = {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
-            workType:6,
+            workType: 6,
         },
         {
             label: "装运拆解作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
-            workType:7,
+            workType: 7,
         },
         {
             label: "设备清单",
@@ -358,7 +358,7 @@ const TAB_LIST_MAP = {
             label: "现场拆解报告",
             name: "siteDisassemblyReport",
             components: "TemplateReport",
-            workType:15,
+            workType: 15,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -371,13 +371,13 @@ const TAB_LIST_MAP = {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
-            workType:2,
+            workType: 2,
         },
         {
             label: "现场检修作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
-            workType:3,
+            workType: 3,
         },
         {
             label: "设备清单",
@@ -385,16 +385,21 @@ const TAB_LIST_MAP = {
             components: "DeviceList",
         },
         {
+            label: "拆解BOM",
+            name: "BomVue",
+            components: "BomVue",
+        },
+        {
             label: "现场检修试验报告",
             name: "testInstruction",
             components: "TemplateReport",
-            workType:4,
+            workType: 4,
         },
         {
             label: "现场检修竣工报告",
             name: "finishReport",
             components: "TemplateReport",
-            workType:5,
+            workType: 5,
         },
         { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
@@ -404,8 +409,8 @@ const TAB_LIST_MAP = {
         { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
         { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
         { label: "勘查报告", name: "report", components: "TemplateReport", workType: 1, },
-        { label: "录像标记", name: "videoAndImg", components: "VideoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
+        // { label: "录像标记", name: "videoAndImg", components: "VideoMark" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
     ],
     //返厂检修-检修报告
     finishReport: [

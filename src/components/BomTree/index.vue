@@ -39,20 +39,20 @@
               <el-icon
                 class="mgr5"
                 title="添加"
-                @click="$emit('addNode', node, data)"
+                @click.stop="$emit('addNode', node, data)"
                 ><Plus
               /></el-icon>
               <el-icon
                 class="mgr5"
                 title="修改"
-                @click="$emit('updateNode', node, data)"
+                @click.stop="$emit('updateNode', node, data)"
                 ><Edit
               /></el-icon>
               <el-icon
                 class="mgr5"
                  v-if="treeNodeId && data.$treeNodeId !== treeNodeId"
                 title="删除"
-                @click="$emit('removeNode', node, data)"
+                @click.stop="$emit('removeNode', node, data)"
                 ><Delete
               /></el-icon>
             </span>
@@ -83,18 +83,7 @@ export default {
     treeData: {
       type: Array,
       default() {
-        return [
-          {
-            id: 1,
-            label: "根节点",
-            children: [
-              {
-                id: 2,
-                label: "测试节点",
-              },
-            ],
-          },
-        ];
+        return [];
       },
     },
     defaultProps: {
@@ -137,7 +126,7 @@ export default {
               val && this.$refs["bomTreeRef"].getNode(this.treeData[0]);
             this.treeNodeId = treeNodeId ? treeNodeId.id : 0;
             let node = this.$refs["bomTreeRef"].getNode(this.currentNode);
-            node && this.$refs["bomTreeRef"].setCurrentNode(this.currentNode);
+            this.$refs["bomTreeRef"].setCurrentNode(node ? this.currentNode : this.treeData[0]);
           }
         });
       },

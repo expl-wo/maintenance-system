@@ -358,7 +358,8 @@ export default {
     },
     //有权限的按钮
     btnRoleList() {
-      // if (this.onlyTabName === "001") return [];
+      //再检修工单中带出勘查工单的内容
+      if (this.onlyTabName === "surveyItem-processInfo") return [];
       return ["setBtn", "addBtn", "checkBtn"];
     },
     //来控制下拉框和工序的显影

@@ -20,6 +20,7 @@
             <select-page
               v-model="form.businessOrder"
               :getOptions="getBusinessOrderOptions"
+              disabled
             />
           </el-form-item>
         </el-col>
@@ -108,23 +109,12 @@
       <el-row type="flex" align="middle" justify="start">
         <el-col :span="12">
           <el-form-item label="附件上传">
-            <el-upload
-              :data="dataObj"
-              :auto-upload="false"
-              multiple
-              :before-upload="beforeUpload"
-              :on-change="uploadChange"
-              action="https://upload.qbox.me"
-              drag
+            <multi-upload-vue
               :limit="maxUpload"
-              accept=".doc,.docx,.pdf,.xlsx,.xls"
-              :on-exceed="handleExceed"
-            >
-              <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-              <div class="el-upload__text">
-                将文件拖到此处，或<em>点击上传</em>
-              </div>
-            </el-upload>
+              :fileUrl="fileUrl"
+              :fileName="fileName"
+              @uploadSuccess="uploadSuccess"
+            ></multi-upload-vue>
           </el-form-item>
         </el-col>
       </el-row>
@@ -149,8 +139,8 @@ import {
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { UploadFilled } from "@element-plus/icons-vue";
-import { COMMON_FORMAT, MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 import dayjs from "dayjs";
 const MODAL_TYPE = {
   update: "编辑工单",
@@ -159,7 +149,7 @@ const MODAL_TYPE = {
 export default {
   components: {
     SelectPage,
-    UploadFilled,
+    multiUploadVue,
   },
   props: {
     //操作行
@@ -180,9 +170,13 @@ export default {
   },
   data() {
     return {
+      fileList: [],
+      fileUrl: "",
+      fileName: "",
+      maxUpload: 30,
       defaultTime: new Date(0, 0, 0, 23, 59, 59), //默认时间
       COMMON_FORMAT,
-      maxUpload: 2,
+
       saveLoading: false,
       MODAL_TYPE,
       //form表格数据
@@ -198,6 +192,8 @@ export default {
         planStartTime: "",
         planEndTime: "",
         workOrderType: 2,
+        attachmentName: "",
+        attachmentUrl: "",
       },
       rules: {
         businessOrder: requiredVerify(),
@@ -226,9 +222,18 @@ export default {
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
+      this.fileName = this.form.attachmentName;
+      this.fileUrl = this.form.attachmentUrl;
     }
   },
   methods: {
+    uploadSuccess(fileName, fileList) {
+      this.fileList = fileList;
+      this.form.attachmentName = fileName;
+      this.form.attachmentUrl = fileList
+        .map((item) => item.fileUrl || [])
+        .join("|");
+    },
     //开始时间改变时
     planStartTimeChange(val) {
       if (!val) {
@@ -259,22 +264,6 @@ export default {
           });
         });
       });
-    },
-    /**
-     * 上传时校验文件大小
-     */
-    beforeUpload(file) {
-      if (file.size > MAX_IMG_SIZE) {
-        this.$message.error("图片大小请勿超过10M");
-        return false;
-      }
-      return true;
-    },
-    /**
-     * 上传文件时的操作
-     */
-    uploadChange(file, fileList) {
-      console.log(file, fileList);
     },
     /**
      * 限制时间
