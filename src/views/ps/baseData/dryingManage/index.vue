@@ -175,10 +175,10 @@
           <el-table-column label="操作" align="center"  fixed="right">
             <template v-slot="scope">
               <el-button-group>
-                <el-button  type="primary" size="mini" icon="el-icon-edit"
+                <el-button  type="primary" size="mini" icon="Edit"
                             @click="handleEdit(scope.row)">
                 </el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete"
+                <el-button type="danger" size="mini" icon="Delete"
                            @click="handleDelete(scope.row)">
                 </el-button>
               </el-button-group>

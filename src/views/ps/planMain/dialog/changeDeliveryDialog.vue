@@ -126,6 +126,7 @@ export default {
           newDeliveryDate: moment(this.model.newDeliveryDate).format('YYYY-MM-DD'),
           changeReason: this.model.changeReason
         }
+        //修改厂内完工日期
         planWeekHttp.changeDelivery(formData).then(response=>{
           if(response.err_code === this.$constants.statusCode.success){
             this.$message.success('数据提交成功');

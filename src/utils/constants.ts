@@ -35,6 +35,10 @@ export default {
     y: '1',
     n: '0'
   },
+  isApprove: {
+    yes: 1,
+    no: 0
+  },
   pageEntryCount: 1000,
   defaultMainPath: '/main',
   fileType: {
@@ -93,12 +97,24 @@ export default {
     canUnFreezeDesc:'冻结',
     canSelect: ['-1', '0','1', '2'], //是否可选中
     planPageSelected: ['-1', '0','1', '2'],//周计划预排选择框默认选中内容
-    conStatus:['3'],
+    conStatus: ['3'],
     approvalPageSelected: ['2'],//周计划审批选择框默认选中内容
     completionTime:['0','1','2','3','10','-2','-1'],
     canCompletionTime:'非完工',
     previewStatus: [],
     overOaStatus:[]
+  },
+
+  //是否通过，0：驳回，1：通过
+  isPass: {
+    yes: 1,
+    no: 0
+  },
+  nodeType: {
+    flipTable: '4', //叠片
+    flipTableName: '叠片',
+    furnace: '20',
+    furnaceDesc: '干燥罐'
   },
 
   // 0:设计 1：采购 2：生产 为空则查询所有分类的节点

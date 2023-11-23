@@ -37,6 +37,28 @@ const url = {
   isMagnetic: '/api/gcplan/nodeCoordinate/isMagnetic',
   //  生产主计划--生产节点报工详情  GET
   searchByPlan:  '/api/gcplan/baseConfigWeb/searchByPlan',
+  //生产主计划-修改交货期 POST
+  changeDelivery: '/api/gcplan/plan/proplan/changeDelivery',
+  //入炉计划列表
+  queryFurnaceList: '/api/gcplan/plan/week/queryFurnaceList',//已完成
+  //入炉计划-查询入炉节点生产信息
+  queryFurnaceProducts: '/api/gcplan/plan/week/queryFurnaceProducts',//已完成
+  //入炉计划-前置条件校验
+  furnaceBeforeHand: '/api/gcplan/plan/week/furnaceBeforeHand',//已完成
+  //根据id查干燥罐
+  findTankById: '/api/gcplan/dryingTank/findTankById',//已完成
+  //车间周计划申请-按钮-检查完成的工单加入周计划  POST
+  addWeekPlan: '/api/gcplan/plan/week/addWeekPlan',//待zy
+  //车间周计划申请-按钮-审批周计划  POST
+  approveWeekPlan: '/api/gcplan/plan/week/approveWeekPlan',//已完成
+  //修改计划时间
+  updatePlanDate: '/api/gcplan/plan/week/updateNodePlan',//已完成
+  //入炉计划-修改干燥罐
+  updateTank: '/api/gcplan/plan/week/updateFurnace',//已完成
+  //车间周计划申请-按钮-删除周计划 POST
+  delWeekPlan: '/api/gcplan/plan/week/delWeekPlan',//待定
+  //试验计划-查询试验节点的主计划以及主计划其下的其他节点
+  findPlanWithNodes: '/api/gcplan/plan/proplan/findPlanWithNodes',//待
 }
 
 export default {
@@ -157,6 +179,83 @@ export default {
     return request({
       url: url.isMagnetic,
       method: 'get',
+      data: params
+    })
+  },
+  changeDelivery(params) {
+    return request({
+      url: url.changeDelivery,
+      method: 'post',
+      data: params
+    })
+  },
+  queryFurnaceList(params) {
+    return request({
+      url: url.queryFurnaceList,
+      method: 'get',
+      data: params
+    })
+  },
+  queryFurnaceProducts(params) {
+    return request({
+      url: url.queryFurnaceProducts,
+      method: 'post',
+      data: params
+    })
+  },
+  furnaceBeforeHand(params) {
+    return request({
+      url: url.furnaceBeforeHand,
+      method: 'post',
+      data: params
+    })
+  },
+  findTankById(params) {
+    return request({
+      url: url.findTankById,
+      method: 'get',
+      data: params
+    })
+  },
+  addWeekPlan(params) {
+    return request({
+      url: url.addWeekPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  approveWeekPlan(params) {
+    return request({
+      url: url.approveWeekPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  updatePlanDate(params) {
+    return request({
+      url: url.updatePlanDate,
+      method: 'post',
+      data: params
+    })
+  },
+  updateTank(params) {
+    return request({
+      url: url.updateTank,
+      method: 'post',
+      data: params
+    })
+  },
+  delWeekPlan(params) {
+    return request({
+      url: url.delWeekPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  findPlanWithNodes(params) {
+    return request({
+      url: url.findPlanWithNodes,
+      method: 'post',
       data: params
     })
   },
