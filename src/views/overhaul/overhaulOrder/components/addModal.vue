@@ -214,7 +214,7 @@ export default {
     const { data } = await getProdCategory();
     this.prodCategoryOptions = Object.keys(data).map((item) => ({
       label: data[item],
-      value: item,
+      value: +item,
     }));
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
@@ -257,7 +257,7 @@ export default {
           resolve({
             options: res.data.pageList.map((item) => ({
               label: item.projName,
-              value: item.projNo,
+              value: item.rowId,
             })),
             totalPage: res.data.allPageNum,
           });

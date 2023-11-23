@@ -131,11 +131,19 @@ const REPORT_CHECK_STATUS = {
     2:{label:'审核通过',type:'success'},
     3: {label:'审核不通过',type:'danger'}
 }
+//厂内和场外选择班组时的枚举
+const INPLAN_OR_OUT = {
+    //厂内
+    IN: 'suvery',
+    //场外
+    OUT: 'suvery',
+}
 export {
     COMMON_FORMAT,
     MAX_IMG_SIZE,
     MAX_FILE_SIZE,
     COMMOM_WORK_ORDER_MAP,
     COMMON_PROCESS_COLUMNS_MAP,
-    REPORT_CHECK_STATUS
+    REPORT_CHECK_STATUS,
+    INPLAN_OR_OUT
 }

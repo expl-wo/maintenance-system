@@ -20,6 +20,7 @@
             <select-page
               ref="selectRef"
               v-model="form.businessOrderId"
+              :defaultSelectVal="defaultSelectVal"
               :getOptions="getBusinessOrderOptions"
               :disabled="onlyEditFile"
               @change="businessOrderChange"
@@ -205,6 +206,7 @@ export default {
       COMMON_FORMAT,
       saveLoading: false,
       MODAL_TYPE,
+      defaultSelectVal: {}, //用于下拉框回显
       //form表格数据
       form: {
         businessOrderId: "",
@@ -239,17 +241,24 @@ export default {
       businessOrderOptions: [],
     };
   },
-  async mounted() {
+  async created() {
     const { data } = await getProdCategory();
     this.prodCategoryOptions = Object.keys(data).map((item) => ({
       label: data[item],
-      value: item,
+      value: +item,
     }));
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
       this.fileName = this.form.attachmentName || "";
       this.fileUrl = this.form.attachmentUrl || "";
+      //商机回显 的默认值
+      if (this.form.businessOrderId) {
+        this.defaultSelectVal = {
+          value: this.form.businessOrderId,
+          label: this.form.businessOrderName,
+        };
+      }
     }
   },
   computed: {
@@ -307,7 +316,7 @@ export default {
           resolve({
             options: res.data.pageList.map((item) => ({
               label: item.projName,
-              value: item.projNo,
+              value: item.rowId,
             })),
             totalPage: res.data.allPageNum,
           });

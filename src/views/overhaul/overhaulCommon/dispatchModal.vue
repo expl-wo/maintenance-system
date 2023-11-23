@@ -2,6 +2,7 @@
   <el-dialog
     title="工序指派"
     :model-value="true"
+    :close-on-click-modal="false"
     :destroy-on-close="true"
     width="500"
     @close="handleClose"
@@ -44,7 +45,7 @@
         <el-col :span="24">
           <el-form-item label="任务人员" prop="taskTeamPerson">
             <el-cascader
-             v-model="form.taskTeamPerson"
+              v-model="form.taskTeamPerson"
               :options="options"
               :show-all-levels="false"
               max-collapse-tags="3"
@@ -73,19 +74,20 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click.stop="handleClose"> 取消 </el-button>
-        <el-button type="primary" @click="handleOk"> 保存 </el-button>
+        <el-button type="primary" @click="handleOk"> 确认 </el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script>
-import { requiredVerify, safeLimit } from "@/common/js/validator";
+import { safeLimit } from "@/common/js/validator";
 import {
   getConfiguredWorkClazz,
   getWorkClazzList,
   getPersonByWorkClazz,
 } from "@/api/overhaul/workClazzApi.js";
+import { INPLAN_OR_OUT } from "@/views/overhaul/constants.js";
 const options = [
   {
     value: 1,
@@ -160,6 +162,14 @@ export default {
       default: "",
     },
   },
+  computed: {
+    //厂内场外编号
+    taskTempClazzType() {
+      return ["survey", "overhaulGroup"].includes(this.workClazzType)
+        ? INPLAN_OR_OUT.OUT
+        : INPLAN_OR_OUT.IN;
+    },
+  },
   data() {
     return {
       options,
@@ -173,8 +183,8 @@ export default {
         projectManager: safeLimit("", true),
         taskTeamPerson: safeLimit("", true),
       },
-      projectManagerOptions: [{ label: "刘德华", value: 1 }],
-      phuocManagerOptions: [{ label: "张学友", value: 1 }],
+      projectManagerOptions: [],
+      phuocManagerOptions: [],
       taskTeamOptions: [],
     };
   },
@@ -201,61 +211,34 @@ export default {
      * 获取所有的已配置的班组
      */
     async initData() {
-      const res = await getConfiguredWorkClazz();
-      let test = [
-        {
-          busId: "29784ff7-a8b5-4495-9294-9ed5df76a8c5",
-          workClazzType: "survey",
-          workClazzId: "111",
-          workClazzName: "班组1",
-          accountSuiteId: "C06",
-        },
-        {
-          busId: "668ff44b-edba-47b8-9edf-56835e6bb789",
-          workClazzType: "overhaulGroup",
-          workClazzId: "222",
-          workClazzName: "班组1",
-          accountSuiteId: "C06",
-        },
-        {
-          busId: "5bfd2ae4-6cb6-4829-8965-f06df208e096",
-          workClazzType: "assembleGroup",
-          workClazzId: "333",
-          workClazzName: "班组3",
-          accountSuiteId: "C06",
-        },
-        {
-          busId: "189773b5-fda1-471f-a838-5de1d93b1092",
-          workClazzType: "prodDeptGroup",
-          workClazzId: "444",
-          workClazzName: "班组4",
-          accountSuiteId: "C06",
-        },
-        {
-          busId: "762423d1-ab84-4f68-8be2-1c7718b03bf9",
-          workClazzType: "experimentalGroup",
-          workClazzId: "555",
-          workClazzName: "班组5",
-          accountSuiteId: "C06",
-        },
-      ];
-      console.log(this.workClazzType);
-      const targetWork = test.find(
-        (item) => item.workClazzType === this.workClazzType
-      );
-      if (targetWork && targetWork.busId) {
+      const {
+        data: { value },
+      } = await getConfiguredWorkClazz();
+      let targetWorkBusId, taskTempClazzBusId;
+      value.forEach((item) => {
+        if (item.workClazzType === this.workClazzType) {
+          targetWorkBusId = item.busId;
+        }
+        if (item.workClazzType === this.taskTempClazzType) {
+          taskTempClazzBusId = item.busId;
+        }
+      });
+      console.log("taskTempClazzBusId:", taskTempClazzBusId);
+      if (targetWorkBusId) {
         let {
           data: { value },
-        } = await getPersonByWorkClazz(targetWork.busId);
+        } = await getPersonByWorkClazz(targetWorkBusId);
         this.phuocManagerOptions = (value || []).map((item) => ({
           value: item.id,
           name: item.name,
         }));
+        this.projectManagerOptions = this.phuocManagerOptions;
         return;
       }
       this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
     },
     handleOk() {
+        this.$emit("onSave", this.modalName);
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) return;
         debugger;

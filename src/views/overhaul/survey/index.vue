@@ -185,9 +185,9 @@
     <pagination
       v-show="pageOptions.total"
       :total="pageOptions.total"
-      :page.sync="pageOptions.pageNum"
-      :limit.sync="pageOptions.pageSize"
-      @pagination="getList"
+      :page="pageOptions.pageNum"
+      :limit="pageOptions.pageSize"
+      @pagination="pageChange"
     />
     <add-modal
       v-if="showAdd"
@@ -281,6 +281,14 @@ export default {
     this.getList();
   },
   methods: {
+    //分页发生改变时
+    pageChange({ limit, page }) {
+      this.pageOptions.pageNum = page;
+      if (limit) {
+        this.pageOptions.pageSize = limit;
+      }
+      this.getList();
+    },
     /**
      * row 所选行 审批之后不能删除
      */
@@ -471,14 +479,14 @@ export default {
       this.tableData = [];
       try {
         const {
-          data: { allPageNum, pageList },
+          data: { total, pageList },
         } = await getWorkOrderPage({
           pageNum: this.pageOptions.pageNum,
           pageSize: this.pageOptions.pageSize,
           workOrderType: 1,
           ...this.queryParams,
         });
-        this.pageOptions.total = allPageNum;
+        this.pageOptions.total = total;
         this.tableData = pageList;
       } catch (error) {
         console.error(error);

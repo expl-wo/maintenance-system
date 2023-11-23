@@ -31,28 +31,14 @@
         </div>
       </template>
     </el-upload>
-    <div class="uploadOperator">
-      <div
-        class="uploadOperatorItem"
-        v-for="(item, index) in fileList"
-        :key="index"
-      >
-        <overhaul-download
-          :href="item.fileUrl"
-          :fileName="item.fileName"
-        ></overhaul-download>
-        <el-button class="deleteBtn" @click="handleDelete(item)" type="danger"
-          >删除</el-button
-        >
-      </div>
-    </div>
+    <file-list :fileList="fileList" @onDelete="handleDelete"></file-list>
     <el-progress v-if="!simple && progressFlag" :percentage="percentage" />
   </div>
 </template>
 
 <script>
 import { ref, nextTick, computed, watchEffect } from "vue";
-import OverhaulDownload from '@/views/overhaul/overhaulCommon/download.vue'
+import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { completeMultipart, initMultipart, upload } from "@/api/file";
 import { getFileType } from "@/utils";
 import Constants from "@/utils/constants";
@@ -115,7 +101,7 @@ export default {
   },
   components: {
     UploadFilled,
-    OverhaulDownload
+    FileList,
   },
   emits: ["update:modelValue", "uploadSuccess"],
   setup(props, { emit }) {
@@ -349,25 +335,6 @@ export default {
 .uploadclass {
   flex: 1;
 }
-.uploadOperator{
-  max-height: 100px;
-  overflow-y: auto;
-}
-.uploadOperatorItem {
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .deleteBtn {
-    margin-right: 10px;
-  }
-}
-
-.deleteBtn {
-  margin-left: 4px;
-  margin-top: -2px;
-}
-
 .tip-content {
   display: flex;
   align-items: center;

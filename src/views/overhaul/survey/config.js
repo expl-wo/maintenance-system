@@ -170,7 +170,6 @@ const ORDER_COLUMNS = [
         fixed: "right"
     },
 ]
-
 export {
     WORK_ORDER_MAP,
     WORK_ORDER_STATUS,

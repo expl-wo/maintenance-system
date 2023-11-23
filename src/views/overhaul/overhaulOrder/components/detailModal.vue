@@ -56,18 +56,11 @@
               >
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
-              <div class="upload-operator">
-                <div
-                  class="upload-operator-item"
-                  v-for="(item, index) in tmpFileList"
-                  :key="index"
-                >
-                  <overhaul-download
-                    :href="item.fileUrl"
-                    :fileName="item.fileName"
-                  ></overhaul-download>
-                </div>
-              </div>
+              <file-list
+                :fileList="tmpFileList"
+                :isCanDelete="false"
+                width="270px"
+              ></file-list>
             </template>
             <template v-else> {{ item.value }} </template>
           </el-descriptions-item>
@@ -128,7 +121,7 @@ import { WORK_ORDER_STATUS, TIME_LINE } from "../config.js";
 import TimeLine from "@/components/TimeLine/index.vue";
 import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
 import MiddleWare from "../modules/middleWare.vue";
-import OverhaulDownload from "@/views/overhaul/overhaulCommon/download.vue";
+import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP } from "../config";
 import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
@@ -186,7 +179,7 @@ export default {
     Pointer,
     Expand,
     Fold,
-    OverhaulDownload,
+    FileList,
   },
   props: {
     //操作行
@@ -460,20 +453,6 @@ $conent-padding: 15px;
     background-color: #ffffff;
     box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
     border-radius: 4px;
-  }
-}
-.upload-operator {
-  max-height: 100px;
-  overflow-y: auto;
-  width: 270px;
-  .upload-operator-item {
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .deleteBtn {
-      margin-right: 10px;
-    }
   }
 }
 .detail-box {

@@ -50,13 +50,13 @@
               <el-upload
                 class="upload-demo"
                 action="#"
-                :on-preview="handlePreview"
                 :on-remove="handleRemove"
-                v-model:file-list="fileList"
                 :before-upload="beforeUpload"
+                :http-request="uploadFile"
                 :accept="acceptType"
                 list-type="picture"
                 :on-exceed="onExceed"
+                :show-file-list="false"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <template #tip>
@@ -65,6 +65,7 @@
                   </div>
                 </template>
               </el-upload>
+              <file-list :fileList="fileList" @onDelete="deletePic"></file-list>
             </div>
           </el-descriptions-item>
         </el-descriptions>
@@ -87,7 +88,6 @@
 </template>
 
 <script>
-import { PROCESS_COLUMNS_MAP } from "../../config.js";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import AddBom from "./addBom.vue";
 import PrintModal from "./printModal.vue";
@@ -96,6 +96,7 @@ import { getBomTemplate, findBomTemplateById } from "@/api/overhaul/bomApi.js";
 import { uploadFile } from "@/api/overhaul/fileUploadApi.js";
 import QRCode from "qrcodejs2";
 import { MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
+import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 export default {
   name: "Bom",
   props: {
@@ -105,6 +106,7 @@ export default {
     },
   },
   components: {
+    FileList,
     BomTree,
     AddBom,
     SelectPage,
@@ -118,16 +120,7 @@ export default {
       showAdd: false,
       showPrint: false,
       acceptType: "image/*",
-      fileList: [
-        {
-          name: "food.jpeg",
-          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        },
-        {
-          name: "food2.jpeg",
-          url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100",
-        },
-      ],
+      fileList: [],
       treeData: [],
       //当前选中的节点
       currentNodeKey: [],
@@ -144,15 +137,47 @@ export default {
     },
   },
   computed: {
+    //只有现场检修时会进行模板选择，后续流程均时同步
     isShowTemplate() {
-      return ["siteDismantle-BomVue"].includes(
-        this.onlyTabName
-      );
+      return ["siteDismantle-BomVue"].includes(this.onlyTabName);
     },
   },
   methods: {
+    //图片限制
     onExceed() {
       this.$message.error(`最多上传${MAX_IMG_NUM}个附件 `);
+    },
+    // 上传图片
+    uploadFile(file) {
+      const formData = new FormData();
+      formData.append("file", file.file);
+      uploadFile(formData).then(({ data }) => {
+        this.fileList.push({
+          fileName: data.fileName,
+          fileUrl: data.url,
+          uid: file.uid,
+        });
+      });
+    },
+    //删除图片
+    deletePic(target) {
+      this.$confirm(`确认删除?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        closeOnClickModal: false,
+        type: "warning",
+      })
+        .then(() => {
+          let index = this.fileList.findIndex(
+            (item) => item.fileUrl === item.fileUrl
+          );
+          if (index >= 0) {
+            this.fileList.splice(index, 1);
+          }
+        })
+        .catch(() => {
+          this.$message.info("操作已取消!");
+        });
     },
     //切换时二次确认
     changeConfirm() {
@@ -257,11 +282,9 @@ export default {
      */
     beforeUpload(file) {
       if (file.size > MAX_IMG_SIZE) {
-        this.$message.error("图片大小请勿超过10M");
+        this.$message.error(`图片大小请勿超过${MAX_IMG_SIZE}M`);
         return false;
       }
-      console.log(file);
-      debugger;
     },
     /**处理图片 */
     handleRemove(file, fileList) {
@@ -338,6 +361,21 @@ $left-width: 330px;
 .bom-box {
   width: 100%;
   height: 100%;
+}
+.uploadOperator {
+  max-height: 100px;
+  overflow-y: auto;
+}
+.uploadOperatorItem {
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .deleteBtn {
+    margin-right: 10px;
+    margin-left: 4px;
+    margin-top: -2px;
+  }
 }
 .bom-content {
   display: flex;

@@ -3,6 +3,7 @@
     :title="modalTitle"
     append-to-body
     :model-value="true"
+    :close-on-click-modal="false"
     :destroy-on-close="true"
     width="500px"
     @close="handleClose"

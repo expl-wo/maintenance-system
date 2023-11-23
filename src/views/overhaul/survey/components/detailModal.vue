@@ -56,18 +56,11 @@
               >
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
-              <div class="upload-operator">
-                <div
-                  class="upload-operator-item"
-                  v-for="(item, index) in tmpFileList"
-                  :key="index"
-                >
-                  <overhaul-download
-                    :href="item.fileUrl"
-                    :fileName="item.fileName"
-                  ></overhaul-download>
-                </div>
-              </div>
+              <file-list
+                width="270px"
+                :fileList="tmpFileList"
+                :isCanDelete="false"
+              ></file-list>
             </template>
             <template v-else> {{ item.value }} </template>
           </el-descriptions-item>
@@ -124,7 +117,7 @@
 
 <script>
 import { WORK_ORDER_STATUS, TIME_LINE, WORK_ORDER_MAP } from "../config.js";
-import OverhaulDownload from "@/views/overhaul/overhaulCommon/download.vue";
+import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import TimeLine from "@/components/TimeLine/index.vue";
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
@@ -148,7 +141,7 @@ export default {
     Pointer,
     Expand,
     Fold,
-    OverhaulDownload,
+    FileList,
   },
   props: {
     //操作行
@@ -394,21 +387,6 @@ $conent-padding: 15px;
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
 }
-.upload-operator {
-  max-height: 100px;
-  overflow-y: auto;
-  width: 270px;
-  .upload-operator-item {
-    padding: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .deleteBtn {
-      margin-right: 10px;
-    }
-  }
-}
-
 .affix-box {
   height: 0;
   text-align: right;
