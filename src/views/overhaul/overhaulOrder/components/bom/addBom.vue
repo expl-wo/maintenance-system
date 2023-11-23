@@ -46,13 +46,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row type="flex" align="middle" justify="space-between">
-        <el-col :span="24">
-          <el-form-item label="名称" prop="bomNodeName">
-            <el-input v-model="form.bomNodeName" />
-          </el-form-item>
-        </el-col>
-      </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -98,7 +91,7 @@ export default {
       rules: {
         bomNode: requiredVerify(),
         bomNodeType: requiredVerify(),
-        bomNodeName: safeLimit("", true),
+        // bomNodeName: safeLimit("", true),
       },
       bomNodeTypeOptions: [
         { label: "大部件", value: 1 },

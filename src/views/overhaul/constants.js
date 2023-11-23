@@ -44,22 +44,6 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             label: "标准要求",
         },
         {
-            prop: "groupLeader",
-            label: "组长",
-        },
-        {
-            prop: "assistantGroupLeader",
-            label: "副组长",
-        },
-        {
-            prop: "members",
-            label: "成员",
-        },
-        {
-            prop: "finishStatus",
-            label: "完工状态",
-        },
-        {
             prop: "approvalStatus",
             label: "复核状态",
         },
@@ -89,24 +73,8 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             label: "中工序名称",
         },
         {
-            prop: "groupLeader",
-            label: "组长",
-        },
-        {
-            prop: "assistantGroupLeader",
-            label: "副组长",
-        },
-        {
-            prop: "members",
-            label: "成员",
-        },
-        {
             prop: "process",
             label: "工步完成度",
-        },
-        {
-            prop: "finishStatus",
-            label: "完工状态",
         },
         {
             prop: "approvalStatus",
@@ -156,10 +124,18 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
     ]
 }
+//报告审核状态
+const REPORT_CHECK_STATUS = {
+    0: {label:'待发起审核',type:''},
+    1:{label:'待审核',type:'warning'},
+    2:{label:'审核通过',type:'success'},
+    3: {label:'审核不通过',type:'danger'}
+}
 export {
     COMMON_FORMAT,
     MAX_IMG_SIZE,
     MAX_FILE_SIZE,
     COMMOM_WORK_ORDER_MAP,
-    COMMON_PROCESS_COLUMNS_MAP
+    COMMON_PROCESS_COLUMNS_MAP,
+    REPORT_CHECK_STATUS
 }

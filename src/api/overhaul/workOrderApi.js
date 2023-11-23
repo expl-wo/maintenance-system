@@ -23,6 +23,13 @@ export function findWorkOrder(id) {
         data: { id }
     })
 }
+//获取产品大类 
+export function getProdCategory() {
+    return request({
+        url: '/evo-ims-overhaul/work-order/product-type',
+        method: 'get'
+    })
+}
 //分页获取工单
 export function getWorkOrderPage(data) {
     return request({
@@ -73,11 +80,11 @@ export function bindWorkInfo(data) {
     })
 }
 //根据文档类型查询文档模板
-export function getWorkDocmentTemplate(docType) {
+export function getWorkDocmentTemplate(type) {
     return request({
         url: '/evo-ims-overhaul/template-manage/query-by-type',
         method: 'get',
-        data: { docType }
+        data: { type }
     })
 }
 //获取文档信息
@@ -135,6 +142,15 @@ export function checkWorkDocmentInfo(data) {
 export function getBusinessOrderList(data) {
     return request({
         url: '/evo-ims-overhaul/work-order/niche-list',
+        method: 'post',
+        data
+    })
+}
+
+//获取勘查工单模板
+export function getProcedureTemplate(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-order/work-procedure-template',
         method: 'post',
         data
     })

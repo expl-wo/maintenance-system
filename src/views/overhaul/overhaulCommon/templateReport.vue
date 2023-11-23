@@ -9,7 +9,7 @@
     <el-row type="flex" justify="start">
       <el-col :span="4">
         模板选择：<el-select
-          :disabled="isPause"
+          :disabled="isBtnDisabled"
           size="small"
           v-model="templateChoose"
           class="filter-item"
@@ -29,7 +29,7 @@
           v-if="isHiddenHeader"
           type="primary"
           size="small"
-          :disabled="isPause"
+          :disabled="isBtnDisabled"
           @click="saveFile"
         >
           <el-icon class="el-icon--left"><Document /></el-icon>保存
@@ -38,7 +38,7 @@
           v-if="isHiddenHeader"
           type="primary"
           size="small"
-          :disabled="isPause"
+          :disabled="isBtnDisabled"
           @click="checkFile"
         >
           <el-icon class="el-icon--left"><Stamp /></el-icon> 发起审核
@@ -46,7 +46,7 @@
         <el-button
           type="primary"
           size="small"
-          :disabled="isPause"
+          :disabled="isBtnDisabled"
           @click="downLoadFile"
         >
           <el-icon class="el-icon--left"><Download /></el-icon>下载
@@ -55,7 +55,7 @@
           v-if="isHiddenHeader"
           class="upload-demo upload-report"
           :limit="1"
-          :disabled="isPause"
+          :disabled="isBtnDisabled"
           v-model:file-list="fileList"
           :before-upload="beforeUpload"
           :http-request="uploadFile"
@@ -63,11 +63,20 @@
           :auto-upload="true"
           accept=".doc,.docx,.pdf"
         >
-          <el-button size="small" type="primary" :disabled="isPause"
+          <el-button size="small" type="primary" :disabled="isBtnDisabled"
             ><el-icon class="el-icon--left"><UploadFilled /></el-icon
             >上传</el-button
           >
         </el-upload>
+        <el-tag
+          :key="REPORT_CHECK_STATUS[1].label"
+          :type="REPORT_CHECK_STATUS[1].type"
+          class="mrl12"
+          effect="plain"
+          round
+        >
+          {{ REPORT_CHECK_STATUS[1].label }}
+        </el-tag>
       </el-col>
     </el-row>
     <div class="report-box-editor">
@@ -104,7 +113,10 @@ import {
   uploadWorkDocmentInfo,
   checkWorkDocmentInfo,
 } from "@/api/overhaul/workOrderApi.js";
-import { MAX_FILE_SIZE } from "@/views/overhaul/constants.js";
+import {
+  MAX_FILE_SIZE,
+  REPORT_CHECK_STATUS,
+} from "@/views/overhaul/constants.js";
 import { downLoadBlob } from "../tools.js";
 export default {
   components: {
@@ -135,10 +147,11 @@ export default {
 
   data() {
     return {
+      REPORT_CHECK_STATUS,
       //pdf的回显URL
       pdfURL: "",
       loading: false,
-      loadingText: "文档生成中。。。",
+      loadingType: 1,
       fileList: [],
       templateChoose: undefined,
       //模板项
@@ -149,6 +162,14 @@ export default {
     };
   },
   computed: {
+    loadingText() {
+      const textMap = {
+        1: "文档生成中。。。",
+        2: "文档保存中。。。",
+        3: "文档发起审批中。。。",
+      };
+      return textMap[this.loadingType];
+    },
     //隐藏header
     isHiddenHeader() {
       if (this.workOrderType === 2 && this.workType === 1) {
@@ -156,9 +177,16 @@ export default {
       }
       return true;
     },
-    //暂停
-    isPause() {
-      return this.workOrderInfo.orderStatus === 17;
+    //按钮全禁用情况
+    isBtnDisabled() {
+      if (this.workOrderInfo.orderStatus === 17) {
+        //暂停
+        return true;
+      } else if (!this.workOrderInfo.workOrderCode) {
+        //工单没有workOrderCode 工序模板编号时禁用
+        return true;
+      }
+      return false;
     },
   },
   async mounted() {
@@ -166,12 +194,13 @@ export default {
       const {
         data: { value },
       } = await getWorkDocmentTemplate(this.workType);
-      debugger;
-      // this.templateOptions = value.map((item) => ({
-      //   label: item.name,
-      //   value: item.id,
-      // }));
-    } catch (error) {}
+      this.templateOptions = value.map((item) => ({
+        label: item.name,
+        value: item.docId,
+      }));
+    } catch (error) {
+      this.templateOptions = [];
+    }
   },
   methods: {
     getSaveFile() {
@@ -194,11 +223,14 @@ export default {
     },
     //保存文档
     saveFile() {
+      this.loading = true;
+      this.loadingType = 2;
       saveWorkDocmentInfo({
         overHaulCode: 1,
         workType: this.workType,
         templateCode: "21212",
       }).then((res) => {
+        this.loading = false;
         debugger;
       });
     },
@@ -231,18 +263,30 @@ export default {
     },
     //提交审核
     checkFile() {
-      checkWorkDocmentInfo({
-        overHaulCode: 1,
-        workType: this.workType,
-      }).then((res) => {
-        debugger;
-      });
+      this.loading = true;
+      this.loadingType = 3;
+      this.$confirm("确认将该报告发起审核?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          checkWorkDocmentInfo({
+            overHaulCode: 1,
+            workType: this.workType,
+          }).then((res) => {
+            this.loading = false;
+            debugger;
+          });
+        })
+        .catch(() => {});
     },
     /**
      * 模板改变操作
      */
     handleTemplateChange(val) {
       this.loading = true;
+      this.loadingType = 1;
       createPDF(val).then((res) => {
         debugger;
       });
@@ -258,6 +302,9 @@ export default {
 .report-box {
   height: 100%;
   width: 100%;
+  .mrl12 {
+    margin-left: 12px;
+  }
   &-editor {
     width: 100%;
     height: 600px;

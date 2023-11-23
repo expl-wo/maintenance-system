@@ -32,11 +32,15 @@
       </template>
     </el-upload>
     <div class="uploadOperator">
-      <div class="uploadOperatorItem" v-for="item in fileList">
-        <xui-download
+      <div
+        class="uploadOperatorItem"
+        v-for="(item, index) in fileList"
+        :key="index"
+      >
+        <overhaul-download
           :href="item.fileUrl"
           :fileName="item.fileName"
-        ></xui-download>
+        ></overhaul-download>
         <el-button class="deleteBtn" @click="handleDelete(item)" type="danger"
           >删除</el-button
         >
@@ -48,6 +52,7 @@
 
 <script>
 import { ref, nextTick, computed, watchEffect } from "vue";
+import OverhaulDownload from '@/views/overhaul/overhaulCommon/download.vue'
 import { completeMultipart, initMultipart, upload } from "@/api/file";
 import { getFileType } from "@/utils";
 import Constants from "@/utils/constants";
@@ -110,6 +115,7 @@ export default {
   },
   components: {
     UploadFilled,
+    OverhaulDownload
   },
   emits: ["update:modelValue", "uploadSuccess"],
   setup(props, { emit }) {
@@ -343,7 +349,10 @@ export default {
 .uploadclass {
   flex: 1;
 }
-
+.uploadOperator{
+  max-height: 100px;
+  overflow-y: auto;
+}
 .uploadOperatorItem {
   padding: 4px;
   display: flex;

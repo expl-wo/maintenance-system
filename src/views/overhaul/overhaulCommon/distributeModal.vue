@@ -1,10 +1,10 @@
 <template>
   <el-dialog
-    title="工序配置"
+    :title="modalTitle"
     append-to-body
     :model-value="true"
     :destroy-on-close="true"
-    class="distribute-modal"
+    width="500px"
     @close="handleClose"
   >
     <el-form
@@ -15,9 +15,13 @@
       size="small"
       label-width="120px"
     >
-      <div class="el-descriptions__title">通道选择</div>
-      <el-row type="flex" align="middle" justify="space-between">
-        <el-col :span="12">
+      <el-row
+        type="flex"
+        align="middle"
+        justify="space-between"
+        v-if="operateRow === 1"
+      >
+        <el-col :span="24">
           <el-form-item label="视频通道选择" prop="channelCodes">
             <el-select
               v-model="form.channelCodes"
@@ -33,11 +37,14 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12"> </el-col>
       </el-row>
-      <div class="el-descriptions__title">工序复核</div>
-      <el-row type="flex" align="middle" justify="space-between">
-        <el-col :span="12">
+      <el-row
+        type="flex"
+        align="middle"
+        justify="space-between"
+        v-if="operateRow === 2"
+      >
+        <el-col :span="24">
           <el-form-item label="审批人员" prop="approvalPerson">
             <el-select
               v-model="form.approvalPerson"
@@ -53,7 +60,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="标记类型">
             <el-radio-group v-model="form.remind">
               <el-radio :label="1">立即</el-radio>
@@ -63,9 +70,13 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <div class="el-descriptions__title">派工选择</div>
-      <el-row type="flex" align="middle" justify="space-between">
-        <el-col :span="12">
+      <el-row
+        type="flex"
+        align="middle"
+        justify="space-between"
+        v-if="operateRow === 3"
+      >
+        <el-col :span="24">
           <el-form-item label="组长" prop="groupLeader">
             <el-select
               v-model="form.groupLeader"
@@ -82,7 +93,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="副组长" prop="assistantGroupLeader">
             <el-select
               v-model="form.assistantGroupLeader"
@@ -99,9 +110,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-      </el-row>
-      <el-row type="flex" align="middle" justify="space-between">
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="成员" prop="members">
             <el-select v-model="form.members" multiple placeholder="请选择">
               <el-option
@@ -113,7 +122,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="24">
           <el-form-item label="日期" prop="date">
             <el-date-picker
               v-model="form.date"
@@ -124,7 +133,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-      {{ workOrderInfo }}
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -141,6 +149,11 @@
 import dayjs from "dayjs";
 import { requiredVerify } from "@/common/js/validator";
 import { bindWorkInfo } from "@/api/overhaul/workOrderApi.js";
+const OPERATE_MAP = {
+  1: { title: "视频绑定配置" },
+  2: { title: "复核人员配置" },
+  3: { title: "派工配置" },
+};
 export default {
   props: {
     //当前工单的详情
@@ -149,6 +162,10 @@ export default {
       default() {
         return {};
       },
+    },
+    operateRow: {
+      type: Number,
+      default: 1, //1为视频 2为复核 3为派工
     },
     //工单类型
     workOrderType: {
@@ -187,6 +204,11 @@ export default {
       channelOptions: [{ label: "视频通道1", value: 1 }],
     };
   },
+  computed: {
+    modalTitle() {
+      return OPERATE_MAP[this.operateRow].title;
+    },
+  },
   methods: {
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
@@ -203,11 +225,6 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-div .distribute-modal {
-  width: 50%;
-}
-</style>
 <style lang="scss" scoped>
 ::v-deep(.el-input-number .el-input--small .el-input__inner) {
   width: inherit;

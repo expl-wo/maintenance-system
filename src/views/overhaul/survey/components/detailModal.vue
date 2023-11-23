@@ -1,7 +1,7 @@
 <template>
   <div class="detail-box">
     <!-- 固定锚点 -->
-    <el-affix :offset="280" class="affix-box">
+    <div class="affix-box">
       <div class="affix-anchor-box">
         <div class="affix-anchor" v-if="isOpen">
           <el-tree
@@ -11,12 +11,12 @@
             default-expand-all
           />
         </div>
-        <el-button style="margin-right: 80px" @click="isOpen = !isOpen"
+        <el-button @click="isOpen = !isOpen"
           ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
           <el-icon v-else size="22"> <Fold /></el-icon>
         </el-button>
       </div>
-    </el-affix>
+    </div>
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -42,7 +42,6 @@
         <el-descriptions
           title="基本信息"
           labelClassName="detail-box-base-info--label"
-          size="small"
         >
           <el-descriptions-item
             v-for="item in baseInfo"
@@ -56,6 +55,20 @@
                 >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
               >
             </template>
+            <template v-else-if="item.key === 'attachmentUrl'">
+              <div class="upload-operator">
+                <div
+                  class="upload-operator-item"
+                  v-for="(item, index) in tmpFileList"
+                  :key="index"
+                >
+                  <overhaul-download
+                    :href="item.fileUrl"
+                    :fileName="item.fileName"
+                  ></overhaul-download>
+                </div>
+              </div>
+            </template>
             <template v-else> {{ item.value }} </template>
           </el-descriptions-item>
         </el-descriptions>
@@ -67,7 +80,7 @@
         id="surveyProcessInfo"
         v-if="![WORK_ORDER_MAP['createOrder'].value].includes(info.orderStatus)"
       >
-        <div class="el-descriptions__title">
+        <div class="el-descriptions__title" style="fontsize: 14px">
           现场勘查
           <el-button
             size="small"
@@ -111,6 +124,7 @@
 
 <script>
 import { WORK_ORDER_STATUS, TIME_LINE, WORK_ORDER_MAP } from "../config.js";
+import OverhaulDownload from "@/views/overhaul/overhaulCommon/download.vue";
 import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import TimeLine from "@/components/TimeLine/index.vue";
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
@@ -134,6 +148,7 @@ export default {
     Pointer,
     Expand,
     Fold,
+    OverhaulDownload,
   },
   props: {
     //操作行
@@ -153,6 +168,7 @@ export default {
       isOpen: true, //是否展开
       WORK_ORDER_STATUS,
       baseInfo: [],
+      tmpFileList: [], //附件信息
       showAppoint: false, //指派弹窗
       activeName: "processInfo", //选项卡
       tabList: [
@@ -186,18 +202,7 @@ export default {
     };
   },
   async mounted() {
-    try {
-      const { data } = await findWorkOrder(this.operateRow.id);
-      this.info = { ...data };
-      this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
-      this.tabList = this.tabList.filter((item) =>
-        this.menuList.includes(item.menuCode)
-      );
-      this.initBaseInfo(data);
-      this.dealProcess(data.timelineList);
-    } catch (error) {
-      // this.handleClose(true);
-    }
+    this.init();
   },
   computed: {
     affixTreeData() {
@@ -222,6 +227,20 @@ export default {
     },
   },
   methods: {
+    async init() {
+      try {
+        const { data } = await findWorkOrder(this.operateRow.id);
+        this.info = { ...data };
+        this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
+        this.tabList = this.tabList.filter((item) =>
+          this.menuList.includes(item.menuCode)
+        );
+        this.initBaseInfo(data);
+        this.dealProcess(data.timelineList);
+      } catch (error) {
+        // this.handleClose(true);
+      }
+    },
     /**
      * 锚点定位
      */
@@ -272,9 +291,9 @@ export default {
         },
         { key: "projName", label: "项目名称", value: targetData["projName"] },
         {
-          key: "businessOrder",
+          key: "businessOrderName",
           label: "商机订单",
-          value: targetData["businessOrder"],
+          value: targetData["businessOrderName"],
         },
         { key: "remark", label: "备注信息", value: targetData["remark"] },
         {
@@ -328,6 +347,19 @@ export default {
           value: targetData["attachmentUrl"],
         },
       ];
+      this.tmpFileList = [];
+      let fileUrlArr = (targetData.attachmentUrl || "")
+        .split("|")
+        .filter(Boolean);
+      let fileNameArr = (targetData.attachmentName || "")
+        .split("|")
+        .filter(Boolean);
+      for (let i = 0; i < fileUrlArr.length; i++) {
+        this.tmpFileList.push({
+          fileUrl: fileUrlArr[i],
+          fileName: fileNameArr[i],
+        });
+      }
     },
     handleClick(tab, event) {
       console.log(tab, event);
@@ -362,10 +394,30 @@ $conent-padding: 15px;
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
 }
+.upload-operator {
+  max-height: 100px;
+  overflow-y: auto;
+  width: 270px;
+  .upload-operator-item {
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .deleteBtn {
+      margin-right: 10px;
+    }
+  }
+}
+
 .affix-box {
   height: 0;
   text-align: right;
+  position: fixed;
+  top: 320px;
+  right: 100px;
+  z-index: 1000;
   .affix-anchor-box {
+    display: inline-block;
     position: relative;
   }
   .affix-anchor {
@@ -374,7 +426,7 @@ $conent-padding: 15px;
     width: 170px;
     height: fit-content;
     top: 25px;
-    right: 75px;
+    right: 0px;
     background-color: #ffffff;
     box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
     border-radius: 4px;

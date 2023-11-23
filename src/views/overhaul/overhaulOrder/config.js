@@ -135,8 +135,13 @@ const DEVICE_COLUMNS = [
         align: "center",
     },
     {
-        prop: "model",
-        label: "型号",
+        prop: "deviceModelName",
+        label: "设备类型",
+        align: "center",
+    },
+    {
+        prop: "deviceNumber",
+        label: "设备编号",
         align: "center",
     },
     {
@@ -383,11 +388,6 @@ const TAB_LIST_MAP = {
             label: "设备清单",
             name: "deviceList",
             components: "DeviceList",
-        },
-        {
-            label: "拆解BOM",
-            name: "BomVue",
-            components: "BomVue",
         },
         {
             label: "现场检修试验报告",

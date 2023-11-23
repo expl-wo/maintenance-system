@@ -474,6 +474,17 @@ export const sysRouter: Array<RouteRecordRaw> = [
           }
         ]
       },
+      //检修问题库
+      {
+        path: 'problemLib',
+        name: 'problemLib',
+        component: () => import('@/views/overhaul/problemLib/index.vue'),
+        meta: {
+          title: '检修问题库',
+          icon: 'sys_005',
+          keepAlive: true
+        }
+      }
     ]
   },
 ]

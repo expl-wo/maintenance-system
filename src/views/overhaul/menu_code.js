@@ -378,6 +378,20 @@ export const MENU_CODE_LIST = {
             type: 1,
             url: "/overhaul/profile",
             viewPath: null
+        },{
+            code: "2008_problemLib",
+            enabled: null,
+            fid: "20230217110130422000222437294",
+            iconName: null,
+            id: "20231027170627927221001962424469",
+            level: 2,
+            method: "GET",
+            name: "检修问题库",
+            showOrder: null,
+            sub: [],
+            type: 1,
+            url: "/overhaul/problemLib",
+            viewPath: null
         }
     ],
     type: 1,

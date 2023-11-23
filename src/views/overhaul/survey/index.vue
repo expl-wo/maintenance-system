@@ -517,6 +517,7 @@ export default {
     position: absolute;
     inset: 0;
     width: 100%;
+    min-width: 1700px;
     padding: 0;
     z-index: 999;
   }

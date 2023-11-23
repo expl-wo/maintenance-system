@@ -17,7 +17,7 @@ export function getWorkClazzList() {
 //根据班组的id获取员工信息
 export function getPersonByWorkClazz(id) {
     return request({
-        url: '/evo-ims-overhaul/mes-work-clazz/user-info',
+        url: '/evo-ims-overhaul/business/user-info',
         method: 'get',
         data: { id }
     })

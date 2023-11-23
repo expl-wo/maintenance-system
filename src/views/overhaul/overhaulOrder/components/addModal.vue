@@ -16,9 +16,9 @@
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="商机订单" prop="businessOrder">
+          <el-form-item label="商机订单" prop="businessOrderId">
             <select-page
-              v-model="form.businessOrder"
+              v-model="form.businessOrderId"
               :getOptions="getBusinessOrderOptions"
               disabled
             />
@@ -136,6 +136,7 @@ import {
   editWorkOrder,
   findWorkOrder,
   getBusinessOrderList,
+  getProdCategory,
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
@@ -181,7 +182,8 @@ export default {
       MODAL_TYPE,
       //form表格数据
       form: {
-        businessOrder: "",
+        businessOrderId: "",
+        businessOrderName: "",
         projName: "",
         prodNumber: "",
         customName: "",
@@ -196,7 +198,7 @@ export default {
         attachmentUrl: "",
       },
       rules: {
-        businessOrder: requiredVerify(),
+        businessOrderId: requiredVerify(),
         projName: safeLimit("", true),
         prodNumber: safeLimit("", false),
         customName: safeLimit("", true),
@@ -204,26 +206,21 @@ export default {
         voltageLevel: safeLimit("", true),
         prodModel: safeLimit("", false),
       },
-      prodCategoryOptions: [{ label: "产品打类", value: 1 }],
-      businessOrderOptions: [
-        { label: "浙江大华1", value: 2 },
-        { label: "浙江大华2", value: 3 },
-        { label: "浙江大华3", value: 41 },
-        { label: "浙江大华4", value: 4 },
-        { label: "浙江大华5", value: 5 },
-        { label: "浙江大华6", value: 6 },
-        { label: "浙江大华7", value: 7 },
-        { label: "浙江大华8", value: 8 },
-      ],
-      dataObj: { token: "", key: "" },
+      prodCategoryOptions: [],
+      businessOrderOptions: [],
     };
   },
   async mounted() {
+    const { data } = await getProdCategory();
+    this.prodCategoryOptions = Object.keys(data).map((item) => ({
+      label: data[item],
+      value: item,
+    }));
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
-      this.fileName = this.form.attachmentName;
-      this.fileUrl = this.form.attachmentUrl;
+      this.fileName = this.form.attachmentName || "";
+      this.fileUrl = this.form.attachmentUrl || "";
     }
   },
   methods: {
@@ -257,10 +254,12 @@ export default {
       };
       return new Promise((resolve, reject) => {
         getBusinessOrderList(queryParms).then((res) => {
-          debugger;
           resolve({
-            options: this.businessOrderOptions,
-            totalPage: 5,
+            options: res.data.pageList.map((item) => ({
+              label: item.projName,
+              value: item.projNo,
+            })),
+            totalPage: res.data.allPageNum,
           });
         });
       });

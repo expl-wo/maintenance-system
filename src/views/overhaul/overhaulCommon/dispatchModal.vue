@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="任务指派"
+    title="工序指派"
     :model-value="true"
     :destroy-on-close="true"
     width="500"
@@ -42,14 +42,18 @@
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="24">
-          <el-form-item label="任务班组"  prop="taskTeam">
-            <el-select-v2
-              v-model="form.taskTeam"
-              class="filter-item"
-              placeholder="请选择"
-              :options="taskTeamOptions"
-            >
-            </el-select-v2>
+          <el-form-item label="任务人员" prop="taskTeamPerson">
+            <el-cascader
+             v-model="form.taskTeamPerson"
+              :options="options"
+              :show-all-levels="false"
+              max-collapse-tags="3"
+              filterable
+              :props="{ multiple: true }"
+              collapse-tags
+              collapse-tags-tooltip
+              clearable
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -82,6 +86,61 @@ import {
   getWorkClazzList,
   getPersonByWorkClazz,
 } from "@/api/overhaul/workClazzApi.js";
+const options = [
+  {
+    value: 1,
+    label: "空闲人员",
+    children: [
+      {
+        value: 2,
+        label: "张三",
+        children: [],
+      },
+      {
+        value: 6,
+        label: "李四",
+        children: [],
+      },
+      {
+        value: 10,
+        label: "王五",
+        children: [],
+      },
+    ],
+  },
+  {
+    value: 14,
+    label: "繁忙人员",
+    children: [
+      {
+        value: 15,
+        label: "陈奕迅",
+        children: [],
+      },
+      {
+        value: 19,
+        label: "周杰伦",
+        children: [],
+      },
+    ],
+  },
+  {
+    value: 23,
+    label: "请假人员",
+    children: [
+      {
+        value: 24,
+        label: "刘德华",
+        children: [],
+      },
+      {
+        value: 28,
+        label: "张学友",
+        children: [],
+      },
+    ],
+  },
+];
 export default {
   props: {
     //操作行
@@ -103,15 +162,16 @@ export default {
   },
   data() {
     return {
+      options,
       form: {
         projectManager: undefined,
         phuocManager: undefined,
-        taskTeam: undefined,
+        taskTeamPerson: [],
         // taskDescription: "",
       },
       rules: {
         projectManager: safeLimit("", true),
-        taskTeam: safeLimit("", true),
+        taskTeamPerson: safeLimit("", true),
       },
       projectManagerOptions: [{ label: "刘德华", value: 1 }],
       phuocManagerOptions: [{ label: "张学友", value: 1 }],
@@ -184,8 +244,13 @@ export default {
         (item) => item.workClazzType === this.workClazzType
       );
       if (targetWork && targetWork.busId) {
-        let personList = await getPersonByWorkClazz(targetWork.busId);
-        debugger;
+        let {
+          data: { value },
+        } = await getPersonByWorkClazz(targetWork.busId);
+        this.phuocManagerOptions = (value || []).map((item) => ({
+          value: item.id,
+          name: item.name,
+        }));
         return;
       }
       this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");

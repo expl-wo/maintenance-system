@@ -16,11 +16,13 @@
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="商机订单" prop="businessOrder">
+          <el-form-item label="商机订单" prop="businessOrderId">
             <select-page
-              v-model="form.businessOrder"
+              ref="selectRef"
+              v-model="form.businessOrderId"
               :getOptions="getBusinessOrderOptions"
               :disabled="onlyEditFile"
+              @change="businessOrderChange"
             />
           </el-form-item>
         </el-col>
@@ -163,6 +165,7 @@ import {
   editWorkOrder,
   findWorkOrder,
   getBusinessOrderList,
+  getProdCategory,
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import { WORK_ORDER_MAP } from "../config.js";
@@ -204,7 +207,8 @@ export default {
       MODAL_TYPE,
       //form表格数据
       form: {
-        businessOrder: "",
+        businessOrderId: "",
+        businessOrderName: "",
         projName: "",
         prodNumber: "",
         customName: "",
@@ -223,7 +227,7 @@ export default {
       fileName: "",
       maxUpload: 30,
       rules: {
-        businessOrder: requiredVerify(),
+        businessOrderId: requiredVerify(),
         projName: safeLimit("", true),
         prodNumber: safeLimit("", false),
         customName: safeLimit("", true),
@@ -231,25 +235,21 @@ export default {
         voltageLevel: safeLimit("", true),
         prodModel: safeLimit("", false),
       },
-      prodCategoryOptions: [{ label: "产品打类", value: 1 }],
-      businessOrderOptions: [
-        { label: "浙江大华1", value: 2 },
-        { label: "浙江大华2", value: 3 },
-        { label: "浙江大华3", value: 41 },
-        { label: "浙江大华4", value: 4 },
-        { label: "浙江大华5", value: 5 },
-        { label: "浙江大华6", value: 6 },
-        { label: "浙江大华7", value: 7 },
-        { label: "浙江大华8", value: 8 },
-      ],
+      prodCategoryOptions: [],
+      businessOrderOptions: [],
     };
   },
   async mounted() {
+    const { data } = await getProdCategory();
+    this.prodCategoryOptions = Object.keys(data).map((item) => ({
+      label: data[item],
+      value: item,
+    }));
     if (this.operateRow) {
       const { data } = await findWorkOrder(this.operateRow.id);
       this.form = data;
-      this.fileName = this.form.attachmentName;
-      this.fileUrl = this.form.attachmentUrl;
+      this.fileName = this.form.attachmentName || "";
+      this.fileUrl = this.form.attachmentUrl || "";
     }
   },
   computed: {
@@ -261,6 +261,19 @@ export default {
     },
   },
   methods: {
+    businessOrderChange(val) {
+      if (!val) {
+        this.form.businessOrderName = "";
+        return;
+      }
+      const options = this.$refs.selectRef.selectOptions;
+      const target = options.find((item) => item.value === val);
+      if (target) {
+        this.form.businessOrderName = target.label;
+      } else {
+        this.form.businessOrderName = "";
+      }
+    },
     uploadSuccess(fileName, fileList) {
       this.fileList = fileList;
       this.form.attachmentName = fileName;
@@ -292,8 +305,11 @@ export default {
       return new Promise((resolve, reject) => {
         getBusinessOrderList(queryParms).then((res) => {
           resolve({
-            options: this.businessOrderOptions,
-            totalPage: 5,
+            options: res.data.pageList.map((item) => ({
+              label: item.projName,
+              value: item.projNo,
+            })),
+            totalPage: res.data.allPageNum,
           });
         });
       });

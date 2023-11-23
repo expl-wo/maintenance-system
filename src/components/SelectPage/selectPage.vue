@@ -5,7 +5,7 @@
     v-select-load-more="selectSetting"
     v-model="childSelectedValue"
     class="filter-item"
-    :filter-method="selectSearch"
+    :filter-method="filterMethod"
     filterable
     placeholder="请选择"
     v-bind="$attrs"
@@ -32,21 +32,23 @@ const seed = function () {
 export default {
   directives: {
     "select-load-more": {
-      inserted(el, binding) {
-        const SELECTWRAP_DOM = el.querySelector(
+      beforeMount(el, binding) {
+        const SELECTWRAP_DOM = document.querySelector(
           `.${binding.value.popverClass} .el-select-dropdown__wrap`
         );
-        SELECTWRAP_DOM.addEventListener(
-          "scroll",
-          function () {
-            const condition =
-              this.scrollHeight - this.scrollTop <= this.clientHeight;
-            if (condition) {
-              binding.value.getList(binding.value.popverClass);
-            }
-          },
-          { signal: binding.value.controller.signal }
-        );
+        SELECTWRAP_DOM &&
+          SELECTWRAP_DOM.addEventListener(
+            "scroll",
+            function () {
+              const condition =
+                this.scrollHeight - this.scrollTop <= this.clientHeight;
+              if (condition) {
+                console.log("??????", condition);
+                binding.value.getList(binding.value.popverClass);
+              }
+            },
+            { signal: binding.value.controller.signal }
+          );
       },
       unbind(el, binding) {
         binding.value.controller.abort();
@@ -99,6 +101,7 @@ export default {
         controller: new AbortController(), //用于终止addeventlistener的事件
       },
       selectOptions: [],
+      filterVal: "",
     };
   },
   computed: {
@@ -115,6 +118,14 @@ export default {
     this.loadMore();
   },
   methods: {
+    //下拉框在关闭时即使什么都没输也会出发该方法
+    filterMethod(val) {
+      if (this.filterVal === val) {
+        return;
+      }
+      this.filterVal = val;
+      this.selectSearch(this.filterVal);
+    },
     //筛选方法
     selectSearch: debounce(function (val) {
       this.selectOptions = [];
@@ -134,6 +145,7 @@ export default {
     async loadMore() {
       if (this.pageParams.pageNum > this.pageParams.totalPage) return;
       const { options, totalPage } = await this.getOptions(this.pageParams);
+      this.pageParams.totalPage = totalPage;
       const filterOptions = (options || []).filter((item) => {
         if (Array.isArray(this.defaultSelectVal)) {
           return !this.defaultSelectVal.includes(item.value);
@@ -142,7 +154,7 @@ export default {
         }
       });
       this.selectOptions = [...this.selectOptions, ...filterOptions];
-      if (this.pageParams.totalPage < totalPage) {
+      if (this.pageParams.pageNum < totalPage) {
         this.pageParams.pageNum++;
       }
     },

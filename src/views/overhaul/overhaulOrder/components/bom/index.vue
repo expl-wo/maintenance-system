@@ -1,6 +1,6 @@
 <template>
   <div class="bom-box">
-    <template v-show="isShowTemplate">
+    <template v-if="isShowTemplate">
       <span class="mrl10">设备清单模板:</span>
       <select-page
         v-model="templateChoose"
@@ -56,10 +56,13 @@
                 :before-upload="beforeUpload"
                 :accept="acceptType"
                 list-type="picture"
+                :on-exceed="onExceed"
               >
                 <el-button size="small" type="primary">点击上传</el-button>
                 <template #tip>
-                  <div class="el-upload__tip">只能上传图片，且不超过10M</div>
+                  <div class="el-upload__tip">
+                    只能上传图片，且不超过30M/最多上传{{ MAX_IMG_NUM }}张
+                  </div>
                 </template>
               </el-upload>
             </div>
@@ -90,6 +93,7 @@ import AddBom from "./addBom.vue";
 import PrintModal from "./printModal.vue";
 import BomTree from "@/components/BomTree/index.vue";
 import { getBomTemplate, findBomTemplateById } from "@/api/overhaul/bomApi.js";
+import { uploadFile } from "@/api/overhaul/fileUploadApi.js";
 import QRCode from "qrcodejs2";
 import { MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
 export default {
@@ -108,6 +112,7 @@ export default {
   },
   data() {
     return {
+      MAX_IMG_NUM: 3,
       templateChoose: undefined,
       oldTemplateChoose: undefined,
       showAdd: false,
@@ -140,12 +145,15 @@ export default {
   },
   computed: {
     isShowTemplate() {
-      return ["siteDismantle-BomVue", "siteOverhaul-BomVue"].includes(
+      return ["siteDismantle-BomVue"].includes(
         this.onlyTabName
       );
     },
   },
   methods: {
+    onExceed() {
+      this.$message.error(`最多上传${MAX_IMG_NUM}个附件 `);
+    },
     //切换时二次确认
     changeConfirm() {
       this.$confirm(`切换模板会永久替换当前已有数据, 是否继续?`, "提示", {
