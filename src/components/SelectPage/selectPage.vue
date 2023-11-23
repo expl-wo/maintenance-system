@@ -155,7 +155,7 @@ export default {
         return true
       });
       this.selectOptions = [...this.selectOptions, ...filterOptions];
-      if (this.pageParams.pageNum < totalPage) {
+      if (this.pageParams.pageNum <= totalPage) {
         this.pageParams.pageNum++;
       }
     },

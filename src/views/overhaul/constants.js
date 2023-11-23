@@ -7,12 +7,12 @@ const COMMOM_WORK_ORDER_MAP = {
     'pointManager': {
         value: 3,
         text: '指派项目经理',
-        tagType: 'waning'
+        tagType: 'warning'
     },
     'pointMembers': {
         value: 4,
         text: '指派组员',
-        tagType: 'waning'
+        tagType: 'warning'
     },
     'finish': {
         value: 16,

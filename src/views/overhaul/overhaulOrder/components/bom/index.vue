@@ -4,6 +4,7 @@
       <span class="mrl10">设备清单模板:</span>
       <select-page
         v-model="templateChoose"
+        :defaultSelectVal="defaultSelectVal"
         :getOptions="getTemplateOptions"
         @change="handleTemplateChange"
       />
@@ -104,6 +105,13 @@ export default {
       type: String,
       default: "",
     },
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   components: {
     FileList,
@@ -114,6 +122,7 @@ export default {
   },
   data() {
     return {
+      defaultSelectVal: {}, //默认选中的模板 用于回显
       MAX_IMG_NUM: 3,
       templateChoose: undefined,
       oldTemplateChoose: undefined,
@@ -135,6 +144,15 @@ export default {
     templateChoose(newval, oldval) {
       this.oldTemplateChoose = oldval;
     },
+  },
+  created() {
+    //默认模板回显
+    this.defaultSelectVal = {
+      label: this.workOrderInfo.bomTemplateName,
+      value: this.workOrderInfo.bomTemplateId,
+    };
+    this.templateChoose = this.workOrderInfo.bomTemplateId;
+    this.getTreeData();
   },
   computed: {
     //只有现场检修时会进行模板选择，后续流程均时同步
@@ -214,7 +232,10 @@ export default {
      */
     async handleTemplateChange() {
       //如果已经选中了则需要进行二次确认
-      if (this.oldTemplateChoose) {
+      if (
+        this.oldTemplateChoose &&
+        this.oldTemplateChoose !== this.templateChoose
+      ) {
         this.changeConfirm();
         return;
       }
@@ -239,11 +260,8 @@ export default {
           }));
           resolve({
             options: options,
-            totalPage: res.data.total,
+            totalPage: res.data.allPageNum,
           });
-          //test
-          this.templateChoose = options[0].value;
-          this.handleTemplateChange();
         });
       });
     },

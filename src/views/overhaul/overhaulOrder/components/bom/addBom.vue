@@ -35,14 +35,12 @@
             :label="form.bomNodeType === 1 ? '大部件' : '物料类别'"
             prop="bomNode"
           >
-            <el-select v-model="form.bomNode" placeholder="请选择" clearable>
-              <el-option
-                v-for="item in bomNodeOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+            <select-page
+              ref="selectRef"
+              v-model="form.bomNode"
+              :defaultSelectVal="defaultSelectVal"
+              :getOptions="getOptions"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -57,8 +55,13 @@
 </template>
 
 <script>
-import { requiredVerify, safeLimit } from "@/common/js/validator";
+import { requiredVerify } from "@/common/js/validator";
+import { getMaterial, getBigComponent } from "@/api/overhaul/bomApi.js";
+import SelectPage from "@/components/SelectPage/selectPage.vue";
 export default {
+  components: {
+    SelectPage,
+  },
   props: {
     //操作行
     operateRow: {
@@ -76,15 +79,10 @@ export default {
       default: "",
     },
   },
-  computed: {
-    operateTypeTitle() {
-      return this.operateType === "add" ? "新增BOM节点" : "修改BOM节点";
-    },
-  },
   data() {
     return {
       form: {
-        bomNode: 1,
+        bomNode: undefined,
         bomNodeType: 1,
         bomNodeName: "",
       },
@@ -97,11 +95,22 @@ export default {
         { label: "大部件", value: 1 },
         { label: "物料类别", value: 2 },
       ],
-      bomNodeOptions: [
-        { label: "电容", value: 1 },
-        { label: "测试", value: 2 },
-      ],
+      defaultSelectVal: {},
     };
+  },
+  watch: {
+    "form.bomNodeType": {
+      handler(val) {
+        //切换节点类型时需要重置下拉选择框
+        this.$refs.selectRef && this.$refs.selectRef.selectSearch("");
+        this.defaultSelectVal = {};
+      },
+    },
+  },
+  computed: {
+    operateTypeTitle() {
+      return this.operateType === "add" ? "新增BOM节点" : "修改BOM节点";
+    },
   },
   mounted() {
     if (this.operateType === "update") {
@@ -110,6 +119,42 @@ export default {
     }
   },
   methods: {
+    //获取下拉选择项
+    getOptions(params) {
+      return new Promise((resolve, reject) => {
+        const { pageNum, pageSize, searchKey } = params;
+        let queryParms = {
+          pageNum,
+          pageSize,
+          searchKey,
+        };
+        if (this.form.bomNodeType === 1) {
+          getBigComponent(queryParms).then((res) => {
+            debugger;
+            let options = (res.data.pageList || []).map((item) => ({
+              label: item.templateName,
+              value: item.id,
+            }));
+            resolve({
+              options: options,
+              totalPage: res.data.total,
+            });
+          });
+        } else {
+          getMaterial(queryParms).then((res) => {
+            debugger;
+            let options = (res.data.pageList || []).map((item) => ({
+              label: item.templateName,
+              value: item.id,
+            }));
+            resolve({
+              options: options,
+              totalPage: res.data.total,
+            });
+          });
+        }
+      });
+    },
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
         debugger;

@@ -207,7 +207,7 @@ export default {
       //时间轴详情
       timeLineData: [],
       workClazzType: "", //工序指派字段
-      overhaulType: 1, //检修类型
+      overhaulType: 0, //检修类型 0时现场 1 是返厂
       info: {},
     };
   },
@@ -243,7 +243,7 @@ export default {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = data;
         //根据不同的检修类型定义不同的时间轴
-        this.overhaulType = 2; //现场检修
+        this.overhaulType = this.info.retFactory; //现场检修
         this.timeLineData = TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
@@ -274,7 +274,7 @@ export default {
      */
     dealTabList() {
       //现场检修
-      if (this.overhaulType === 1) {
+      if (this.overhaulType === 0) {
         this.tabList = TAB_LIST.slice(0, 2);
       } else {
         //返厂检修
