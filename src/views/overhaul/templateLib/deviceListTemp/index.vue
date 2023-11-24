@@ -48,7 +48,7 @@
             <el-button-group>
               <el-button
                 type="primary"
-                size="mini"
+
                 title="查看"
                 @click="openModal(scope.$index, scope.row, 'preview')"
               >
@@ -56,7 +56,7 @@
               ></el-button>
               <el-button
                 type="primary"
-                size="mini"
+
                 title="编辑"
                 @click="openModal(scope.$index, scope.row, 'add')"
               >
@@ -64,14 +64,14 @@
               ></el-button>
               <el-button
                 type="primary"
-                size="mini"
+
                 title="复制"
                 @click="openModal(scope.$index, scope.row, 'copy')"
                 ><el-icon><DocumentCopy /></el-icon
               ></el-button>
               <el-button
                 type="danger"
-                size="mini"
+
                 title="删除"
                 @click="singleDel(scope.$index, scope.row)"
                 ><el-icon><Delete /></el-icon

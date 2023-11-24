@@ -38,14 +38,14 @@
             <el-button-group>
               <el-button
                 type="primary"
-                size="mini"
+
                 @click="openModal(scope.$index, scope.row, 'preview')"
               >
                 <el-icon><View /></el-icon>
               </el-button>
               <el-button
                 type="danger"
-                size="mini"
+
                 @click="onDelete(scope.$index, scope.row)"
               >
                 <el-icon><Delete /></el-icon>

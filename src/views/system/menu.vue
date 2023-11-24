@@ -3,10 +3,10 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Plus" @click="onAdd('')">新增</el-button>
         </el-form-item>
       </el-form>
@@ -40,13 +40,13 @@
       <el-table-column header-align="center" align="center" width="140" label="操作">
         <template v-slot:default="scope">
           <el-button-group>
-            <el-button size="mini" title="添加" v-if="scope.row.type !== 2" type="primary" icon="Plus" @click="onAdd(scope.row.id)">
+            <el-button title="添加" v-if="scope.row.type !== 2" type="primary" icon="Plus" @click="onAdd(scope.row.id)">
               <i icon="Plus"></i>
             </el-button>
-            <el-button size="mini" title="编辑" type="primary" icon="Edit" @click="onUpdate(scope.row)">
+            <el-button title="编辑" type="primary" icon="Edit" @click="onUpdate(scope.row)">
               <i icon="Edit"></i>
             </el-button>
-            <!-- <el-button size="mini" title="删除" type="danger" icon="Delete" @click="handleDeleteDict(scope.row)" /> -->
+            <!-- <el-button title="删除" type="danger" icon="Delete" @click="handleDeleteDict(scope.row)" /> -->
           </el-button-group>
         </template>
       </el-table-column>
@@ -55,28 +55,28 @@
     <!--弹窗新增或修改角色定义-->
     <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="权限名称:" prop="name" size="mini">
-          <el-input v-model="listUpdate.name" placeholder="权限名称" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="权限名称:" prop="name">
+          <el-input v-model="listUpdate.name" placeholder="权限名称" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="权限编号:" prop="code" size="mini">
-          <el-input v-model="listUpdate.code" placeholder="权限编号" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="权限编号:" prop="code">
+          <el-input v-model="listUpdate.code" placeholder="权限编号" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="权限类型:" prop="type" size="mini">
+        <el-form-item label="权限类型:" prop="type">
           <el-select v-model="listUpdate.type" placeholder="请选择权限类型" style="width: 120px;" :disabled="listUpdate.id">
             <el-option label="菜单" value="1"/>
             <el-option label="按钮" value="2"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限服务端功能路径:" prop = "url" size="mini">
-          <el-input v-model="listUpdate.url" placeholder="权限服务端功能路径" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="权限服务端功能路径:" prop = "url">
+          <el-input v-model="listUpdate.url" placeholder="权限服务端功能路径" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="权限对应的视图组件路径:" size="mini">
-          <el-input v-model="listUpdate.viewPath" placeholder="权限对应的视图组件路径" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="权限对应的视图组件路径:">
+          <el-input v-model="listUpdate.viewPath" placeholder="权限对应的视图组件路径" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="图标:" prop = "iconName" size="mini">
-          <el-input v-model="listUpdate.iconName" placeholder="图标" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="图标:" prop = "iconName">
+          <el-input v-model="listUpdate.iconName" placeholder="图标" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="请求方式:" prop="method" size="mini">
+        <el-form-item label="请求方式:" prop="method">
           <el-select v-model="listUpdate.method" placeholder="请选择权限类型" style="width: 120px;">
             <el-option label="GET" value="GET"/>
             <el-option label="POST" value="POST"/>
@@ -84,7 +84,7 @@
             <el-option label="PUT" value="PUT"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否可用:" prop="enabled" size="mini">
+        <el-form-item label="是否可用:" prop="enabled">
           <el-select v-model="listUpdate.enabled" placeholder="请选择是否可用" style="width: 120px;">
             <el-option label="是" value="1"/>
             <el-option label="否" value="0"/>
@@ -93,8 +93,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('listUpdate')" size="mini">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveData('listUpdate')">
           保存
         </el-button>
       </div>

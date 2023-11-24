@@ -314,6 +314,36 @@ export const sysRouter: Array<RouteRecordRaw> = [
           title: '生产主计划',
           icon: 'ps_011'
         }
+      },
+      {
+        //生产主计划编制
+        path: 'ps_050_main_arrange',
+        name: 'ps_050_main_arrange',
+        component: () => import('@/views/ps/planMainArrange/mainArrange.vue'),
+        meta: {
+          title: '生产主计划编制',
+          icon: 'ps_011'
+        }
+      },
+      {
+        //生产主计划编制
+        path: 'ps_051_main_approval',
+        name: 'ps_051_main_approval',
+        component: () => import('@/views/ps/planMainArrange/mainArrange.vue'),
+        meta: {
+          title: '生产主计划审批',
+          icon: 'ps_011'
+        }
+      },
+      {
+        //生产主计划编制
+        path: 'ps_052_main_view',
+        name: 'ps_052_main_view',
+        component: () => import('@/views/ps/planMainArrange/mainArrange.vue'),
+        meta: {
+          title: '生产主计划查看',
+          icon: 'ps_011'
+        }
       }],
   },
   {

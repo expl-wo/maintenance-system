@@ -3,18 +3,18 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="工艺类型" size="mini">
+        <el-form-item label="工艺类型">
           <el-input v-model="listQuery.code" placeholder="工艺类型" style="width: 180px;" class="filter-item"
-                    size="mini" clearable />
+                    clearable />
         </el-form-item>
-        <el-form-item label="期量表名称" size="mini">
+        <el-form-item label="期量表名称">
           <el-input v-model="listQuery.name" placeholder="期量表名称" style="width: 180px;" class="filter-item"
-                    size="mini" clearable />
+                    clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Edit" @click="addLimit(true)">新增期量</el-button>
         </el-form-item>
       </el-form>
@@ -101,14 +101,14 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+
             plain
             type="primary"
             @click="queryDetailHead(scope.row)"
           >查看
           </el-button>
           <el-button
-            size="mini"
+
             plain
             type="primary"
             icon="Edit"
@@ -116,7 +116,7 @@
           >编辑
           </el-button>
           <el-button
-            size="mini"
+
             plain
             type="danger"
             icon="Delete"
@@ -141,44 +141,44 @@
                class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="mainAddOrUpdateForm" :rules="mainRules"
                ref="mainRuleForm">
-        <el-form-item label="工艺类型:" size="mini" prop="name">
+        <el-form-item label="工艺类型:" prop="name">
           <el-input v-model="mainAddOrUpdateForm.code" placeholder="工艺类型" style="width: 180px;" class="filter-item"
-                    size="mini">
+                   >
           </el-input>
         </el-form-item>
-        <el-form-item label="期量表名称:" size="mini" prop="code">
+        <el-form-item label="期量表名称:" prop="code">
           <el-input v-model="mainAddOrUpdateForm.name" placeholder="期量表名称" style="width: 180px;"
                     class="filter-item"
-                    size="mini">
+                   >
           </el-input>
         </el-form-item>
-        <el-form-item label="相数:" size="mini" prop="coilQuantity">
+        <el-form-item label="相数:" prop="coilQuantity">
           <el-input v-model="mainAddOrUpdateForm.coilQuantity" typt="number" placeholder="相数" style="width: 180px;"
-                    class="filter-item" size="mini">
+                    class="filter-item">
           </el-input>
         </el-form-item>
-        <el-form-item label="电压等级:" size="mini" prop="voltageLevel">
+        <el-form-item label="电压等级:" prop="voltageLevel">
           <el-input v-model="mainAddOrUpdateForm.voltageLevel" typt="number" placeholder="电压等级"
                     style="width: 180px;"
-                    class="filter-item" size="mini">
+                    class="filter-item">
           </el-input>
         </el-form-item>
-        <el-form-item label="横减下料片数:" size="mini" prop="cuttingQuantity">
+        <el-form-item label="横减下料片数:" prop="cuttingQuantity">
           <el-input v-model="mainAddOrUpdateForm.cuttingQuantity" typt="number" placeholder="横减下料片数"
-                    style="width: 180px;" class="filter-item" size="mini">
+                    style="width: 180px;" class="filter-item">
           </el-input>
         </el-form-item>
-        <el-form-item label="饼数:" size="mini" prop="bakingQuantity">
+        <el-form-item label="饼数:" prop="bakingQuantity">
           <el-input v-model="mainAddOrUpdateForm.bakingQuantity" typt="number" placeholder="饼数" style="width: 180px;"
-                    class="filter-item" size="mini">
+                    class="filter-item">
           </el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <!-- <el-button size="mini" @click="resetForm('mainRuleForm')">取 消</el-button> -->
-        <el-button size="mini" @click="addMainDialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('mainRuleForm')">
+        <!-- <el-button @click="resetForm('mainRuleForm')">取 消</el-button> -->
+        <el-button @click="addMainDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('mainRuleForm')">
           保存
         </el-button>
       </div>
@@ -187,14 +187,14 @@
 
     <el-dialog v-dialogDrag :close-on-click-modal="false" title="查看期量明细" v-model="detailDialog" width="70%">
       <el-form :inline="true" :model="detailQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="detailQuery.nodeName" placeholder="节点名称" style="width: 180px;" class="filter-item"
-                    size="mini" clearable />
+                    clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="queryDetail()">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Edit" @click="addDialogVisible = true">新增节点</el-button>
         </el-form-item>
       </el-form>
@@ -235,10 +235,10 @@
         <el-table-column
           label="操作">
           <template v-slot="scope">
-            <el-button type="primary" size="mini" v-if="scope.row.type == null" style="margin-left: 60px;"
+            <el-button type="primary" v-if="scope.row.type == null" style="margin-left: 60px;"
                        @click="updateDetail(scope.row)">编辑节点
             </el-button>
-            <el-button type="danger" size="mini" v-if="scope.row.type == null" style="margin-left: 60px;"
+            <el-button type="danger" v-if="scope.row.type == null" style="margin-left: 60px;"
                        @click="deleteDetail(scope.row)">删除节点
             </el-button>
           </template>
@@ -249,7 +249,7 @@
     <!-- 新增节点弹窗 -->
     <el-dialog v-dialogDrag :close-on-click-modal="false" title="新增" v-model="addDialogVisible" class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="addOrUpdateForm" :rules="deRules" ref="deRuleForm">
-        <el-form-item label="节点类型:" size="mini" prop="nodeType">
+        <el-form-item label="节点类型:" prop="nodeType">
           <el-select v-model="addOrUpdateForm.nodeType" clearable placeholder="请选择节点类型">
             <el-option
               v-for="item in options"
@@ -259,7 +259,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="节点名称:" size="mini" prop="nodeId">
+        <el-form-item label="节点名称:" prop="nodeId">
           <el-select multiple value-key="id" v-model="addOrUpdateForm.nodeIds" clearable placeholder="请选择节点">
             <el-option
               v-for="item in nodeOptions"
@@ -269,24 +269,24 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否计算" size="mini" prop="isComputed">
+        <el-form-item label="是否计算" prop="isComputed">
           <el-radio-group v-model="addOrUpdateForm.isComputed">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="周期:" size="mini" prop="duration">
+        <el-form-item label="周期:" prop="duration">
           <el-input v-model="addOrUpdateForm.duration" placeholder="周期" style="width: 180px;" class="filter-item"
-                    size="mini">
+                   >
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <!-- <el-button size="mini" @click="resetForm('deRuleForm')">取 消</el-button> -->
-        <el-button size="mini" @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('deRuleForm')">
+        <!-- <el-button @click="resetForm('deRuleForm')">取 消</el-button> -->
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('deRuleForm')">
           保存
         </el-button>
       </div>
@@ -298,7 +298,7 @@
                class="roleDialog"
                @close="dialogFormClosed">
       <el-form label-position="right" label-width="160px" :model="addOrUpdateForm" :rules="deRules" ref="deRuleForm">
-        <el-form-item label="节点类型:" size="mini" prop="nodeType">
+        <el-form-item label="节点类型:" prop="nodeType">
           <el-select v-model="addOrUpdateForm.nodeType" clearable placeholder="请选择节点类型" disabled>
             <el-option
               v-for="item in options"
@@ -308,7 +308,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="节点名称:" size="mini" prop="nodeId">
+        <el-form-item label="节点名称:" prop="nodeId">
           <el-select v-model="addOrUpdateForm.nodeId" clearable placeholder="请选择节点" disabled>
             <el-option
               v-for="item in nodes"
@@ -318,24 +318,24 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="是否计算" size="mini" prop="isComputed">
+        <el-form-item label="是否计算" prop="isComputed">
           <el-radio-group v-model="addOrUpdateForm.isComputed">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="周期:" size="mini" prop="duration">
+        <el-form-item label="周期:" prop="duration">
           <el-input v-model="addOrUpdateForm.duration" placeholder="周期" style="width: 180px;" class="filter-item"
-                    size="mini">
+                   >
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <!-- <el-button size="mini" @click="resetForm('deRuleForm')">取 消</el-button> -->
-        <el-button size="mini" @click="dialogFormEditVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('deRuleForm')">
+        <!-- <el-button @click="resetForm('deRuleForm')">取 消</el-button> -->
+        <el-button @click="dialogFormEditVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('deRuleForm')">
           保存
         </el-button>
       </div>

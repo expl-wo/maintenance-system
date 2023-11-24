@@ -1,18 +1,17 @@
 <template>
   <div class="app-container app-containerC">
-
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="用户姓名" size="mini">
-          <el-input v-model="listQuery.uName" placeholder="用户姓名" style="width: 120px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="用户姓名">
+          <el-input v-model="listQuery.uName" placeholder="用户姓名" style="width: 120px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="用户姓名拼音" size="mini">
-          <el-input v-model="listQuery.uPy" placeholder="用户姓名拼音" style="width: 120px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="用户姓名拼音">
+          <el-input v-model="listQuery.uPy" placeholder="用户姓名拼音" style="width: 120px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="员工编号" size="mini">
-          <el-input v-model="listQuery.userId" placeholder="员工编号" style="width: 120px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="员工编号">
+          <el-input v-model="listQuery.userId" placeholder="员工编号" style="width: 120px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="归属部门名称" size="mini">
+        <el-form-item label="归属部门名称">
           <el-select v-model="listQuery.gsbmId" placeholder="请选择归属部门"  style="width:200px" @clear="setGsbmNull" clearable ref="selectGsbm">
             <el-option :value="listQuery.gsbmId" :label="listQuery.gsbmName"
              style="width:200px;height:200px;overflow: auto;background-color:#fff">
@@ -24,15 +23,14 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
-         <el-form-item size="mini">
-          <el-button type="primary" @click="dialogFormVisible2 = true" size="mini">更新单用户</el-button>
+         <el-form-item>
+          <el-button type="primary" @click="dialogFormVisible2 = true">更新单用户</el-button>
         </el-form-item>
       </el-form>
     </div>
-
     <el-table
       class="otherCon wp"
       :data="tableData"
@@ -41,7 +39,6 @@
       style="width: 100%"
       stripe
       row-key="id"
-      height="700"
     >
       <el-table-column
         prop="index"
@@ -104,17 +101,16 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-
     <el-dialog v-dialogDrag  :close-on-click-modal="false" title="更新单用户" v-model="dialogFormVisible2" class="roleDialog">
       <el-form ref="userUpdate" label-position="right" label-width="100px" :model="userUpdate">
-        <el-form-item label="员工编号" prop="itemRequest" size="mini">
-          <el-input v-model="userUpdate.userid" placeholder="综合平台员工编号[userid]" style="width: 360px;" class="filter-item" size="mini" />
+        <el-form-item label="员工编号" prop="itemRequest">
+          <el-input v-model="userUpdate.userid" placeholder="综合平台员工编号[userid]" style="width: 360px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible2 = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('userUpdate')" size="mini">确定</el-button>
+        <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+        <el-button type="primary" @click="saveData('userUpdate')">确定</el-button>
       </div>
       </template>
     </el-dialog>

@@ -22,7 +22,7 @@
         </el-table-column>
         <el-table-column label="完成至工序" align="center" v-if="!notNeedGx">
           <template v-slot="scope">
-            <el-button type="primary" size="mini"
+            <el-button type="primary"
                        @click="handleChooseOp(scope.row)">选择
             </el-button>
           </template>
@@ -31,8 +31,8 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
     </template>
     <plan-finish-op-dialog ref="planFinishOpDialogRef"></plan-finish-op-dialog>

@@ -4,16 +4,16 @@
     <!-- 搜索区域 -->
     <div class="c-search-wrapper">
       <el-form :inline="true" :model="searchModel" class="demo-form-inline">
-        <el-form-item label="明细名称" size="mini">
+        <el-form-item label="明细名称">
           <el-input v-model="searchModel.name" @keyup.enter.native="handleSearch"></el-input>
         </el-form-item>
-        <el-form-item label="明细编码" size="mini">
+        <el-form-item label="明细编码">
           <el-input v-model="searchModel.code" @keyup.enter.native="handleSearch"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="handleSearch" icon="Search"  size="mini">查询</el-button>
-          <el-button @click="handleReset" size="mini">重置</el-button>
-          <el-button type="primary" icon="Plus"  @click="handleAdd" size="mini"
+          <el-button @click="handleSearch" icon="Search" >查询</el-button>
+          <el-button @click="handleReset">重置</el-button>
+          <el-button type="primary" icon="Plus"  @click="handleAdd"
                      :disabled="disabledAddBtn"
           >新增
           </el-button>
@@ -35,10 +35,10 @@
       <el-table-column label="操作" width="200" align="center">
         <template v-slot="scope">
           <el-button-group>
-            <el-button  type="primary" size="mini" icon="Edit"
+            <el-button  type="primary" icon="Edit"
                         @click="modifyHandle(scope.row)">
             </el-button>
-            <el-button type="danger" size="mini" icon="Delete"
+            <el-button type="danger" icon="Delete"
                        @click="deleteHandle(scope.row)">
             </el-button>
           </el-button-group>
@@ -52,31 +52,31 @@
       <el-form :model="model" ref="formRef" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="code" label="字典项编码" size="mini">
+            <el-form-item prop="code" label="字典项编码">
               <el-input v-model="model.code"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="name" label="字典项名称" size="mini">
+            <el-form-item prop="name" label="字典项名称">
               <el-input v-model="model.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="remark" label="补充字段1" size="mini">
+            <el-form-item prop="remark" label="补充字段1">
               <el-input v-model="model.remark"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="remark2" label="补充字段2" size="mini">
+            <el-form-item prop="remark2" label="补充字段2">
               <el-input v-model="model.remark2"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="name" label="顺序号" size="mini">
+            <el-form-item prop="name" label="顺序号">
               <el-input-number v-model="model.sort" :min="0" class="fullWidth" style="width: 100%;"></el-input-number>
             </el-form-item>
           </el-col>
@@ -84,8 +84,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+        <el-button @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="handleSubmit">保存</el-button>
       </div>
       </template>
     </el-dialog>

@@ -2,37 +2,36 @@
   <div class="app-container app-containerC ">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="关键字" size="mini">
+        <el-form-item label="关键字">
           <el-input v-model="listQuery.search" placeholder="项目名、生产号、图号"
                     style="width:170px;" @keyup.enter.native="handleSearch" @clear="handleSearch" class="filter-item"
                     clearable/>
         </el-form-item>
-        <el-form-item label="状态" size="mini">
-          <xui-dict-select item-code="mainPlanStatus" size="mini" multiple includeAll
+        <el-form-item label="状态">
+          <xui-dict-select item-code="mainPlanStatus" multiple includeAll
                            v-model="listQuery.status"
                            style="width:160px;" class="filter-item" clearable></xui-dict-select>
         </el-form-item>
-        <el-form-item label="计划完工时间:" size="mini" prop="dateCount">
+        <el-form-item label="计划完工时间:" prop="dateCount">
           <el-date-picker v-model="listQuery.dateGroup" type="monthrange" range-separator="至" :clearable="false"
                           style="width: 240px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button icon="Search" type="primary" @click="handleSearch">查询</el-button>
-          <el-button @click="handleExpand">查询</el-button>
+          <el-button icon="Check" @click="handleApproval">提交审批</el-button>
+          <el-button icon="Switch" @click="handleToggleExpand">展开/折叠</el-button>
         </el-form-item>
       </el-form>
     </div>
     <number-statistical :data-list="list"></number-statistical>
     <div class="app-container app-containerC preview-chart-wrapper" style="height: calc(100% - 33px)">
-      <div class="preview-gant-chart" ref="chart">
-        <div class="left" :style="{ width: rightLineX + 'px' }" :class="{'is-active':sidebar.opened}">
-          <product-list
-              ref="productListRef"
-              :BGScrollTop = "BGScrollTop"
-              @TableScrollTop="tableScrollTop"
-              @handlerRowClick="handlerRowClick"
-          ></product-list>
-        </div>
+      <div class="preview-gant-chart">
+        <product-list
+            ref="productListRef"
+            :BGScrollTop="BGScrollTop"
+            @TableScrollTop="tableScrollTop"
+            @handlerRowClick="handlerRowClick"
+        ></product-list>
         <gantt-list ref="ganttListRef"></gantt-list>
       </div>
     </div>
@@ -64,6 +63,7 @@ const productListRef = ref();
 const intervalDay = 2;
 const list = ref([]);
 const BGScrollTop = ref(0);
+const expand = ref(true);
 
 const listQuery = reactive({
   search: '',
@@ -76,18 +76,19 @@ const listQuery = reactive({
   workShopProduct: ""
 });
 
-const TableScrollTop = ()=>{
+const TableScrollTop = () => {
 
 }
 
-const handleShrinkAll = ()=>{
-
+const handleToggleExpand = () => {
+  expand.value = !expand.value;
+  productListRef.value.handleToggleExpandAll(expand.value);
+  ganttListRef.value.handleToggleExpandAll(expand.value);
 }
 
-const handleExpandAll = ()=>{
+const handleApproval = () => {
 
 }
-
 
 const getParams = () => {
   let params = {
@@ -109,7 +110,7 @@ const handleSearch = () => {
   getDataList();
 }
 
-const initChildComponent = ()=>{
+const initChildComponent = () => {
   productListRef.value.init(list.value);
   ganttListRef.value.init(list.value);
 }

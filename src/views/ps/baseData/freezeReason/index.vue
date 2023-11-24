@@ -2,14 +2,14 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="冻结原因" size="mini">
+        <el-form-item label="冻结原因">
           <el-input v-model="listQuery.reasonName" @keyup.enter.native="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button @click="handleSearch"  icon="Search" size="mini">查询</el-button>
-          <el-button type="primary"  icon="Plus"  @click="handleAdd" size="mini">新增
+        <el-form-item>
+          <el-button @click="handleSearch"  icon="Search">查询</el-button>
+          <el-button type="primary"  icon="Plus"  @click="handleAdd">新增
           </el-button>
         </el-form-item>
       </el-form>
@@ -55,10 +55,10 @@
           <el-table-column label="操作" align="center" width="200">
             <template v-slot="scope">
               <el-button-group>
-                <el-button  type="primary" size="mini" icon="Edit"
+                <el-button  type="primary" icon="Edit"
                             @click="handleEdit(scope.row)">
                 </el-button>
-                <el-button type="danger" size="mini" icon="Delete"
+                <el-button type="danger" icon="Delete"
                            @click="handleDelete(scope.row)">
                 </el-button>
               </el-button-group>

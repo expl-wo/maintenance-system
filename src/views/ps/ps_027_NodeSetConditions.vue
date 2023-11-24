@@ -4,10 +4,10 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="listQuery.name" placeholder="输入节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -32,7 +32,7 @@
       <el-table-column header-align="center" align="center" width="160" label="操作">
         <template v-slot="scope">
           <el-button-group>
-            <el-button size="mini" title="操作" type="primary" icon="Cellphone"
+            <el-button title="操作" type="primary" icon="Cellphone"
               @click="handleItemAddDict(scope.row)">
               保存前置条件
             </el-button>

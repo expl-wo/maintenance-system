@@ -1,91 +1,93 @@
 <template>
-  <div class="tableMneu">
-    <el-table
-        ref="tableRef"
-        :data="dataList"
-        border stripe
-        style="width: 100%;font-size: 0.7rem"
-        height="100%"
-        default-expand-all
-        highlight-current-row
-        @row-click="handlerRowClick"
-        @expand-change="handlerExpand"
-        :cell-class-name="cellClassName"
-    >
-      <el-table-column
-          type="selection"
-          header-align="center"
-          align="center"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="生产号/工序"
-          property="productNo"
-          width="120">
-      </el-table-column>
-      <el-table-column
-          align="center"
-          label="计划开始"
-          property="planStartDate"
-          width="100">
-        <template #default="{row}">
-          {{ $filters.formatSimpleDate(row.planStartDate) }}
-        </template>
-      </el-table-column>
-      <el-table-column
-          align="center"
-          label="计划结束"
-          property="planEndDate"
-          width="100">
-        <template #default="{row}">
-          {{ $filters.formatSimpleDate(row.planEndDate) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="审批状态"
-          property="stateName"
-          width="110">
-      </el-table-column>
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="生产状态"
-          property="stateName"
-          width="110">
-      </el-table-column>
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="型号"
-          property=""
-          show-overflow-tooltip
-          width="155">
-      </el-table-column>
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="产值"
-          property="processStatus"
-          width="120"
+  <div class="left" :style="{ width: rightLineX + 'px' }" :class="{'is-active':true}">
+    <div class="tableMneu">
+      <el-table
+          ref="tableRef"
+          :data="dataList"
+          border stripe
+          style="width: 100%;font-size: 0.7rem"
+          height="100%"
+          default-expand-all
+          highlight-current-row
+          @row-click="handlerRowClick"
+          @expand-change="handlerExpand"
+          :cell-class-name="cellClassName"
       >
-        <template #default="{row}">
-          <xui-dictionary itemCode="processStatus" :code="scope.row.processStatus"></xui-dictionary>
-        </template>
-      </el-table-column>
-      <el-table-column
-          header-align="center"
-          align="center"
-          label="产量"
-          property="stateName"
-          show-overflow-tooltip
-          width="110">
-      </el-table-column>
-    </el-table>
+        <el-table-column
+            type="selection"
+            header-align="center"
+            align="center"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="生产号/工序"
+            property="productNo"
+            width="120">
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="计划开始"
+            property="planStartDate"
+            width="100">
+          <template #default="{row}">
+            {{ $filters.formatSimpleDate(row.planStartDate) }}
+          </template>
+        </el-table-column>
+        <el-table-column
+            align="center"
+            label="计划结束"
+            property="planEndDate"
+            width="100">
+          <template #default="{row}">
+            {{ $filters.formatSimpleDate(row.planEndDate) }}
+          </template>
+        </el-table-column>
+
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="审批状态"
+            property="stateName"
+            width="110">
+        </el-table-column>
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="生产状态"
+            property="stateName"
+            width="110">
+        </el-table-column>
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="型号"
+            property=""
+            show-overflow-tooltip
+            width="155">
+        </el-table-column>
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="产值"
+            property="processStatus"
+            width="120"
+        >
+          <template #default="{row}">
+            <xui-dictionary itemCode="processStatus" :code="scope.row.processStatus"></xui-dictionary>
+          </template>
+        </el-table-column>
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="产量"
+            property="stateName"
+            show-overflow-tooltip
+            width="110">
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -100,6 +102,7 @@ const props = defineProps({
 const emits = defineEmits(["handlerRowClick", "tableScrollTop"])
 
 const dataList = ref([]);
+const rightLineX = ref(560);
 
 const currentRow = ref({});
 const tableRef = ref();

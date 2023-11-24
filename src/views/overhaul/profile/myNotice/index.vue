@@ -101,7 +101,7 @@
             <el-button-group>
               <el-button
                 type="primary"
-                size="mini"
+
                 title="查看"
                 @click="watchDeatail(scope.row)"
                 ><el-icon><View /></el-icon

@@ -2,16 +2,16 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="listQuery.name" placeholder="输入节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="节点类型" size="mini">
-          <el-select v-model="listQuery.type" size="mini" placeholder="节点类型" style="width: 120px;" filterable
+        <el-form-item label="节点类型">
+          <el-select v-model="listQuery.type" placeholder="节点类型" style="width: 120px;" filterable
             default-first-option>
             <el-option v-for="items in nodeType" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>

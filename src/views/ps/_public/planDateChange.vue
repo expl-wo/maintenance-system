@@ -1,15 +1,15 @@
 <template>
   <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="this.updateForm.productNo+'计划时间修改'" v-model="dialogVisible" class="roleDialog720">
     <el-form label-position="right" label-width="160px" :model="updateForm" :rules="rules" ref="updateRuleForm">
-      <el-form-item label="生产号:" size="mini">
-        <el-input v-model="updateForm.productNo" placeholder="生产号" style="width: 240px;" class="filter-item" size="mini" disabled></el-input>
+      <el-form-item label="生产号:">
+        <el-input v-model="updateForm.productNo" placeholder="生产号" style="width: 240px;" class="filter-item" disabled></el-input>
       </el-form-item>
-      <el-form-item label="期量周期:" size="mini">
-        <el-input v-model="updateForm.duration" placeholder="期量周期" style="width: 240px;" class="filter-item" size="mini" disabled>
+      <el-form-item label="期量周期:">
+        <el-input v-model="updateForm.duration" placeholder="期量周期" style="width: 240px;" class="filter-item" disabled>
           <template v-slot="append">天</template>
         </el-input>
       </el-form-item>
-      <el-form-item label="计划时间:" size="mini" prop="daterange" required>
+      <el-form-item label="计划时间:" prop="daterange" required>
         <el-date-picker
           v-model="updateForm.daterange"
           type="datetimerange"
@@ -17,7 +17,7 @@
           start-placeholder="开始日期"
           range-separator="至"
           end-placeholder="结束日期"
-          size="mini"
+
           style="width: 330px;"
           :clearable="false">
         </el-date-picker>
@@ -25,8 +25,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" size="mini" @click="submitForm('updateRuleForm')">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="submitForm('updateRuleForm')">
         保存
       </el-button>
     </div>

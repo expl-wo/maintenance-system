@@ -15,7 +15,7 @@
             :props="props"
             :default-expanded-keys="[2, 3]"
             @node-click="handleNodeClick"
-            size="mini"
+
           />
         </el-card>
       </el-col>
@@ -27,18 +27,18 @@
           <div class="wp hp app-containerC">
             <div class="filter-container">
               <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-                <el-form-item label="员工姓名" size="mini">
+                <el-form-item label="员工姓名">
                   <el-input v-model="listQuery.ownerName" placeholder="员工姓名" style="width: 180px;"
                             class="filter-item" clearable />
                 </el-form-item>
-                <el-form-item label="角色名称" size="mini">
+                <el-form-item label="角色名称">
                   <el-input v-model="listQuery.roleName" placeholder="角色名称" style="width: 180px;"
                             class="filter-item" clearable />
                 </el-form-item>
-                <el-form-item size="mini">
+                <el-form-item>
                   <el-button type="primary" icon="Search" @click="onQueryWithNoGsbmId">查询</el-button>
                 </el-form-item>
-                <el-form-item size="mini">
+                <el-form-item>
                   <el-button type="primary" icon="Plus" @click="onAdd">新增角色分配</el-button>
                 </el-form-item>
               </el-form>
@@ -93,7 +93,7 @@
               >
                 <template v-slot="scope">
                   <el-button
-                    size="mini"
+
                     plain
                     type="danger"
                     icon="Delete"
@@ -121,12 +121,12 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible"
                class="roleDialog720">
       <el-form ref="listUpdate" label-position="right" label-width="150px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="分配角色:" prop="roleName" size="mini">
-          <el-input v-model="listUpdate.roleName" placeholder="" style="width: 410px;" class="filter-item" size="mini"
+        <el-form-item label="分配角色:" prop="roleName">
+          <el-input v-model="listUpdate.roleName" placeholder="" style="width: 410px;" class="filter-item"
                     :disabled="true" />
           <el-button type="primary" icon="Plus" @click="chooseRole">请选择角色</el-button>
         </el-form-item>
-        <el-form-item label="角色拥有者:" prop="ownerName" size="mini">
+        <el-form-item label="角色拥有者:" prop="ownerName">
           <el-input v-model="listUpdate.ownerName" type="textarea" :rows="4" placeholder="" :disabled="true"
                     style="width: 410px;" />
           <el-button type="primary" icon="Plus" @click="choosePeople">请选择人员</el-button>
@@ -134,13 +134,13 @@
         <!-- <el-form-item label="所属部门:" prop="deptName" size="small">
           <el-checkbox label="自动分配至用户隶属部门" v-model="listUpdate.deptChecked" @change="deptChecked" name="type"></el-checkbox>
         </el-form-item> -->
-        <el-form-item label="授权部门" size="mini" prop="deptName">
-          <el-input v-model="listUpdate.deptName" placeholder="" style="width: 410px;" class="filter-item" size="mini"
+        <el-form-item label="授权部门" prop="deptName">
+          <el-input v-model="listUpdate.deptName" placeholder="" style="width: 410px;" class="filter-item"
                     :disabled="true" />
           <el-button type="primary" icon="Plus" @click="chooseDepartment">请选择授权部门</el-button>
           <div class="placeholderDiv">如果不选择'授权部门'，则默认分配至所选用户的隶属部门(非必填项)</div>
         </el-form-item>
-        <el-form-item v-if="noLimitZt" label="限制账套" size="mini" prop="limitZt">
+        <el-form-item v-if="noLimitZt" label="限制账套" prop="limitZt">
           <el-checkbox v-model="listUpdate.limitZt" :checked="listUpdate.limitZt==1" :true-label="1" :false-label="0">
             业务范围限制为授权部门所在账套
           </el-checkbox>
@@ -148,8 +148,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="createData('listUpdate')" size="mini">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createData('listUpdate')">
           保存
         </el-button>
       </div>
@@ -161,15 +161,15 @@
                v-model="dialogTableVisible" class="roleDialog800">
       <el-form label-position="right" label-width="90px" :model="listTableUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">
-        <el-form-item label="角色名称:" prop="name" size="mini">
+        <el-form-item label="角色名称:" prop="name">
           <el-input v-model="listTableUpdate.rName" placeholder="角色名称" style="width: 180px;" class="filter-item"
-                    size="mini" />
+                    />
         </el-form-item>
-        <el-form-item label="角色介绍:" prop="intro" size="mini">
+        <el-form-item label="角色介绍:" prop="intro">
           <el-input v-model="listTableUpdate.rIntro" placeholder="角色介绍" style="width: 180px;" class="filter-item"
-                    size="mini" />
+                    />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onRoleQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -218,7 +218,7 @@
         >
           <template v-slot:default="scope">
             <el-button
-              size="mini"
+
               plain
               type="primary"
               @click="confirmChoose('role',scope.row)"
@@ -239,7 +239,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogTableVisible = false" size="mini">关 闭</el-button>
+        <el-button @click="dialogTableVisible = false">关 闭</el-button>
       </div>
       </template>
     </el-dialog>
@@ -249,15 +249,15 @@
                v-model="dialogTableDeptVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTableDeptUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">
-        <el-form-item label="组织机构名称:" prop="name" size="mini">
+        <el-form-item label="组织机构名称:" prop="name">
           <el-input v-model="listTableDeptUpdate.oName" placeholder="组织机构名称" style="width: 180px;"
                     class="filter-item" />
         </el-form-item>
-        <el-form-item label="组织机构编号:" prop="orgCode" size="mini">
+        <el-form-item label="组织机构编号:" prop="orgCode">
           <el-input v-model="listTableDeptUpdate.oCode" placeholder="组织机构编号" style="width: 180px;"
                     class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onDeptQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -299,7 +299,7 @@
         >
           <template v-slot="scope">
             <el-button
-              size="mini"
+
               plain
               type="primary"
               @click="confirmChoose('dept',scope.row)"
@@ -319,7 +319,7 @@
       />
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogTableDeptVisible = false" size="mini">关 闭</el-button>
+        <el-button @click="dialogTableDeptVisible = false">关 闭</el-button>
       </div>
       </template>
     </el-dialog>
@@ -329,11 +329,11 @@
                v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">
-        <el-form-item label="员工姓名:" prop="uName" size="mini">
+        <el-form-item label="员工姓名:" prop="uName">
           <el-input v-model="listTablePeopleUpdate.uName" placeholder="员工姓名" style="width: 180px;"
                     class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onPeopleQuery(true)">查询</el-button>
         </el-form-item>
       </el-form>
@@ -403,8 +403,8 @@
 
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogTablePeopleVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="createTablePeopleData()" size="mini">
+        <el-button @click="dialogTablePeopleVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createTablePeopleData()">
           确 认
         </el-button>
       </div>

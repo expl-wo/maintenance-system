@@ -2,13 +2,13 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="关键字" size="mini">
-          <el-input v-model="listQuery.keyWord" placeholder="生产号/图号/项目名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="关键字">
+          <el-input v-model="listQuery.keyWord" placeholder="生产号/图号/项目名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Edit" @click="handSyn" >手动同步</el-button>
         </el-form-item>
       </el-form>
@@ -113,7 +113,7 @@
 
   <el-dialog v-dialogDrag  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
     <el-form :inline="true" :model="handQuery" class="demo-form-inline demo-form-zdy">
-      <el-form-item label="数据来源:" size="mini" prop="nodeType">
+      <el-form-item label="数据来源:" prop="nodeType">
         <el-select v-model="handQuery.isOrder" placeholder="请选择节点类型">
             <el-option
               v-for="item in options"
@@ -123,13 +123,13 @@
             </el-option>
           </el-select>
       </el-form-item>
-      <el-form-item label="生产号" size="mini">
-        <el-input v-model="handQuery.productNo" placeholder="生产号" style="width: 180px;" class="filter-item" size="mini" clearable/>
+      <el-form-item label="生产号">
+        <el-input v-model="handQuery.productNo" placeholder="生产号" style="width: 180px;" class="filter-item" clearable/>
       </el-form-item>
-      <el-form-item size="mini">
+      <el-form-item>
         <el-button type="primary" icon="Search" @click="getToMesOrder">查询</el-button>
       </el-form-item>
-      <el-form-item size="mini">
+      <el-form-item>
       </el-form-item>
     </el-form>
     <el-table
@@ -224,7 +224,7 @@
       >
         <template v-slot="scope">
           <el-button
-            size="mini"
+
             plain
             type="warning"
             @click="toMesOrder(scope.row)"

@@ -2,13 +2,13 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="组织机构名称" size="mini">
-          <el-input v-model="listQuery.name" placeholder="组织机构名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="组织机构名称">
+          <el-input v-model="listQuery.name" placeholder="组织机构名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="组织机构编号" size="mini">
-          <el-input v-model="listQuery.orgCode" placeholder="组织机构编号" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="组织机构编号">
+          <el-input v-model="listQuery.orgCode" placeholder="组织机构编号" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>

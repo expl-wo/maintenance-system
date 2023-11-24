@@ -2,13 +2,13 @@
   <el-dialog v-dialogDrag  appendToBody title="选择设备" width="800px" v-model="dialogVisible" modal>
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设备名称" size="mini">
+        <el-form-item label="设备名称">
           <el-input v-model="listQuery.equipmentName" @keyup.enter.native="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button @click="handleSearch" icon="Search" size="mini">查询</el-button>
+        <el-form-item>
+          <el-button @click="handleSearch" icon="Search">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="100">
           <template v-slot="scope">
-            <el-button type="primary" size="mini"
+            <el-button type="primary"
                        @click="handleSelect(scope.row)"
             >选择
             </el-button>

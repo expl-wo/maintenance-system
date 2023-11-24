@@ -4,7 +4,7 @@
              :rules="rules" label-width="100px"
     >
       <div class="col-md-12">
-        <el-form-item prop="timeLimitId" label="产品期量" required size="mini">
+        <el-form-item prop="timeLimitId" label="产品期量" required>
           <el-select v-model="model.timeLimitId" style="width: 100%;">
             <el-option
               v-for="item in timeLimitList"
@@ -19,8 +19,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

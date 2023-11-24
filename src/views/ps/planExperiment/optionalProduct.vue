@@ -8,11 +8,11 @@
         style="margin-bottom: 4px;"
         class="demo-form-inline demo-form-zdy"
       >
-        <el-form-item label="生产号:" size="mini" prop="model">
-          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter.native="queryTableDataParam" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="生产号:" prop="model">
+          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter.native="queryTableDataParam" style="width: 180px;" class="filter-item">
           </el-input>
         </el-form-item>
-        <el-button icon="el-icon-search" size="mini" @click="queryTableDataParam">查询</el-button>
+        <el-button icon="el-icon-search" @click="queryTableDataParam">查询</el-button>
       </el-form>
     </div>
     <addProductDialog ref="addProductDialog" @refresh="queryTableDataParam"></addProductDialog>
@@ -27,7 +27,7 @@
     >
       <el-table-column align="center" label="操作" width="70">
         <template v-slot="scope">
-          <el-button size="mini" type="primary" v-if="$isAuth('0406Experiment.entry')" @click="addToNodeInfo(scope.row)">加入</el-button>
+          <el-button type="primary" v-if="$isAuth('0406Experiment.entry')" @click="addToNodeInfo(scope.row)">加入</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="productNo" label="生产号" align="center"  width="135"></el-table-column>

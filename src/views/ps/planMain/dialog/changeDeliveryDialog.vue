@@ -4,7 +4,7 @@
              :rules="rules" label-width="120px"
     >
       <div class="col-md-12">
-        <el-form-item prop="newDeliveryDate" label="申请完工时间" required size="mini">
+        <el-form-item prop="newDeliveryDate" label="申请完工时间" required>
           <el-date-picker
             v-model="model.newDeliveryDate"
             style="width: 100%;"
@@ -15,12 +15,12 @@
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item prop="changeReason" label="申请原因" size="mini">
+        <el-form-item prop="changeReason" label="申请原因">
           <el-input v-model="model.changeReason" type="textarea" :rows="4"></el-input>
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item prop="freezeReason" label="附件" size="mini">
+        <el-form-item prop="freezeReason" label="附件">
           <el-upload
             class="upload-demo"
             ref="uploadRef"
@@ -39,8 +39,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

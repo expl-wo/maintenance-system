@@ -76,7 +76,7 @@
         <el-table-column label="操作" width="100">
           <template #default="scope">
             <el-button-group>
-              <el-button type="primary" size="mini" title="查看" @click="jumpTo(scope.row)">
+              <el-button type="primary" title="查看" @click="jumpTo(scope.row)">
                 <el-icon><View /></el-icon>
               </el-button>
             </el-button-group>
@@ -179,7 +179,7 @@ export default {
     },
     // 搜索所有任务
     searchAll() {
-      // 
+      //
     },
     // 列表排序
     sortChange({column, prop, order}) {

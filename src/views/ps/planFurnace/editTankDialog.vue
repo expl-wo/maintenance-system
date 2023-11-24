@@ -3,7 +3,7 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="pl14Id" label="生产号：" size="mini">
+          <el-form-item prop="pl14Id" label="生产号：">
            <el-select v-model="model.pl14Id" placeholder="请选择生产号" style="width: 100%;" v-if="productNos.length>1">
              <el-option v-for="(item,index) in productNos" :key="item.pl14Id" :label="item.productNo" :value="item.pl14Id"></el-option>
            </el-select>
@@ -13,7 +13,7 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="tankId" label="干燥罐：" size="mini">
+          <el-form-item prop="tankId" label="干燥罐：">
             <el-select v-model="model.tankId" style="width: 100%;">
               <el-option v-for="(item,index) in selectData" :key="item.id" :label="item.tableName" :value="item.id"></el-option>
             </el-select>
@@ -22,7 +22,7 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="dateValue" label="计划时间：" size="mini" >
+          <el-form-item prop="dateValue" label="计划时间：" >
             <el-date-picker
               v-model="model.dateValue"
               type="datetimerange"
@@ -30,7 +30,7 @@
               start-placeholder="开始日期"
               range-separator="至"
               end-placeholder="结束日期"
-              size="mini"
+
               style="width: 330px;"
               :clearable="false">
             </el-date-picker>
@@ -39,8 +39,8 @@
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
   </el-dialog>
 </template>

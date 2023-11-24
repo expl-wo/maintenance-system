@@ -58,7 +58,7 @@
           <el-card shadow="hover" class="hp animation-scale-up">
 <!--            <div class="floatTopLeft">-->
 <!--              <el-date-picker-->
-<!--                size="mini"-->
+<!--               -->
 <!--                v-model="lineQuery.groupYearMonth"-->
 <!--                type="monthrange"-->
 <!--                range-separator="至"-->
@@ -81,7 +81,7 @@
           <el-card shadow="hover" class="hp animation-scale-up">
 <!--            <div class="floatTopRight">-->
 <!--              <el-date-picker-->
-<!--                size="mini"-->
+<!--               -->
 <!--                v-model="barMonth"-->
 <!--                type="month"-->
 <!--                placeholder="选择月"-->
@@ -99,7 +99,7 @@
           <el-card shadow="hover" class="hp animation-scale-up">
 <!--            <div class="floatTopLeft">-->
 <!--              <el-date-picker-->
-<!--                size="mini"-->
+<!--               -->
 <!--                v-model="pieMonth"-->
 <!--                type="month"-->
 <!--                placeholder="选择月"-->

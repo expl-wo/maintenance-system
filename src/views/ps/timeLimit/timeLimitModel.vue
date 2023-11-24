@@ -2,19 +2,19 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设计型号" size="mini">
-          <el-input v-model="listQuery.model" placeholder="设计型号" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="设计型号">
+          <el-input v-model="listQuery.model" placeholder="设计型号" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="产品期量" size="mini">
-          <el-input v-model="listQuery.limitName" placeholder="产品期量" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="产品期量">
+          <el-input v-model="listQuery.limitName" placeholder="产品期量" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="queryUnBound">查询未匹配型号</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Edit" @click="unBound">解绑期量</el-button>
         </el-form-item>
       </el-form>
@@ -58,11 +58,11 @@
 
       <el-dialog v-dialogDrag  :close-on-click-modal="false" title="期量绑定" v-model="dialogVisible" class="roleDialog">
         <el-form label-position="right" label-width="160px" :model="limitModel" :rules="rules" ref="limitModel">
-          <el-form-item label="设计型号:" size="mini" prop="model">
-            <el-input v-model="limitModel.model" placeholder="设计型号" style="width: 180px;" class="filter-item" size="mini" disabled>
+          <el-form-item label="设计型号:" prop="model">
+            <el-input v-model="limitModel.model" placeholder="设计型号" style="width: 180px;" class="filter-item" disabled>
             </el-input>
           </el-form-item>
-          <el-form-item label="节点类型:" size="mini" prop="timeLimitId">
+          <el-form-item label="节点类型:" prop="timeLimitId">
             <el-select v-model="limitModel.timeLimitId" clearable placeholder="请选择期量">
                 <el-option
                   v-for="item in limitOptions"
@@ -75,8 +75,8 @@
         </el-form>
         <template #footer>
           <div class="dialog-footer">
-          <el-button size="mini" @click="resetForm('limitModel')">取 消</el-button>
-          <el-button type="primary" size="mini" @click="submitForm('limitModel')">
+          <el-button @click="resetForm('limitModel')">取 消</el-button>
+          <el-button type="primary" @click="submitForm('limitModel')">
             保存
           </el-button>
         </div>

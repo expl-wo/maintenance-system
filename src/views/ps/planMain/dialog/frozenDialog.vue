@@ -4,7 +4,7 @@
              :rules="rules" label-width="100px"
     >
       <div class="col-md-12">
-        <el-form-item prop="reasonId" label="冻结原因" required size="mini">
+        <el-form-item prop="reasonId" label="冻结原因" required>
           <el-select v-model="model.reasonId" style="width: 100%;">
             <el-option v-for="(item, index ) in reasonList" :key="index" :value="item.id" :label="item.reasonName">
             </el-option>
@@ -12,15 +12,15 @@
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item prop="freezeReason" label="备注" size="mini">
+        <el-form-item prop="freezeReason" label="备注">
           <el-input v-model="model.freezeReason" type="textarea" :rows="5"></el-input>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

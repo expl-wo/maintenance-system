@@ -80,7 +80,7 @@
       </div>
     </div>
     <div class="toolTip">
-      <el-button type="primary" size="mini" @click="handleGoToday" style="margin-right: 10px;">定位本周</el-button>
+      <el-button type="primary" @click="handleGoToday" style="margin-right: 10px;">定位本周</el-button>
       <preview-legend></preview-legend>
     </div>
     <!--  <tip-panel ref="tipPanelRef"></tip-panel>-->

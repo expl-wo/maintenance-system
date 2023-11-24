@@ -44,7 +44,7 @@
       </el-table></div>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">关闭</el-button>
+      <el-button @click="dialogVisible=false">关闭</el-button>
     </div>
     </template>
   </el-dialog>

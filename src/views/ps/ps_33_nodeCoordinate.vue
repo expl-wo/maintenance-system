@@ -3,13 +3,13 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点编码" size="mini">
+        <el-form-item label="节点编码">
           <el-input v-model="listQuery.nodeId" placeholder="输入节点编号" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="listQuery.name" placeholder="输入节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -41,7 +41,7 @@
     <el-table-column header-align="center" align="center" width="240" label="操作">
       <template v-slot="scope">
         <el-button-group>
-          <el-button size="mini" title="修改" type="primary" icon="Edit"
+          <el-button title="修改" type="primary" icon="Edit"
             @click="updateOrAdd(scope.row)">保存修改</el-button>
         </el-button-group>
       </template>

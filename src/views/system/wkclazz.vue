@@ -13,7 +13,7 @@
             node-key="id"
             :props="props"
             :default-expanded-keys="[2, 3]"
-            size="mini"
+
             @node-click="handleNodeClick"
           />
         </el-card>
@@ -26,13 +26,13 @@
           <div class="wp hp app-containerC">
             <div class="filter-container">
               <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-                <el-form-item label="班组：" size="mini">
+                <el-form-item label="班组：">
                   <el-input v-model="wkcName" placeholder="点击左侧班组列表选择" style="width: 180px;" class="filter-item" clearable @input="setWkcNull" @clear="setWkcNull" />
                 </el-form-item>
-                <el-form-item label="员工姓名/编号" size="mini">
+                <el-form-item label="员工姓名/编号">
                   <el-input v-model="listQuery.userName" placeholder="员工姓名/编号" style="width: 180px;" class="filter-item" clearable />
                 </el-form-item>
-                <el-form-item size="mini">
+                <el-form-item>
                   <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
                 </el-form-item>
               </el-form>
@@ -101,7 +101,7 @@
                 min-width="5%"
               >
                 <template v-slot="scope">
-                <el-button size="mini" type="primary" icon="UploadFilled">
+                <el-button type="primary" icon="UploadFilled">
                   <input name="file" type="file" class="fileCls" :accept="acceptFormat" style="display: none;" @change="changeUploadFile($event, scope.row)"/>
                 </el-button>
                 </template>
@@ -113,7 +113,7 @@
               >
                 <template v-slot="scope">
                   <el-button
-                    size="mini"
+
                     plain
                     type="primary"
                     @click = "lookPicture(scope.row)"
@@ -163,7 +163,7 @@
       </el-table>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogFileFormVisible = false">关闭</el-button>
+        <el-button @click="dialogFileFormVisible = false">关闭</el-button>
       </div>
       </template>
     </el-dialog>

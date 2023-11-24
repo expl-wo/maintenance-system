@@ -2,10 +2,10 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="listQuery.name" placeholder="节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询
           </el-button>
         </el-form-item>
@@ -25,7 +25,7 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template v-slot="scope">
                 <el-button-group>
-                  <el-button size="mini" title="删除" type="danger" icon="Delete"
+                  <el-button title="删除" type="danger" icon="Delete"
                     @click="handleItemDeleteDict(scope.row)" />
                 </el-button-group>
               </template>
@@ -44,7 +44,7 @@
       <el-table-column header-align="center" align="center" width="160" label="操作">
         <template v-slot="scope">
           <el-button-group>
-            <el-button size="mini" title="分类关系" type="primary" icon="Plus"
+            <el-button title="分类关系" type="primary" icon="Plus"
               @click="handleItemAddDict(scope.row)">
               添加分类关系
             </el-button>
@@ -58,13 +58,13 @@
     <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryClazz" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="分类编号" size="mini">
+          <el-form-item label="分类编号">
             <el-input v-model="listQueryClazz.clazzCode" placeholder="分类编号" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="分类名称" size="mini">
+          <el-form-item label="分类名称">
             <el-input v-model="listQueryClazz.clazzName" placeholder="分类名称" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item>
             <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
@@ -93,7 +93,7 @@
         <el-table-column header-align="center" align="center" width="160" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="mini" type="primary"
+              <el-button type="primary"
                          @click="chooseItemData(scope.row)">
                 选择
               </el-button>
@@ -106,7 +106,7 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+        <el-button @click="dialogConfigCaiGouFormVisible = false">取 消</el-button>
       </div>
       </template>
     </el-dialog>

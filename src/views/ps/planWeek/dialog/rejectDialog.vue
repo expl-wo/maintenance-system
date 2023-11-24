@@ -3,7 +3,7 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="rejectReason" label="驳回原因：" size="mini" required>
+          <el-form-item prop="rejectReason" label="驳回原因：" required>
             <el-input type="textarea" v-model="model.rejectReason" :rows="6"></el-input>
           </el-form-item>
         </el-col>
@@ -11,8 +11,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
     </template>
   </el-dialog>

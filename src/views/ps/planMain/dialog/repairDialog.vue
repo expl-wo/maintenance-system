@@ -4,15 +4,15 @@
              :rules="rules" label-width="100px"
     >
       <div class="col-md-24">
-        <el-form-item prop="status" label="返修状态" required size="mini">
+        <el-form-item prop="status" label="返修状态" required>
           <xui-dict-select itemCode="repairStatus" v-model="model.status" style="width: 100%;"></xui-dict-select>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>
