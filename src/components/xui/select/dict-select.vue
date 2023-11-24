@@ -7,7 +7,7 @@
              :collapse-tags="showMultipleCheckbox || collapseTags"
              @change="handleChange"
   >
-    <el-checkbox class="xui-select-all-box" v-if="showMultipleCheckbox"
+    <el-checkbox class="xui-select-all-box" v-if="showMultipleCheckbox" size="default"
                  :indeterminate="indeterminate"
                  v-model="checked" @change="selectAll"
     >全选

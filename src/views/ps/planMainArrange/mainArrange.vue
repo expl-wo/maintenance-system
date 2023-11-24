@@ -73,7 +73,8 @@ const listQuery = reactive({
   op: "",
   opStatus: [],
   workShop: "",
-  workShopProduct: ""
+  workShopProduct: "",
+  voltage: []
 });
 
 const TableScrollTop = () => {
@@ -95,24 +96,62 @@ const getParams = () => {
     ...listQuery
   }
   delete params.dateGroup;
-  params.strDate = formatMonthStartDate(this.listQuery.dateGroup[0]) // 开始日期
-  params.endDate = formatMonthEndDate(this.listQuery.dateGroup[1]) // 结束日期
+  params.strDate = formatMonthStartDate(listQuery.dateGroup[0]) // 开始日期
+  params.endDate = formatMonthEndDate(listQuery.dateGroup[1]) // 结束日期
+  /*  params.status = [1];
+    params.opStatus = [1];
+    params.voltage = [""];*/
   return params;
 }
 
 const getDataList = async () => {
-  let response = await planMain(getParams());
-  list.value = response.data.list;
-  initChildComponent();
+  let commonAttr = {
+    productOrNodeName: '',
+    planStartDate: '',
+    planEndDate: '',
+    approvalName: '',
+    stateName: '',
+    itemNm: '',
+  };
+  let params = getParams();
+  let response = await planMain.planListWithNodes(params);
+  let resultList = [];
+  response.data.forEach(item => {
+    let productItem = {
+      ...commonAttr,
+      ...item,
+      productOrNodeName: item.contractNo,
+      planStartDate: item.dateEnd,
+      planEndDate: item.dateEnd,
+    }
+    delete productItem.nodeList;
+    let children = [];
+    if (item.nodeList && item.nodeList.length > 0) {
+      item.nodeList.forEach(subItem => {
+        let obj = {
+          ...commonAttr,
+          ...subItem,
+          planStartDate: subItem.startDate,
+          planEndDate: subItem.nodeDate,
+          productOrNodeName: subItem.nodeName
+        }
+        children.push(obj)
+      })
+    }
+    productItem.children = children;
+    resultList.push(productItem);
+  })
+  list.value = resultList;
+  initChildComponent(params);
 }
 
 const handleSearch = () => {
   getDataList();
 }
 
-const initChildComponent = () => {
-  productListRef.value.init(list.value);
-  ganttListRef.value.init(list.value);
+const initChildComponent = params => {
+  productListRef.value.init(deepClone(list.value));
+  ganttListRef.value.init(deepClone(list.value), [params.strDate, params.endDate]);
 }
 
 onMounted(() => {

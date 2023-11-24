@@ -9,6 +9,7 @@
           height="100%"
           default-expand-all
           highlight-current-row
+          row-key="id"
           @row-click="handlerRowClick"
           @expand-change="handlerExpand"
           :cell-class-name="cellClassName"
@@ -17,20 +18,20 @@
             type="selection"
             header-align="center"
             align="center"
-            width="120">
+            width="50">
         </el-table-column>
         <el-table-column
             header-align="center"
-            align="center"
+            align="left"
             label="生产号/工序"
-            property="productNo"
-            width="120">
+            property="productOrNodeName"
+            width="160">
         </el-table-column>
         <el-table-column
             align="center"
             label="计划开始"
             property="planStartDate"
-            width="100">
+            width="90">
           <template #default="{row}">
             {{ $filters.formatSimpleDate(row.planStartDate) }}
           </template>
@@ -39,18 +40,17 @@
             align="center"
             label="计划结束"
             property="planEndDate"
-            width="100">
+            width="90">
           <template #default="{row}">
             {{ $filters.formatSimpleDate(row.planEndDate) }}
           </template>
         </el-table-column>
-
         <el-table-column
             header-align="center"
             align="center"
             label="审批状态"
-            property="stateName"
-            width="110">
+            property="approvalName"
+            width="100">
         </el-table-column>
         <el-table-column
             header-align="center"
@@ -63,7 +63,7 @@
             header-align="center"
             align="center"
             label="型号"
-            property=""
+            property="itemNm"
             show-overflow-tooltip
             width="155">
         </el-table-column>
@@ -71,18 +71,15 @@
             header-align="center"
             align="center"
             label="产值"
-            property="processStatus"
+            property="noTaxAmount"
             width="120"
         >
-          <template #default="{row}">
-            <xui-dictionary itemCode="processStatus" :code="scope.row.processStatus"></xui-dictionary>
-          </template>
         </el-table-column>
         <el-table-column
             header-align="center"
             align="center"
             label="产量"
-            property="stateName"
+            property="outPut"
             show-overflow-tooltip
             width="110">
         </el-table-column>
@@ -102,20 +99,20 @@ const props = defineProps({
 const emits = defineEmits(["handlerRowClick", "tableScrollTop"])
 
 const dataList = ref([]);
-const rightLineX = ref(560);
+const rightLineX = ref(600);
 
 const currentRow = ref({});
 const tableRef = ref();
 
 watch(() => props.BGScrollTop, () => {
   if (tableRef.value) {
-    let tableWrapper = tableRef.value.bodyWrapper;
+    let tableWrapper = tableRef.value.$refs.bodyWrapper;
     tableWrapper.scrollTo(0, props.BGScrollTop);
   }
 })
 
 const handlerWatchScroll = () => {
-  let table = tableRef.value.bodyWrapper;
+  let table = tableRef.value.$refs.bodyWrapper;
   table.addEventListener("scroll", e => {
     emits("tableScrollTop", e.srcElement.scrollTop);
   });
@@ -154,12 +151,11 @@ const handlerRowClick = (row, column) => {
 }
 
 const setScroll = (scrollTop) => {
-  let table = tableRef.value;
-  const divData = table.bodyWrapper;
+  const divData = tableRef.value.$refs.bodyWrapper;
   divData.scrollTop = scrollTop;
 }
 const setFirstRowSelected = () => {
-  if (props.list.length > 0) {
+  if (dataList.value.length > 0) {
     tableRef.value.setCurrentRow(props.list[0])
     emits('handlerRowClick', props.list[0]);
   }

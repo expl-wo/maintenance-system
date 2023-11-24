@@ -25,7 +25,7 @@
                   nodBorder:
                     subItem.width >= currentLineDay.start &&
                     ((subItem.width - 42) < currentLineDay.end ),
-                    todayDateNum: j.isToday
+                    todayDateNum: subItem.isToday
                 }"
                   >
                 <div
@@ -88,6 +88,7 @@
 </template>
 
 <script lang="ts" setup>
+import dayjs from 'dayjs'
 import {defineComponent, computed, onMounted, ref, reactive, defineEmits, toRef, watch, nextTick} from "vue";
 import {dateFilter} from '@/utils/dateUtil'
 import slider from './slider.vue'
@@ -170,7 +171,7 @@ const initMonthDate = dates => {
 }
 
 const getDivRef = (el, item) => {
-  listRefs.value[`line${item.id}`] = e
+  listRefs.value[`line${item.id}`] = el
 }
 
 /**
@@ -382,9 +383,9 @@ const formatDataList = list => {
       item.top = 5 + 40 * index;
       if (startTime && endTime) {
         item.type = 1;
-        item.widthChild = day(endTime).diff(day(startTime), 'day') * configParams.dayWidth;
+        item.widthChild = dayjs(endTime).diff(dayjs(startTime), 'day') * configParams.dayWidth;
         item.widthMe = item.widthChild;
-        item.left = day(startTime).diff(day(days.value[0].date), 'day') * configParams.dayWidth;
+        item.left = dayjs(startTime).diff(dayjs(days.value[0].date), 'day') * configParams.dayWidth;
       }
       //递归设置children值
       if (item.children && item.children.length > 0) {
