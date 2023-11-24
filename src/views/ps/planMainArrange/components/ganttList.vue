@@ -1,44 +1,52 @@
 <template>
   <div class="date" ref="ganttDateRef">
     <div class="allDaysArray">
-      <div class="alldays">
-        <div class="years" v-for="(item, parentIndex) in allMonths" :key="item.month">
-          <div
-              class="month"
-              :key="item.month + 'month'"
-              :style="{ width: item.width + 'px' }">
-            <div class="month-top">{{ item.month }}</div>
+      <div>
+        <div class="allMonths" style="display:flex;">
+          <div class="years" v-for="(item, parentIndex) in allMonths" :key="item.month">
+            <div
+                class="month"
+                :key="item.month + 'month'"
+                :style="{ width: item.width + 'px' }">
+              <div class="month-top" :class="{'month-end': allMonths.length === (parentIndex + 1)}">{{
+                  item.month
+                }}
+              </div>
+            </div>
           </div>
         </div>
-        <template v-for="item in allMonths" :key="item.month">
-          <div
-              v-for="(subItem, index) in item.days"
-              class="day"
-              :style="{ width: subItem.dayWidth + 'px' }"
-          >
+        <div class="alldays">
+          <template v-for="(item,index) in allMonths" :key="item.month">
+            <div
+                v-for="(subItem, subIndex) in item.days"
+                class="day"
+                :style="{ width: subItem.width + 'px' }"
+            >
                   <span
                       class="dateNum"
                       :class="{
                   isHover:
-                    subItem.width >= currentLineDay.start &&
-                    (subItem.width - 42)  < currentLineDay.end,
+                    subItem.left >= currentLineDay.start &&
+                    (subItem.left + configParams.dayWidth)  <= currentLineDay.end,
                   nodBorder:
-                    subItem.width >= currentLineDay.start &&
-                    ((subItem.width - 42) < currentLineDay.end ),
+                    subItem.left >= currentLineDay.start &&
+                    ((subItem.left + configParams.dayWidth) <= currentLineDay.end ),
                     todayDateNum: subItem.isToday
                 }"
                   >
                 <div
                     style="width:100%;height:100%;"
                     :style="{
-                    borderLeft: index == 0 ? 'none' : '1px solid #d7d7d7'
+                    borderLeft: (subIndex === 0 && index === 0) ? 'none' : '1px solid #d7d7d7',
+                    borderRight:  (index === (allMonths.length - 1) && subIndex === (item.days.length - 1)) ? '1px solid #d7d7d7': 'none'
                   }"
                 >
                   {{ subItem.isToday ? '今天' : subItem.simpleDate }}
                 </div>
               </span>
-          </div>
-        </template>
+            </div>
+          </template>
+        </div>
       </div>
       <div class="lineBG" @scroll="handlerBGScroll" ref="lineBGRef" style="overflow-y: auto;"
            @mousedown="lineBGMousedown">
@@ -80,7 +88,7 @@
       </div>
     </div>
     <div class="toolTip">
-      <el-button type="primary" @click="handleGoToday" style="margin-right: 10px;">定位本周</el-button>
+      <el-button type="primary" v-show="showLegend" @click="handleGoToday" style="margin-right: 10px;">定位到今天</el-button>
       <preview-legend></preview-legend>
     </div>
     <!--  <tip-panel ref="tipPanelRef"></tip-panel>-->
@@ -96,19 +104,20 @@ import slider from './slider.vue'
 // import tipPanel from './tipPanel.vue'
 // const tipPanelRef = ref();
 //计算后的值
-const computedList = ref([]);
+const computedList = ref([]) as any;
 //所有的月份
 const allMonths = ref([]);
 const days = ref([]);
-const nowDayObj = reactive({});
+const nowDayObj = reactive({}) as any;
 const isShowMsg = ref(false);
 const isHover = ref(false);
 const listRefs = ref({}) as any;
 const ganttDateRef = ref();
 const lineBGRef = ref();
+const showLegend = ref();
 
 const configParams = {
-  dayWidth: 40
+  dayWidth: 25
 }
 
 const currentLineDay = reactive({
@@ -186,7 +195,7 @@ const lineMouseover = (dom, e, id, parentId, index, item) => {
   currentLineDay.start = item.left;
   currentLineDay.end = item.widthChild + item.left
   isHover.value = true;
-  handlerSelect(computedList.value[index]);
+  // handlerSelect(computedList.value[index]);
   lineMouseenter(dom, e, id, parentId, index, item);
 }
 
@@ -201,15 +210,15 @@ const lineMouseover = (dom, e, id, parentId, index, item) => {
 const lineMouseenter = (dom, e, id, parentId, index, item) => {
   let start =
       Math.round(
-          parseInt(listRefs.value[dom][0].style.left) / configParams.dayWidth.value
-      ) * configParams.dayWidth.value;
+          parseInt(listRefs.value[dom][0].style.left) / configParams.dayWidth
+      ) * configParams.dayWidth;
   let end =
       parseInt(listRefs.value[0].style.left) +
       parseInt(listRefs.value[0].style.width);
   end =
-      Math.round(end / configParams.dayWidth.value) *
-      configParams.dayWidth.value -
-      configParams.dayWidth.value;
+      Math.round(end / configParams.dayWidth) *
+      configParams.dayWidth -
+      configParams.dayWidth;
   let top = e.y + 20;
   if ((top + 300) > window.innerHeight) {
     top = e.y - 220;
@@ -272,18 +281,18 @@ const handlerSelect = () => {
 
 //滑动进度条事件
 const thunkMousemove = () => {
-  this.isShowMsg = false;
+  isShowMsg.value = false;
 }
 
 //滑动进度条事件
 const thunkMousedown = () => {
-  this.isShowMsg = false;
+  isShowMsg.value = false;
 }
 
 const handleGoToday = () => {
-  if (nowDayObj && nowDayObj.value.left) {
+  if (nowDayObj && nowDayObj.left) {
     ganttDateRef.value.scrollTo({
-      left: nowDayObj.value.left - ganttDateRef.value.clientWidth / 2,
+      left: nowDayObj.left - ganttDateRef.value.clientWidth / 2,
       behavior: "smooth"
     });
   }
@@ -302,7 +311,6 @@ const handlerExpand = (row, expand) => {
       k.isShow = expand;
     });
   }
-  // this.resetTop(rowIndex, !expand, true);
 }
 
 const handleToggleExpandAll = expand => {
@@ -350,6 +358,9 @@ const setComputedList = (dataList) => {
       tempList = tempList.concat(item.children);
     }
   })
+  tempList.forEach((item, index) => {
+    item.top = 5 + 40 * index;
+  })
   computedList.value = tempList;
 }
 
@@ -357,10 +368,10 @@ const formatDataList = list => {
   let dataList = [];
   list.forEach((item, index) => {
     item.planStartDate = dateFilter(item.planStartDate);
-    item.dateEnd = dateFilter(item.dateEnd);
+    item.planEndDate = dateFilter(item.planEndDate);
     let startTime = item.planStartDate;
     item.per = 50;
-    let endTime = item.dateEnd;
+    let endTime = item.planEndDate;
     item.expand = true;
     item.isShow = true;
     if (startTime && endTime) {
@@ -372,7 +383,7 @@ const formatDataList = list => {
         endTime = startTime;
         startTime = temp;
         item.planStartDate = startTime;
-        item.dateEnd = endTime;
+        item.planEndDate = endTime;
       }
       if (startTime < days.value[0].date) {
         startTime = days.value[0].date;
@@ -380,10 +391,10 @@ const formatDataList = list => {
       if (endTime > days.value[days.value.length - 1].date) {
         endTime = days.value[days.value.length - 1].date;
       }
-      item.top = 5 + 40 * index;
+
       if (startTime && endTime) {
         item.type = 1;
-        item.widthChild = dayjs(endTime).diff(dayjs(startTime), 'day') * configParams.dayWidth;
+        item.widthChild = (dayjs(endTime).diff(dayjs(startTime), 'day') + 1) * configParams.dayWidth;
         item.widthMe = item.widthChild;
         item.left = dayjs(startTime).diff(dayjs(days.value[0].date), 'day') * configParams.dayWidth;
       }
@@ -405,6 +416,11 @@ const init = (list, dates) => {
 defineExpose({
   init,
   handleToggleExpandAll
+})
+onMounted(()=>{
+  setTimeout(()=>{
+    showLegend.value = true;
+  }, 1000)
 })
 
 </script>

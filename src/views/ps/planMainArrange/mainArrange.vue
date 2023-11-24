@@ -53,6 +53,7 @@ import {mapWeeksOfyear} from './util/mapWeeksOfyear'
 import planMain from '@/api/plan/planMain'
 import {getDictListByKey} from '@/components/xui/dictionary'
 import {deepClone} from '@/utils'
+import {getData} from './util/testData'
 
 import ganttList from './components/ganttList.vue'
 import productList from './components/productList.vue'
@@ -111,17 +112,18 @@ const getDataList = async () => {
     planEndDate: '',
     approvalName: '',
     stateName: '',
-    itemNm: '',
+    pcModel: '',
   };
   let params = getParams();
-  let response = await planMain.planListWithNodes(params);
+  // let response = await planMain.planListWithNodes(params);
+  let response = getData();
   let resultList = [];
   response.data.forEach(item => {
     let productItem = {
       ...commonAttr,
       ...item,
-      productOrNodeName: item.contractNo,
-      planStartDate: item.dateEnd,
+      productOrNodeName: item.productNo,
+      planStartDate: item.planStartDate,
       planEndDate: item.dateEnd,
     }
     delete productItem.nodeList;

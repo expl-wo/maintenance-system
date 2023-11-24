@@ -5,6 +5,7 @@
           ref="tableRef"
           :data="dataList"
           border stripe
+          size="medium"
           style="width: 100%;font-size: 0.7rem"
           height="100%"
           default-expand-all
@@ -63,7 +64,7 @@
             header-align="center"
             align="center"
             label="型号"
-            property="itemNm"
+            property="pcModel"
             show-overflow-tooltip
             width="155">
         </el-table-column>

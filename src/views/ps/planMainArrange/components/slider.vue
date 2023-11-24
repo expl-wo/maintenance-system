@@ -37,7 +37,8 @@ const getStatus = ()=>{
       clz = item.remark ? item.remark: 'normal';
     }
   })
-  return clz;
+  // return clz;
+  return "normal"
 }
 
 </script>

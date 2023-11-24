@@ -1,5 +1,5 @@
 $interval-height: 40px;
-$interval-bg: #FAFAFA;
+$interval-bg: #f2f2f2;
 $interval-borderColor: #dfe6ec;
 
 .preview-gant-chart {
@@ -133,23 +133,26 @@ $interval-borderColor: #dfe6ec;
         font-size: 12px !important;
         font-weight: 600 !important;
         color: #909090 !important;
-        border-right: 1px solid $interval-borderColor;
+        border-left: 1px solid $interval-borderColor;
         text-align: center;
         border-bottom: 1px solid $interval-borderColor;
+      }
+      .month-end{
+        border-right: 1px solid $interval-borderColor;
       }
     }
   }
   .allDaysArray {
     position: absolute;
     left: 0px;
-    top: 21px;
-    height: calc(100% - 21px);
+    top: -1px;
+    height: 100%;
     .alldays {
       display: flex;
     }
     .lineBG {
       width: 100%;
-      height: calc(100% - 21px);
+      height: calc(100% - 43px);
       position: relative;
       cursor: grab;
       .line-wrapper{
@@ -157,6 +160,11 @@ $interval-borderColor: #dfe6ec;
         border-bottom: 1px solid $interval-borderColor;
         &.deepColorBg{
           background-color: $interval-bg;
+        }
+        .line{
+          background: #e4e7ed;
+          cursor: pointer;
+          border-radius: 5px;
         }
       }
     }
@@ -226,8 +234,7 @@ $interval-borderColor: #dfe6ec;
   .el-table--medium {
     .el-table__body{
       th, td {
-        padding: 6px 0 !important;
-        padding-bottom: 7px !important;
+        padding: 8px 0 !important;
       }
     }
     .el-table__header{
