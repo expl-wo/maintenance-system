@@ -59,6 +59,7 @@ const url = {
   delWeekPlan: '/api/gcplan/plan/week/delWeekPlan',//待定
   //试验计划-查询试验节点的主计划以及主计划其下的其他节点
   findPlanWithNodes: '/api/gcplan/plan/proplan/findPlanWithNodes',//待
+  optionalProduct: '/api/gcplan/plan/week/optionalProduct',
 }
 
 export default {
@@ -257,6 +258,13 @@ export default {
       url: url.findPlanWithNodes,
       method: 'post',
       data: params
+    })
+  },
+  optionalProduct(params) {
+    return request({
+      url: url.optionalProduct,
+      method: 'get',
+      params
     })
   },
 }
