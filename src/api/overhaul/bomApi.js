@@ -31,3 +31,20 @@ export function createQrCodeText(num) {
         data: { num }
     })
 }
+//获取物料类别 
+export function getMaterial(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-order/wms-material-class',
+        method: 'post',
+        data: data
+    })
+}
+//获取大部件
+export function getBigComponent(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-order/plm-big-component',
+        method: 'post',
+        data: data
+    })
+}
+

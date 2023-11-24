@@ -436,6 +436,7 @@ export default {
         });
       });
     },
+    //复核
     check() {
       ElMessageBox.confirm("是否确认复核?", "复核", {
         confirmButtonText: "确认",
@@ -447,7 +448,7 @@ export default {
     },
     //切换时二次确认
     changeConfirm() {
-      this.$confirm(`切换模板会永久替换当前已有数据, 是否继续?`, "提示", {
+      this.$confirm(`切换模板会替换当前已有数据, 是否继续?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         closeOnClickModal: false,

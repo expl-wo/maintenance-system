@@ -115,7 +115,7 @@ export default {
     },
   },
   mounted() {
-    this.loadMore();
+    this.selectSearch('');
   },
   methods: {
     //下拉框在关闭时即使什么都没输也会出发该方法
@@ -152,9 +152,10 @@ export default {
         } else if (Object.keys(this.defaultSelectVal).length) {
           return this.defaultSelectVal.value !== item.value;
         }
+        return true
       });
       this.selectOptions = [...this.selectOptions, ...filterOptions];
-      if (this.pageParams.pageNum < totalPage) {
+      if (this.pageParams.pageNum <= totalPage) {
         this.pageParams.pageNum++;
       }
     },

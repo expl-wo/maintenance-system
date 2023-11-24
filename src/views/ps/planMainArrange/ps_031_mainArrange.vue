@@ -1,0 +1,122 @@
+<template>
+  <div class="app-container app-containerC ">
+    <div class="filter-container searchCon">
+      <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
+        <el-form-item label="关键字" size="mini">
+          <el-input v-model="listQuery.search" placeholder="项目名、生产号、图号"
+                    style="width:170px;" @keyup.enter.native="handleSearch" @clear="handleSearch" class="filter-item"
+                    clearable/>
+        </el-form-item>
+        <el-form-item label="状态" size="mini">
+          <xui-dict-select item-code="mainPlanStatus" size="mini" multiple includeAll
+                           v-model="listQuery.status"
+                           style="width:160px;" class="filter-item" clearable></xui-dict-select>
+        </el-form-item>
+        <el-form-item label="计划完工时间:" size="mini" prop="dateCount">
+          <el-date-picker v-model="listQuery.dateGroup" type="monthrange" range-separator="至" :clearable="false"
+                          style="width: 240px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
+        </el-form-item>
+        <el-form-item size="mini">
+          <el-button icon="Search" type="primary" @click="handleSearch">查询</el-button>
+          <el-button @click="handleExpand">查询</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <number-statistical :data-list="list"></number-statistical>
+    <div class="app-container app-containerC preview-chart-wrapper" style="height: calc(100% - 33px)">
+      <div class="preview-gant-chart" ref="chart">
+        <div class="left" :style="{ width: rightLineX + 'px' }" :class="{'is-active':sidebar.opened}">
+          <product-list
+              ref="productListRef"
+              :BGScrollTop = "BGScrollTop"
+              @TableScrollTop="tableScrollTop"
+              @handlerRowClick="handlerRowClick"
+          ></product-list>
+        </div>
+        <gantt-list ref="ganttListRef"></gantt-list>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+export default {
+  name: 'ps_031_mainArrange',
+}
+</script>
+
+<script lang="ts" setup>
+import {defineComponent, computed, onMounted, ref, reactive, nextTick, defineEmits} from "vue";
+import dayjs from 'dayjs'
+import slider from "./components/slider";
+import leftMenu from "./components/productList";
+import {mapWeeksOfyear} from './util/mapWeeksOfyear'
+import planMain from '@/api/plan/planMain'
+import {getDictListByKey} from '@/components/xui/dictionary'
+import {deepClone} from '@/utils'
+
+import ganttList from './components/ganttList.vue'
+import productList from './components/productList.vue'
+import {formatMonthStartDate, formatMonthEndDate} from '@/utils/dateUtil'
+
+const ganttListRef = ref();
+const productListRef = ref();
+const intervalDay = 2;
+const list = ref([]);
+const BGScrollTop = ref(0);
+
+const listQuery = reactive({
+  search: '',
+  dateGroup: [dayjs().format('YYYY-MM-DD'),
+    dayjs().add(intervalDay, 'months').format('YYYY-MM-DD')],
+  status: [],
+  op: "",
+  opStatus: [],
+  workShop: "",
+  workShopProduct: ""
+});
+
+const TableScrollTop = ()=>{
+
+}
+
+const handleShrinkAll = ()=>{
+
+}
+
+const handleExpandAll = ()=>{
+
+}
+
+
+const getParams = () => {
+  let params = {
+    ...listQuery
+  }
+  delete params.dateGroup;
+  params.strDate = formatMonthStartDate(this.listQuery.dateGroup[0]) // 开始日期
+  params.endDate = formatMonthEndDate(this.listQuery.dateGroup[1]) // 结束日期
+  return params;
+}
+
+const getDataList = async () => {
+  let response = await planMain(getParams());
+  list.value = response.data.list;
+  initChildComponent();
+}
+
+const handleSearch = () => {
+  getDataList();
+}
+
+const initChildComponent = ()=>{
+  productListRef.value.init(list.value);
+  ganttListRef.value.init(list.value);
+}
+
+onMounted(() => {
+  handleSearch();
+})
+
+</script>
+

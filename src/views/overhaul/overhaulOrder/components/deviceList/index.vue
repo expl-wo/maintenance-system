@@ -95,7 +95,7 @@
       :total="pageOptions.total"
       v-model:page="pageOptions.pageNum"
       v-model:limit="pageOptions.pageSize"
-      @pagination="getList"
+      @pagination="pageChange"
     />
 
     <!-- 领用人编辑 -->
@@ -179,6 +179,14 @@ export default {
     this.getList();
   },
   methods: {
+                //分页发生改变时
+    pageChange({ limit, page }) {
+      this.pageOptions.pageNum = page;
+      if (limit) {
+        this.pageOptions.pageSize = limit;
+      }
+      this.getList();
+    },
     //发起审核
     handleApproval(row) {
       this.$confirm("确认将该数据发起审核?", "提示", {

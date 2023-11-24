@@ -14,7 +14,7 @@ const WORK_ORDER_MAP = {
     'completionReport': {
         value: 9,
         text: '竣工报告',
-        tagType: 'waning'
+        tagType: 'warning'
     },
     'checkCompletionReport': {
         value: 10,
@@ -51,7 +51,7 @@ const WORK_ORDER_MAP = {
 }
 // 时间轴枚举
 const TIME_LINE = {
-    1: [{
+    0: [{
         content: "指派项目经理",
         timestamp: "",
         otherInfo: "",
@@ -87,7 +87,7 @@ const TIME_LINE = {
         processState: 10,
         isActive: false,
     }],
-    2: [{
+    1: [{
         content: "返厂检修现场拆解",
         timestamp: "",
         otherInfo: "",

@@ -141,9 +141,9 @@
     <pagination
       v-show="pageOptions.total"
       :total="pageOptions.total"
-      :page.sync="pageOptions.pageNum"
-      :limit.sync="pageOptions.pageSize"
-      @pagination="getList"
+      :page="pageOptions.pageNum"
+      :limit="pageOptions.pageSize"
+      @pagination="pageChange"
     />
     <add-modal
       v-if="showAdd"
@@ -347,6 +347,14 @@ export default {
             message: "操作已取消!",
           });
         });
+    },
+   //分页发生改变时
+    pageChange({limit, page}) {
+         this.pageOptions.pageNum = page;
+        if (limit) {
+          this.pageOptions.pageSize = limit;
+        }
+        this.getList()
     },
     async getList() {
       this.listLoading = true;
