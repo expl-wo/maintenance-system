@@ -1,10 +1,10 @@
 <template>
   <div class="app-container order-list-box" v-if="!showInfo">
     <el-row class="mrb15" type="flex" align="middle" justify="start">
-      <el-button size="small" type="primary" @click="getList">
+      <el-button  type="primary" @click="getList">
         <el-icon  class="el-icon--left"><Refresh /></el-icon> 根据BOM同步
       </el-button>
-      <el-button size="small" type="primary" @click="getList">
+      <el-button  type="primary" @click="getList">
         <el-icon  class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
     </el-row>
@@ -12,7 +12,7 @@
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
+      
       style="width: 100%"
       height="510px"
     >
@@ -23,7 +23,7 @@
           v-if="item.prop === 'operation'"
         >
           <template #default="{ row }">
-            <el-button size="small" type="primary" title="复核">
+            <el-button  type="primary" title="复核">
               <el-icon ><Stamp /></el-icon>
             </el-button>
           </template>

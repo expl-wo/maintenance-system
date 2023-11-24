@@ -17,12 +17,12 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item size="small" label="模板名称" prop="name">
+            <el-form-item  label="模板名称" prop="name">
               <el-input v-model="templateFrom.name"> </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item size="small" label="模板类型" prop="type">
+            <el-form-item  label="模板类型" prop="type">
               <el-select v-model="templateFrom.type" placeholder="请选择">
                 <el-option
                   v-for="item in docTypeList"
@@ -41,9 +41,9 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button size="small" @click="handleClose">取 消</el-button>
+        <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          size="small"
+          
           type="primary"
           :loading="loading"
           @click="handleConfirm"

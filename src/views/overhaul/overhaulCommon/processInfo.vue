@@ -13,7 +13,7 @@
         <div class="process-content-left-title">工序结构</div>
         <div class="process-content-left-search">
           <el-input
-            size="small"
+            
             placeholder="输入关键字进行过滤"
             v-model="filterText"
           >
@@ -40,7 +40,7 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            size="small"
+            
             :disabled="isPause"
             @click="openModal(1, 'distributeModalFlag')"
           >
@@ -50,7 +50,7 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            size="small"
+            
             :disabled="isPause"
             @click="openModal(2, 'distributeModalFlag')"
           >
@@ -60,7 +60,7 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            size="small"
+            
             :disabled="isPause"
             @click="openModal(3, 'distributeModalFlag')"
           >
@@ -70,7 +70,7 @@
         </div>
         <div class="operate-wrap" v-else>
           <el-button
-            size="small"
+            
             type="primary"
             :disabled="isPause"
             title="保存"
@@ -79,7 +79,7 @@
             <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
           </el-button>
           <el-button
-            size="small"
+            
             type="primary"
             :disabled="isPause"
             title="发起审核"
@@ -98,7 +98,13 @@
             {{ REPORT_CHECK_STATUS[workTreeStatus].label }}
           </el-tag>
         </div>
-        <el-table :data="tableData" stripe size="small" style="width: 100%">
+        <el-table
+          :data="tableData"
+          stripe
+          
+          style="width: 100%"
+          show-overflow-tooltip
+        >
           <template v-for="item in columns">
             <el-table-column
               :key="item.prop"
@@ -108,7 +114,7 @@
               <template #default="{ row }">
                 <el-button
                   v-if="btnRoleList.includes('addBtn')"
-                  size="small"
+                  
                   type="primary"
                   title="添加问题"
                   :disabled="isPause"
@@ -118,7 +124,7 @@
                 </el-button>
                 <!-- 只有叶子节点有复核 -->
                 <el-button
-                  size="small"
+                  
                   type="primary"
                   :disabled="isPause"
                   v-if="
@@ -148,7 +154,6 @@
             <el-table-column
               :key="item.prop"
               v-bind="item"
-              show-overflow-tooltip
               v-else
             ></el-table-column>
           </template>
@@ -539,6 +544,7 @@ export default {
      * 获取树的 数据
      */
     getTreeData() {
+      this.oldTemplateChoose = this.templateChoose;
       this.treeData = testTreeData;
       if (!this.templateChoose) return;
       this.treeLoading = true;

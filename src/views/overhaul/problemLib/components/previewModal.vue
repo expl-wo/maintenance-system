@@ -10,7 +10,7 @@
     <span>这是一段信息</span>
     <template #footer>
       <span  class="dialog-footer">
-      <el-button size="small" type="primary" @click="handleClose">确 定</el-button>
+      <el-button  type="primary" @click="handleClose">确 定</el-button>
     </span>
     </template>
   </el-dialog>

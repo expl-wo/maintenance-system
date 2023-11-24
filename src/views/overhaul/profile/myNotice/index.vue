@@ -5,7 +5,7 @@
         <el-form-item label="通知接收时间">
           <el-date-picker
             v-model="searchForm.receiveTime"
-            size="small"
+            
             type="datetimerange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -15,31 +15,31 @@
         </el-form-item>
         <el-form-item label="通知标题">
           <el-input
-            size="small"
+            
             placeholder="请输入"
             v-model="searchForm.searchKey"
           >
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="onSearch"
+          <el-button type="primary"  @click="onSearch"
             ><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button
           >
           <el-button
             type="primary"
-            size="small"
+            
             :disabled="disabled"
             @click="markAll(true)"
             >全部标记为已读</el-button
           >
           <el-button
             type="primary"
-            size="small"
+            
             :disabled="disabled"
             @click="markAll(false)"
             >全部标记为未读</el-button
           >
-          <el-button type="primary" size="small" @click="searchAll"
+          <el-button type="primary"  @click="searchAll"
             >搜索所有通知</el-button
           >
         </el-form-item>
@@ -101,7 +101,6 @@
             <el-button-group>
               <el-button
                 type="primary"
-
                 title="查看"
                 @click="watchDeatail(scope.row)"
                 ><el-icon><View /></el-icon

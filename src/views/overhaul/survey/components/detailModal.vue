@@ -50,7 +50,7 @@
           >
             <template v-if="item.key === 'orderStatus'">
               <el-tag
-                size="small"
+                
                 :type="WORK_ORDER_STATUS[item.value].tagType"
                 >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
               >
@@ -76,7 +76,7 @@
         <div class="el-descriptions__title" style="fontsize: 14px">
           现场勘查
           <el-button
-            size="small"
+            
             v-if="[WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
             title="工序指派"
             type="primary"

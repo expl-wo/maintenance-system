@@ -5,7 +5,7 @@
         <el-form-item label="任务接收时间">
           <el-date-picker
             v-model="searchForm.receiveTime"
-            size="small"
+            
             type="datetimerange"
             range-separator="至"
             start-placeholder="开始日期"
@@ -15,15 +15,15 @@
         </el-form-item>
         <el-form-item label="工单名">
           <el-input
-            size="small"
+            
             placeholder="请输入"
             v-model="searchForm.searchKey"
           >
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="onSearch"><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button>
-          <el-button type="primary" size="small" @click="searchAll">搜索所有任务</el-button>
+          <el-button type="primary"  @click="onSearch"><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button>
+          <el-button type="primary"  @click="searchAll">搜索所有任务</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -243,8 +243,6 @@ export default {
       display: inline;
     }
   }
-}
-.pagination-wrapper {
 }
 .search-wrapper ::v-deep(.el-form-item) {
   margin-bottom: 0;

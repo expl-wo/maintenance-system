@@ -3,20 +3,20 @@
     <div class="search-wrapper">
       <el-form :inline="true">
         <el-form-item label="模板名称">
-          <el-input size="small" v-model="searchKey" />
+          <el-input  v-model="searchKey" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" size="small" @click="onSearch">
+          <el-button type="primary"  @click="onSearch">
             <el-icon class="el-icon--left"><Search /></el-icon> 查询</el-button
           >
           <el-button
             type="primary"
-            size="small"
+            
             @click="openModal(null, null, 'add')"
           >
             <el-icon class="el-icon--left"><Plus /></el-icon>新增</el-button
           >
-          <!-- <el-button icon="el-icon-delete" type="danger" size="small" :disabled="disabled" @click="batchDelete">删除</el-button> -->
+          <!-- <el-button icon="el-icon-delete" type="danger"  :disabled="disabled" @click="batchDelete">删除</el-button> -->
         </el-form-item>
       </el-form>
     </div>
@@ -48,7 +48,6 @@
             <el-button-group>
               <el-button
                 type="primary"
-
                 title="查看"
                 @click="openModal(scope.$index, scope.row, 'preview')"
               >
@@ -56,7 +55,6 @@
               ></el-button>
               <el-button
                 type="primary"
-
                 title="编辑"
                 @click="openModal(scope.$index, scope.row, 'add')"
               >
@@ -64,14 +62,12 @@
               ></el-button>
               <el-button
                 type="primary"
-
                 title="复制"
                 @click="openModal(scope.$index, scope.row, 'copy')"
                 ><el-icon><DocumentCopy /></el-icon
               ></el-button>
               <el-button
                 type="danger"
-
                 title="删除"
                 @click="singleDel(scope.$index, scope.row)"
                 ><el-icon><Delete /></el-icon

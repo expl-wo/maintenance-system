@@ -50,7 +50,7 @@
           >
             <template v-if="item.key === 'orderStatus'">
               <el-tag
-                size="small"
+                
                 :type="WORK_ORDER_STATUS[item.value].tagType"
                 >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
               >
@@ -77,7 +77,7 @@
           >
             <el-button
               v-if="!item.hiddenAssign"
-              size="small"
+              
               title="工序指派"
               type="primary"
               @click="openModal(item, 'showAppoint')"

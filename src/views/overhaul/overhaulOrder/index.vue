@@ -1,46 +1,37 @@
 <template>
   <div class="app-container order-list-box">
-    <el-row class="mrb15" type="flex" align="middle" justify="start">
-      <span class="mrl10">生产号:</span>
-      <el-input
-        size="small"
-        style="width: unset"
-        v-model="queryParams.prodNumber"
-        clearable
-        @keyup.enter="handleFilter"
-      />
-      <span class="mrl25">项目名称:</span
-      ><el-input
-        size="small"
-        style="width: unset"
-        v-model="queryParams.projName"
-        clearable
-        @keyup.enter="handleFilter"
-      />
-
-      <el-button
-        size="small"
-        class="mrl25"
-        type="primary"
-        @click="handleFilter"
-      >
-        <el-icon class="el-icon--left"><Search /></el-icon> 查询
-      </el-button>
-      <el-button
-        :disabled="!selectRowList.length"
-        size="small"
-        title="删除"
-        type="danger"
-        @click="handleDelete(null)"
-      >
-        <el-icon class="el-icon--left"><Delete /></el-icon> 删除
-      </el-button>
-    </el-row>
+    <el-form :inline="true">
+      <el-form-item label="生产号">
+        <el-input
+          v-model="queryParams.prodNumber"
+          clearable
+          @keyup.enter="handleFilter"
+      /></el-form-item>
+      <el-form-item label="项目名称">
+        <el-input
+          v-model="queryParams.projName"
+          clearable
+          @keyup.enter="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleFilter">
+          <el-icon class="el-icon--left"><Search /></el-icon> 查询
+        </el-button>
+        <el-button
+          :disabled="!selectRowList.length"
+          title="删除"
+          type="danger"
+          @click="handleDelete(null)"
+        >
+          <el-icon class="el-icon--left"><Delete /></el-icon> 删除
+        </el-button>
+      </el-form-item>
+    </el-form>
     <el-table
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
       border
       fit
       highlight-current-row
@@ -61,7 +52,6 @@
               <el-button-group>
                 <!-- 一直能操作 -->
                 <el-button
-                  size="small"
                   title="编辑"
                   type="primary"
                   :disabled="
@@ -72,7 +62,6 @@
                   <el-icon><Edit /></el-icon>
                 </el-button>
                 <el-button
-                  size="small"
                   title="详情"
                   type="primary"
                   @click="openModal(row, 'showInfo')"
@@ -86,14 +75,12 @@
                       row.orderStatus
                     )
                   "
-                  size="small"
                   title="删除"
                   type="danger"
                   @click="handleDelete(row)"
                   ><el-icon><Delete /></el-icon>
                 </el-button>
                 <el-button
-                  size="small"
                   title="结束"
                   type="danger"
                   :disabled="
@@ -348,13 +335,13 @@ export default {
           });
         });
     },
-   //分页发生改变时
-    pageChange({limit, page}) {
-         this.pageOptions.pageNum = page;
-        if (limit) {
-          this.pageOptions.pageSize = limit;
-        }
-        this.getList()
+    //分页发生改变时
+    pageChange({ limit, page }) {
+      this.pageOptions.pageNum = page;
+      if (limit) {
+        this.pageOptions.pageSize = limit;
+      }
+      this.getList();
     },
     async getList() {
       this.listLoading = true;

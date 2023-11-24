@@ -1,48 +1,35 @@
 <template>
   <div class="full-content">
     <div class="table-top">
-      <div class="search-wrapper">
-        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-          <el-form-item label="姓名">
-            <el-input
-              size="small"
-              placeholder="请输入"
-              v-model="searchForm.userName"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item label="工号">
-            <el-input
-              size="small"
-              placeholder="请输入"
-              v-model="searchForm.userCode"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item label="签到时间">
-            <el-date-picker
-              v-model="searchForm.signInTime"
-              size="small"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            >
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item class="mr0">
-            <el-button
-              type="primary"
-              size="small"
-              @click="onSearch"
-              ><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button
-            >
-            <el-button type="primary" size="small" @click="onReset"
-              > <el-icon class="el-icon--left"><RefreshLeft /></el-icon> 重置</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+        <el-form-item label="姓名">
+          <el-input placeholder="请输入" v-model="searchForm.userName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="工号">
+          <el-input placeholder="请输入" v-model="searchForm.userCode">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="签到时间">
+          <el-date-picker
+            v-model="searchForm.signInTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item class="mr0">
+          <el-button type="primary" @click="onSearch"
+            ><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button
+          >
+          <el-button type="primary" @click="onReset">
+            <el-icon class="el-icon--left"><RefreshLeft /></el-icon>
+            重置</el-button
+          >
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-wrapper">
       <el-table
@@ -182,9 +169,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    .search-wrapper {
-      margin-left: auto;
-    }
   }
   .table-wrapper {
     position: relative;

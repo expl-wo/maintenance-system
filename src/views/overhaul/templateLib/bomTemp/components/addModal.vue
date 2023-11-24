@@ -128,7 +128,7 @@
                 <el-button
                   class="mr12"
                   type="primary"
-                  size="small"
+                  
                   :loading="confirmLoading"
                   @click.stop="confirm"
                   >{{ isAddNode ? "添加" : "修改" }}</el-button
@@ -141,9 +141,9 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button size="small" @click="handleClose">取 消</el-button>
+        <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          size="small"
+          
           type="primary"
           :loading="loading"
           @click="handleConfirm"

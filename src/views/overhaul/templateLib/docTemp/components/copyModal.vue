@@ -15,7 +15,7 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form-item size="small" label="模板名称" prop="templateName">
+          <el-form-item  label="模板名称" prop="templateName">
             <el-input v-model="copyForm.templateName"> </el-input>
           </el-form-item>
         </el-col>
@@ -23,9 +23,9 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button size="small" @click="handleClose">取 消</el-button>
+        <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          size="small"
+          
           type="primary"
           :loading="loading"
           @click="handleConfirm"

@@ -17,7 +17,7 @@
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
+      
       style="width: 100%"
       height="510px"
       @selection-change="handleSelectionChange"

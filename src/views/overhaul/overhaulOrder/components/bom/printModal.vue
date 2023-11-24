@@ -11,7 +11,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      size="small"
+      
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

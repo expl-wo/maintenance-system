@@ -13,7 +13,7 @@
       :model="form"
       :rules="rules"
       label-position="right"
-      size="small"
+      
       label-width="120px"
     >
       <el-row

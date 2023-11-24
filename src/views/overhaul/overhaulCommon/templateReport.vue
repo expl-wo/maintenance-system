@@ -8,9 +8,9 @@
   >
     <el-row type="flex" justify="start">
       <el-col :span="4">
-        模板选择：<el-select
+        模板选择 <el-select
           :disabled="isBtnDisabled"
-          size="small"
+          
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
@@ -28,7 +28,7 @@
         <el-button
           v-if="isHiddenHeader"
           type="primary"
-          size="small"
+          
           :disabled="isBtnDisabled"
           @click="saveFile"
         >
@@ -37,7 +37,7 @@
         <el-button
           v-if="isHiddenHeader"
           type="primary"
-          size="small"
+          
           :disabled="isBtnDisabled"
           @click="checkFile"
         >
@@ -45,7 +45,7 @@
         </el-button>
         <el-button
           type="primary"
-          size="small"
+          
           :disabled="isBtnDisabled"
           @click="downLoadFile"
         >
@@ -63,7 +63,7 @@
           :auto-upload="true"
           accept=".doc,.docx,.pdf"
         >
-          <el-button size="small" type="primary" :disabled="isBtnDisabled"
+          <el-button  type="primary" :disabled="isBtnDisabled"
             ><el-icon class="el-icon--left"><UploadFilled /></el-icon
             >上传</el-button
           >

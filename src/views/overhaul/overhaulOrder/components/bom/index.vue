@@ -34,7 +34,7 @@
         >
           <template #extra>
             <el-button
-              size="small"
+              
               type="primary"
               @click="openModal('showPrint')"
               >打印二维码</el-button
@@ -59,7 +59,7 @@
                 :on-exceed="onExceed"
                 :show-file-list="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button  type="primary">点击上传</el-button>
                 <template #tip>
                   <div class="el-upload__tip">
                     只能上传图片，且不超过30M/最多上传{{ MAX_IMG_NUM }}张
@@ -140,11 +140,6 @@ export default {
       printWin: null, //打印二维码窗口
     };
   },
-  watch: {
-    templateChoose(newval, oldval) {
-      this.oldTemplateChoose = oldval;
-    },
-  },
   created() {
     //默认模板回显
     this.defaultSelectVal = {
@@ -214,6 +209,7 @@ export default {
         });
     },
     async getTreeData() {
+      this.oldTemplateChoose = this.templateChoose;
       if (!this.templateChoose) {
         this.treeData = [];
         return;

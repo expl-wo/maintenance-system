@@ -30,7 +30,7 @@ const COMMOM_WORK_ORDER_MAP = {
 const COMMON_PROCESS_COLUMNS_MAP = {
     //工序
     0: [
-        { type: "selection", width: 30 },
+        { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "measureName",
             label: "标准工序名称",
@@ -67,7 +67,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     ],
     //中工序
     1: [
-        { type: "selection", width: 30 },
+        { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "subProcessName",
             label: "中工序名称",
@@ -88,7 +88,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     ],
     //工步
     2: [
-        { type: "selection", width: 30 },
+        { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "processRowName",
             label: "工步名称",

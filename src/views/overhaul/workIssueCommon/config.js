@@ -1,5 +1,5 @@
 export const ISSUE_COLUMNS = [
-    { type: "selection", width: 50, align: "center" },
+    { type: "selection", width: 30, "show-overflow-tooltip": false },
     {
         prop: "id",
         label: "序号",
@@ -46,5 +46,11 @@ export const ISSUE_COLUMNS = [
         label: "通知人",
         align: "center",
 
-    }
+    },
+    {
+        prop: "operation",
+        label: "操作",
+        align: "center",
+        fixed: "right"
+    },
 ]

@@ -1,11 +1,9 @@
 <template>
   <div class="app-container order-list-box">
-    <el-row class="mrb15" type="flex" align="middle" justify="start">
-      <div class="mrl10">
-        上报时间:
+    <el-form :inline="true">
+      <el-form-item label="上报时间">
         <el-date-picker
           v-model="queryParams.time"
-          size="small"
           type="datetimerange"
           :picker-options="pickerOptions"
           range-separator="至"
@@ -14,15 +12,9 @@
           align="right"
         >
         </el-date-picker>
-      </div>
-      <div class="mrl10">
-        问题类别:
-        <el-select
-          size="small"
-          v-model="queryParams.issue"
-          class="filter-item"
-          placeholder="请选择"
-        >
+      </el-form-item>
+      <el-form-item label="问题类别">
+        <el-select v-model="queryParams.issue" placeholder="请选择">
           <el-option
             v-for="item in issueOptions"
             :key="item.value"
@@ -30,33 +22,73 @@
             :value="item.value"
           />
         </el-select>
-      </div>
-      <div class="mrl10">
-        问题所属/提交人:
-        <el-input
-          size="small"
-          v-model="queryParams.searchKey"
-          style="width: 220px"
-          @keyup.enter="handleFilter"
-        />
-      </div>
-      <el-button size="small" class="mrl25" type="primary" @click="getList">
-        <el-icon class="el-icon--left"><Search /></el-icon> 查询
-      </el-button>
-    </el-row>
+      </el-form-item>
+      <el-form-item label="问题所属/提交人">
+        <el-input v-model="queryParams.searchKey" @keyup.enter="handleFilter" />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getList">
+          <el-icon class="el-icon--left"><Search /></el-icon> 查询
+        </el-button></el-form-item
+      >
+    </el-form>
+
     <el-table
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
       style="width: 100%"
       height="550"
       show-overflow-tooltip
     >
       <template v-for="item in ISSUE_COLUMNS" :key="item.prop">
-        <el-table-column v-bind="item"></el-table-column>
+        <el-table-column
+          :key="item.prop"
+          v-bind="item"
+          v-if="item.prop === 'operation'"
+        >
+          <template #default="{ row }">
+            <el-button-group>
+              <el-button
+                type="primary"
+                title="图片"
+                @click="openModal(row, 'imgModal')"
+              >
+                <el-icon><PictureFilled /></el-icon>
+              </el-button>
+              <el-button
+                type="primary"
+                title="视频"
+                @click="openModal(row, 'videoModal')"
+              >
+                <el-icon><VideoCameraFilled /></el-icon>
+              </el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+        <el-table-column v-else v-bind="item"></el-table-column>
       </template>
     </el-table>
+    <el-image-viewer
+      v-if="imgModal"
+      :url-list="imgViewerList"
+      @close="imgModal = false"
+    ></el-image-viewer>
+    <!-- 视频预览 -->
+    <el-dialog
+      title="视频预览"
+      :model-value="videoModal"
+      :destroy-on-close="true"
+    >
+      <div>
+        <video
+          style="width: 100%"
+          height="500"
+          controls="controls"
+          :src="videoUrl"
+        ></video>
+      </div>
+    </el-dialog>
     <pagination
       v-show="pageOptions.total"
       :total="pageOptions.total"
@@ -71,13 +103,21 @@
 import dayjs from "dayjs";
 import Pagination from "@/components/Pagination"; // 分页
 import { ISSUE_COLUMNS } from "./config.js";
-import { Search } from "@element-plus/icons-vue";
+import {
+  Search,
+  PictureFilled,
+  VideoCameraFilled,
+} from "@element-plus/icons-vue";
 export default {
   name: "IssueTable",
-  components: { Pagination, Search },
+  components: { Pagination, Search, PictureFilled, VideoCameraFilled },
 
   data() {
     return {
+      imgModal: false,
+      imgViewerList: [], //预览图片url
+      videoModal: false,
+      videoUrl: "",
       ISSUE_COLUMNS: Object.freeze(ISSUE_COLUMNS),
       //日期选择框
       pickerOptions: {
@@ -135,6 +175,23 @@ export default {
     this.getList();
   },
   methods: {
+    //打开弹窗
+    openModal(row, modalName) {
+      this[modalName] = true;
+      if (modalName === "imgModal") {
+        this.imgViewerList = [
+          "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+          "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
+          "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
+          "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
+          "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
+          "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
+          "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
+        ];
+      } else {
+        this.videoUrl = "https://www.w3cschool.cn/statics/demosource/movie.mp4";
+      }
+    },
     //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
