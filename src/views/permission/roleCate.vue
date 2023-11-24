@@ -7,14 +7,13 @@
           <el-input v-model="listQuery.cName" placeholder="角色分类" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
+          <el-button icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
-
     <el-table
       :data="tableData"
       :border="true"
@@ -51,22 +50,20 @@
         label="操作"
       >
         <template v-slot="scope">
-          <el-button
-
-            plain
-            type="primary"
-            icon="Edit"
-            @click = "editRole(scope.row)"
-          >
-          </el-button>
-          <el-button
-
-            plain
-            type="danger"
-            icon="Delete"
-            @click="deleteRole(scope.row)"
-          >
-          </el-button>
+          <el-button-group>
+            <el-button
+                type="primary"
+                icon="Edit"
+                @click = "editRole(scope.row)"
+            >
+            </el-button>
+            <el-button
+                type="danger"
+                icon="Delete"
+                @click="deleteRole(scope.row)"
+            >
+            </el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
@@ -80,13 +77,13 @@
       @current-change="handleCurrentChange"
     />
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
-      <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
+    <el-dialog v-dialogDrag  width="700" :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
+      <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="分类名称:" prop="name">
-          <el-input v-model="listUpdate.cName" placeholder="角色名称" style="width: 320px;" class="filter-item" />
+          <el-input v-model="listUpdate.cName" placeholder="角色名称" class="filter-item" />
         </el-form-item>
         <el-form-item label="分类描述:" prop="desc">
-          <el-input v-model="listUpdate.cIntro" placeholder="角色介绍" style="width: 320px;" class="filter-item" />
+          <el-input type="textarea" v-model="listUpdate.cIntro" placeholder="角色介绍"  class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>

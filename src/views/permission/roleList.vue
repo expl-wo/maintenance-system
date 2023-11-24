@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
+          <el-button icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
@@ -77,36 +77,36 @@
         label="操作"
       >
         <template v-slot="scope">
-          <el-button
+          <el-button-group>
+            <el-button
 
-            plain
-            type="primary"
-            @click="includeEditPermission(scope.row)"
-          >包含权限编辑
-          </el-button>
-          <el-button
+                plain
+                type="primary"
+                @click="includeEditPermission(scope.row)"
+            >包含权限编辑
+            </el-button>
+            <el-button
+                plain
+                type="primary"
+                @click="queryPermission(scope.row)"
+            >查看
+            </el-button>
+            <el-button
 
-            plain
-            type="primary"
-            @click="queryPermission(scope.row)"
-          >查看
-          </el-button>
-          <el-button
-
-            plain
-            icon="Edit"
-            type="primary"
-            @click="editPermission(scope.row)"
-          >
-          </el-button>
-          <el-button
-
-            plain
-            icon="Delete"
-            type="danger"
-            @click="deletePermission(scope.row)"
-          >
-          </el-button>
+                plain
+                icon="Edit"
+                type="primary"
+                @click="editPermission(scope.row)"
+            >
+            </el-button>
+            <el-button
+                plain
+                icon="Delete"
+                type="danger"
+                @click="deletePermission(scope.row)"
+            >
+            </el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
