@@ -124,7 +124,6 @@ const handlerWatchScroll = () => {
 }
 
 const handleScroll = position => {
-  debugger
   emits("tableScrollTop", position);
 }
 

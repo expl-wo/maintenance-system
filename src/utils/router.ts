@@ -150,8 +150,9 @@ router.beforeEach((to, from, next) => {
                         path: "/login",
                     })
                 })
+            }else{
+                next();
             }
-            next();
         }
     }
 });
