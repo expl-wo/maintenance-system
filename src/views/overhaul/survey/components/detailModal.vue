@@ -1,22 +1,6 @@
 <template>
   <div class="detail-box">
-    <!-- 固定锚点 -->
-    <div class="affix-box">
-      <div class="affix-anchor-box">
-        <div class="affix-anchor" v-if="isOpen">
-          <el-tree
-            :data="affixTreeData"
-            @node-click="toViewMenu"
-            highlight-current
-            default-expand-all
-          />
-        </div>
-        <el-button @click="isOpen = !isOpen"
-          ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
-          <el-icon v-else size="22"> <Fold /></el-icon>
-        </el-button>
-      </div>
-    </div>
+    <affix-anchor :affixTreeData="affixTreeData" v-model:activeName="activeName"/>
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -128,12 +112,14 @@ import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import AffixAnchor from '@/views/overhaul/overhaulCommon/affixAnchor'
 import dayjs from "dayjs";
 export default {
   components: {
     ProcessInfo,
     TimeLine,
     MarkerRecord,
+    AffixAnchor,
     DispatchModal,
     VideoMark,
     SurveyReport,
@@ -232,22 +218,6 @@ export default {
         this.dealProcess(data.timelineList);
       } catch (error) {
         // this.handleClose(true);
-      }
-    },
-    /**
-     * 锚点定位
-     */
-    toViewMenu(node) {
-      let dom = document.querySelector(`#${node.anchorId}`);
-      if (dom) {
-        dom.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        });
-        if (node.tabName) {
-          this.activeName = node.tabName;
-        }
       }
     },
     /**
@@ -386,29 +356,6 @@ $conent-padding: 15px;
 }
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
-}
-.affix-box {
-  height: 0;
-  text-align: right;
-  position: fixed;
-  top: 300px;
-  right: 100px;
-  z-index: 1000;
-  .affix-anchor-box {
-    display: inline-block;
-    position: relative;
-  }
-  .affix-anchor {
-    display: inline-block;
-    position: absolute;
-    width: 170px;
-    height: fit-content;
-    top: 25px;
-    right: 0px;
-    background-color: #ffffff;
-    box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
-    border-radius: 4px;
-  }
 }
 .detail-box {
   width: 100%;

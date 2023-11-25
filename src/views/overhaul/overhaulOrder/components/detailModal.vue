@@ -1,22 +1,6 @@
 <template>
   <div class="detail-box">
-    <!-- 固定锚点 -->
-    <div class="affix-box">
-      <div class="affix-anchor-box">
-        <div class="affix-anchor" v-if="isOpen">
-          <el-tree
-            :data="affixTreeData"
-            @node-click="toViewMenu"
-            highlight-current
-            default-expand-all
-          />
-        </div>
-        <el-button @click="isOpen = !isOpen"
-          ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
-          <el-icon v-else size="22"> <Fold /></el-icon>
-        </el-button>
-      </div>
-    </div>
+    <affix-anchor :affixTreeData="affixTreeData" v-model:activeName="activeName"/>
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -49,11 +33,9 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag
-                
-                :type="WORK_ORDER_STATUS[item.value].tagType"
-                >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
-              >
+              <el-tag :type="WORK_ORDER_STATUS[item.value].tagType">{{
+                WORK_ORDER_STATUS[item.value].text
+              }}</el-tag>
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
               <file-list
@@ -83,15 +65,6 @@
             >
               <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
             </el-button>
-            <!-- <span slot="label"
-              >{{ item.label }}
-              <i
-                v-if="!item.hiddenAssign"
-                class="el-icon-thumb"
-                title="派工"
-                @click.stop="openModal(item, 'showAppoint')"
-              ></i>
-            </span> -->
             <!-- 中间件 -->
             <middle-ware
               v-else
@@ -122,18 +95,18 @@ import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指
 import MiddleWare from "../modules/middleWare.vue";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
-import { TAB_LIST_MAP,TAB_LIST_OUT } from "../config";
-import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
+import { TAB_LIST_MAP, TAB_LIST_OUT } from "../config";
+import { Pointer } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import AffixAnchor from '@/views/overhaul/overhaulCommon/affixAnchor.vue'
 import dayjs from "dayjs";
 export default {
   components: {
+    AffixAnchor,
     MiddleWare,
     TimeLine,
     DispatchModal,
     Pointer,
-    Expand,
-    Fold,
     FileList,
   },
   props: {
@@ -192,6 +165,7 @@ export default {
     },
   },
   methods: {
+
     //初始化详情
     async init() {
       try {
@@ -209,36 +183,17 @@ export default {
       this.dealTabList(); //获取当前用户的工序权限
     },
     /**
-     * 锚点定位
-     */
-    toViewMenu(node) {
-      let dom = document.querySelector(`#${node.anchorId}`);
-      if (dom) {
-        dom.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        });
-        if (node.tabName) {
-          this.activeName = node.tabName;
-        }
-      }
-    },
-    /**
      * 获取当前用户的工序权限
      */
     dealTabList() {
-       this.tabList =TAB_LIST_OUT
-       return
       //现场检修
       if (this.overhaulType === 0) {
-        this.tabList =TAB_LIST_OUT.slice(0, 2);
-
-
-
+        this.tabList = TAB_LIST_OUT.slice(0, 2);
       } else {
         //返厂检修
-        this.tabList = TAB_LIST_OUT.filter((item) => item.name !== "siteOverhaul");
+        this.tabList = TAB_LIST_OUT.filter(
+          (item) => item.name !== "siteOverhaul"
+        );
       }
     },
     /**
@@ -391,29 +346,6 @@ $conent-padding: 15px;
 }
 ::v-deep(.el-tabs__content) {
   min-height: 660px;
-}
-.affix-box {
-  height: 0;
-  text-align: right;
-  position: fixed;
-  top: 300px;
-  right: 100px;
-  z-index: 1000;
-  .affix-anchor-box {
-    display: inline-block;
-    position: relative;
-  }
-  .affix-anchor {
-    display: inline-block;
-    position: absolute;
-    width: 170px;
-    height: fit-content;
-    top: 25px;
-    right: 0px;
-    background-color: #ffffff;
-    box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
-    border-radius: 4px;
-  }
 }
 .detail-box {
   width: 100%;
