@@ -112,6 +112,7 @@ const nowDayObj = reactive({}) as any;
 const isShowMsg = ref(false);
 const isHover = ref(false);
 const listRefs = ref({}) as any;
+const currentRow = ref({}) as any;
 const ganttDateRef = ref();
 const lineBGRef = ref();
 const showLegend = ref();
@@ -298,6 +299,33 @@ const handleGoToday = () => {
   }
 }
 
+const findItemById = id=>{
+  return computedList.value.find(item=>{
+    return item.id === id;
+  })
+}
+
+const handlerRowClick = (row) => {
+  let selectedItem = findItemById(row.id);
+  if(!selectedItem){
+    return;
+  }
+  Object.assign(currentRow, selectedItem);
+  let rightSpace = 160;
+  let chartDateWidth = ganttDateRef.value.clientWidth;
+  let rowRightContent = selectedItem.left + selectedItem.widthChild;
+  let moveLeft = 0;
+  if (rowRightContent > (chartDateWidth - rightSpace)) {
+    moveLeft = rowRightContent - (chartDateWidth - rightSpace);
+  } else {
+    moveLeft = 0
+  }
+  ganttDateRef.value.scrollTo({
+    left: moveLeft,
+    behavior: "smooth"
+  });
+}
+
 const handlerExpand = (row, expand) => {
   let rowIndex = computedList.value.findIndex(item => {
     return item.id == row.id;
@@ -413,16 +441,18 @@ const init = (list, dates) => {
   let tempList = formatDataList(list);
   setComputedList(tempList);
 }
-defineExpose({
-  init,
-  handleToggleExpandAll
-})
-onMounted(()=>{
-  setTimeout(()=>{
+
+onMounted(() => {
+  setTimeout(() => {
     showLegend.value = true;
   }, 1000)
 })
 
+defineExpose({
+  init,
+  handleToggleExpandAll,
+  handlerRowClick
+})
 </script>
 
 <style scoped lang="scss">

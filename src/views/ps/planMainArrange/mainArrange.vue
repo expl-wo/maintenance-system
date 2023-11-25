@@ -79,7 +79,11 @@ const listQuery = reactive({
 });
 
 const TableScrollTop = () => {
+}
 
+const handlerRowClick = row => {
+  debugger
+  ganttListRef.value.handlerRowClick(row);
 }
 
 const handleToggleExpand = () => {

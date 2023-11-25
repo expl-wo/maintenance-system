@@ -6,7 +6,7 @@
           :data="dataList"
           border stripe
           size="medium"
-          style="width: 100%;font-size: 0.7rem"
+          class="el-table__row-pointer"
           height="100%"
           default-expand-all
           highlight-current-row
@@ -56,9 +56,12 @@
         <el-table-column
             header-align="center"
             align="center"
-            label="生产状态"
-            property="stateName"
+            label="生产进度"
+            property="processStatus"
             width="110">
+          <template #default="{row}">
+            <xui-dictionary itemCode="processStatus" :code="row.processStatus"></xui-dictionary>
+          </template>
         </el-table-column>
         <el-table-column
             header-align="center"
@@ -122,21 +125,21 @@ const handlerWatchScroll = () => {
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
   if (column.property === 'processStatus') {
     //从字典中获取数据
-    return transformDictDetail(column.property, row[column.property], 'remark')
+    return transformDictDetail('processStatus', row.processStatus, 'remark')
   } else {
     return ''
   }
 }
 
 const toggleRowExpansion = (isExpansion) => {
-  this.toggleRowExpansion_forAll(dataList.value, isExpansion);
+  toggleRowExpansion_forAll(dataList.value, isExpansion);
 }
 
 const toggleRowExpansion_forAll = (data, isExpansion) => {
   data.forEach(item => {
     tableRef.value.toggleRowExpansion(item, isExpansion);
     if (item.children != undefined && item.children != null) {
-      this.toggleRowExpansion_forAll(item.children, isExpansion);
+      toggleRowExpansion_forAll(item.children, isExpansion);
     }
   })
 }
@@ -146,9 +149,8 @@ const handlerSelect = (row) => {
 }
 
 const handlerRowClick = (row, column) => {
-  if (row.type != 3) {
+  debugger
     emits("handlerRowClick", row);
-  }
 }
 
 const setScroll = (scrollTop) => {
@@ -162,7 +164,7 @@ const setFirstRowSelected = () => {
   }
 }
 
-const handleToggleExpandAll = expand =>{
+const handleToggleExpandAll = expand => {
   toggleRowExpansion(expand);
 }
 

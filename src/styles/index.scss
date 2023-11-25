@@ -9,48 +9,48 @@
 @mixin colorBg{
   //冻结的行状态
   .trFrozenStatus{
-    background: #ec808d;
-  }
-  .forbidden{
-    background: #4DCBBF;
+    background: #ec808d!important;
   }
   //重要
   .cellImportant{
-    background: #00ffff;
+    background: #00ffff!important;
   }
   //紧急
   .cellUrgent{
-    background: #ffff00;
+    background: #ffff00!important;
   }
   //进度提前
   .celladvance{
-    background: #04f21c;
+    background: #beedc7!important;
   }
   //进度滞后
   .celldelay{
-    background: #ff3b30;
+    background: #ecad9e!important;
+  }
+  .cellsuspend{
+    background: #fdb700!important;
   }
   //不是plm
   .cellNotPlm{
-    background: #c280ff;
+    background: #c280ff!important;
   }
   //没有产品期量属性
   .cellNotPorductNum{
-    background: #f59a23;
+    background: #f59a23!important;
   }
 
   .confirmStatusPlaning{
-    background: #95f204;
+    background: #95f204!important;
   }
   .confirmStatusReject{
-    background: #ffff00;
+    background: #ffff00!important;
   }
   .confirmStatusWaitApproval{
-    background: #ff7f00;
+    background: #ff7f00!important;
   }
 
   .normal{
-    background: #409eff;
+    background: #409eff!important;
   }
 }
 
