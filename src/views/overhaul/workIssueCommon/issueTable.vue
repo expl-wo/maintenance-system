@@ -75,7 +75,7 @@
       @close="imgModal = false"
     ></el-image-viewer>
     <!-- 视频预览 -->
-    <el-dialog
+    <el-dialog draggable
       title="视频预览"
       :model-value="videoModal"
       :destroy-on-close="true"

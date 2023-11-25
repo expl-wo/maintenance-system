@@ -1,3 +1,5 @@
+import {deepClone} from "@/utils";
+
 export function getData() {
     let formatData = [{
         "id": "1",
@@ -27,17 +29,24 @@ export function getData() {
     }]
     let list = getList();
     list.forEach((item, index) => {
-        item.id = formatData[index].id;
+        item.id = Math.random().toString();
         item.planStartDate = formatData[index].planStartDate;
         item.dateEnd = formatData[index].dateEnd;
         item.nodeList.forEach((subItem, subIndex) => {
-            subItem.id = formatData[index].nodeList[subIndex].id;
+            subItem.id = Math.random().toString();
             subItem.nodeDate = formatData[index].nodeList[subIndex].nodeDate;
             subItem.startDate = formatData[index].nodeList[subIndex].startDate;
         })
     })
+    let allList = list.concat(deepClone(list)).concat(deepClone(list)).concat(deepClone(list)).concat(deepClone(list)).concat(deepClone(list));
+    allList.forEach(item => {
+        item.id = Math.random().toString();
+        item.nodeList.forEach((subItem, subIndex) => {
+            subItem.id = Math.random().toString();
+        });
+    })
     let data = {
-        "err_code": 10000, "err_msg": null, "total_count": 1, "page_size": 10, "data": list
+        "err_code": 10000, "err_msg": null, "total_count": 1, "page_size": 10, "data": allList
     }
     return data;
 }
@@ -66,6 +75,7 @@ function getList() {
         "importmentLevel": null,
         "isExportProduct": 0,
         "madeMode": 1,
+        per: 50,
         "materialName": null,
         "pcModel": "SFPSZ9-150000/220",
         "noTaxAmount": 970000.0,
@@ -97,6 +107,7 @@ function getList() {
             "isDeleted": 0,
             "deleteDt": null,
             "creatorId": null,
+            per: 0,
             "creatorName": null,
             "editorId": null,
             "editorName": null,
@@ -132,6 +143,7 @@ function getList() {
             "createDt": "2023-11-13 17:57:13.013",
             "editDt": "2023-11-13 17:57:13.013",
             "isDeleted": 0,
+            per: 0,
             "deleteDt": null,
             "creatorId": null,
             "creatorName": null,
@@ -174,6 +186,7 @@ function getList() {
             "creatorName": null,
             "editorId": null,
             "editorName": null,
+            per: 20,
             "deleterId": null,
             "deleterName": null,
             "actualStartDate": null,
@@ -187,7 +200,7 @@ function getList() {
             "nodeName": "附件发货",
             "pausereason": null,
             "productplanId": "20231113175708190691000958169835",
-            "status": -1,
+            "status": 10,
             "startDate": "2019-04-27 00:00:00",
             "pnStatus": 0,
             "pnType": 2,
@@ -206,6 +219,7 @@ function getList() {
             "createDt": "2023-11-13 17:57:13.013",
             "editDt": "2023-11-13 17:57:13.013",
             "isDeleted": 0,
+            per: 100,
             "deleteDt": null,
             "creatorId": null,
             "creatorName": null,
@@ -224,7 +238,7 @@ function getList() {
             "nodeName": "入炉",
             "pausereason": null,
             "productplanId": "20231113175708190691000958169835",
-            "status": -1,
+            "status": -2,
             "startDate": "2019-05-02 00:00:00",
             "pnStatus": 0,
             "pnType": 2,
@@ -261,7 +275,7 @@ function getList() {
             "nodeName": "试验",
             "pausereason": null,
             "productplanId": "20231113175708190691000958169835",
-            "status": -1,
+            "status": 20,
             "startDate": "2019-05-02 00:00:00",
             "pnStatus": 0,
             "pnType": 2,

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="查看问题"
     width="40%"
     :model-value="visible"

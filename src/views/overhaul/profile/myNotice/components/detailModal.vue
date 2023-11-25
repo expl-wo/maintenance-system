@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="查看"
     custom-class="detail-modal"
     width="520px"

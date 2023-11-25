@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="模板详情"
     width="40%"
     :model-value="visible"
@@ -19,7 +19,7 @@
     <div class="table-wrapper">
       <el-table
         :data="tableData"
-        
+
         border
       >
         <el-table-column
@@ -38,7 +38,7 @@
        <span class="dialog-footer">
       <el-button  type="primary" @click="handleClose">确 定</el-button>
     </span>
-    </template> 
+    </template>
   </el-dialog>
 </template>
 <script>

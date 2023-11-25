@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="设备清单模板"
     :model-value="true"
     class="overhaul-template-modal"
@@ -17,7 +17,7 @@
       :data="tableData"
       v-loading="listLoading"
       stripe
-      
+
       style="width: 100%"
       height="510px"
       @selection-change="handleSelectionChange"

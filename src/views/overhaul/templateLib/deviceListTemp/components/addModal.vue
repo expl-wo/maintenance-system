@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="modalTitle"
     width="50%"
     :model-value="visible"
@@ -12,7 +12,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item
-              
+
               label="模板名称"
               prop="templateName"
               :rules="safeLimit('名称', true)"
@@ -28,7 +28,7 @@
           >
             <el-col :span="7">
               <el-form-item
-                
+
                 label="设备类型"
                 :prop="'deviceList.' + index + '.deviceModelId'"
                 :rules="requiredVerify('类型', true)"
@@ -50,7 +50,7 @@
             </el-col>
             <el-col :span="7">
               <el-form-item
-                
+
                 label="设备编码"
                 :prop="'deviceList.' + index + '.deviceNumber'"
                 :rules="requiredVerify('设备编码', true)"
@@ -71,7 +71,7 @@
             </el-col>
             <el-col :span="7">
               <el-form-item
-                
+
                 label="设备名称"
                 :prop="'deviceList.' + index + '.deviceName'"
               >
@@ -85,7 +85,7 @@
             <el-col :span="3">
               <el-button
                 class="ml20"
-                
+
                 type="danger"
                 @click="removeDevice(index)"
               ><el-icon><Delete /></el-icon></el-button>
@@ -95,7 +95,7 @@
         <el-row>
           <el-col :span="24" class="center">
             <el-button
-              
+
               type="primary"
               @click="addDevice"
               ><el-icon class="el-icon--left"><Plus /></el-icon>添加设备</el-button
@@ -108,7 +108,7 @@
       <span class="dialog-footer">
         <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          
+
           type="primary"
           :loading="loading"
           @click="handleConfirm"

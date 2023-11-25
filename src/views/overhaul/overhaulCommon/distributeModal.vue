@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="modalTitle"
     append-to-body
     :model-value="true"
@@ -13,7 +13,7 @@
       :model="form"
       :rules="rules"
       label-position="right"
-      
+
       label-width="120px"
     >
       <el-row

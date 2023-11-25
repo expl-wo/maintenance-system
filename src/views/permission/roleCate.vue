@@ -77,7 +77,7 @@
       @current-change="handleCurrentChange"
     />
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  width="700" :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable  width="700" :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="分类名称:" prop="name">
           <el-input v-model="listUpdate.cName" placeholder="角色名称" class="filter-item" />

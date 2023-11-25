@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     class="bom-dialog"
     :title="modalTitle"
     width="40%"
@@ -128,7 +128,7 @@
                 <el-button
                   class="mr12"
                   type="primary"
-                  
+
                   :loading="confirmLoading"
                   @click.stop="confirm"
                   >{{ isAddNode ? "添加" : "修改" }}</el-button
@@ -143,7 +143,7 @@
       <span class="dialog-footer">
         <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          
+
           type="primary"
           :loading="loading"
           @click="handleConfirm"

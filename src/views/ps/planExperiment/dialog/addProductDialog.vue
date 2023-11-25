@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" :append-to-body="true">
+  <el-dialog draggable v-model="dialogVisible" :append-to-body="true">
     <el-form ref="dialogForm" :model="dialogForm" label-position="left" label-width="120px">
       <el-form-item label="计划开工时间" prop="planStartTime">
         <el-date-picker

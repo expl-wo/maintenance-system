@@ -101,7 +101,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="更新单用户" v-model="dialogFormVisible2" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" title="更新单用户" v-model="dialogFormVisible2" class="roleDialog">
       <el-form ref="userUpdate" label-position="right" label-width="100px" :model="userUpdate">
         <el-form-item label="员工编号" prop="itemRequest">
           <el-input v-model="userUpdate.userid" placeholder="综合平台员工编号[userid]" style="width: 360px;" class="filter-item" />

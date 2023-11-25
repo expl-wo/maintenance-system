@@ -105,7 +105,7 @@
       </div>
     </el-card>
 
-    <el-dialog v-dialogDrag  appendToBody title="预排检查" width="1200px" v-model="dialogVisible" @close="dialogClosed" modal>
+    <el-dialog draggable  appendToBody title="预排检查" width="1200px" v-model="dialogVisible" @close="dialogClosed" modal>
       <div class="otherCon wp">
         <el-form
           ref="formRef"

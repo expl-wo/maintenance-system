@@ -14,6 +14,7 @@
           @row-click="handlerRowClick"
           @expand-change="handlerExpand"
           :cell-class-name="cellClassName"
+          scrollbar-always-on
       >
         <el-table-column
             type="selection"
@@ -95,12 +96,13 @@
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, watch, reactive, nextTick, defineEmits} from "vue";
 import {transformDictDetail} from '@/components/xui/dictionary'
+import {ElMessage} from "element-plus";
 
 const props = defineProps({
   list: Array,
   BGScrollTop: Number
 })
-const emits = defineEmits(["handlerRowClick", "tableScrollTop"])
+const emits = defineEmits(["handlerRowClick", "tableScrollTop", "handlerExpandRow"])
 
 const dataList = ref([]);
 const rightLineX = ref(600);
@@ -110,16 +112,24 @@ const tableRef = ref();
 
 watch(() => props.BGScrollTop, () => {
   if (tableRef.value) {
-    let tableWrapper = tableRef.value.$refs.bodyWrapper;
-    tableWrapper.scrollTo(0, props.BGScrollTop);
+    tableRef.value.setScrollTop(props.BGScrollTop);
   }
 })
 
 const handlerWatchScroll = () => {
-  let table = tableRef.value.$refs.bodyWrapper;
-  table.addEventListener("scroll", e => {
+  let tableScrollBarRef = tableRef.value.$refs.scrollBarRef.wrapRef;
+  tableScrollBarRef.addEventListener("scroll", e => {
     emits("tableScrollTop", e.srcElement.scrollTop);
   });
+}
+
+const handleScroll = position => {
+  debugger
+  emits("tableScrollTop", position);
+}
+
+const handlerExpand = (row, expand) => {
+  emits("handlerExpandRow", row, expand);
 }
 
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
@@ -149,8 +159,7 @@ const handlerSelect = (row) => {
 }
 
 const handlerRowClick = (row, column) => {
-  debugger
-    emits("handlerRowClick", row);
+  emits("handlerRowClick", row);
 }
 
 const setScroll = (scrollTop) => {
@@ -175,9 +184,47 @@ const init = tempDataList => {
   });
 }
 
+//获取选中的行
+const getSelectedData = ()=>{
+  let selectRows = tableRef.value.getSelectionRows();
+  if(selectRows.length <= 0){
+    ElMessage.warning("请勾选数据后再提交审批");
+    return [];
+  }
+  return selectRows;
+}
+
+const setCurrentRow = row => {
+  if (!row) {
+    tableRef.value.setCurrentRow();
+  } else {
+    dataList.value.some(item => {
+      if (item.id === row.id) {
+        tableRef.value.setCurrentRow(item);
+        return true;
+      }
+      if (item.children && item.children.length > 0) {
+        item.children.some(subItem => {
+          if (subItem.id === row.id) {
+            tableRef.value.setCurrentRow(subItem);
+          }
+        })
+      }
+    })
+  }
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    handlerWatchScroll();
+  }, 1000)
+})
+
 defineExpose({
   init,
-  handleToggleExpandAll
+  handleToggleExpandAll,
+  setCurrentRow,
+  getSelectedData
 })
 </script>
 

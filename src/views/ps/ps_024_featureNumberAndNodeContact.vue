@@ -67,7 +67,7 @@
       @pagination="getList" />
 
 
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="'(新增/修改)'" v-model="dialogConfigCaiGouFormVisible"
+    <el-dialog draggable  :close-on-click-modal="false" :title="'(新增/修改)'" v-model="dialogConfigCaiGouFormVisible"
       class="roleDialog" @close="clearnDialog()">
       <el-form ref="listItemUpdate" label-position="right" label-width="100px" :model="listItemUpdate" :rules="rules">
 

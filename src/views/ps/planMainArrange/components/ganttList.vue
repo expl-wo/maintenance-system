@@ -48,18 +48,19 @@
           </template>
         </div>
       </div>
-      <div class="lineBG" @scroll="handlerBGScroll" ref="lineBGRef" style="overflow-y: auto;"
+      <div class="lineBG" @scroll="handleBGScroll" ref="lineBGRef" style="overflow-y: auto;"
            @mousedown="lineBGMousedown">
         <template v-for="(item, index) in computedList">
-          <div class="line-wrapper" :class="{'deepColorBg': index%2===1}">
+          <div v-if="item.isShow" class="line-wrapper" @click.stop="handleClickItem(item)" :class="{'deepColorBg': index%2===1}">
             <div
                 class="line"
+                :class="item.bgClz"
                 :style="{
                       left: item.left + 'px',
                       width: item.widthMe + 'px',
                       top: item.top + 'px'
                     }"
-                v-show="item.isShow"
+
                 :ref="(el)=>getDivRef(el, item)"
                 :key="item.id + index + 'ccc'"
                 @mouseover="
@@ -82,15 +83,13 @@
                   @thunkMousedown="thunkMousedown"
                   @thunkMousemove="thunkMousemove"
               ></slider>
+              <div class="line-label">{{item.productOrNodeName}}</div>
             </div>
           </div>
         </template>
       </div>
     </div>
-    <div class="toolTip">
-      <el-button type="primary" v-show="showLegend" @click="handleGoToday" style="margin-right: 10px;">定位到今天</el-button>
-      <preview-legend></preview-legend>
-    </div>
+    <product-arrange-dialog ref="productArrangeDialogRef" @refresh="handleRefresh"></product-arrange-dialog>
     <!--  <tip-panel ref="tipPanelRef"></tip-panel>-->
   </div>
 </template>
@@ -100,9 +99,15 @@ import dayjs from 'dayjs'
 import {defineComponent, computed, onMounted, ref, reactive, defineEmits, toRef, watch, nextTick} from "vue";
 import {dateFilter} from '@/utils/dateUtil'
 import slider from './slider.vue'
+import productArrangeDialog from './productArrangeDialog.vue'
+
+import constants from "@/utils/constants";
+import {getGantClzByStatus} from '../util/config'
 
 // import tipPanel from './tipPanel.vue'
 // const tipPanelRef = ref();
+
+const emits = defineEmits(["handleBGScroll", "setCurrentRow", "handleRefresh"]);
 //计算后的值
 const computedList = ref([]) as any;
 //所有的月份
@@ -116,6 +121,8 @@ const currentRow = ref({}) as any;
 const ganttDateRef = ref();
 const lineBGRef = ref();
 const showLegend = ref();
+const BGScrollTop = ref(0);
+const productArrangeDialogRef = ref();
 
 const configParams = {
   dayWidth: 25
@@ -192,12 +199,12 @@ const getDivRef = (el, item) => {
  * @param  {Number} index index
  */
 //鼠标悬停展示上部日期
-const lineMouseover = (dom, e, id, parentId, index, item) => {
+const lineMouseover = (domId, e, id, parentId, index, item) => {
   currentLineDay.start = item.left;
   currentLineDay.end = item.widthChild + item.left
   isHover.value = true;
-  // handlerSelect(computedList.value[index]);
-  lineMouseenter(dom, e, id, parentId, index, item);
+  handlerSelect(computedList.value[index]);
+  lineMouseenter(domId, e, id, parentId, index, item);
 }
 
 /**
@@ -208,18 +215,7 @@ const lineMouseover = (dom, e, id, parentId, index, item) => {
  * @param  {Number} index index
  */
 //鼠标进入显示当前项目的基本信息框
-const lineMouseenter = (dom, e, id, parentId, index, item) => {
-  let start =
-      Math.round(
-          parseInt(listRefs.value[dom][0].style.left) / configParams.dayWidth
-      ) * configParams.dayWidth;
-  let end =
-      parseInt(listRefs.value[0].style.left) +
-      parseInt(listRefs.value[0].style.width);
-  end =
-      Math.round(end / configParams.dayWidth) *
-      configParams.dayWidth -
-      configParams.dayWidth;
+const lineMouseenter = (domId, e, id, parentId, index, item) => {
   let top = e.y + 20;
   if ((top + 300) > window.innerHeight) {
     top = e.y - 220;
@@ -238,6 +234,17 @@ const lineMouseenter = (dom, e, id, parentId, index, item) => {
     top
   });
   isShowMsg.value = true;
+}
+
+//根据数据重置top高度
+const resetTop = () => {
+  let index = 0;
+  computedList.value.forEach(item => {
+    if (item.isShow) {
+      item.top = 5 + 40 * index;
+      index++;
+    }
+  })
 }
 //鼠标离开信息消失，时间显示消失
 /**
@@ -273,11 +280,16 @@ const lineMouseleave = (e, move) => {
     left: 0,
     top: 0
   })
-  handlerSelect();
+  handlerSelect(null);
 }
 
-const handlerSelect = () => {
+const handleBGScroll = (e) => {
+  BGScrollTop.value = e.srcElement.scrollTop;
+  emits("handleBGScroll", BGScrollTop.value);
+}
 
+const handlerSelect = (row: null) => {
+  emits("setCurrentRow", row)
 }
 
 //滑动进度条事件
@@ -290,6 +302,7 @@ const thunkMousedown = () => {
   isShowMsg.value = false;
 }
 
+//定位到今天
 const handleGoToday = () => {
   if (nowDayObj && nowDayObj.left) {
     ganttDateRef.value.scrollTo({
@@ -299,15 +312,15 @@ const handleGoToday = () => {
   }
 }
 
-const findItemById = id=>{
-  return computedList.value.find(item=>{
+const findItemById = id => {
+  return computedList.value.find(item => {
     return item.id === id;
   })
 }
 
 const handlerRowClick = (row) => {
   let selectedItem = findItemById(row.id);
-  if(!selectedItem){
+  if (!selectedItem) {
     return;
   }
   Object.assign(currentRow, selectedItem);
@@ -326,24 +339,39 @@ const handlerRowClick = (row) => {
   });
 }
 
-const handlerExpand = (row, expand) => {
-  let rowIndex = computedList.value.findIndex(item => {
+const handleToggleExpandAll = expand => {
+  computedList.value.forEach(item => {
+    if (item.dataType === constants.productOrGx.product) {
+      _handleExpand(item, expand);
+    }
+  })
+  resetTop();
+}
+
+const handleExpand = (row, expand) => {
+  _handleExpand(row, expand);
+  resetTop();
+}
+
+const _handleExpand = (row, expand) => {
+  let selectedRow = computedList.value.find(item => {
     return item.id == row.id;
   });
-  computedList.value[rowIndex].expand = expand;
-  if (
-      computedList.value[rowIndex].children &&
-      computedList.value[rowIndex].children.length > 0
-  ) {
-    computedList.value[rowIndex].children.forEach(k => {
-      k.isShow = expand;
-    });
+  if (selectedRow.dataType === constants.productOrGx.product) {
+    selectedRow.expand = expand;
+    if (selectedRow.children && selectedRow.children.length > 0) {
+      _handleExpandByMainId(selectedRow.children, expand);
+    }
   }
 }
 
-const handleToggleExpandAll = expand => {
+const _handleExpandByMainId = (childrenList, expand) => {
   computedList.value.forEach(item => {
-    handlerExpand(item, expand);
+    childrenList.forEach(subItem => {
+      if (item.id === subItem.id) {
+        item.isShow = expand;
+      }
+    })
   })
 }
 
@@ -378,6 +406,11 @@ const lineBGMousedown = (e) => {
   };
 }
 
+//点击行
+const handleClickItem = item=>{
+  productArrangeDialogRef.value.init(item);
+}
+
 const setComputedList = (dataList) => {
   let tempList = [];
   dataList.forEach(item => {
@@ -392,16 +425,24 @@ const setComputedList = (dataList) => {
   computedList.value = tempList;
 }
 
-const formatDataList = list => {
+//触发刷新
+const handleRefresh = ()=>{
+
+}
+
+//对查询出的数据进行递归初始化
+const formatDataList = (list, dataType = constants.productOrGx.product) => {
   let dataList = [];
   list.forEach((item, index) => {
     item.planStartDate = dateFilter(item.planStartDate);
     item.planEndDate = dateFilter(item.planEndDate);
     let startTime = item.planStartDate;
-    item.per = 50;
+    item.dataType = dataType;
     let endTime = item.planEndDate;
     item.expand = true;
     item.isShow = true;
+    //设置颜色
+    setItemClz(item);
     if (startTime && endTime) {
       if (item.processStatus === null || item.processStatus === undefined) {
         item.processStatus = 'normal';
@@ -428,7 +469,7 @@ const formatDataList = list => {
       }
       //递归设置children值
       if (item.children && item.children.length > 0) {
-        item.children = formatDataList(item.children);
+        item.children = formatDataList(item.children, constants.productOrGx.gx);
       }
       dataList.push(item);
     }
@@ -436,10 +477,31 @@ const formatDataList = list => {
   return dataList;
 }
 
+//设置颜色
+const setItemClz = item => {
+  let status = item.status;
+  let clz = getGantClzByStatus(status);
+  if (item.per == 0) {
+    item.bgClz = clz;
+    item.sliderClz = '';
+  } else {
+    item.bgClz = '';
+    item.sliderClz = clz;
+  }
+}
+
 const init = (list, dates) => {
   initMonthDate(dates);
   let tempList = formatDataList(list);
   setComputedList(tempList);
+}
+
+const handlerExpandRow = (row, expand) => {
+  handleExpand(row, expand);
+}
+
+const tableScrollTop = scrollTop => {
+  lineBGRef.value.scrollTop = scrollTop;
 }
 
 onMounted(() => {
@@ -451,7 +513,10 @@ onMounted(() => {
 defineExpose({
   init,
   handleToggleExpandAll,
-  handlerRowClick
+  handlerRowClick,
+  handlerExpandRow,
+  tableScrollTop,
+  handleGoToday,
 })
 </script>
 

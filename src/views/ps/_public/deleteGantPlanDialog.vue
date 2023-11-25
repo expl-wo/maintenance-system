@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="选择要删除的生产号" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="选择要删除的生产号" width="800px" v-model="dialogVisible" modal>
     <div class="filter-container searchCon">
 
     </div>

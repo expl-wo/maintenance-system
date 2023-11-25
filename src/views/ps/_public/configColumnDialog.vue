@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="列配置" width="800px" top="5vh" v-model="dialogVisible"  v-if="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="列配置" width="800px" top="5vh" v-model="dialogVisible"  v-if="dialogVisible" modal>
     <div class="otherCon wp">
       <el-row :gutter="12" class="otherCon">
         <el-col :span="12" class="hp p-lf">

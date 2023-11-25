@@ -55,7 +55,7 @@
     <xui-pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination" class="searchCon wp"/>
 
 
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryClazz" class="demo-form-inline demo-form-zdy">
           <el-form-item label="分类编号">

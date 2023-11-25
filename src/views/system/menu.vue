@@ -53,7 +53,7 @@
     </el-table>
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="权限名称:" prop="name">
           <el-input v-model="listUpdate.name" placeholder="权限名称" style="width: 360px;" class="filter-item" />

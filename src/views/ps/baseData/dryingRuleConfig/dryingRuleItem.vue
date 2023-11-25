@@ -71,7 +71,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog v-dialogDrag appendToBody :title="model.id? '编辑': '新增'"
+    <el-dialog draggable appendToBody :title="model.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600"
     >
       <el-form :model="model" ref="formRef" :rules="rules" label-width="160px">

@@ -137,7 +137,7 @@
       </el-col>
     </el-row>
     <!--查看文件或图片-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="查看" v-model="dialogFileFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" title="查看" v-model="dialogFileFormVisible" class="roleDialog">
 
       <el-table
         class="otherCon wp"

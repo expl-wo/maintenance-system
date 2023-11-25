@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="operateTypeTitle"
     :model-value="true"
     class="overhaul-bom-modal"
@@ -12,7 +12,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
+
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

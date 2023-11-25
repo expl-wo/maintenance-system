@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'" width="800px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="12">

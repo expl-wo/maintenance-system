@@ -1,11 +1,10 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="modalTitle"
     width="70%"
     :model-value="visible"
     :close-on-click-modal="false"
     :destroy-on-close="true"
-    draggable
     @close="handleClose"
   >
     <div class="form-wrapper">
@@ -43,7 +42,7 @@
       <span class="dialog-footer">
         <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          
+
           type="primary"
           :loading="loading"
           @click="handleConfirm"

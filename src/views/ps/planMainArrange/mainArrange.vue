@@ -22,6 +22,10 @@
           <el-button icon="Switch" @click="handleToggleExpand">展开/折叠</el-button>
         </el-form-item>
       </el-form>
+      <div class="toolTip">
+        <el-button type="primary" @click="handleGoToday" style="margin-right: 10px;">定位到今天</el-button>
+        <preview-legend></preview-legend>
+      </div>
     </div>
     <number-statistical :data-list="list"></number-statistical>
     <div class="app-container app-containerC preview-chart-wrapper" style="height: calc(100% - 33px)">
@@ -29,10 +33,14 @@
         <product-list
             ref="productListRef"
             :BGScrollTop="BGScrollTop"
-            @TableScrollTop="tableScrollTop"
+            @tableScrollTop="tableScrollTop"
             @handlerRowClick="handlerRowClick"
+            @handlerExpandRow="handlerExpandRow"
         ></product-list>
-        <gantt-list ref="ganttListRef"></gantt-list>
+        <gantt-list ref="ganttListRef"
+                    @handleBGScroll="handleBGScroll"
+                    @setCurrentRow="setCurrentRow"
+                    @handleRefresh="handleRefresh"></gantt-list>
       </div>
     </div>
   </div>
@@ -49,15 +57,16 @@ import {defineComponent, computed, onMounted, ref, reactive, nextTick, defineEmi
 import dayjs from 'dayjs'
 import slider from "./components/slider";
 import leftMenu from "./components/productList";
-import {mapWeeksOfyear} from './util/mapWeeksOfyear'
 import planMain from '@/api/plan/planMain'
 import {getDictListByKey} from '@/components/xui/dictionary'
 import {deepClone} from '@/utils'
 import {getData} from './util/testData'
-
+import previewLegend from './components/previewLegend.vue'
+import constants from "@/utils/constants";
 import ganttList from './components/ganttList.vue'
 import productList from './components/productList.vue'
 import {formatMonthStartDate, formatMonthEndDate} from '@/utils/dateUtil'
+import {ElMessage} from "element-plus";
 
 const ganttListRef = ref();
 const productListRef = ref();
@@ -78,12 +87,20 @@ const listQuery = reactive({
   voltage: []
 });
 
-const TableScrollTop = () => {
+const tableScrollTop = (scrollTop) => {
+  ganttListRef.value.tableScrollTop(scrollTop);
 }
 
 const handlerRowClick = row => {
-  debugger
   ganttListRef.value.handlerRowClick(row);
+}
+
+const handlerExpandRow = (row, expand) => {
+  ganttListRef.value.handlerExpandRow(row, expand);
+}
+
+const handleBGScroll = scrollTop => {
+  BGScrollTop.value = scrollTop;
 }
 
 const handleToggleExpand = () => {
@@ -93,7 +110,22 @@ const handleToggleExpand = () => {
 }
 
 const handleApproval = () => {
+  const selectRows = productListRef.value.getSelectedData();
+  if (selectRows.length > 0) {
+    //过滤出生产数据
+    let productDataList = selectRows.filter(item => {
+      return item.dataType === constants.productOrGx.product
+    })
+  }
+  if (!productDataList || productDataList.length === 0) {
+    ElMessage.warning("请勾选生产号行数据后，提交审批");
+    return;
+  }
+  //调后台接口，进行申报
+}
 
+const setCurrentRow = row => {
+  productListRef.value.setCurrentRow(row);
 }
 
 const getParams = () => {
@@ -103,9 +135,6 @@ const getParams = () => {
   delete params.dateGroup;
   params.strDate = formatMonthStartDate(listQuery.dateGroup[0]) // 开始日期
   params.endDate = formatMonthEndDate(listQuery.dateGroup[1]) // 结束日期
-  /*  params.status = [1];
-    params.opStatus = [1];
-    params.voltage = [""];*/
   return params;
 }
 
@@ -155,9 +184,17 @@ const handleSearch = () => {
   getDataList();
 }
 
+const handleGoToday = () => {
+  ganttListRef.value.handleGoToday();
+}
+
 const initChildComponent = params => {
   productListRef.value.init(deepClone(list.value));
   ganttListRef.value.init(deepClone(list.value), [params.strDate, params.endDate]);
+}
+
+const handleRefresh = () => {
+  handleSearch();
 }
 
 onMounted(() => {
@@ -165,4 +202,10 @@ onMounted(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+.filter-container {
+  position: relative;
+}
+</style>
 

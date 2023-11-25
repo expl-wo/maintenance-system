@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="编辑"
     :model-value="true"
     :destroy-on-close="true"
@@ -9,7 +9,7 @@
       <el-col :span="12">
         <span class="mrl10">领用人:</span>
         <el-select
-          
+
           v-model="userPerson"
           class="filter-item"
           placeholder="请选择"

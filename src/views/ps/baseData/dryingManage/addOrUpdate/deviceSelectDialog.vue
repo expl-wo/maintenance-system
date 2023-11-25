@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="选择设备" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="选择设备" width="800px" v-model="dialogVisible" modal>
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备名称">

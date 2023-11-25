@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'"
+    <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'"
                v-if="showDialog"
                v-model="dialogVisible" modal
     >

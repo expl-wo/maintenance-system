@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="工序指派"
     :model-value="true"
     :close-on-click-modal="false"
@@ -12,7 +12,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
+
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

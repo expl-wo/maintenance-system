@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="驳回原因" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="驳回原因" width="600px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">

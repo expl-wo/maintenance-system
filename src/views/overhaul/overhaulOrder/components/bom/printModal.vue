@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="二维码打印"
     :model-value="true"
     width="500px"
@@ -11,7 +11,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
+
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

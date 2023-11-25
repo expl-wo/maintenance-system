@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
     <div class="otherCon wp">
       <el-table stripe  ref="tableRef" height="500px" highlight-current-row border :data="bomInfoList"
                 style="font-size: 0.7rem"
