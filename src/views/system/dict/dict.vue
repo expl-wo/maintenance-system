@@ -49,15 +49,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            :current-page="searchModel.pg_pagenum"
-            :page-sizes="[100, 200, 500]"
-            :page-size="searchModel.pg_pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
         </div>
         <!--<ul class="panel-menu">
           <li v-for="(item, key) in dataList" :class="{'cur': item.id===curId}"
