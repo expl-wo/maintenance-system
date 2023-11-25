@@ -1,35 +1,29 @@
 <template>
-  <div class="app-container order-list-box" v-if="!showInfo">
-    <el-row class="mrb15" type="flex" align="middle" justify="start">
-      <el-button  type="primary" @click="getList">
-        <el-icon  class="el-icon--left"><Refresh /></el-icon> 根据BOM同步
-      </el-button>
-      <el-button  type="primary" @click="getList">
-        <el-icon  class="el-icon--left"><Download /></el-icon> 导出
-      </el-button>
-    </el-row>
+  <div class="app-container">
+    <el-form :inline="true">
+      <el-form-item label="大件设备类别/编号">
+        <el-input
+          v-model="queryParams.name"
+          clearable
+          @keyup.enter="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleFilter">
+          <el-icon class="el-icon--left"><Search /></el-icon> 查询
+        </el-button></el-form-item
+      >
+    </el-form>
     <el-table
       :data="tableData"
       v-loading="listLoading"
       stripe
-      
       style="width: 100%"
       height="510px"
     >
-      <template v-for="item in RETURN_COLUMNS">
+      <template v-for="item in COLUMNS">
         <el-table-column
-          :key="item.prop"
-          v-bind="item"
-          v-if="item.prop === 'operation'"
-        >
-          <template #default="{ row }">
-            <el-button  type="primary" title="复核">
-              <el-icon ><Stamp /></el-icon>
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          v-else-if="item.prop === 'status'"
+          v-if="item.prop === 'status'"
           :label="item.label"
           :key="item.prop"
           class-name="status-col"
@@ -37,7 +31,7 @@
         >
           <template #default="{ row }">
             <el-tag>
-              {{ row.status | statusFilter }}
+              {{ row.status }}
             </el-tag>
           </template>
         </el-table-column>
@@ -55,30 +49,22 @@
       :limit="pageOptions.pageSize"
       @pagination="pageChange"
     />
-   
   </div>
 </template>
 
 <script>
 import Pagination from "@/components/Pagination"; // 分页
-import { RETURN_COLUMNS, BOM_STATUS } from "../config.js";
-import { Download, Refresh, Stamp } from "@element-plus/icons-vue";
+import { BIG_COMPONENTS_COLUMNS } from "../config.js";
+import { Search } from "@element-plus/icons-vue";
 export default {
   name: "ReturnList",
   components: {
     Pagination,
-    Download,
-    Refresh,
-    Stamp,
-  },
-  filters: {
-    statusFilter(status) {
-      return BOM_STATUS[status];
-    },
+    Search,
   },
   data() {
     return {
-      RETURN_COLUMNS: Object.freeze(RETURN_COLUMNS),
+      COLUMNS: Object.freeze(BIG_COMPONENTS_COLUMNS),
       listLoading: true,
       tableData: [],
       //分页参数
@@ -91,30 +77,17 @@ export default {
       queryParams: {
         deviceName: "",
       },
-      dialogStatus: "add",
-      operateRow: null, //操作行
     };
   },
   created() {
     this.getList();
   },
   methods: {
-
-    /**
-     * 关闭弹窗
-     */
-    closeModal(modeName, isSearch = false) {
-      this[modeName] = false;
-      isSearch && this.getList();
+    handleFilter() {
+      this.pageOptions.pageNum = 1;
+      this.getList();
     },
-    /**
-     * 打开弹窗
-     */
-    openModal(row = null, modeName) {
-      this.operateRow = row;
-      this[modeName] = true;
-    },
-            //分页发生改变时
+    //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
       if (limit) {

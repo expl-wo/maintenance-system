@@ -11,7 +11,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -363,4 +362,5 @@ export default {
 ::v-deep(.el-input--small .el-input__inner) {
   width: 220px;
 }
+
 </style>

@@ -26,7 +26,10 @@ import TemplateReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
 import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import BomVue from "../components/bom/index.vue"; //bom
-import DeviceList from "../components/deviceList/index.vue"; //设备清单
+// import DeviceList from "../components/deviceList/index.vue"; //设备清单
+import BigComponents from "../components/bigComponents.vue"; //大件设备
+import instrument from "../components/instrument.vue"; //工器具
+import materials from "../components/materials.vue"; //材料
 import ReturnList from "../components/returnList.vue"; //返厂清单
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 export default {
@@ -43,12 +46,15 @@ export default {
     },
   },
   components: {
+    BigComponents,
+    instrument,
+    materials,
     ProcessInfo,
     MarkerRecord,
     VideoMark,
     TemplateReport,
     BomVue,
-    DeviceList,
+    // DeviceList,
     ReturnList,
     IssueTable,
   },

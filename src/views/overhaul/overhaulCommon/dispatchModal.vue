@@ -12,7 +12,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -54,7 +53,24 @@
               collapse-tags
               collapse-tags-tooltip
               clearable
-            />
+            >
+              <template #default="{ node, data }">
+                <span>{{ data.label }}</span>
+
+                <el-popover
+                  v-if="node.isLeaf"
+                  placement="bottom"
+                  effect="dark"
+                  :width="200"
+                  trigger="click"
+                >
+                  <template #reference>
+                    <el-icon class="position-icon" @click.stop="showLocation(data)"><QuestionFilled /></el-icon>
+                  </template>
+                  <div>{{ personArea }}</div>
+                </el-popover>
+              </template>
+            </el-cascader>
           </el-form-item>
         </el-col>
       </el-row>
@@ -88,6 +104,7 @@ import {
   getPersonByWorkClazz,
 } from "@/api/overhaul/workClazzApi.js";
 import { INPLAN_OR_OUT } from "@/views/overhaul/constants.js";
+import { QuestionFilled } from "@element-plus/icons-vue";
 const options = [
   {
     value: 1,
@@ -144,6 +161,9 @@ const options = [
   },
 ];
 export default {
+  components: {
+    QuestionFilled,
+  },
   props: {
     //操作行
     operateRow: {
@@ -173,6 +193,7 @@ export default {
   data() {
     return {
       options,
+      personArea: "",
       form: {
         projectManager: undefined,
         phuocManager: undefined,
@@ -193,6 +214,12 @@ export default {
     this.getTaskTeamOptions();
   },
   methods: {
+    /**
+     * 显示当前选择人员的位置
+     */
+    showLocation(data) {
+      this.personArea = data; //获取位置
+    },
     //获取所有任务班组
     async getTaskTeamOptions() {
       try {
@@ -238,10 +265,9 @@ export default {
       this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
     },
     handleOk() {
-        this.$emit("onSave", this.modalName);
+      this.$emit("onSave", this.modalName);
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) return;
-        debugger;
         this.$emit("onSave", this.modalName);
         this.$emit("closeModal", this.modalName);
       });
@@ -254,7 +280,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep(.el-input--small .el-input__inner) {
-//   width: 220px;
-// }
+.position-icon {
+  vertical-align: middle;
+  margin-left: 5px;
+}
 </style>

@@ -391,7 +391,7 @@ $conent-padding: 15px;
   height: 0;
   text-align: right;
   position: fixed;
-  top: 320px;
+  top: 300px;
   right: 100px;
   z-index: 1000;
   .affix-anchor-box {

@@ -12,11 +12,7 @@
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">工序结构</div>
         <div class="process-content-left-search">
-          <el-input
-            
-            placeholder="输入关键字进行过滤"
-            v-model="filterText"
-          >
+          <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           </el-input>
         </div>
 
@@ -40,7 +36,6 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(1, 'distributeModalFlag')"
           >
@@ -50,7 +45,6 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(2, 'distributeModalFlag')"
           >
@@ -60,17 +54,24 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(3, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Pointer /></el-icon>
             派工
           </el-button>
+          <el-button
+            v-if="btnRoleList.includes('setBtn')"
+            type="primary"
+            :disabled="isPause"
+            @click="openModal(4, 'distributeModalFlag')"
+          >
+            <el-icon class="el-icon--left"><Tools /></el-icon>
+            大件设备
+          </el-button>
         </div>
         <div class="operate-wrap" v-else>
           <el-button
-            
             type="primary"
             :disabled="isPause"
             title="保存"
@@ -79,7 +80,6 @@
             <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
           </el-button>
           <el-button
-            
             type="primary"
             :disabled="isPause"
             title="发起审核"
@@ -101,7 +101,6 @@
         <el-table
           :data="tableData"
           stripe
-          
           style="width: 100%"
           show-overflow-tooltip
         >
@@ -114,7 +113,6 @@
               <template #default="{ row }">
                 <el-button
                   v-if="btnRoleList.includes('addBtn')"
-                  
                   type="primary"
                   title="添加问题"
                   :disabled="isPause"
@@ -124,7 +122,6 @@
                 </el-button>
                 <!-- 只有叶子节点有复核 -->
                 <el-button
-                  
                   type="primary"
                   :disabled="isPause"
                   v-if="
@@ -163,6 +160,7 @@
           v-if="distributeModalFlag"
           :operateRow="operateRow"
           :workOrderInfo="workOrderInfo"
+          :onlyTabName="onlyTabName"
           modalName="distributeModalFlag"
           @closeModal="closeModal"
         ></distribute-modal>
@@ -194,6 +192,7 @@ import {
   Pointer,
   UserFilled,
   SuccessFilled,
+  Tools,
 } from "@element-plus/icons-vue";
 import { ElMessageBox } from "element-plus";
 import {
@@ -343,13 +342,14 @@ export default {
     Setting,
     Stamp,
     DocumentAdd,
+    Tools,
   },
   data() {
     return {
       REPORT_CHECK_STATUS,
       COMMOM_WORK_ORDER_MAP,
       //工序审核树状态
-      workTreeStatus: 1,
+      workTreeStatus: 2,
       //表格loading效果
       tableListLoading: false,
       //tree的loading效果

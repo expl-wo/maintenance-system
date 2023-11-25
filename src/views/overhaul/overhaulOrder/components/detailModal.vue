@@ -77,7 +77,6 @@
           >
             <el-button
               v-if="!item.hiddenAssign"
-              
               title="工序指派"
               type="primary"
               @click="openModal(item, 'showAppoint')"
@@ -123,54 +122,10 @@ import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指
 import MiddleWare from "../modules/middleWare.vue";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
-import { TAB_LIST_MAP } from "../config";
+import { TAB_LIST_MAP,TAB_LIST_OUT } from "../config";
 import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
-//外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
-const TAB_LIST = [
-  {
-    label: "现场勘查",
-    name: "surveyItem",
-    workClazzType: "survey", //班组字段
-    hiddenAssign: true,
-  },
-  {
-    label: "现场检修",
-    name: "siteOverhaul",
-    hiddenAssign: false,
-    workClazzType: "overhaulGroup",
-  },
-  {
-    label: "返厂检修-现场拆解",
-    name: "siteDismantle",
-    hiddenAssign: false,
-    workClazzType: "overhaulGroup",
-  },
-  {
-    label: "返厂检修-厂内拆解",
-    name: "factoryDismantle",
-    workClazzType: "assembleGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-厂内生产",
-    name: "factoryCreate",
-    workClazzType: "prodDeptGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-试验",
-    name: "experiment",
-    workClazzType: "experimentalGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-检修报告",
-    name: "finishReport",
-    hiddenAssign: true,
-  },
-];
 export default {
   components: {
     MiddleWare,
@@ -273,12 +228,17 @@ export default {
      * 获取当前用户的工序权限
      */
     dealTabList() {
+       this.tabList =TAB_LIST_OUT
+       return
       //现场检修
       if (this.overhaulType === 0) {
-        this.tabList = TAB_LIST.slice(0, 2);
+        this.tabList =TAB_LIST_OUT.slice(0, 2);
+
+
+
       } else {
         //返厂检修
-        this.tabList = TAB_LIST.filter((item) => item.name !== "siteOverhaul");
+        this.tabList = TAB_LIST_OUT.filter((item) => item.name !== "siteOverhaul");
       }
     },
     /**
@@ -436,7 +396,7 @@ $conent-padding: 15px;
   height: 0;
   text-align: right;
   position: fixed;
-  top: 320px;
+  top: 300px;
   right: 100px;
   z-index: 1000;
   .affix-anchor-box {

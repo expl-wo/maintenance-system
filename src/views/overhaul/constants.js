@@ -1,7 +1,8 @@
 /**共用常量 */
 const COMMON_FORMAT = "YYYY-MM-DD HH:mm:ss" //统一时间格式
-const MAX_IMG_SIZE = 10 * 1024 * 1024 //图片最大10M
-const MAX_FILE_SIZE = 100 * 1024 * 1024
+const MAX_IMG_SIZE = 20 //图片最大20M
+const MAX_FILE_SIZE = 100 // 附件做大100M
+const MAX_VIDEO_SZIE = 200 //视频最大 200M
 //公共的工单状态
 const COMMOM_WORK_ORDER_MAP = {
     'pointManager': {
@@ -126,21 +127,22 @@ const COMMON_PROCESS_COLUMNS_MAP = {
 }
 //报告审核状态
 const REPORT_CHECK_STATUS = {
-    0: {label:'待发起审核',type:''},
-    1:{label:'待审核',type:'warning'},
-    2:{label:'审核通过',type:'success'},
-    3: {label:'审核不通过',type:'danger'}
+    0: { label: '待发起审核', type: '' },
+    1: { label: '待审核', type: 'warning' },
+    2: { label: '审核通过', type: 'success' },
+    3: { label: '审核不通过', type: 'danger' }
 }
-//厂内和场外选择班组时的枚举
+//厂内和场外选择班组时的枚举，对应业务配置的班组
 const INPLAN_OR_OUT = {
     //厂内
-    IN: 'suvery',
+    IN: 'productionGroup',
     //场外
-    OUT: 'suvery',
+    OUT: 'transportationGroup',
 }
 export {
     COMMON_FORMAT,
     MAX_IMG_SIZE,
+    MAX_VIDEO_SZIE,
     MAX_FILE_SIZE,
     COMMOM_WORK_ORDER_MAP,
     COMMON_PROCESS_COLUMNS_MAP,

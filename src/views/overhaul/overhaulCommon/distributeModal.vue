@@ -13,7 +13,6 @@
       :model="form"
       :rules="rules"
       label-position="right"
-
       label-width="120px"
     >
       <el-row
@@ -134,6 +133,48 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row
+        type="flex"
+        align="middle"
+        justify="space-between"
+        v-if="operateRow === 4"
+      >
+        <el-col :span="24">
+          <el-form-item label="大件设备" prop="taskTeamPerson">
+            <el-cascader
+              v-model="form.taskTeamPerson"
+              :options="devOptions"
+              :show-all-levels="false"
+              max-collapse-tags="3"
+              filterable
+              :props="{ multiple: true }"
+              collapse-tags
+              collapse-tags-tooltip
+              clearable
+            >
+              <template #default="{ node, data }">
+                <span>{{ data.label }}</span>
+
+                <el-popover
+                  v-if="node.isLeaf"
+                  placement="bottom"
+                  :width="200"
+                  trigger="click"
+                >
+                  <template #reference>
+                    <el-icon
+                      class="position-icon"
+                      @click.stop="showLocation(data)"
+                      ><QuestionFilled
+                    /></el-icon>
+                  </template>
+                  <span>{{ devUserInfo }}</span>
+                </el-popover>
+              </template>
+            </el-cascader>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -150,12 +191,72 @@
 import dayjs from "dayjs";
 import { requiredVerify } from "@/common/js/validator";
 import { bindWorkInfo } from "@/api/overhaul/workOrderApi.js";
+import { QuestionFilled } from "@element-plus/icons-vue";
 const OPERATE_MAP = {
   1: { title: "视频绑定配置" },
   2: { title: "复核人员配置" },
   3: { title: "派工配置" },
+  4: { title: "大件设备配置" },
 };
+const devOptions = [
+  {
+    value: 1,
+    label: "空闲人员",
+    children: [
+      {
+        value: 2,
+        label: "张三",
+        children: [],
+      },
+      {
+        value: 6,
+        label: "李四",
+        children: [],
+      },
+      {
+        value: 10,
+        label: "王五",
+        children: [],
+      },
+    ],
+  },
+  {
+    value: 14,
+    label: "繁忙人员",
+    children: [
+      {
+        value: 15,
+        label: "陈奕迅",
+        children: [],
+      },
+      {
+        value: 19,
+        label: "周杰伦",
+        children: [],
+      },
+    ],
+  },
+  {
+    value: 23,
+    label: "请假人员",
+    children: [
+      {
+        value: 24,
+        label: "刘德华",
+        children: [],
+      },
+      {
+        value: 28,
+        label: "张学友",
+        children: [],
+      },
+    ],
+  },
+];
 export default {
+  components: {
+    QuestionFilled,
+  },
   props: {
     //当前工单的详情
     workOrderInfo: {
@@ -173,6 +274,11 @@ export default {
       type: Number,
       default: 1,
     },
+    //点击的tab
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
     modalName: {
       type: String,
       default: "",
@@ -180,6 +286,8 @@ export default {
   },
   data() {
     return {
+      devOptions,
+      personArea: "",
       saveLoading: false,
       form: {
         channelCodes: [],
@@ -209,8 +317,25 @@ export default {
     modalTitle() {
       return OPERATE_MAP[this.operateRow].title;
     },
+    //是否厂内
+    isFactoryIn() {
+      return ![
+        "processInfo",
+        "siteOverhaul-processInfo",
+        "siteDismantle-processInfo",
+      ].includes(this.onlyTabName);
+    },
   },
   methods: {
+    /**
+     * 显示当前选择人员的位置
+     */
+    showLocation(data) {
+      this.$nextTick(() => {
+        this.devUserInfo = data;
+      });
+      //获取位置
+    },
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) {
@@ -229,5 +354,9 @@ export default {
 <style lang="scss" scoped>
 ::v-deep(.el-input-number .el-input--small .el-input__inner) {
   width: inherit;
+}
+.position-icon {
+  vertical-align: middle;
+  margin-left: 5px;
 }
 </style>
