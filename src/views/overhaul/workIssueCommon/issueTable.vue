@@ -14,7 +14,7 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="问题类别">
-        <el-select v-model="queryParams.issue" placeholder="请选择">
+        <el-select v-model="queryParams.issue" placeholder="请选择" clearable>
           <el-option
             v-for="item in issueOptions"
             :key="item.value"
@@ -24,7 +24,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="问题所属/提交人">
-        <el-input v-model="queryParams.searchKey" @keyup.enter="handleFilter" />
+        <el-input v-model="queryParams.searchKey" @keyup.enter="handleFilter" clearable />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="getList">
@@ -189,7 +189,7 @@ export default {
           "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
         ];
       } else {
-        this.videoUrl = "https://www.w3cschool.cn/statics/demosource/movie.mp4";
+        this.videoUrl = "http://10.16.9.128:9000/hb-digital/d3c79996b92f43b7bc07a03367baaa1f_2023_11_25_09_09_59_394.mp4";
       }
     },
     //分页发生改变时

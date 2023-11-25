@@ -10,7 +10,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -75,6 +74,34 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row type="flex" align="middle" justify="start">
+        <el-col :span="12">
+          <el-form-item label="问题图片上传">
+            <multi-upload-vue
+              :limit="3"
+              :fileUrl="imgFileUrl"
+              :fileName="imgFileName"
+              :fileMaxSize="MAX_IMG_SIZE"
+              btnText="选择图片"
+              accept="image/*"
+              @uploadSuccess="uploadSuccess"
+            ></multi-upload-vue>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="问题视频上传">
+            <multi-upload-vue
+              :limit="1"
+              :fileUrl="videoFileUrl"
+              :fileName="videoFileName"
+              btnText="选择视频"
+              :fileMaxSize="MAX_VIDEO_SZIE"
+              accept="video/*"
+              @uploadSuccess="videoUploadSuccess"
+            ></multi-upload-vue>
+          </el-form-item>
+        </el-col>
+      </el-row>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -87,7 +114,12 @@
 
 <script>
 import { safeLimit } from "@/common/js/validator";
+import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
+import { MAX_IMG_SIZE,MAX_VIDEO_SZIE } from "@/views/overhaul/constants.js"
 export default {
+  components: {
+    multiUploadVue,
+  },
   props: {
     //操作行
     operateRow: {
@@ -103,12 +135,21 @@ export default {
   },
   data() {
     return {
+      MAX_IMG_SIZE,MAX_VIDEO_SZIE,
       form: {
         issue: undefined,
         exceptionItem: undefined,
         notifier: undefined,
         issueDescription: "",
+        imgFileUrl: "",
+        imgFileName: "",
+        videoFileUrl: "",
+        videoFileName: "",
       },
+      imgFileUrl: "",
+      imgFileName: "",
+      videoFileUrl: "",
+      videoFileName: "",
       rules: {
         issue: safeLimit("", true),
         issueDescription: safeLimit("", false),
@@ -120,7 +161,19 @@ export default {
   },
   methods: {
     handleOk() {
-      debugger;
+      console.log(this.fileList, this.videoList);
+    },
+    videoUploadSuccess(fileName, fileList) {
+      this.form.videoFileName = fileName;
+      this.form.videoFileUrl = fileList
+        .map((item) => item.fileUrl || [])
+        .join("|");
+    },
+    uploadSuccess(fileName, fileList) {
+      this.form.imgFileName = fileName;
+      this.form.imgFileUrl = fileList
+        .map((item) => item.fileUrl || [])
+        .join("|");
     },
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);

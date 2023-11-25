@@ -12,7 +12,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -41,6 +40,20 @@
               :defaultSelectVal="defaultSelectVal"
               :getOptions="getOptions"
             />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="利旧状态">
+            <el-select v-model="form.utilizeStatus" placeholder="请选择" clearable>
+              <el-option
+                v-for="item in utilizeStatusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -85,12 +98,18 @@ export default {
         bomNode: undefined,
         bomNodeType: 1,
         bomNodeName: "",
+        utilizeStatus: undefined,
       },
       rules: {
         bomNode: requiredVerify(),
         bomNodeType: requiredVerify(),
         // bomNodeName: safeLimit("", true),
       },
+      utilizeStatusOptions: [
+        { label: "废弃", value: 1 },
+        { label: "利旧", value: 2 },
+        { label: "维修", value: 3 },
+      ],
       bomNodeTypeOptions: [
         { label: "大部件", value: 1 },
         { label: "物料类别", value: 2 },

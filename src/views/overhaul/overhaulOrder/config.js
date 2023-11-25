@@ -115,14 +115,15 @@ const TIME_LINE = {
         isActive: false,
         processState: 14,
     },
-    {
-        content: "检修报告",
-        timestamp: "",
-        otherInfo: "",
-        isShowLine: false,
-        processState: 15,
-        isActive: false,
-    }]
+        // {
+        //     content: "检修报告",
+        //     timestamp: "",
+        //     otherInfo: "",
+        //     isShowLine: false,
+        //     processState: 15,
+        //     isActive: false,
+        // }
+    ]
 }
 const WORK_ORDER_STATUS = {}
 Object.values(WORK_ORDER_MAP).forEach(item => (WORK_ORDER_STATUS[item.value] = { text: item.text, tagType: item.tagType })); //处理状态数据
@@ -252,6 +253,50 @@ const ORDER_COLUMNS = [
         fixed: "right"
     },
 ]
+//外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
+const TAB_LIST_OUT = [
+    {
+        label: "现场勘查",
+        name: "surveyItem",
+        workClazzType: "survey", //班组字段
+        hiddenAssign: true,
+    },
+    {
+        label: "现场检修",
+        name: "siteOverhaul",
+        hiddenAssign: false,
+        workClazzType: "overhaulGroup",
+    },
+    {
+        label: "返厂检修-现场拆解",
+        name: "siteDismantle",
+        hiddenAssign: false,
+        workClazzType: "overhaulGroup",
+    },
+    {
+        label: "返厂检修-厂内拆解",
+        name: "factoryDismantle",
+        workClazzType: "assembleGroup",
+        hiddenAssign: false,
+    },
+    {
+        label: "返厂检修-厂内生产",
+        name: "factoryCreate",
+        workClazzType: "prodDeptGroup",
+        hiddenAssign: false,
+    },
+    {
+        label: "返厂检修-试验",
+        name: "experiment",
+        workClazzType: "experimentalGroup",
+        hiddenAssign: false,
+    },
+    {
+        label: "返厂检修-检修报告",
+        name: "finishReport",
+        hiddenAssign: true,
+    },
+]
 //每个流程对应的tab项
 const TAB_LIST_MAP = {
     //试验
@@ -344,9 +389,19 @@ const TAB_LIST_MAP = {
             workType: 7,
         },
         {
-            label: "设备清单",
-            name: "deviceList",
-            components: "DeviceList",
+            label: "大件设备清单",
+            name: "bigComponents",
+            components: "BigComponents",
+        },
+        {
+            label: "材料清单",
+            name: "materials",
+            components: "materials",
+        },
+        {
+            label: "工器具清单",
+            name: "instrument",
+            components: "instrument",
         },
 
         {
@@ -385,9 +440,19 @@ const TAB_LIST_MAP = {
             workType: 3,
         },
         {
-            label: "设备清单",
-            name: "deviceList",
-            components: "DeviceList",
+            label: "大件设备清单",
+            name: "bigComponents",
+            components: "BigComponents",
+        },
+        {
+            label: "材料清单",
+            name: "materials",
+            components: "materials",
+        },
+        {
+            label: "工器具清单",
+            name: "instrument",
+            components: "instrument",
         },
         {
             label: "现场检修试验报告",
@@ -463,6 +528,117 @@ const RETURN_COLUMNS = [
         width: 150,
     },
 ]
+// 工器具表格项
+const INSTRUMENT_COLUMNS = [
+    {
+        prop: "id",
+        label: "序号",
+        align: "center",
+        width: 50
+    },
+    {
+        prop: "productNumber",
+        label: "工器具名称",
+        align: "center",
+    },
+    {
+        prop: "materialName",
+        label: "工序组织",
+        align: "center",
+    },
+    {
+        prop: "num",
+        label: "数量",
+        align: "center",
+    },
+    {
+        prop: "operation",
+        label: "操作",
+        align: "center",
+        width: 150,
+    },
+]
+// 材料表格项
+const MATERIALS_COLUMNS = [
+    {
+        prop: "id",
+        label: "序号",
+        align: "center",
+        width: 50
+    },
+    {
+        prop: "productNumber",
+        label: "材料名称",
+        align: "center",
+    },
+    {
+        prop: "materialName",
+        label: "材料类型",
+        align: "center",
+    },
+    {
+        prop: "materialName",
+        label: "工序组织",
+        align: "center",
+    },
+    {
+        prop: "num",
+        label: "数量",
+        align: "center",
+    },
+    {
+        prop: "operation",
+        label: "操作",
+        align: "center",
+        width: 150,
+    },
+]
+
+//大件设备表格项
+const BIG_COMPONENTS_COLUMNS = [
+    {
+        prop: "id",
+        label: "序号",
+        align: "center",
+        width: 50
+    },
+    {
+        prop: "deviceName",
+        label: "大件设备类别",
+        align: "center",
+    },
+    {
+        prop: "deviceModelName",
+        label: "设备类型",
+        align: "center",
+    },
+    {
+        prop: "deviceNumber",
+        label: "设备编号",
+        align: "center",
+    },
+    {
+        prop: "materialName",
+        label: "工序组织",
+        align: "center",
+    },
+
+    {
+        prop: "user",
+        label: "领用人",
+        align: "center",
+    },
+    {
+        prop: "useTime",
+        label: "领用时间",
+        align: "center",
+    },
+    {
+        prop: "useStatus",
+        label: "设备空闲状态",
+        align: "center",
+    }
+]
 /**
  * BOM复核状态
  */
@@ -480,5 +656,9 @@ export {
     TAB_LIST_MAP, //工序的tab相关枚举
     RETURN_COLUMNS,
     BOM_STATUS,
-    TIME_LINE
+    TIME_LINE,
+    TAB_LIST_OUT,
+    MATERIALS_COLUMNS,
+    INSTRUMENT_COLUMNS,
+    BIG_COMPONENTS_COLUMNS
 };
