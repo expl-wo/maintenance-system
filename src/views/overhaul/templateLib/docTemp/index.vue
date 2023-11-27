@@ -25,8 +25,10 @@
       <el-table
         v-loading="loading"
         :data="tableData"
-        size="medium"
+        stripe
         border
+        fit
+        highlight-current-row
         @sort-change="sortChange"
       >
         <template v-for="item in columns">
@@ -260,7 +262,7 @@ export default {
       })
         .then(() => {
           let params = {
-            id: row.id,
+            docId: row.docId,
           };
           deleteTemplate(params).then((res) => {
             if (res.success) {

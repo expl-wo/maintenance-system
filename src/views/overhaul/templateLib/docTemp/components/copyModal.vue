@@ -64,7 +64,7 @@ export default {
   watch: {
     visible(newVal) {
       if (newVal && this.info) {
-        this.copyForm.templateName = this.info.templateName + "_副本";
+        this.copyForm.templateName = this.info.name + "_副本";
       }
     },
   },

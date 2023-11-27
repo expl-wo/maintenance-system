@@ -34,10 +34,10 @@
             </el-form-item>
           </el-col>
         </el-row>
-      </el-form>
+        </el-form>
     </div>
     <div class="tinymce-wrapper">
-      <my-tinymce ref="editor" :height="200" v-model="content"></my-tinymce>
+      <my-tinymce ref="editor" :height="200" :value="content" @input="contentChange"></my-tinymce>
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -92,15 +92,8 @@ export default {
       content: "",
       loading: false,
       docTypeList: [],
+      modalTitle: '',
     };
-  },
-  computed: {
-    isAdd() {
-      return !!this.info;
-    },
-    modalTitle() {
-      return `${this.isAdd ? "新增" : "编辑"}文档模板`;
-    },
   },
   watch: {
     async visible(newVal) {
@@ -116,16 +109,27 @@ export default {
           });
         }
         if (newVal && this.info) {
+          this.modalTitle = '编辑模板文档';
           let { name, type, content, docId } = this.info;
           this.templateFrom.docId = docId;
           this.templateFrom.name = name;
           this.templateFrom.type = type;
           this.content = content;
+        } else {
+          this.templateFrom.docId = '';
+          this.templateFrom.name = '';
+          this.templateFrom.type = '';
+          this.content = '';
+          this.modalTitle = '新增模板文档';
         }
       }
     },
   },
   methods: {
+    // 内容发生变化
+    contentChange(val) {
+      this.content = val;
+    },
     // 关闭
     handleClose() {
       this.$refs.templateFrom.resetFields();
@@ -146,15 +150,24 @@ export default {
           type: this.templateFrom.type,
           content: this.content,
           contentStr: text,
+          creatorId: localStorage.getItem('userId')
         };
-        addOrEditTemplate(params).then((res) => {
+        addOrEditTemplate(params)
+        .then((res) => {
           if (res.success) {
             this.$message.success("操作成功");
             this.$refs.templateFrom.resetFields();
-            this.loading = false;
             this.$emit("closeModal", "add", true);
+          } else {
+            this.$message.error(res.errMsg);
           }
-        });
+        })
+        .catch(() => {
+          this.$message.error('操作失败');
+        })
+        .finally(() => {
+          this.loading = false;
+        })
       });
     },
   },
