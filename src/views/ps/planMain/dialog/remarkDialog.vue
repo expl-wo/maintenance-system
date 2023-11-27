@@ -1,18 +1,18 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="添加备注" v-model="dialogVisible" modal @close="handleClose">
+  <el-dialog draggable  appendToBody title="添加备注" v-model="dialogVisible" modal @close="handleClose">
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="100px"
     >
       <div class="col-md-12">
-        <el-form-item prop="remarkDes" label="备注描述" required size="mini">
+        <el-form-item prop="remarkDes" label="备注描述" required>
           <el-input v-model="model.remarkDes" type="textarea" :rows="5" maxlength="256"></el-input>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

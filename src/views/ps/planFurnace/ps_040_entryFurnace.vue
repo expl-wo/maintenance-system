@@ -6,8 +6,8 @@
           <template #header>
           <div class="hasLegend">
             <div>
-              <el-button type="danger" v-if="isApprovePage || $isAuth('0404planFurnace.delete')" size="mini" icon="Delete" @click="handleDeleteProduct">删除</el-button>
-              <el-button type="primary" v-if="isApprovePage || $isAuth('0404planFurnace.editTank')" size="mini" icon="Edit" @click="handleEditTank">修改干燥罐</el-button>
+              <el-button type="danger" v-if="isApprovePage || $isAuth('0404planFurnace.delete')" icon="Delete" @click="handleDeleteProduct">删除</el-button>
+              <el-button type="primary" v-if="isApprovePage || $isAuth('0404planFurnace.editTank')" icon="Edit" @click="handleEditTank">修改干燥罐</el-button>
             </div>
             <div class="legend-wrapper" style="justify-content: flex-start">
               <simple-gant-legend :show-selected="false"></simple-gant-legend>

@@ -5,7 +5,7 @@
         <div class="video-content-left-title">工序结构</div>
         <div class="video-content-left-search">
           <el-input
-            size="small"
+            
             placeholder="输入关键字进行过滤"
             v-model="filterText"
           >
@@ -26,7 +26,7 @@
         </div>
         <div class="video-form">
           <el-select
-            size="small"
+            
             v-model="videoForm.channelCodes"
             class="filter-item"
             placeholder="请选择"
@@ -42,7 +42,7 @@
             v-model="videoForm.videoStartTime"
             type="datetime"
             :clearable="false"
-            size="small"
+            
             placeholder="选择开始日期"
           >
           </el-date-picker>
@@ -50,15 +50,15 @@
             v-model="videoForm.videoEndTime"
             type="datetime"
             :clearable="false"
-            size="small"
+            
             placeholder="选择结束日期"
           >
           </el-date-picker>
           <div class="video-form-operate">
-            <el-button type="primary" size="small">
+            <el-button type="primary" >
               <el-icon><Search /></el-icon>查询
             </el-button>
-            <el-button type="info" size="small">
+            <el-button type="info" >
               <el-icon><RefreshLeft /></el-icon> 重置
             </el-button>
           </div>

@@ -1,10 +1,10 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="计划生产完工时间修改申请" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="计划生产完工时间修改申请" v-model="dialogVisible" modal>
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="120px"
     >
       <div class="col-md-12">
-        <el-form-item prop="newDeliveryDate" label="计划生产完工时间" required size="mini">
+        <el-form-item prop="newDeliveryDate" label="计划生产完工时间" required>
           <el-date-picker
             v-model="model.newDeliveryDate"
             style="width: 100%;"
@@ -15,15 +15,15 @@
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item prop="changeReason" label="修改原因" size="mini">
+        <el-form-item prop="changeReason" label="修改原因">
           <el-input v-model="model.changeReason" type="textarea" :rows="4"></el-input>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini"  v-if="$isAuth('mesGYBD50031.submit')" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button  v-if="$isAuth('mesGYBD50031.submit')" type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

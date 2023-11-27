@@ -2,22 +2,22 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="计划完工时间:" size="mini" prop="dateCount">
+        <el-form-item label="计划完工时间:" prop="dateCount">
           <el-date-picker v-model="listQuery.dateGroup" type="daterange" range-separator="至" style="width: 240px;"
                           start-placeholder="开始日期" end-placeholder="结束日期" />
         </el-form-item>
-        <el-form-item label="关键字" size="mini">
+        <el-form-item label="关键字">
           <el-input v-model="listQuery.search" placeholder="项目名、生产号、图号"
                     style="width:170px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="产品类型：" size="mini">
+        <el-form-item label="产品类型：">
           <el-select v-model="listQuery.productTypeParam" clearable style="width: 120px;" placeholder="选择类型">
             <el-option label="换流变" value="0" />
             <el-option label="变压器" value="1" />
             <el-option label="电抗器" value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="电压等级：" size="mini">
+        <el-form-item label="电压等级：">
           <el-select multiple collapse-tags v-model="listQuery.voltage" clearable style="width: 130px;"
                      placeholder="选择电压">
             <el-option label="110" value="110" />
@@ -27,7 +27,7 @@
             <el-option label="1000" value="1000" />
           </el-select>
         </el-form-item>
-        <el-form-item label="工序：" size="mini" v-if="!isMainPlanPage">
+        <el-form-item label="工序：" v-if="!isMainPlanPage">
           <el-select v-model="listQuery.op" clearable="" style="width: 120px;" placeholder="选择工序"
                      @change="handleChangeOp">
             <el-option
@@ -39,7 +39,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="工序状态：" size="mini" v-if="!isMainPlanPage">
+        <el-form-item label="工序状态：" v-if="!isMainPlanPage">
           <el-select v-model="listQuery.opStatus" style="width: 120px;" clearable placeholder="选择工序状态">
             <el-option
               v-for="(item,index) in statusOptions"
@@ -50,18 +50,18 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="状态" size="mini" v-if="isMainPlanPage">
-          <xui-dict-select multiple item-code="mainPlanStatus" size="mini" includeAll v-model="listQuery.status"
+        <el-form-item label="状态" v-if="isMainPlanPage">
+          <xui-dict-select multiple item-code="mainPlanStatus" includeAll v-model="listQuery.status"
                            class="filter-item" clearable
           ></xui-dict-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" @click="handleSearch" icon="Search">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button v-if="showColumnConfigBtn" @click="handleConfigColumn">列配置</el-button>
         </el-form-item>
-        <el-form-item size="mini" v-if = "isMainPlanPage">
+        <el-form-item v-if = "isMainPlanPage">
 <!--          主计划界面操作按钮-->
           <el-button @click="handleFrozenOrder" v-if="$isAuth('mainPlan_editData')">冻结工单</el-button>
           <el-button @click="handleUnFrozenOrder" v-if="$isAuth('mainPlan_editData')">工单解冻</el-button>
@@ -92,7 +92,7 @@
                            align="center" width="78" fixed property="caozuo">
             <template v-slot="scope">
               <el-button-group>
-                <el-button type="default" size="mini"
+                <el-button type="default"
                            @click="handleShowFlowchart(scope.row)">进度查询
                 </el-button>
               </el-button-group>

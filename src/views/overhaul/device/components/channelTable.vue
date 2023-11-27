@@ -5,7 +5,7 @@
         <el-form :inline="true">
           <el-form-item label="通道名称/编号、设备名称">
             <el-input
-              size="small"
+              
               placeholder="通道名称/编号、设备名称"
               v-model="searchKey"
             >
@@ -14,14 +14,14 @@
           <el-form-item>
             <el-button
               type="primary"
-              size="small"
+              
               @click="onSearch"
               ><el-icon class="el-icon--left"><Search /></el-icon>搜
               索</el-button
             >
             <el-button
               type="primary"
-              size="small"
+              
               @click="synchronize"
               ><el-icon class="el-icon--left"><Refresh /></el-icon>同
               步</el-button

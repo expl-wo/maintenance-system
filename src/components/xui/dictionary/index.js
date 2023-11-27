@@ -14,7 +14,9 @@ const formatTreeToList = (dictList, result) => {
     dictList.forEach(item => {
         result.push({
             code: item.code,
-            name: item.name
+            name: item.name,
+            remark: item.remark,
+            remark2: item.remark2
         })
         if (isNotEmptyArray(item.children)) {
             formatTreeToList(item.children, result)
@@ -42,7 +44,7 @@ export const transformDictDetail = function (key, value, attr = 'name') {
             return item == subItem.code
         })
         if (subItemResult) {
-            resultArr.push(subItemResult.name)
+            resultArr.push(subItemResult[attr])
         }
     })
     if (resultArr.length > 0) {

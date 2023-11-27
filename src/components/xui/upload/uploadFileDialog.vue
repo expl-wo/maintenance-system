@@ -17,7 +17,7 @@
             :auto-upload="false"
             :on-change="change"
         >
-          <el-button size="mini" type="primary">选择文件</el-button>
+          <el-button type="primary">选择文件</el-button>
           <template #tip>
             <div class="el-upload__tip"> 文件大小不能超过{{ fileMaxSize }}G，视频文件格式只支持mp4</div>
             <div class="el-upload__tip status-danger" v-if="isLargeFile">文件较大，上传需要时间，请耐心等待...</div>

@@ -1,11 +1,13 @@
 <template>
   <div class="app-container app-containerC">
-    <el-row :gutter="12" class="otherCon">
+    <el-row :gutter="12" class="hp">
       <el-col :span="10" class="hp p-lf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
-            <span>字典项目</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>字典项目</span>
+            </div>
+          </template>
           <div class="wp hp app-containerC">
             <dict @updateChild="handleUpdateChild"></dict>
           </div>
@@ -13,9 +15,11 @@
       </el-col>
       <el-col :span="14" class="hp p-rf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
-            <span>字典明细</span>
-          </div>
+          <template #header>
+            <div class="clearfix">
+              <span>字典明细</span>
+            </div>
+          </template>
           <div class="wp hp app-containerC">
             <dict-item ref="dictItem"></dict-item>
           </div>

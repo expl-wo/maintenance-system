@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-  <el-dialog v-dialogDrag  appendToBody title="生产完工时间修改" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="生产完工时间修改" v-model="dialogVisible" modal>
     <el-form ref="formRef" :model="formList" :rules="rules">
       <el-table stripe  ref="tableRef" height="360" highlight-current-row border :data="formList.dataList"
                 style="font-size: 0.7rem">
@@ -33,16 +33,16 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>
 
-  <el-dialog v-dialogDrag  appendToBody title="生产完工时间修改" v-model="dialogVisibleSingle" modal>
+  <el-dialog draggable  appendToBody title="生产完工时间修改" v-model="dialogVisibleSingle" modal>
     <el-form :model="model" class="element-list" ref="formRef" :rules="rules" label-width="120px">
       <div class="col-md-12">
-        <el-form-item prop="newDeliveryDate" label="生产完工时间" required size="mini">
+        <el-form-item prop="newDeliveryDate" label="生产完工时间" required>
           <el-date-picker
             v-model="model.newDeliveryDate"
             style="width: 100%;"
@@ -55,8 +55,8 @@
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisibleSingle=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmitSingle">提交</el-button>
+      <el-button @click="dialogVisibleSingle=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmitSingle">提交</el-button>
     </div>
     </template>
   </el-dialog>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
     :close-on-click-modal="false"
@@ -11,7 +11,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      size="small"
+
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

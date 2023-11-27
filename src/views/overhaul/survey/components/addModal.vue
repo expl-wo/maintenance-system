@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
     :destroy-on-close="true"
@@ -11,7 +11,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      size="small"
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -363,4 +362,5 @@ export default {
 ::v-deep(.el-input--small .el-input__inner) {
   width: 220px;
 }
+
 </style>

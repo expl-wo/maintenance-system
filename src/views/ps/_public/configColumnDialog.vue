@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="列配置" width="800px" top="5vh" v-model="dialogVisible"  v-if="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="列配置" width="800px" top="5vh" v-model="dialogVisible"  v-if="dialogVisible" modal>
     <div class="otherCon wp">
       <el-row :gutter="12" class="otherCon">
         <el-col :span="12" class="hp p-lf">
@@ -7,8 +7,8 @@
             <div slot="header" class="clearfix">
               <div>
                 <span>基础列配置</span>
-                <el-button size="mini" @click="baseSelectedAll">全选</el-button>
-                <el-button size="mini" @click="baseUnselectedAll">全不选</el-button>
+                <el-button @click="baseSelectedAll">全选</el-button>
+                <el-button @click="baseUnselectedAll">全不选</el-button>
               </div>
             </div>
             <div class="wp hp app-containerC">
@@ -30,8 +30,8 @@
             <div slot="header" class="clearfix">
               <div>
                 <span>采购、设计、生产列配置</span>
-                <el-button size="mini" @click="moreSelectedAll">全选</el-button>
-                <el-button size="mini" @click="moreUnselectedAll">全不选</el-button>
+                <el-button @click="moreSelectedAll">全选</el-button>
+                <el-button @click="moreUnselectedAll">全不选</el-button>
               </div>
             </div>
             <div class="wp hp app-containerC">
@@ -52,8 +52,8 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button @click="handleSave" type="primary" size="mini">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button @click="handleSave" type="primary">保存</el-button>
     </div>
     </template>
   </el-dialog>

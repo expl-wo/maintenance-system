@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="新增"
     :model-value="true"
     :destroy-on-close="true"
@@ -10,7 +10,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      size="small"
+
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">

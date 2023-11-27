@@ -2,7 +2,7 @@
   <div class="tree-wrapper">
     <div class="tree-title">设备组织树</div>
     <el-input
-      size="small"
+      
       placeholder="搜索"
       suffix-icon="el-icon-search"
       v-model="filterText"

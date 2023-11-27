@@ -3,18 +3,17 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="角色分类" size="mini">
+        <el-form-item label="角色分类">
           <el-input v-model="listQuery.cName" placeholder="角色分类" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
+        <el-form-item>
+          <el-button icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
-
     <el-table
       :data="tableData"
       :border="true"
@@ -22,7 +21,6 @@
       style="width: 100%"
       stripe
       row-key="id"
-      height="700"
     >
       <el-table-column
         prop="index"
@@ -52,22 +50,20 @@
         label="操作"
       >
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            icon="Edit"
-            @click = "editRole(scope.row)"
-          >
-          </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="danger"
-            icon="Delete"
-            @click="deleteRole(scope.row)"
-          >
-          </el-button>
+          <el-button-group>
+            <el-button
+                type="primary"
+                icon="Edit"
+                @click = "editRole(scope.row)"
+            >
+            </el-button>
+            <el-button
+                type="danger"
+                icon="Delete"
+                @click="deleteRole(scope.row)"
+            >
+            </el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
@@ -81,19 +77,19 @@
       @current-change="handleCurrentChange"
     />
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
-      <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="分类名称:" prop="name" size="mini">
-          <el-input v-model="listUpdate.cName" placeholder="角色名称" style="width: 320px;" class="filter-item" size="mini" />
+    <el-dialog draggable  width="700" :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
+      <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
+        <el-form-item label="分类名称:" prop="name">
+          <el-input v-model="listUpdate.cName" placeholder="角色名称" class="filter-item" />
         </el-form-item>
-        <el-form-item label="分类描述:" prop="desc" size="mini">
-          <el-input v-model="listUpdate.cIntro" placeholder="角色介绍" style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="分类描述:" prop="desc">
+          <el-input type="textarea" v-model="listUpdate.cIntro" placeholder="角色介绍"  class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate'):updateData('listUpdate')" size="mini">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate'):updateData('listUpdate')">
           保存
         </el-button>
       </div>

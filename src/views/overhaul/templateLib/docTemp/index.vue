@@ -3,18 +3,18 @@
     <div class="search-wrapper">
       <el-form :inline="true">
         <el-form-item label="模板名称">
-          <el-input size="small" v-model="searchKey"> </el-input>
+          <el-input  v-model="searchKey"> </el-input>
         </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
-            size="small"
+            
             @click="onSearch"
             ><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button
           >
           <el-button
             type="primary"
-            size="small"
+            
             @click="openModal(null, null, 'add')"
             ><el-icon class="el-icon--left"><Plus /></el-icon>新增</el-button
           >
@@ -68,26 +68,21 @@
             <el-button-group>
               <el-button
                 type="primary"
-                size="mini"
-              
                 @click="openModal(scope.$index, scope.row, 'preview')"
               ><el-icon><Platform /></el-icon
               > </el-button>
               <el-button
                 type="primary"
-                size="mini"
                 @click="openModal(scope.$index, scope.row, 'add')"
               > <el-icon><Edit /></el-icon
               ></el-button>
               <el-button
                 type="primary"
-                size="mini"
                 @click="openModal(scope.$index, scope.row, 'copy')"
               > <el-icon><DocumentCopy /></el-icon
               ></el-button>
               <el-button
                 type="danger"
-                size="mini"
                 @click="onDelete(scope.$index, scope.row)"
               >  <el-icon><Delete /></el-icon
               ></el-button>

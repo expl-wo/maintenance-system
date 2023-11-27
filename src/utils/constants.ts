@@ -39,6 +39,10 @@ export default {
     yes: 1,
     no: 0
   },
+  productOrGx: {
+    product: 'product',
+    gx: 'gx'
+  },
   pageEntryCount: 1000,
   defaultMainPath: '/main',
   fileType: {

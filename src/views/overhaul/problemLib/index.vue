@@ -3,11 +3,11 @@
     <!-- <div class="search-wrapper">
         <el-form :inline="true">
           <el-form-item label="模板名称">
-            <el-input size="small" v-model="searchKey"> </el-input>
+            <el-input  v-model="searchKey"> </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" icon="el-icon-search" @click="onSearch">查询</el-button>
-            <el-button icon="el-icon-plus" type="primary" size="small" @click="openModal(null, null, 'add')">新增</el-button>
+            <el-button type="primary"  icon="el-icon-search" @click="onSearch">查询</el-button>
+            <el-button icon="el-icon-plus" type="primary"  @click="openModal(null, null, 'add')">新增</el-button>
           </el-form-item>
         </el-form>
       </div> -->
@@ -38,14 +38,12 @@
             <el-button-group>
               <el-button
                 type="primary"
-                size="mini"
                 @click="openModal(scope.$index, scope.row, 'preview')"
               >
                 <el-icon><View /></el-icon>
               </el-button>
               <el-button
                 type="danger"
-                size="mini"
                 @click="onDelete(scope.$index, scope.row)"
               >
                 <el-icon><Delete /></el-icon>

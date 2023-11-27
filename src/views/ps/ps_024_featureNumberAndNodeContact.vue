@@ -2,16 +2,16 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="节点名称" size="mini">
+        <el-form-item label="节点名称">
           <el-input v-model="listQuery.name" placeholder="节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="节点类型" size="mini">
-          <el-select v-model="listQuery.type" size="mini" placeholder="节点类型" style="width: 120px;" filterable
+        <el-form-item label="节点类型">
+          <el-select v-model="listQuery.type" placeholder="节点类型" style="width: 120px;" filterable
                      default-first-option>
             <el-option v-for="items in nodeType" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询
           </el-button>
         </el-form-item>
@@ -31,11 +31,11 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template v-slot="scope">
                 <el-button-group>
-                  <el-button size="mini" title="修改" type="primary" icon="Edit"
+                  <el-button title="修改" type="primary" icon="Edit"
                     @click="updateItemData(scope.row)" />
                 </el-button-group>
                 <el-button-group>
-                  <el-button size="mini" title="删除" type="danger" icon="Delete"
+                  <el-button title="删除" type="danger" icon="Delete"
                     @click="handleItemDeleteDict(scope.row)" />
                 </el-button-group>
               </template>
@@ -55,7 +55,7 @@
       <el-table-column header-align="center" align="center" width="160" label="操作">
         <template v-slot="scope">
           <el-button-group>
-            <el-button size="mini" title="" type="primary" icon="Plus" @click="handleItemAddDict(scope.row)">
+            <el-button title="" type="primary" icon="Plus" @click="handleItemAddDict(scope.row)">
               添加图纸
             </el-button>
           </el-button-group>
@@ -67,16 +67,16 @@
       @pagination="getList" />
 
 
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="'(新增/修改)'" v-model="dialogConfigCaiGouFormVisible"
+    <el-dialog draggable  :close-on-click-modal="false" :title="'(新增/修改)'" v-model="dialogConfigCaiGouFormVisible"
       class="roleDialog" @close="clearnDialog()">
       <el-form ref="listItemUpdate" label-position="right" label-width="100px" :model="listItemUpdate" :rules="rules">
 
-        <el-form-item label="图纸特征号:" prop="drawingFeature" size="mini">
+        <el-form-item label="图纸特征号:" prop="drawingFeature">
           <el-input v-model="listItemUpdate.drawingFeature" placeholder="图纸特征号" style="width: 350px;"
             class="filter-item" />
         </el-form-item>
 
-        <el-form-item label=" 图纸名称:" prop="drawingName" size="mini">
+        <el-form-item label=" 图纸名称:" prop="drawingName">
           <el-input v-model="listItemUpdate.drawingName" placeholder="图纸名称" style="width: 350px;" class="filter-item" />
         </el-form-item>
 
@@ -84,9 +84,9 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogConfigCaiGouFormVisible = false;clearnDialog()">取 消</el-button>
-        <!-- <el-button type="primary" size="mini" @click="dialogStatus==='create'?createItemData('listItemUpdate', '添加成功'):updateItemData('listItemUpdate', '修改成功')"> -->
-        <el-button type="primary" size="mini" @click="createItemData">
+        <el-button @click="dialogConfigCaiGouFormVisible = false;clearnDialog()">取 消</el-button>
+        <!-- <el-button type="primary" @click="dialogStatus==='create'?createItemData('listItemUpdate', '添加成功'):updateItemData('listItemUpdate', '修改成功')"> -->
+        <el-button type="primary" @click="createItemData">
           保存
         </el-button>
       </div>

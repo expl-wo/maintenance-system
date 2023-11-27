@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="查看"
     custom-class="detail-modal"
     width="520px"
@@ -27,7 +27,7 @@
       <div class="notice-content">{{ info.detail }}</div>
     </div>
     <template #footer>
-      <el-button size="small" type="primary" @click="closeModal"
+      <el-button  type="primary" @click="closeModal"
         >确 定</el-button
       >
     </template>

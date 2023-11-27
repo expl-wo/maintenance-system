@@ -11,7 +11,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :hide-on-single-page="hidePage"
-      size="mini"
+
     />
   </div>
 </template>

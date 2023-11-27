@@ -1,39 +1,37 @@
 <template>
   <div class="mark-box">
     <div class="mark-warp">
-      <div>
-        <el-button
-          type="primary"
-          size="small"
-          :disabled="isPause"
-          @click="handleDelete('', true)"
-        >
-          <el-icon class="el-icon--left"><Delete /></el-icon>删除
-        </el-button>
-        <el-checkbox
-          class="choose-all"
-          size="small"
-          :indeterminate="isIndeterminate"
-          v-model="checkAll"
-          @change="handleCheckAllChange"
-          >全选
-        </el-checkbox>
-      </div>
-
-      <div>
-        标记时间:
-        <el-date-picker
-          v-model="queryParams.time"
-          size="small"
-          type="datetimerange"
-          :picker-options="pickerOptions"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          align="right"
-        >
-        </el-date-picker>
-      </div>
+      <el-form :inline="true">
+        <el-form-item label="标记时间">
+          <el-date-picker
+            v-model="queryParams.time"
+            type="datetimerange"
+            :picker-options="pickerOptions"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            align="right"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            type="primary"
+            :disabled="isPause || !checkList.length"
+            @click="handleDelete('', true)"
+          >
+            <el-icon class="el-icon--left"><Delete /></el-icon>删除
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox
+            :indeterminate="isIndeterminate"
+            v-model="checkAll"
+            @change="handleCheckAllChange"
+            >全选
+          </el-checkbox>
+        </el-form-item>
+      </el-form>
     </div>
     <div class="mark-list">
       <div class="card-list" v-for="(item, index) in markList" :key="index">
@@ -68,8 +66,7 @@
         </div>
         <div class="card-list-footer">
           <el-checkbox
-            size="small"
-            :value="checkList.includes(item.id)"
+            :model-value="checkList.includes(item.id)"
             @change="checkBoxChange($event, item.id)"
           ></el-checkbox>
           <div class="footer-warp" v-if="!isPause">
@@ -212,7 +209,7 @@ export default {
       this.imgViewerList = urlList;
       this.showImgViewer = true;
     },
-        //分页发生改变时
+    //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
       if (limit) {
@@ -347,7 +344,6 @@ export default {
      */
     handleCheckAllChange(val) {
       this.checkList = val ? this.markList.map((item) => item.id) : [];
-      debugger;
       this.isIndeterminate = false;
     },
   },
@@ -360,9 +356,6 @@ $warp-height: 40px;
 $card-height: 428px;
 $card-img-height: 220px;
 $card-footer-height: 40px;
-.choose-all {
-  margin-left: 15px;
-}
 ::v-deep(.pagination-container) {
   padding: 0;
 }
@@ -373,9 +366,7 @@ $card-footer-height: 40px;
   height: 100%;
   width: 100%;
   .mark-warp {
-    display: flex;
     height: $warp-height;
-    justify-content: space-between;
   }
   .mark-list {
     overflow-y: auto;

@@ -1,50 +1,46 @@
 <template>
   <div class="app-container order-list-box main-base-style">
-    <el-row class="mrb15" type="flex" align="middle" justify="start">
-      <span class="mrl10">生产号:</span>
-      <el-input
-        size="small"
-        style="width: unset"
-        v-model="queryParams.prodNumber"
-        clearable
-        @keyup.enter="handleFilter"
-      />
-      <span class="mrl25">项目名称:</span
-      ><el-input
-        size="small"
-        style="width: unset"
-        v-model="queryParams.projName"
-        clearable
-        @keyup.enter="handleFilter"
-      />
-      <el-button size="small" class="mrl25" type="primary" @click="getList">
-        <el-icon class="el-icon--left"><Search /></el-icon> 查询
-      </el-button>
-      <el-button
-        size="small"
-        v-if="menuList.includes('2004_survey_btn_add')"
-        class="mrl10"
-        type="primary"
-        @click="handleCreate(null, 'add')"
-      >
-        <el-icon class="el-icon--left"><Plus /></el-icon>新增
-      </el-button>
-      <el-button
-        v-if="menuList.includes('2004_survey_btn_del')"
-        :disabled="!selectRowList.length"
-        size="small"
-        title="删除"
-        type="danger"
-        @click="handleDelete(null)"
-      >
-        <el-icon class="el-icon--left"><Delete /></el-icon> 删除
-      </el-button>
-    </el-row>
+    <el-form :inline="true">
+      <el-form-item label="生产号">
+        <el-input
+          v-model="queryParams.prodNumber"
+          clearable
+          @keyup.enter="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item label="项目名称">
+        <el-input
+          v-model="queryParams.projName"
+          clearable
+          @keyup.enter="handleFilter"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="getList">
+          <el-icon class="el-icon--left"><Search /></el-icon> 查询
+        </el-button>
+        <el-button
+          v-if="menuList.includes('2004_survey_btn_add')"
+          type="primary"
+          @click="handleCreate(null, 'add')"
+        >
+          <el-icon class="el-icon--left"><Plus /></el-icon>新增
+        </el-button>
+        <el-button
+          v-if="menuList.includes('2004_survey_btn_del')"
+          :disabled="!selectRowList.length"
+          title="删除"
+          type="danger"
+          @click="handleDelete(null)"
+        >
+          <el-icon class="el-icon--left"><Delete /></el-icon> 删除
+        </el-button>
+      </el-form-item>
+    </el-form>
     <el-table
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
       border
       fit
       highlight-current-row
@@ -65,7 +61,6 @@
               <el-button-group>
                 <!-- 暂停能操作 -->
                 <el-button
-                  size="small"
                   title="编辑"
                   type="primary"
                   v-if="menuList.includes('2004_survey_btn_edit')"
@@ -77,7 +72,6 @@
                   <el-icon><Edit /></el-icon>
                 </el-button>
                 <el-button
-                  size="small"
                   title="详情"
                   type="primary"
                   @click="openModal(row, 'showInfo')"
@@ -86,7 +80,6 @@
                 </el-button>
                 <!-- 暂停或者说非创建工单均不能操作 -->
                 <el-button
-                  size="small"
                   title="发起审核"
                   v-if="menuList.includes('2004_survey_btn_add')"
                   :disabled="
@@ -101,7 +94,6 @@
                 </el-button>
                 <!-- 工单结束之后不能再操作 -->
                 <el-button
-                  size="small"
                   v-if="menuList.includes('2004_survey_btn_pause')"
                   :title="
                     row.orderStatus === WORK_ORDER_MAP['pause'].value
@@ -122,7 +114,6 @@
                 </el-button>
                 <!-- 工单审批之后就不能删除了 -->
                 <el-button
-                  size="small"
                   v-if="menuList.includes('2004_survey_btn_del')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
@@ -136,7 +127,6 @@
                 </el-button>
                 <!-- 工单结束和暂停之后不能再操作 -->
                 <el-button
-                  size="small"
                   title="结束"
                   v-if="menuList.includes('2004_survey_btn_close')"
                   :disabled="

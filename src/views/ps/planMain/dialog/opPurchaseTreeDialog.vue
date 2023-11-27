@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  append-to-body title="采购齐套信息" v-model="dialogVisible" modal>
+  <el-dialog draggable  append-to-body title="采购齐套信息" v-model="dialogVisible" modal>
     <div class="otherCon wp" style="height: calc(100vh - 400px); overflow: auto;">
       <el-table stripe
         ref="tableDataRef"
@@ -44,7 +44,7 @@
       </el-table></div>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">关闭</el-button>
+      <el-button @click="dialogVisible=false">关闭</el-button>
     </div>
     </template>
   </el-dialog>

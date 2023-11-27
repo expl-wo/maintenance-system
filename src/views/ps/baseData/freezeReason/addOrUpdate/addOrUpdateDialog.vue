@@ -1,24 +1,24 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'" width="600px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="reasonName" label="原因名称：" size="mini">
+          <el-form-item prop="reasonName" label="原因名称：">
             <el-input v-model="model.reasonName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="reasonDescribe" label="原因描述：" size="mini">
+          <el-form-item prop="reasonDescribe" label="原因描述：">
             <el-input v-model="model.reasonDescribe" type="textarea" rows="8"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
 
   </el-dialog>

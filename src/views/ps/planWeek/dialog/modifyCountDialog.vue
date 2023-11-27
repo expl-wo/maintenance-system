@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
     <div class="otherCon wp">
       <el-table stripe  ref="tableRef" height="500px" highlight-current-row border :data="bomInfoList"
                 style="font-size: 0.7rem"
@@ -32,8 +32,8 @@
       </el-table>
     </div>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">确定</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">确定</el-button>
     </div>
   </el-dialog>
 </template>

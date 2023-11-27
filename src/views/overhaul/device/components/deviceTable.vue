@@ -4,21 +4,17 @@
       <div class="operate-wrapper">
         <el-form :inline="true">
           <el-form-item label="设备名称/编号/IP">
-            <el-input
-              size="small"
-              placeholder="设备名称/编号/IP"
-              v-model="searchKey"
-            >
+            <el-input placeholder="设备名称/编号/IP" v-model="searchKey">
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" @click="onSearch"
-              ><el-icon class="el-icon--left"><Search /></el-icon>搜
-              索</el-button
+            <el-button type="primary" @click="onSearch"
+              ><el-icon class="el-icon--left"><Search /></el-icon
+              >查询</el-button
             >
-            <el-button type="primary" size="small" @click="synchronize"
-              ><el-icon class="el-icon--left"><Refresh /></el-icon>同
-              步</el-button
+            <el-button type="primary" @click="synchronize"
+              ><el-icon class="el-icon--left"><Refresh /></el-icon
+              >同步</el-button
             >
           </el-form-item>
         </el-form>

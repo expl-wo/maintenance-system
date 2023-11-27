@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  append-to-body title="开始时间处理" v-model="dialogVisible" modal>
+  <el-dialog draggable  append-to-body title="开始时间处理" v-model="dialogVisible" modal>
     <el-form
       ref="formRef"
       :model="model"
@@ -8,7 +8,7 @@
       label-width="100px"
     >
       <div v-if="!(isRepair===1&&model.isCancel===1)" class="col-md-12">
-        <el-form-item prop="startDate" required label="新计划开始时间" size="mini" label-width="110px">
+        <el-form-item prop="startDate" required label="新计划开始时间" label-width="110px">
           <el-date-picker
             v-model="model.startDate"
             value-format="yyyy-MM-dd"
@@ -19,7 +19,7 @@
         </el-form-item>
       </div>
       <div v-if="isRepair===1" class="col-md-12">
-        <el-form-item prop="newDeliveryDate" label="是否取消该节点" size="mini" label-width="110px">
+        <el-form-item prop="newDeliveryDate" label="是否取消该节点" label-width="110px">
           <el-radio-group v-model="model.isCancel">
             <el-radio :label="0">否</el-radio>
             <el-radio :label="1">是</el-radio>
@@ -27,15 +27,15 @@
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item prop="describe" required label="修改原因" size="mini" label-width="110px">
+        <el-form-item prop="describe" required label="修改原因" label-width="110px">
           <el-input type="text" placeholder="请输入修改原因" v-model="model.describe"></el-input>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

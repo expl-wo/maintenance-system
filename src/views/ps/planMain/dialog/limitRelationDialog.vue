@@ -1,18 +1,18 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="this.selectedData.productNo+'限制工序前后关系'" v-model="dialogVisible" modal width="30%">
+  <el-dialog draggable  appendToBody :title="this.selectedData.productNo+'限制工序前后关系'" v-model="dialogVisible" modal width="30%">
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="100px"
     >
       <div class="col-md-24">
-        <el-form-item prop="status" label="是否限制" required size="mini">
+        <el-form-item prop="status" label="是否限制" required>
           <xui-dict-select itemCode="flag01" v-model="model.status" style="width: 100%;"></xui-dict-select>
         </el-form-item>
       </div>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>

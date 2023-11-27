@@ -9,30 +9,30 @@
             style="margin-bottom: 4px;"
             class="demo-form-inline demo-form-zdy"
           >
-            <el-form-item size="mini">
-              <el-input @keyup.enter.native="handleSearch" v-model="listQuery.productNumber" size="mini" placeholder="请输入生产号" style="width: 150px;" class="filter-item" clearable />
+            <el-form-item>
+              <el-input @keyup.enter.native="handleSearch" v-model="listQuery.productNumber" placeholder="请输入生产号" style="width: 150px;" class="filter-item" clearable />
             </el-form-item>
-            <el-form-item size="mini">
-              <xui-dict-select multiple item-code="nodeConfirmStatus" size="mini" includeAll v-model="listQuery.statusModel"
+            <el-form-item>
+              <xui-dict-select multiple item-code="nodeConfirmStatus" includeAll v-model="listQuery.statusModel"
                                style="width:160px;" class="filter-item" :clearable="false">状态</xui-dict-select>
             </el-form-item>
-            <el-form-item size="mini">
-              <el-button type="primary" size="mini" @click="handleSearch">查询</el-button>
+            <el-form-item>
+              <el-button type="primary" @click="handleSearch">查询</el-button>
             </el-form-item>
-            <el-form-item size="mini" v-if="isApprovePage || $isAuth('0404planFurnace.entry')">
-              <el-button type="primary" size="mini" @click="joinFurnace">入炉</el-button>
+            <el-form-item v-if="isApprovePage || $isAuth('0404planFurnace.entry')">
+              <el-button type="primary" @click="joinFurnace">入炉</el-button>
             </el-form-item>
-            <el-form-item size="mini" v-if="isApprovePage || $isAuth('0404planFurnace.editTime')">
-              <el-button type="primary" size="mini" @click="HandleChangePlanData">修改计划时间</el-button>
+            <el-form-item v-if="isApprovePage || $isAuth('0404planFurnace.editTime')">
+              <el-button type="primary" @click="HandleChangePlanData">修改计划时间</el-button>
             </el-form-item>
-            <el-form-item size="mini" v-if="isApprovePage || $isAuth('0404planFurnace.approval')">
-              <el-button type="primary" size="mini" icon="Coordinate" @click="handleApproval">提交审批</el-button>
+            <el-form-item v-if="isApprovePage || $isAuth('0404planFurnace.approval')">
+              <el-button type="primary" icon="Coordinate" @click="handleApproval">提交审批</el-button>
             </el-form-item>
-            <el-form-item size="mini" v-if="isApprovePage">
-              <el-button type="success" size="mini" icon="SuccessFilled" @click="handlePass">审批通过</el-button>
+            <el-form-item v-if="isApprovePage">
+              <el-button type="success" icon="SuccessFilled" @click="handlePass">审批通过</el-button>
             </el-form-item>
-            <el-form-item size="mini" v-if="isApprovePage">
-              <el-button type="warning" size="mini" icon="CircleCloseFilled" @click="handleReject">审批驳回</el-button>
+            <el-form-item v-if="isApprovePage">
+              <el-button type="warning" icon="CircleCloseFilled" @click="handleReject">审批驳回</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -105,7 +105,7 @@
       </div>
     </el-card>
 
-    <el-dialog v-dialogDrag  appendToBody title="预排检查" width="1200px" v-model="dialogVisible" @close="dialogClosed" modal>
+    <el-dialog draggable  appendToBody title="预排检查" width="1200px" v-model="dialogVisible" @close="dialogClosed" modal>
       <div class="otherCon wp">
         <el-form
           ref="formRef"
@@ -162,7 +162,7 @@
                   start-placeholder="开始日期"
                   range-separator="至"
                   end-placeholder="结束日期"
-                  size="mini"
+
                   style="width: 330px;"
                   @change="changeDateRange"
                   :disabled="!canChange"
@@ -177,7 +177,7 @@
                   start-placeholder="开始日期"
                   range-separator="至"
                   end-placeholder="结束日期"
-                  size="mini"
+
                   style="width: 330px;"
                   :disabled="!canChange"
                   :clearable="false"
@@ -227,7 +227,7 @@
             <el-table-column label="操作" align="center" fixed="right" width="120">
               <template v-slot="scope">
                 <el-button-group>
-                  <el-button type="danger"  size="mini" @click="handleDelete(scope.row)"  icon="Delete">删除</el-button>
+                  <el-button type="danger"  @click="handleDelete(scope.row)"  icon="Delete">删除</el-button>
                 </el-button-group>
               </template>
             </el-table-column>
@@ -236,8 +236,8 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+        <el-button @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="handleSubmit">保存</el-button>
       </div>
       </template>
     </el-dialog>

@@ -1,7 +1,7 @@
 <template>
   <div class="wp hp app-containerC">
     <div class="panel-menu-search filter-container searchCon">
-      <el-button @click="handleAdd" size="mini" type="primary">新增</el-button>
+      <el-button @click="handleAdd" type="primary">新增</el-button>
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <el-table stripe ref="tableRef" highlight-current-row border :data="dataList"
@@ -60,10 +60,10 @@
         <el-table-column label="操作" width="120" align="center">
           <template slot-scope="scope">
             <el-button-group>
-              <el-button type="primary" size="mini"
+              <el-button type="primary"
                          @click="handleEdit(scope.row)">保存
               </el-button>
-              <el-button type="danger" size="mini"
+              <el-button type="danger"
                          @click="handleDelete(scope.row)">删除
               </el-button>
             </el-button-group>
@@ -71,13 +71,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog v-dialogDrag appendToBody :title="model.id? '编辑': '新增'"
+    <el-dialog draggable appendToBody :title="model.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600"
     >
       <el-form :model="model" ref="formRef" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="dryingTankId" label="干燥罐炉号" size="mini">
+            <el-form-item prop="dryingTankId" label="干燥罐炉号">
               <el-select value-key="k" v-model="model.dryingTankId" :clearable="false" style="width: 100%;">
                 <el-option v-for="item in canSelectedDryingTankList" :key="item.k" :value="item.k"
                            :label="item.v"></el-option>
@@ -87,21 +87,21 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="firstTime" label="第一次工艺时长(小时)" size="mini">
+            <el-form-item prop="firstTime" label="第一次工艺时长(小时)">
               <el-input-number v-model="model.firstTime" :min="1" style="width: 100%;"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="arrangeTime" label="器身整理(小时)" size="mini">
+            <el-form-item prop="arrangeTime" label="器身整理(小时)">
               <el-input-number v-model="model.arrangeTime" :min="0" style="width: 100%;"></el-input-number>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="secondTime" label="第二次工艺时长(小时)" size="mini">
+            <el-form-item prop="secondTime" label="第二次工艺时长(小时)">
               <el-input-number v-model="model.secondTime" :min="0" style="width: 100%;"></el-input-number>
             </el-form-item>
           </el-col>
@@ -110,8 +110,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+        <el-button @click="dialogVisible=false">取消</el-button>
+        <el-button type="primary" @click="handleSubmit">保存</el-button>
         </div>
       </template>
     </el-dialog>

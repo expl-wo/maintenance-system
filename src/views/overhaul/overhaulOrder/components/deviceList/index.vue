@@ -3,17 +3,17 @@
     <el-row class="mrb15" type="flex" align="middle" justify="start">
       <span class="mrl10">设备名称:</span
       ><el-input
-        size="small"
+        
         style="width:unset"
         v-model="queryParams.deviceName"
         clearable
         @keyup.enter="handleFilter"
       />
-      <el-button size="small" class="mrl10" type="primary" @click="getList">
+      <el-button  class="mrl10" type="primary" @click="getList">
         <el-icon class="el-icon--left"><Search /></el-icon> 查询
       </el-button>
       <el-button
-        size="small"
+        
         class="mrl10"
         type="primary"
         @click="openModal(null, 'showAdd')"
@@ -21,18 +21,18 @@
         <el-icon class="el-icon--left"><Plus /></el-icon> 新增
       </el-button>
       <el-button
-        size="small"
+        
         class="mrl10"
         type="primary"
         @click="openModal(null, 'showTemplate')"
       >
         <el-icon class="el-icon--left"><SetUp /></el-icon> 模板选择
       </el-button>
-      <el-button size="small" class="mrl10" type="primary" @click="getList">
+      <el-button  class="mrl10" type="primary" @click="getList">
         <el-icon class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
       <el-button
-        size="small"
+        
         class="mrl10"
         type="primary"
         @click="handleApproval"
@@ -40,7 +40,7 @@
         <el-icon class="el-icon--left"><Stamp /></el-icon> 发起审核
       </el-button>
       <el-button
-        size="small"
+        
         type="danger"
         title="删除"
         :disabled="!selectRowList.length"
@@ -53,7 +53,7 @@
       :data="tableData"
       v-loading="listLoading"
       stripe
-      size="small"
+      
       style="width: 100%"
       height="510px"
       @selection-change="handleSelectionChange"
@@ -66,7 +66,7 @@
         >
           <template #default="{ row }">
             <el-button
-              size="small"
+              
               type="primary"
               title="编辑"
               @click="openModal(row, 'showEdit')"
@@ -74,7 +74,7 @@
               <el-icon ><Edit /></el-icon>
             </el-button>
             <el-button
-              size="small"
+              
               type="danger"
               title="删除"
               @click="handleDelete(row)"

@@ -62,7 +62,6 @@ export default {
   },
   methods: {
     initData(rowData, isAdd, isApproval) {
-      debugger
       this.isApproval = isApproval
       this.rowData = rowData
       this.isAdd = isAdd

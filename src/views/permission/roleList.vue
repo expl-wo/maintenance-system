@@ -3,25 +3,25 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="角色名称" size="mini">
-          <el-input v-model="listQuery.rName" size="mini" placeholder="角色名称" style="width: 180px;"
+        <el-form-item label="角色名称">
+          <el-input v-model="listQuery.rName" placeholder="角色名称" style="width: 180px;"
                     class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="角色介绍" size="mini">
-          <el-input v-model="listQuery.rIntro" size="mini" placeholder="角色介绍" style="width: 180px;"
+        <el-form-item label="角色介绍">
+          <el-input v-model="listQuery.rIntro" placeholder="角色介绍" style="width: 180px;"
                     class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="是否可用" size="mini">
+        <el-form-item label="是否可用">
           <el-select v-model="listQuery.rEnabled" placeholder="请选择" style="width: 100px;"
                      @change="handleFilterChange($event)">
             <el-option label="是" value="1" />
             <el-option label="否" value="0" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
+        <el-form-item>
+          <el-button icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item>
           <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
@@ -77,36 +77,36 @@
         label="操作"
       >
         <template v-slot="scope">
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            @click="includeEditPermission(scope.row)"
-          >包含权限编辑
-          </el-button>
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            @click="queryPermission(scope.row)"
-          >查看
-          </el-button>
-          <el-button
-            size="mini"
-            plain
-            icon="Edit"
-            type="primary"
-            @click="editPermission(scope.row)"
-          >
-          </el-button>
-          <el-button
-            size="mini"
-            plain
-            icon="Delete"
-            type="danger"
-            @click="deletePermission(scope.row)"
-          >
-          </el-button>
+          <el-button-group>
+            <el-button
+
+                plain
+                type="primary"
+                @click="includeEditPermission(scope.row)"
+            >包含权限编辑
+            </el-button>
+            <el-button
+                plain
+                type="primary"
+                @click="queryPermission(scope.row)"
+            >查看
+            </el-button>
+            <el-button
+
+                plain
+                icon="Edit"
+                type="primary"
+                @click="editPermission(scope.row)"
+            >
+            </el-button>
+            <el-button
+                plain
+                icon="Delete"
+                type="danger"
+                @click="deletePermission(scope.row)"
+            >
+            </el-button>
+          </el-button-group>
         </template>
       </el-table-column>
     </el-table>
@@ -121,13 +121,13 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag append-to-body :close-on-click-modal="false" :title="textMap[dialogStatus]"
+    <el-dialog draggable append-to-body :close-on-click-modal="false" :title="textMap[dialogStatus]"
                v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="角色名称:" prop="name" size="mini">
+        <el-form-item label="角色名称:" prop="name">
           <el-input v-model="listUpdate.rName" placeholder="角色名称" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="角色分类:" prop="cateId" size="mini">
+        <el-form-item label="角色分类:" prop="cateId">
           <el-select v-model="listUpdate.cateId" placeholder="请选择" style="width: 360px;" @change="cateChange">
             <el-option
               v-for="item in tableDataClassification"
@@ -137,10 +137,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item label="角色介绍:" size="mini">
+        <el-form-item label="角色介绍:">
           <el-input v-model="listUpdate.rIntro" placeholder="角色介绍" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="是否可用:" size="mini">
+        <el-form-item label="是否可用:">
           <el-select v-model="listUpdate.rEnabled" placeholder="请选择" style="width: 80px;">
             <el-option label="是" value="1" />
             <el-option label="否" value="0" />
@@ -149,8 +149,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini"
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"
                    @click="dialogStatus==='create'?createData('listUpdate'):updateData('listUpdate')">
           保存
         </el-button>
@@ -159,7 +159,7 @@
     </el-dialog>
 
     <!--查看-->
-    <el-dialog v-dialogDrag append-to-body :close-on-click-modal="false" title="查看" top="5vh"
+    <el-dialog draggable append-to-body :close-on-click-modal="false" title="查看" top="5vh"
                v-model="dialogViewVisible" class="roleDialog">
       <el-form label-position="right" label-width="120px" :model="dataListUpdate">
         <el-form-item label="角色名称:" size="small">
@@ -189,19 +189,19 @@
             :default-checked-keys="defaultCheckedKey"
             :render-content="renderContent"
             highlight-current
-            size="mini"
+
           />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogViewVisible = false">关 闭</el-button>
+        <el-button @click="dialogViewVisible = false">关 闭</el-button>
       </div>
       </template>
     </el-dialog>
 
     <!--包含权限编辑-->
-    <el-dialog v-dialogDrag append-to-body top="5vh" :close-on-click-modal="false" title="权限编辑"
+    <el-dialog draggable append-to-body top="5vh" :close-on-click-modal="false" title="权限编辑"
                v-model="dialogPermissionVisible"  class="xui-dialog__limit-min">
       <el-form label-position="right" label-width="120px" :model="dataListUpdate">
         <el-form-item label="角色名称" style="line-height: 36px !important;">
@@ -218,14 +218,14 @@
             :default-checked-keys="defaultCheckedKey"
             :render-content="renderContent"
             highlight-current
-            size="mini"
+
           />
         </el-form-item>
       </el-form>
       <template #footer>
       <div class="dialog-footer">
-        <el-button size="mini" @click="dialogPermissionVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="updatePermissionData()">
+        <el-button @click="dialogPermissionVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updatePermissionData()">
           保存
         </el-button>
       </div>

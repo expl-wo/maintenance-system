@@ -33,17 +33,18 @@
           :style="{ width: '500px' }"
         >
           <template #extra>
-            <el-button
-              size="small"
-              type="primary"
-              @click="openModal('showPrint')"
+            <el-button type="primary" @click="openModal('showPrint')"
               >打印二维码</el-button
             >
           </template>
-          <el-descriptions-item label="利旧情况"
-            >kooriookami</el-descriptions-item
-          >
+          <el-descriptions-item label="利旧状态">利旧</el-descriptions-item>
           <el-descriptions-item label="流水码"
+            >18100000000</el-descriptions-item
+          >
+          <el-descriptions-item label="工位码"
+            >18100000000</el-descriptions-item
+          >
+          <el-descriptions-item label="待入库状态"
             >18100000000</el-descriptions-item
           >
           <el-descriptions-item label="拆解照片">
@@ -59,7 +60,7 @@
                 :on-exceed="onExceed"
                 :show-file-list="false"
               >
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button type="primary">点击上传</el-button>
                 <template #tip>
                   <div class="el-upload__tip">
                     只能上传图片，且不超过30M/最多上传{{ MAX_IMG_NUM }}张
@@ -140,11 +141,6 @@ export default {
       printWin: null, //打印二维码窗口
     };
   },
-  watch: {
-    templateChoose(newval, oldval) {
-      this.oldTemplateChoose = oldval;
-    },
-  },
   created() {
     //默认模板回显
     this.defaultSelectVal = {
@@ -214,6 +210,7 @@ export default {
         });
     },
     async getTreeData() {
+      this.oldTemplateChoose = this.templateChoose;
       if (!this.templateChoose) {
         this.treeData = [];
         return;
@@ -335,7 +332,15 @@ export default {
       this.showPrint = false;
       let dom = ""; // 拼接的字符串
       targetValue.forEach((item, i) => {
-        dom += `<div style="margin-bottom: 200px;page-break-after:always;"><div id='${item}' style="display: flex;justify-content: center;"></div><div style="text-align: center;">资产编号:${item}</div><div style="text-align: center;">资产名称:${item}</div></div>`;
+        dom += `<div style='page-break-after:always'>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black' colspan='2'>${item}</th>
+        <td rowspan='3' colspan='3'><div id='${item}' style='text-align: center'></div></td>
+        </tr>
+        <tr style='border: 1px solid black'> <td colspan='2' style='border: 1px solid black;text-align: center'>${item}</td></tr>
+        <tr style='border: 1px solid black'> <td colspan='1' style='border: 1px solid black;text-align: center'>${item}</td></tr>
+        </table>
+        </div>
+        `;
       });
       this.printWin = window.open(""); // 新打开一个空窗口
 
@@ -344,12 +349,12 @@ export default {
         this.printWin.document.title = "衡变MES管理端";
         targetValue.forEach((item) => {
           new QRCode(this.printWin.document.getElementById(item), {
-            width: 150,
-            height: 150,
+            width: 80,
+            height: 80,
             text: item,
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
-            correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
+            correctLevel: QRCode.CorrectLevel.M, // 降低容错级别
           });
         });
         this.printWin.addEventListener("afterprint", this.backWin);

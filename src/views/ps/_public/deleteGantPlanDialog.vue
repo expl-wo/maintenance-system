@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="选择要删除的生产号" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="选择要删除的生产号" width="800px" v-model="dialogVisible" modal>
     <div class="filter-container searchCon">
 
     </div>
@@ -36,8 +36,8 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button @click="handleDelete" icon="el-icon-delete" type="danger" size="mini">删除</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button @click="handleDelete" icon="el-icon-delete" type="danger">删除</el-button>
     </div>
     </template>
   </el-dialog>

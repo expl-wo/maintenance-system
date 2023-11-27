@@ -1,28 +1,28 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'" width="800px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="dryingTankCode" label="炉号：" size="mini">
+          <el-form-item prop="dryingTankCode" label="炉号：">
             <el-input v-model="model.dryingTankCode"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="serialNumber" label="序号：" size="mini">
+          <el-form-item prop="serialNumber" label="序号：">
             <el-input v-model="model.serialNumber"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="deviceId" label="设备：" size="mini">
+          <el-form-item prop="deviceId" label="设备：">
            <el-input @click.native="handleSelectDevice" :title="model.deviceName" v-model="model.deviceName" readonly class="cursorPointer">
              <el-button slot="append" type="primary">选择</el-button>
            </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="classification" label="分类：" size="mini">
+          <el-form-item prop="classification" label="分类：">
             <xui-dict-select style="width: 100%;" v-model="model.classification" item-code="dryingClassification"
             ></xui-dict-select>
           </el-form-item>
@@ -30,44 +30,44 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="dryingMethod" label="干燥方式：" size="mini">
+          <el-form-item prop="dryingMethod" label="干燥方式：">
             <xui-dict-select style="width: 100%;" v-model="model.dryingMethod" item-code="dryingMethod"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="height" label="高(M)：" size="mini">
+          <el-form-item prop="height" label="高(M)：">
             <el-input v-model="model.height" type="number"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="flatcarLength" label="平车长(M)：" size="mini">
+          <el-form-item prop="flatcarLength" label="平车长(M)：">
             <el-input v-model="model.flatcarLength" type="number"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="flatcarWidth" label="平车宽(M)：" size="mini">
+          <el-form-item prop="flatcarWidth" label="平车宽(M)：">
             <el-input v-model="model.flatcarWidth" type="number"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="tankLength" label="罐体长(M)：" size="mini">
+          <el-form-item prop="tankLength" label="罐体长(M)：">
             <el-input v-model="model.tankLength" type="number"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="tankWidth" label="罐体宽(M)：" size="mini">
+          <el-form-item prop="tankWidth" label="罐体宽(M)：">
             <el-input v-model="model.tankWidth" type="number"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="testSite" label="试验场所：" size="mini">
+          <el-form-item prop="testSite" label="试验场所：">
             <el-input v-model="model.testSite"></el-input>
           </el-form-item>
         </el-col>
@@ -77,8 +77,8 @@
     </el-form>
     <template #footer>
     <span class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </span>
     </template>
     <device-select-dialog ref="deviceSelectDialogRef" @select="emitSelectDevice"></device-select-dialog>

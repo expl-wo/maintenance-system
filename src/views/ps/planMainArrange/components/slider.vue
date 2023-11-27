@@ -1,15 +1,16 @@
 <template>
-  <div class="slider" v-if="item.widthChild" ref="slider" :style="{ width: item.per + '%' ,zIndex: 1000}">
-    <div class="contentWrapper" :class="getStatus()">
-      <div class="contentItem">
-        <div class="time" v-if="showTimeDetail">{{item.planStartDate}}</div>
-      </div>
+  <div class="slider" :class="item.sliderClz" v-if="item.widthMe"
+       ref="slider" :style="{ width: item.per + '%' ,zIndex: 1000}">
+    <div class="contentWrapper">
+      <!--    <div class="contentItem">
+            <div class="time" v-if="showTimeDetail">{{item.planStartDate}}</div>
+          </div>-->
     </div>
   </div>
 </template>
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, reactive, nextTick, defineEmits} from "vue";
-import { getDictListByKey } from '@/components/xui/dictionary'
+import {getDictListByKey} from '@/components/xui/dictionary'
 
 const props = defineProps({
   item: Object,
@@ -21,29 +22,30 @@ const isMove = ref(false);
 const minWidth = ref(70);
 
 const showTimeDetail = computed(() => {
-  return props.item.widthChild >= minWidth.value
+  return props.item.widthMe >= minWidth.value
 })
 
-const substr  = ()=>{
+const substr = () => {
 
 }
 
-const getStatus = ()=>{
+const getStatus = () => {
   //判断状态
   let dictList = getDictListByKey('processStatus');
   let clz = '';
-  dictList.forEach(item=>{
-    if(item.code == props.item.processStatus){
-      clz = item.remark ? item.remark: 'normal';
+  dictList.forEach(item => {
+    if (item.code == props.item.processStatus) {
+      clz = item.remark ? item.remark : 'normal';
     }
   })
-  return clz;
+  // return clz;
+  return "normal"
 }
 
 </script>
-<style  lang="scss">
+<style lang="scss">
 
-.contentWrapper{
+.contentWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -53,7 +55,8 @@ const getStatus = ()=>{
   padding: 0 2px;
   color: #FFF;
   font-size: 12px;
-  &.celladvance{
+
+  &.celladvance {
     color: #000;
   }
 }
@@ -62,11 +65,13 @@ const getStatus = ()=>{
   margin: 100px auto 0;
   width: 80%;
 }
+
 .clear:after {
   content: "";
   display: block;
   clear: both;
 }
+
 .slider {
   position: relative;
   height: 30px;
@@ -75,6 +80,7 @@ const getStatus = ()=>{
   user-select: none;
   border-radius: 5px;
 }
+
 .slider .process {
   position: absolute;
   left: 0;
@@ -84,6 +90,7 @@ const getStatus = ()=>{
   border-radius: 3px;
   background: #409eff;
 }
+
 .slider .thunk {
   position: absolute;
   left: 100px;
@@ -91,9 +98,11 @@ const getStatus = ()=>{
   width: 20px;
   height: 20px;
 }
+
 .slider .block {
   transition: 0.2s all;
 }
+
 .slider .block i {
   font-size: 25px;
   position: relative;
@@ -101,6 +110,7 @@ const getStatus = ()=>{
   top: 15px;
   cursor: pointer;
 }
+
 .slider .tips {
   position: absolute;
   left: -3px;
@@ -115,6 +125,7 @@ const getStatus = ()=>{
   height: 24px;
   color: #fff;
 }
+
 .slider .tips i {
   position: absolute;
   margin-left: -5px;
@@ -123,6 +134,7 @@ const getStatus = ()=>{
   font-size: 16px;
   color: #000;
 }
+
 .slider .block:hover {
   transform: scale(1.1);
   opacity: 0.6;

@@ -1,71 +1,49 @@
 <template>
   <div class="full-content">
     <div class="table-top">
-      <div class="btn-wrapper">
-        <el-button type="primary" size="small"
-          ><el-icon class="el-icon--left"><Download /></el-icon>导出</el-button
-        >
-      </div>
-      <div class="search-wrapper">
-        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-          <el-form-item label="操作时间">
-            <el-date-picker
-              v-model="searchForm.operateTime"
-              size="small"
-              type="daterange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-            >
-            </el-date-picker>
-          </el-form-item>
-          <el-form-item label="操作用户">
-            <el-input
-              size="small"
-              placeholder="请输入"
-              v-model="searchForm.user"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item label="操作模块">
-            <el-input
-              size="small"
-              placeholder="请输入"
-              v-model="searchForm.module"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item label="操作类型">
-            <el-select
-              size="small"
-              v-model="searchForm.type"
-              placeholder="请选择"
-            >
-              <el-option label="餐厅名" value="1"></el-option>
-              <el-option label="订单号" value="2"></el-option>
-              <el-option label="用户电话" value="3"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="操作对象">
-            <el-input
-              size="small"
-              placeholder="请输入"
-              v-model="searchForm.object"
-            >
-            </el-input>
-          </el-form-item>
-          <el-form-item class="mr0">
-            <el-button type="primary" size="small" @click="onSubmit"
-              ><el-icon class="el-icon--left"><Search /></el-icon
-              >查询</el-button
-            >
-            <el-button type="primary" size="small" @click="onSubmit"
-              ><el-icon class="el-icon--left"><RefreshLeft /></el-icon>
-              重置</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </div>
+      <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+        <el-form-item label="操作时间">
+          <el-date-picker
+            v-model="searchForm.operateTime"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="操作用户">
+          <el-input placeholder="请输入" v-model="searchForm.user"> </el-input>
+        </el-form-item>
+        <el-form-item label="操作模块">
+          <el-input placeholder="请输入" v-model="searchForm.module">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="操作类型">
+          <el-select v-model="searchForm.type" placeholder="请选择">
+            <el-option label="餐厅名" value="1"></el-option>
+            <el-option label="订单号" value="2"></el-option>
+            <el-option label="用户电话" value="3"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="操作对象">
+          <el-input placeholder="请输入" v-model="searchForm.object">
+          </el-input>
+        </el-form-item>
+        <el-form-item class="mr0">
+          <el-button type="primary" @click="onSubmit"
+            ><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button
+          >
+          <el-button type="primary" @click="onSubmit"
+            ><el-icon class="el-icon--left"><RefreshLeft /></el-icon>
+            重置</el-button
+          >
+          <el-button type="primary"
+            ><el-icon class="el-icon--left"><Download /></el-icon
+            >导出</el-button
+          >
+        </el-form-item>
+      </el-form>
     </div>
     <div class="table-wrapper">
       <el-table
@@ -206,7 +184,7 @@ export default {
   width: 100%;
   height: 100%;
   padding: 20px;
-//   border: 1px solid red;
+  //   border: 1px solid red;
   .table-top {
     display: flex;
     align-items: center;

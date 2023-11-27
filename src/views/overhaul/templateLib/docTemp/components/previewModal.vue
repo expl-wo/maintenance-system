@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="预览"
     width="80%"
     :model-value="visible"

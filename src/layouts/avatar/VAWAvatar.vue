@@ -40,20 +40,20 @@
     </el-dropdown>
     <el-dialog v-dialogDrag  :close-on-click-modal="false"  :append-to-body="true" title="修改密码" v-model="dialogRePasswordsisible" class="roleDialog" >
       <el-form ref="rePasswords" label-position="right" label-width="140px" :rules="submitRules" :model="rePasswords">
-        <el-form-item label="旧密码:" prop="name" size="mini">
+        <el-form-item label="旧密码:" prop="name">
           <el-input v-model="rePasswords.oldPwd" placeholder="输入旧密码" style="width: 310px;" show-password class="filter-item" />
         </el-form-item>
-        <el-form-item label="新密码:" prop="number" size="mini">
+        <el-form-item label="新密码:" prop="number">
           <el-input v-model="rePasswords.newPwd" placeholder="输入新密码" style="width: 310px;" show-password class="filter-item" />
         </el-form-item>
-        <el-form-item label="重复密码:" prop="number" size="mini">
+        <el-form-item label="重复密码:" prop="number">
           <el-input v-model="rePasswords.reNewPwd" @blur="checkNewPwd" placeholder="再次输入新密码" style="width: 310px;" show-password class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogRePasswordsisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="updatePassword" size="mini">
+        <el-button @click="dialogRePasswordsisible = false">取 消</el-button>
+        <el-button type="primary" @click="updatePassword">
           保存
         </el-button>
       </div>

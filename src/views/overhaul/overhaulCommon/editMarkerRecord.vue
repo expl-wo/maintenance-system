@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="标记信息编辑"
     append-to-body
     :model-value="true"
@@ -12,7 +12,7 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      size="small"
+
       label-width="120px"
     >
       <el-row type="flex" align="middle" justify="space-between">
