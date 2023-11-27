@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-zoom-in-center" v-if="isShowMsg">
+  <transition name="el-zoom-in-center" >
     <div
         class="projectMsg"
         :style="{
@@ -33,6 +33,11 @@
 
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, reactive, defineEmits, toRef, watch, nextTick} from "vue";
+
+const props = defineProps({
+  currentProjectMsg: Object,
+  isShowMsg: Boolean
+})
 
 </script>
 
