@@ -411,6 +411,10 @@ const handleClickItem = item=>{
   productArrangeDialogRef.value.init(item);
 }
 
+const handleChangeDateType = dateTypeItem=>{
+  //TODO
+}
+
 const setComputedList = (dataList) => {
   let tempList = [];
   dataList.forEach(item => {
@@ -517,6 +521,7 @@ defineExpose({
   handlerExpandRow,
   tableScrollTop,
   handleGoToday,
+  handleChangeDateType
 })
 </script>
 

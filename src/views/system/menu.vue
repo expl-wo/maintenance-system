@@ -28,6 +28,16 @@
       </el-table-column>
       <el-table-column prop="url" label="后端功能路径" align="center"/>
       <el-table-column prop="showOrder" label="显示顺序号" align="center"/>
+      <el-table-column label="是否可用" prop="enabled" width="90" align="center">
+        <template #default="{row}">
+          <div v-if="row.enabled == '0'" class="xui-content__fail">
+            <xui-dictionary item-code="flag01" :code="row.enabled"></xui-dictionary>
+          </div>
+          <div v-else  class="xui-content__success">
+            <xui-dictionary  item-code="flag01" :code="row.enabled"></xui-dictionary>
+          </div>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="method" label="请求方式" align="center" />
       <el-table-column prop="type" label="物料名称" align="center">
         <template slot-scope="scope">
@@ -115,9 +125,11 @@
  * 2.菜单新增或编辑
  */
 import {getPermissiontreeList, getPermissiontreeUpdate} from '@/api/permission'
+import XuiDictionary from "@/components/xui/dictionary/dictionary";
 
 export default {
   name: 'Table',
+  components: {XuiDictionary},
   data() {
     return {
       dialogStatus: '', // 角色列表表格新增或者修改状态控制
@@ -229,7 +241,7 @@ export default {
         method: row.method, // 是 用方法，GET, POST, PUT等
         iconName: row.iconName ? row.iconName.toString() : '', // 否 权限图标名称
         fid: row.fid, // 是 父权限ID
-        enabled: row.enabled ? row.enabled.toString() : '', // 是 本功能权限是否可用 枚举 0：否 1：是
+        enabled: (row.enabled !== undefined && row.enabled !== null) ? row.enabled.toString() : '', // 是 本功能权限是否可用 枚举 0：否 1：是
         showOrder: row.showOrder // 是 显示顺序
       }
       this.dialogStatus = 'update'

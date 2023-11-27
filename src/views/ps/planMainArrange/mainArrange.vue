@@ -7,7 +7,12 @@
                     style="width:170px;" @keyup.enter.native="handleSearch" @clear="handleSearch" class="filter-item"
                     clearable/>
         </el-form-item>
-        <el-form-item label="状态">
+        <el-form-item label="审批状态">
+          <xui-dict-select item-code="mainConfirmStatus" multiple includeAll
+                           v-model="listQuery.approvalStatus"
+                           style="width:160px;" class="filter-item" clearable></xui-dict-select>
+        </el-form-item>
+        <el-form-item label="生产状态">
           <xui-dict-select item-code="mainPlanStatus" multiple includeAll
                            v-model="listQuery.status"
                            style="width:160px;" class="filter-item" clearable></xui-dict-select>
@@ -18,12 +23,16 @@
         </el-form-item>
         <el-form-item>
           <el-button icon="Search" type="primary" @click="handleSearch">查询</el-button>
-          <el-button icon="Check" @click="handleApproval">提交审批</el-button>
+          <el-button type="success" v-if="pageType === 'arrange'" icon="Coordinate" @click="handleApprovalSubmit">提交审批</el-button>
+          <el-button type="warning" v-if="pageType === 'arrange'" icon="Delete" @click="handleApprovalCancel">取消申请</el-button>
+          <el-button type="warning" v-if="pageType === 'approval'" icon="Select" @click="handleApprovalPass">审批通过</el-button>
+          <el-button type="danger" v-if="pageType === 'approval'" icon="Close" @click="handleApprovalReject">审批驳回</el-button>
           <el-button icon="Switch" @click="handleToggleExpand">展开/折叠</el-button>
         </el-form-item>
       </el-form>
       <div class="toolTip">
-        <el-button type="primary" @click="handleGoToday" style="margin-right: 10px;">定位到今天</el-button>
+        <el-button type="primary" @click="handleGoToday" style="margin-right: 10px;">定位到{{dateTypeDesc}}</el-button>
+        <date-type-select @changeDateType="handleChangeDateType"></date-type-select>
         <preview-legend></preview-legend>
       </div>
     </div>
@@ -48,7 +57,7 @@
 
 <script lang="ts">
 export default {
-  name: 'ps_031_mainArrange',
+  name: 'ps_050_main_arrange',
 }
 </script>
 
@@ -62,11 +71,30 @@ import {getDictListByKey} from '@/components/xui/dictionary'
 import {deepClone} from '@/utils'
 import {getData} from './util/testData'
 import previewLegend from './components/previewLegend.vue'
+import dateTypeSelect from './components/dateTypeSelect.vue'
 import constants from "@/utils/constants";
 import ganttList from './components/ganttList.vue'
 import productList from './components/productList.vue'
 import {formatMonthStartDate, formatMonthEndDate} from '@/utils/dateUtil'
 import {ElMessage} from "element-plus";
+import {useRoute} from 'vue-router'
+import {useDeleteConfirm} from "@/components/use/useCommon";
+
+const pageTypeEnum = {
+  arrange: 'arrange',
+  approval: 'approval',
+  view: 'view',
+}
+const pageType = ref(pageTypeEnum.arrange);
+const route = useRoute();
+const fullPath = route.fullPath;
+let approvalStatus = [];
+if (fullPath.indexOf('ps_051_main_approval')>=0) {
+  pageType.value = pageTypeEnum.approval;
+  approvalStatus = ['2'];
+}else if(fullPath.indexOf('ps_052_main_view')>=0){
+  pageType.value = pageTypeEnum.view
+}
 
 const ganttListRef = ref();
 const productListRef = ref();
@@ -74,6 +102,7 @@ const intervalDay = 2;
 const list = ref([]);
 const BGScrollTop = ref(0);
 const expand = ref(true);
+const dateTypeDesc = ref('今天');
 
 const listQuery = reactive({
   search: '',
@@ -82,6 +111,7 @@ const listQuery = reactive({
   status: [],
   op: "",
   opStatus: [],
+  approvalStatus,
   workShop: "",
   workShopProduct: "",
   voltage: []
@@ -109,11 +139,11 @@ const handleToggleExpand = () => {
   ganttListRef.value.handleToggleExpandAll(expand.value);
 }
 
-const handleApproval = () => {
+const getSelectedRows = ()=>{
   const selectRows = productListRef.value.getSelectedData();
   if (selectRows.length > 0) {
     //过滤出生产数据
-    let productDataList = selectRows.filter(item => {
+    const productDataList = selectRows.filter(item => {
       return item.dataType === constants.productOrGx.product
     })
   }
@@ -121,7 +151,38 @@ const handleApproval = () => {
     ElMessage.warning("请勾选生产号行数据后，提交审批");
     return;
   }
-  //调后台接口，进行申报
+  return selectRows;
+}
+
+const handleApprovalSubmit = () => {
+  let selectRows = getSelectedRows();
+  if(selectRows){
+    //调后台接口，进行申报
+  }
+}
+
+const handleApprovalCancel = ()=>{
+  let selectRows = getSelectedRows();
+  if(selectRows){
+    //调后台接口，进行申报
+  }
+}
+
+const handleApprovalPass = ()=>{
+  let selectRows = getSelectedRows();
+  if(selectRows){
+    //调后台接口，进行申报
+  }
+}
+
+const handleApprovalReject = ()=>{
+  let selectRows = getSelectedRows();
+  if(selectRows){
+    useDeleteConfirm("是否确定驳回？").then(response=>{
+
+    })
+    //调后台接口，进行申报
+  }
 }
 
 const setCurrentRow = row => {
@@ -186,6 +247,11 @@ const handleSearch = () => {
 
 const handleGoToday = () => {
   ganttListRef.value.handleGoToday();
+}
+
+const handleChangeDateType = dateTypeItem=>{
+  dateTypeDesc.value = dateTypeItem.locationDesc;
+  ganttListRef.value.handleChangeDateType(dateTypeItem);
 }
 
 const initChildComponent = params => {
