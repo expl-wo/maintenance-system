@@ -228,6 +228,7 @@ const getDataList = async () => {
         let obj = {
           ...commonAttr,
           ...subItem,
+          productNo: item.productNo,
           planStartDate: subItem.startDate,
           planEndDate: subItem.nodeDate,
           productOrNodeName: subItem.nodeName

@@ -184,13 +184,20 @@ const init = tempDataList => {
 }
 
 //获取选中的行
-const getSelectedData = ()=>{
+const getSelectedData = () => {
   let selectRows = tableRef.value.getSelectionRows();
-  if(selectRows.length <= 0){
+  if (selectRows.length <= 0) {
     ElMessage.warning("请勾选数据后再提交审批");
     return [];
   }
-  return selectRows;
+  let productList = [];
+  selectRows.forEach(item => {
+    let productNo = item.productNo;
+    if (!productList.includes(productNo)) {
+      productList.push(productNo);
+    }
+  })
+  return productList;
 }
 
 const setCurrentRow = row => {
