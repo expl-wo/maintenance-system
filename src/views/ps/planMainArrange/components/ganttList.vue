@@ -104,8 +104,8 @@
       </div>
     </div>
     <product-arrange-dialog ref="productArrangeDialogRef" @refresh="handleRefresh"></product-arrange-dialog>
-    <!--  <tip-panel ref="tipPanelRef"></tip-panel>-->
   </div>
+  <tip-panel ref="tipPanelRef" :isShowMsg="isShowMsg" :currentProjectMsg="currentProjectMsg"></tip-panel>
 </template>
 
 <script lang="ts" setup>
@@ -118,9 +118,11 @@ import weekOfYear from 'dayjs/plugin/weekOfYear'
 import constants from "@/utils/constants";
 import {getGantClzByStatus} from '../util/config'
 import {deepClone} from "@/utils";
+import tipPanel from './tipPanel.vue'
+import store from "@/layouts/store";
 
-// import tipPanel from './tipPanel.vue'
-// const tipPanelRef = ref();
+const state = store.state;
+
 
 dayjs.extend(weekOfYear);
 
@@ -144,9 +146,9 @@ const listRefs = ref({}) as any;
 const currentRow = ref({}) as any;
 const ganttDateRef = ref();
 const lineBGRef = ref();
+const tipPanelRef = ref();
 const BGScrollTop = ref(0);
 const productArrangeDialogRef = ref();
-
 
 const dateType = ref('day');
 const dateTypeDesc = computed(() => {
@@ -330,10 +332,21 @@ const lineMouseover = (domId, e, id, parentId, index, item) => {
  */
 //鼠标进入显示当前项目的基本信息框
 const lineMouseenter = (domId, e, id, parentId, index, item) => {
-  let top = e.y + 20;
+  let top = e.y - 120;
   if ((top + 300) > window.innerHeight) {
-    top = e.y - 220;
+    top = e.y + 120;
   }
+  let left = 0;
+  if (state.isCollapse) {
+    left = e.x + 280 >= window.innerWidth
+        ? e.x - 65 - 240
+        : e.x - 65 + 20;
+  } else {
+    left = e.x + 280 >= window.innerWidth
+        ? e.x - 210 - 240
+        : e.x - 210 + 20;
+  }
+
   Object.assign(currentProjectMsg, {
     ...item,
     //名称
@@ -341,10 +354,7 @@ const lineMouseenter = (domId, e, id, parentId, index, item) => {
     //持续时间
     allTime: '',
     per: computedList.value[index].per,
-    left:
-        e.x + 280 >= window.innerWidth
-            ? e.x - 210 - 240
-            : e.x - 210 + 20,
+    left,
     top
   });
   isShowMsg.value = true;
