@@ -314,7 +314,61 @@ export const sysRouter: Array<RouteRecordRaw> = [
           title: '生产主计划',
           icon: 'ps_011'
         }
-      }],
+      },
+      {
+        //入炉计划
+        path: '0404planFurnace',
+        name: '0404planFurnace',
+        component: () => import('@/views/ps/planFurnace/ps_040_entryFurnace.vue'),
+        meta: {
+          title: '入炉计划',
+          icon: 'ps_011'
+        }
+      },
+      {
+        //入炉计划审批
+        path: '0405planFurnaceApproval',
+        name: '0405planFurnaceApproval',
+        component: () => import('@/views/ps/planFurnace/ps_040_entryFurnace.vue'),
+        meta: {
+          title: '入炉计划审批',
+          icon: 'ps_011'
+        }
+      },
+      {
+        //试验计划
+        path: 'ps_041_main',
+        name: '0406Experiment',
+        component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
+        meta: {
+          title: '试验计划查看',
+          icon: 'ps_011',
+          keepAlive: true
+        }
+      },
+      {
+        //试验计划审批
+        path: 'ps_041_mainApproval',
+        name: '0406ExperimentApproval',
+        component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
+        meta: {
+          title: '试验计划审批',
+          icon: 'ps_011',
+          keepAlive: true
+        }
+      },
+      {
+        //试验计划(新)
+        path: 'ps_041_mainTentative',
+        name: '0406ExperimentTentative',
+        component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
+        meta: {
+          title: '试验计划编制',
+          icon: 'ps_011',
+          keepAlive: true
+        }
+      }
+      ],
   },
   {
     path: '/overhaul',

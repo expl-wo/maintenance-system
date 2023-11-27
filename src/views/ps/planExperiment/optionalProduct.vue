@@ -12,7 +12,7 @@
           <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter.native="queryTableDataParam" style="width: 180px;" class="filter-item" size="mini">
           </el-input>
         </el-form-item>
-        <el-button icon="el-icon-search" size="mini" @click="queryTableDataParam">查询</el-button>
+        <el-button icon="Search" size="mini" @click="queryTableDataParam">查询</el-button>
       </el-form>
     </div>
     <addProductDialog ref="addProductDialog" @refresh="queryTableDataParam"></addProductDialog>
@@ -105,7 +105,7 @@ export default {
       this.queryTableData()
     },
     addToNodeInfo(rowData){
-      this.$refs.addProductDialog.initData(rowData,this.$constants.flag.y,this.isApproval);
+      this.$refs.addProductDialog.initData(rowData,this.$constants.flag01.y,this.isApproval);
     },
   }
 }

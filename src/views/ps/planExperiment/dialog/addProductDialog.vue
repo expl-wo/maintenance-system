@@ -8,8 +8,8 @@
           placeholder="请选择计划开工时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="叠片台">
-        <el-select size="mini" v-model="dialogForm.spt"  label="叠片台：" placeholder="请选择">
+      <el-form-item label="试验场所">
+        <el-select size="mini" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
           <el-option
             v-for="item in dialogForm.laminationTables"
             :key="item.id"
@@ -25,23 +25,19 @@
           placeholder="请选择计划完工时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="生产模式" prop="isMultipleType">
-        <el-radio-group v-model="dialogForm.isMultipleType">
-          <el-radio label="0">单台生产</el-radio>
-          <el-radio label="1">多台生产</el-radio>
-        </el-radio-group>
-      </el-form-item>
     </el-form>
-    <div slot="footer" class="dialog-footer">
+    <template #footer>
+    <div class="dialog-footer">
       <el-button @click="dialogVisible = false">取消</el-button>
       <el-button type="primary" @click="addToNodeInfo(dialogForm)">确定</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
 <script>
 // import flipTable from '@/api/plan/flipTable'
-// import LaminationPlan from '@/api/plan/laminationPlan'
+import planWeekHttp from '@/api/plan/planWeek'
 import moment from 'moment'
 
 export default {
@@ -60,18 +56,20 @@ export default {
       rowData:{},
       addInfo:{},
       laminationTable:{},
-      isAdd:this.$constants.flag.n,
+      isAdd:this.$constants.flag01.n,
       isApproval:this.$constants.flag.n
     }
   },
   methods: {
     initData(rowData, isAdd, isApproval) {
+      debugger
       this.isApproval = isApproval
       this.rowData = rowData
       this.isAdd = isAdd
-      flipTable.findAllFlipTable({tableCode: ''}).then(res => {
-        this.dialogForm.laminationTables = res.data
-      })
+      //获取试验场所
+      // flipTable.findAllFlipTable({tableCode: ''}).then(res => {
+      //   this.dialogForm.laminationTables = res.data
+      // })
       if (this.isAdd === this.$constants.flag.n) {
         this.dialogForm.planStartTime = rowData.planStartTime
         this.dialogForm.planEndTime = rowData.planEndTime
@@ -89,26 +87,27 @@ export default {
       this.dialogForm.planEndTime = moment(endDate).format('YYYY-MM-DD'); // format end date as yyyy-mm-dd string
     },
     addToNodeInfo(dialogFormData) {
-      if(!dialogFormData.planStartTime || !dialogFormData.planEndTime || !this.dialogForm.spt){
-        this.$message.error("计划时间或叠片台为空，不允许提交");
-        return
-      }
+      debugger
+      // if(!dialogFormData.planStartTime || !dialogFormData.planEndTime || !this.dialogForm.spt){
+      //   this.$message.error("计划时间或叠片台为空，不允许提交");
+      //   return
+      // }
       this.nodeInfo = []
       this.addInfo.planStartTime = moment(dialogFormData.planStartTime).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
       this.addInfo.planEndTime = moment(dialogFormData.planEndTime).format('YYYY-MM-DD HH:mm:ss');
       // this.addInfo.planEndTime = dialogFormData.planEndTime;
       this.addInfo.isMultiple = parseInt(dialogFormData.isMultipleType);
-      this.addInfo.pl15Id = this.rowData.pl15Id
-      this.addInfo.pl14Id = this.rowData.pl14Id
+      this.addInfo.productNodeId = this.rowData.productNodeId
+      this.addInfo.productPlanId = this.rowData.productPlanId
       this.addInfo.nodeId = this.rowData.nodeId
-      this.addInfo.nodeName = this.rowData.nodeName
+      this.addInfo.productNodeName = this.rowData.productNodeName
       this.addInfo.productNo = this.rowData.productNo
       this.addInfo.id = this.rowData.id
 
       this.nodeInfo.push(this.addInfo);
       this.laminationTable = this.dialogForm.laminationTables.find(item => item.id === this.dialogForm.spt);
-      if(this.isAdd === this.$constants.flag.y){
-        LaminationPlan.addToPlan({nodeInfo:this.nodeInfo,laminationTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
+      if(this.isAdd === this.$constants.flag01.y){
+        planWeekHttp.addToExperimentPlan({nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
           if(res.err_code===10000){
             this.dialogVisible = false;
             this.$message.success("修改成功！");
@@ -119,7 +118,7 @@ export default {
           }
         })
       }else {
-        LaminationPlan.editPlan({nodeInfo:this.nodeInfo,laminationTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
+        planWeekHttp.editExperimentPlan({nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
           if(res.err_code===10000){
             this.dialogVisible = false;
             this.$message.success("修改成功！");

@@ -59,7 +59,21 @@ const url = {
   delWeekPlan: '/api/gcplan/plan/week/delWeekPlan',//待定
   //试验计划-查询试验节点的主计划以及主计划其下的其他节点
   findPlanWithNodes: '/api/gcplan/plan/proplan/findPlanWithNodes',//待
-  optionalProduct: '/api/gcplan/plan/week/optionalProduct',
+  optionalProduct: '/api/gcplan/plan/proplan/optionalProduct',//已完成
+  //查询试验计划  GET
+  getExperimentPlan: '/api/gcplan/plan/proplan/getExperimentPlan',//已完成
+  //修改试验计划
+  editExperimentPlan: '/api/gcplan/plan/proplan/editExperimentPlan',//已完成
+  //加入试验计划
+  addToExperimentPlan: '/api/gcplan/plan/proplan/addToExperimentPlan',//已完成
+  //试验计划-修改销售回复时间和回复人
+  updateSales: '/api/gcplan/plan/proplan/updateSales',//已完成
+  //车间周计划申请-按钮-选择工单申请周计划 POST
+  applyWeekPlan: '/api/gcplan/plan/week/applyWeekPlan',
+  //审批试验计划  POST
+  approvalPlan: '/api/gcplan/plan/proplan/approvalPlan',
+  //删除试验计划  POST
+  delPlan: '/api/gcplan/plan/proplan/delPlan',
 }
 
 export default {
@@ -264,7 +278,56 @@ export default {
     return request({
       url: url.optionalProduct,
       method: 'get',
-      params
+      data: params
+    })
+  },
+  getExperimentPlan(params) {
+    return request({
+      url: url.getExperimentPlan,
+      method: 'get',
+      data: params
+    })
+  },
+  addToExperimentPlan(params) {
+    return request({
+      url: url.addToExperimentPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  editExperimentPlan(params) {
+    return request({
+      url: url.editExperimentPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  updateSales(params) {
+    return request({
+      url: url.updateSales,
+      method: 'post',
+      data: params
+    })
+  },
+  applyWeekPlan(params) {
+    return request({
+      url: url.applyWeekPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  approvalPlan(params) {
+    return request({
+      url: url.approvalPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  delPlan(params) {
+    return request({
+      url: url.delPlan,
+      method: 'post',
+      data: params
     })
   },
 }
