@@ -1,5 +1,5 @@
 <template>
-  <div class="slider" :class="item.sliderClz" v-if="item.widthChild"
+  <div class="slider" :class="item.sliderClz" v-if="item.widthMe"
        ref="slider" :style="{ width: item.per + '%' ,zIndex: 1000}">
     <div class="contentWrapper">
       <!--    <div class="contentItem">
@@ -22,7 +22,7 @@ const isMove = ref(false);
 const minWidth = ref(70);
 
 const showTimeDetail = computed(() => {
-  return props.item.widthChild >= minWidth.value
+  return props.item.widthMe >= minWidth.value
 })
 
 const substr = () => {

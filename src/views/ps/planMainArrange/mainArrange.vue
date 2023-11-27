@@ -80,6 +80,7 @@ import {ElMessage} from "element-plus";
 import {useRoute} from 'vue-router'
 import {useDeleteConfirm} from "@/components/use/useCommon";
 
+
 const pageTypeEnum = {
   arrange: 'arrange',
   approval: 'approval',
@@ -98,7 +99,7 @@ if (fullPath.indexOf('ps_051_main_approval')>=0) {
 
 const ganttListRef = ref();
 const productListRef = ref();
-const intervalDay = 2;
+const intervalMonths = 2;
 const list = ref([]);
 const BGScrollTop = ref(0);
 const expand = ref(true);
@@ -107,7 +108,7 @@ const dateTypeDesc = ref('今天');
 const listQuery = reactive({
   search: '',
   dateGroup: [dayjs().format('YYYY-MM-DD'),
-    dayjs().add(intervalDay, 'months').format('YYYY-MM-DD')],
+    dayjs().add(intervalMonths, 'months').format('YYYY-MM-DD')],
   status: [],
   op: "",
   opStatus: [],

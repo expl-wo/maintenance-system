@@ -33,7 +33,6 @@ export default defineComponent({
     );
     watch(() => route, (newVal) => {
       if (newVal.meta.keepAlive) {
-        debugger
         let keepAliveName = newVal.meta.keepAliveName ? newVal.meta.keepAliveName : newVal.name;
         if (includeState.includeList.indexOf(keepAliveName) === -1) {
           includeState.includeList.push(keepAliveName);
@@ -43,7 +42,6 @@ export default defineComponent({
 
     onMounted(()=>{
       let _route = useRoute();
-      debugger
       if (_route.meta.keepAlive) {
         let keepAliveName = _route.meta.keepAliveName ? _route.meta.keepAliveName : _route.name;
         if (includeState.includeList.indexOf(keepAliveName) === -1) {

@@ -28,7 +28,6 @@ import {useRoute} from "vue-router";
 import { hasDepartPrivilege, notNullUndefined } from "@/utils";
 import {transformList2Tree} from "@/utils";
 import constants from "@/utils/constants";
-import Constants from "@/utils/constants";
 
 export default defineComponent({
   name: "SideBar",

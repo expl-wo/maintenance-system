@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown style="margin-right: 10px;" size="small" trigger="click" @command="(command) => handleChangeDateType(command)">
+  <el-dropdown style="margin-right: 12px;" size="small" trigger="click" @command="(command) => handleChangeDateType(command)">
     <span class="el-dropdown-link dropdown-link">
       {{dateTypeDesc}}
       <el-icon class="el-icon--right" style="margin-left: 0;">

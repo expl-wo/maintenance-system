@@ -1,4 +1,4 @@
-import moment from 'moment'
+
 // 算出一年有多少个周，并返回每一同的开始和结束时间
 export const mapWeeksOfyear = ({year, week} = {}) => {
     year = year + ''
