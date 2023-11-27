@@ -1,5 +1,6 @@
 <template>
-  <el-dialog draggable
+  <el-dialog
+    draggable
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
     :destroy-on-close="true"
@@ -32,6 +33,7 @@
               v-model="form.projName"
               clearable
               :disabled="onlyEditFile"
+              :maxlength="100"
             />
           </el-form-item>
         </el-col>
@@ -42,6 +44,7 @@
             <el-input
               v-model="form.prodNumber"
               clearable
+              :maxlength="100"
               :disabled="onlyEditFile"
             />
           </el-form-item>
@@ -51,6 +54,7 @@
             <el-input
               v-model="form.customName"
               clearable
+              :maxlength="100"
               :disabled="onlyEditFile"
             />
           </el-form-item>
@@ -80,6 +84,7 @@
             <el-input
               v-model="form.voltageLevel"
               clearable
+              :maxlength="100"
               :disabled="onlyEditFile"
             />
           </el-form-item>
@@ -91,6 +96,7 @@
             <el-input
               v-model="form.prodModel"
               clearable
+              :maxlength="100"
               :disabled="onlyEditFile"
             />
           </el-form-item>
@@ -99,6 +105,7 @@
           <el-form-item label="厂商" prop="manufacturer">
             <el-input
               v-model="form.manufacturer"
+              :maxlength="100"
               clearable
               :disabled="onlyEditFile"
             />
@@ -362,5 +369,4 @@ export default {
 ::v-deep(.el-input--small .el-input__inner) {
   width: 220px;
 }
-
 </style>

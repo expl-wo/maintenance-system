@@ -291,11 +291,11 @@ const TAB_LIST_OUT = [
         workClazzType: "experimentalGroup",
         hiddenAssign: false,
     },
-    {
-        label: "返厂检修-检修报告",
-        name: "finishReport",
-        hiddenAssign: true,
-    },
+    // {
+    //     label: "返厂检修-检修报告",
+    //     name: "finishReport",
+    //     hiddenAssign: true,
+    // },
 ]
 //每个流程对应的tab项
 const TAB_LIST_MAP = {

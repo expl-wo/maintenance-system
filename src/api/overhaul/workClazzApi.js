@@ -22,3 +22,11 @@ export function getPersonByWorkClazz(id) {
         data: { id }
     })
 }
+//分类获取不同状态的人员 空闲繁忙请假等人员
+export function getPersonStatusByBusId(busId) {
+    return request({
+        url: '/evo-ims-overhaul/clock-in/user-status',
+        method: 'post',
+        data: { busId }
+    })
+}

@@ -1,5 +1,6 @@
 <template>
-  <el-dialog draggable
+  <el-dialog
+    draggable
     :title="MODAL_TYPE[dialogStatus]"
     :model-value="true"
     :close-on-click-modal="false"
@@ -11,7 +12,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="projName">
-            <el-input v-model="form.projName" disabled />
+            <el-input v-model="form.projName" disabled/>
           </el-form-item>
         </el-col>
       </el-row>

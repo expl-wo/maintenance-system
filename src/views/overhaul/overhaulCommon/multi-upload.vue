@@ -326,6 +326,7 @@ export default {
       handleDelete,
       httpUpload,
       emitData,
+      isLargeFile
     };
   },
 };

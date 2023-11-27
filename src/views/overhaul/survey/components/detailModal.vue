@@ -1,6 +1,9 @@
 <template>
   <div class="detail-box">
-    <affix-anchor :affixTreeData="affixTreeData" v-model:activeName="activeName"/>
+    <affix-anchor
+      :affixTreeData="affixTreeData"
+      v-model:activeName="activeName"
+    />
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -33,11 +36,9 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag
-                
-                :type="WORK_ORDER_STATUS[item.value].tagType"
-                >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
-              >
+              <el-tag :type="WORK_ORDER_STATUS[item.value].tagType">{{
+                WORK_ORDER_STATUS[item.value].text
+              }}</el-tag>
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
               <file-list
@@ -60,7 +61,6 @@
         <div class="el-descriptions__title" style="fontsize: 14px">
           现场勘查
           <el-button
-            
             v-if="[WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
             title="工序指派"
             type="primary"
@@ -112,7 +112,7 @@ import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import AffixAnchor from '@/views/overhaul/overhaulCommon/affixAnchor'
+import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor";
 import dayjs from "dayjs";
 export default {
   components: {
@@ -326,9 +326,6 @@ export default {
     },
     handleClick(tab, event) {
       console.log(tab, event);
-    },
-    handleOk() {
-      debugger;
     },
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);

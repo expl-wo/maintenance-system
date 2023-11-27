@@ -26,11 +26,19 @@ const COMMOM_WORK_ORDER_MAP = {
         tagType: 'danger'
     },
 }
+//工序树节点的枚举
+const PROCESS_NODE_ENUM = {
+    ROOT: 0,//根节点
+    NORM: 1, //标准工序
+    MIDDLE: 2, //中工序
+    STEP: 3, //工步
+    CONTENT: 4 //工作内容
+}
 
 // 工序指派时的列表项
 const COMMON_PROCESS_COLUMNS_MAP = {
     //工序
-    0: [
+    [PROCESS_NODE_ENUM.ROOT]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "measureName",
@@ -67,7 +75,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
     ],
     //中工序
-    1: [
+    [PROCESS_NODE_ENUM.NORM]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "subProcessName",
@@ -88,7 +96,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
     ],
     //工步
-    2: [
+    [PROCESS_NODE_ENUM.MIDDLE]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "processRowName",
@@ -132,6 +140,13 @@ const REPORT_CHECK_STATUS = {
     2: { label: '审核通过', type: 'success' },
     3: { label: '审核不通过', type: 'danger' }
 }
+//工序树OA状态
+const WORK_TREE_CHECK_STATUS = {
+    0: { label: '待发起审核', type: '' },
+    1: { label: '待审核', type: 'warning' },
+    2: { label: '审核通过', type: 'success' },
+    5: { label: '审核不通过', type: 'danger' }
+}
 //厂内和场外选择班组时的枚举，对应业务配置的班组
 const INPLAN_OR_OUT = {
     //厂内
@@ -141,11 +156,13 @@ const INPLAN_OR_OUT = {
 }
 export {
     COMMON_FORMAT,
+    PROCESS_NODE_ENUM,
     MAX_IMG_SIZE,
     MAX_VIDEO_SZIE,
     MAX_FILE_SIZE,
     COMMOM_WORK_ORDER_MAP,
     COMMON_PROCESS_COLUMNS_MAP,
     REPORT_CHECK_STATUS,
+    WORK_TREE_CHECK_STATUS,
     INPLAN_OR_OUT
 }

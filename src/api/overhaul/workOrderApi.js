@@ -155,3 +155,11 @@ export function getProcedureTemplate(data) {
         data
     })
 }
+//工序指派
+export function dispatchWorkOrder(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-order/process-appoint',
+        method: 'post',
+        data
+    })
+}

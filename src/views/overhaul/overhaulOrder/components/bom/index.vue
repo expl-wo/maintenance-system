@@ -6,6 +6,7 @@
         v-model="templateChoose"
         :defaultSelectVal="defaultSelectVal"
         :getOptions="getTemplateOptions"
+        :clearable="false"
         @change="handleTemplateChange"
       />
     </template>
@@ -63,7 +64,9 @@
                 <el-button type="primary">点击上传</el-button>
                 <template #tip>
                   <div class="el-upload__tip">
-                    只能上传图片，且不超过30M/最多上传{{ MAX_IMG_NUM }}张
+                    只能上传图片，且不超过{{ MAX_IMG_SIZE }}M/最多上传{{
+                      MAX_IMG_NUM
+                    }}张
                   </div>
                 </template>
               </el-upload>
@@ -125,6 +128,7 @@ export default {
     return {
       defaultSelectVal: {}, //默认选中的模板 用于回显
       MAX_IMG_NUM: 3,
+      MAX_IMG_SIZE,
       templateChoose: undefined,
       oldTemplateChoose: undefined,
       showAdd: false,
@@ -296,7 +300,7 @@ export default {
      * 上传
      */
     beforeUpload(file) {
-      if (file.size > MAX_IMG_SIZE) {
+      if (file.size / 1024 / 1024 > MAX_IMG_SIZE) {
         this.$message.error(`图片大小请勿超过${MAX_IMG_SIZE}M`);
         return false;
       }

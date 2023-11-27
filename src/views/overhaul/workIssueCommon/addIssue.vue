@@ -68,6 +68,7 @@
             <el-input
               v-model="form.issueDescription"
               type="textarea"
+              :maxlength="500"
               :rows="2"
               placeholder="请输入任务描述"
             />

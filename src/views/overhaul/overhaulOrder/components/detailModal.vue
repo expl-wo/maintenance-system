@@ -1,6 +1,9 @@
 <template>
   <div class="detail-box">
-    <affix-anchor :affixTreeData="affixTreeData" v-model:activeName="activeName"/>
+    <affix-anchor
+      :affixTreeData="affixTreeData"
+      v-model:activeName="activeName"
+    />
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -98,7 +101,7 @@ import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP, TAB_LIST_OUT } from "../config";
 import { Pointer } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import AffixAnchor from '@/views/overhaul/overhaulCommon/affixAnchor.vue'
+import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor.vue";
 import dayjs from "dayjs";
 export default {
   components: {
@@ -165,20 +168,19 @@ export default {
     },
   },
   methods: {
-
     //初始化详情
     async init() {
       try {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = data;
         //根据不同的检修类型定义不同的时间轴
-        this.overhaulType = this.info.retFactory; //现场检修
+        this.overhaulType = this.info.retFactory || 1; //现场检修
         this.timeLineData = TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
       } catch (error) {
-        this.handleClose(true);
+        // this.handleClose(true);
       }
       this.dealTabList(); //获取当前用户的工序权限
     },
@@ -304,7 +306,6 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    handleOk() {},
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);
     },

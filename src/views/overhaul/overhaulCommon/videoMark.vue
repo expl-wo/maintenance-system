@@ -19,6 +19,7 @@
             :expand-on-click-node="false"
             :data="treeData"
             :props="defaultProps"
+            highlight-current
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
