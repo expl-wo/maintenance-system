@@ -31,7 +31,6 @@
       <el-table
         ref="taskTable"
         v-loading="loading"
-        size="medium"
         border
         :data="tableData"
         :highlight-current-row="true"
@@ -68,8 +67,8 @@
             :column-key="item.columnKey"
           >
           <template #default="scope">
-            <span v-if="scope.column.columnKey === 'type'">{{ typeMap[scope.row.type] }}</span>
-            <span v-if="scope.column.columnKey === 'status'">{{ statusMap[scope.row.status] }}</span>
+            <span v-if="scope.column.columnKey === 'taskType'">{{ typeMap[scope.row.taskType] }}</span>
+            <span v-if="scope.column.columnKey === 'taskStatus'">{{ statusMap[scope.row.taskStatus] }}</span>
           </template>
           </el-table-column>
         </template>
@@ -84,7 +83,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination-wrapper">
+    <div class="pagination-wrapper" v-if="total">
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
         background
@@ -100,6 +99,7 @@
 </template>
 <script>
 import { Search,View } from "@element-plus/icons-vue";
+import { getTaskList } from '@/api/overhaul/profileApi';
 import moment from 'moment'
 
 const statusOptions = [
@@ -107,9 +107,9 @@ const statusOptions = [
   { value: 1, text: '完成' }
 ]
 const typeOptions = [
-  { value: 0, text: '文档审批' },
-  { value: 1, text: '复核' },
-  { value: 2, text: '工序执行' }
+  { value: 1, text: '文档审批' },
+  { value: 2, text: '复核' },
+  { value: 3, text: '工序执行' }
 ]
 export default {
   components:{
@@ -123,20 +123,17 @@ export default {
         searchKey: ''
       },
       columns: [
-        { prop: 'name', key: 'name', label: '工单名', minWidth: '160px' },
-        { prop: 'type', key: 'type', label: '任务类型', minWidth: '160px', columnKey: 'type', filters: typeOptions, needSlot: true },
-        { prop: 'location', key: 'location', label: '任务位置', minWidth: '200px' },
-        { prop: 'time', key: 'time', label: '任务接收时间', sortable: 'custom', minWidth: '100px' },
-        { prop: 'status', key: 'status', label: '任务状态', minWidth: '100px', columnKey: 'status', filters: statusOptions, needSlot: true }
+        { prop: 'workOrderName', key: 'workOrderName', label: '工单名', minWidth: '160px' },
+        { prop: 'taskType', key: 'taskType', label: '任务类型', minWidth: '160px', columnKey: 'taskType', filters: typeOptions, needSlot: true },
+        { prop: 'taskLocation', key: 'taskLocation', label: '任务位置', minWidth: '200px' },
+        { prop: 'createTime', key: 'createTime', label: '任务接收时间', sortable: 'custom', minWidth: '100px' },
+        { prop: 'taskStatus', key: 'taskStatus', label: '任务状态', minWidth: '100px', columnKey: 'taskStatus', filters: statusOptions, needSlot: true }
       ],
       loading: false,
-      tableData: [
-        { id: 1, name: '检修任务1', time: '2023-11-01 12:00:00', location: '车间一', type: 0, status: 0 },
-        { id: 2, name: '检修任务2', time: '2023-11-01 12:30:00', location: '车间二', type: 1, status: 1 }
-      ],
+      tableData: [],
       pageNum: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
       sortInfo: {},
       filterInfo: {},
     }
@@ -157,6 +154,9 @@ export default {
         return resultObj;
     }
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
     // 查询列表数据
     getData() {
@@ -170,20 +170,27 @@ export default {
         ...this.sortInfo,
         ...this.filterInfo
       }
-      console.log('我的通知----', params);
+      getTaskList(params)
+      .then(res => {
+        if (res.success && res.data) {
+          this.tableData = res.data.pageList || [];
+          this.total = res.data.total || 0;
+        } else {
+          this.$message.error(res.errMsg);
+        }
+      })
     },
     // 搜索
     onSearch() {
       this.pageNum = 1;
       this.getData();
     },
-    // 搜索所有任务
-    searchAll() {
-      //
-    },
+    // // 搜索所有任务
+    // searchAll() {
+    //   //
+    // },
     // 列表排序
     sortChange({column, prop, order}) {
-      debugger;
       this.sortInfo = null;
       if (order && prop) {
         this.sortInfo = {
@@ -197,7 +204,7 @@ export default {
     // 列表筛选
     filterChange(filters) {
       let objKey = Object.keys(filters)[0];
-      this.filterInfo[objKey] = filters[objKey];
+      this.filterInfo[`${objKey}List`] = filters[objKey];
       this.pageNum = 1;
       this.getData();
     },
