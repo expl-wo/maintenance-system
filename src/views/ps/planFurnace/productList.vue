@@ -398,7 +398,7 @@ export default {
     handleSubmit() {
       let data = {
         nodeId: '20',
-        condition: []
+        condition: [],
       }
       this.$refs.formRef.validate(valid=>{
         if(!valid){
@@ -551,16 +551,15 @@ export default {
     pass(selectedData){
       let submitData = {
         nodeId: this.listQuery.nodeId,
-        weekId:  '',
-        condition: []
+        planId: [],
+        approvalStatus: this.$constants.isPass.yes
       };
       selectedData.forEach(item=>{
-        submitData.condition.push({
-          pl14Id: item.pl14Id,
-          isPass: this.$constants.isPass.yes
+        submitData.planId.push({
+          planId: item.pl14Id,
         })
       })
-      planWeekHttp.approveWeekPlan(submitData).then(response=>{
+      planWeekHttp.approvalPlan(submitData).then(response=>{
         if(response.err_code ===this.$constants.status.success){
           this.$message.success('数据审批完成');
           this.handleRefresh();

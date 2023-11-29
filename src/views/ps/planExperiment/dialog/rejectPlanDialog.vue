@@ -33,7 +33,8 @@ export default {
         rejectReason: [{
           required: true,message: '驳回原因不能为空', trigger: 'blur'
         }]
-      }
+      },
+      planType: 'experiment',
     }
   },
   methods: {
@@ -60,7 +61,7 @@ export default {
           rejectPlan.rejectReason = this.model.rejectReason
           rejectInfo.push(rejectPlan)
         })
-        planWeek.approvalPlan({nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
+        planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
           if(response.err_code ===this.$constants.status.success){
             this.$message.success('数据审批完成');
             this.dialogVisible = false;

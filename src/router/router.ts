@@ -367,7 +367,29 @@ export const sysRouter: Array<RouteRecordRaw> = [
           icon: 'ps_011',
           keepAlive: true
         }
-      }
+      },
+      {
+        //拆解计划
+        path: '0407dismantling_plan',
+        name: '0407DismantlingPlan',
+        component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
+        meta: {
+          title: '拆解计划',
+          icon: 'ps_011',
+          keepAlive: true
+        }
+      },
+      {
+        //拆解计划审批
+        path: '0407dismantling_plan_approval',
+        name: '0406ExperimentApproval',
+        component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
+        meta: {
+          title: '拆解计划审批',
+          icon: 'ps_011',
+          keepAlive: true
+        }
+      },
       ],
   },
   {

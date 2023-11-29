@@ -23,9 +23,9 @@
             @change="queryTableDataParam"
           ></el-date-picker>
         </el-form-item>
-        <el-button icon="Search" size="mini" v-if="$isAuth('0406Experiment.search')" @click="queryTableDataParam">查询</el-button>
-        <el-button type="primary" icon="Coordinate" size="mini" v-if="$isAuth('0406Experiment.approval')" @click="handleApply">提交审批</el-button>
-        <el-button type="danger" icon="Delete" size="mini"  v-if="$isAuth('0406Experiment.delete')" @click="handleDelete">取消计划</el-button>
+        <el-button icon="Search" size="mini" v-if="$isAuth('0407dismantlePlan.search')" @click="queryTableDataParam">查询</el-button>
+        <el-button type="primary" icon="Coordinate" size="mini" v-if="$isAuth('0407dismantlePlan.approval')" @click="handleApply">提交审批</el-button>
+        <el-button type="danger" icon="Delete" size="mini"  v-if="$isAuth('0407dismantlePlan.delete')" @click="handleDelete">取消计划</el-button>
         <el-button type="success" icon="SuccessFilled" size="mini" v-if="isApproval === 1" @click="handlePass">审批通过</el-button>
         <el-button type="warning" icon="CircleCloseFilled" size="mini" v-if="isApproval === 1" @click="handleReject">审批驳回</el-button>
       </el-form>
@@ -45,7 +45,7 @@
       <el-table-column align="center" type="selection" :selectable="checkBoxT" width="40"></el-table-column>
       <el-table-column align="center" label="操作" width="70">
         <template v-slot="scope">
-          <el-button size="mini" type="primary" v-if="scope.row.id && $isAuth('0406Experiment.editTime')" @click="editPlan(scope.row)">修改</el-button>
+          <el-button size="mini" type="primary" v-if="scope.row.id && $isAuth('0407dismantlePlan.editTime')" @click="editPlan(scope.row)">修改</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="confirmStatus" label="状态" align="center" width="50">
@@ -57,32 +57,22 @@
       </el-table-column>
       <el-table-column prop="productNo" label="生产号" align="center" width="135"></el-table-column>
       <el-table-column prop="model" label="型号" align="center"></el-table-column>
-      <el-table-column prop="trialShop" label="试验场所" align="center" width="125"  :sortable="true" :sort-method="tableSortMethod"></el-table-column>
       <el-table-column prop="planStartTime" label="计划开始时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>
       <el-table-column prop="planEndTime" label="计划结束时间" align="center" width="100"></el-table-column>
-<!--      <el-table-column prop="tentativeTime" label="生产开始时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>-->
-<!--      <el-table-column prop="tentativeEndTime" label="生产结束时间" align="center" width="100"></el-table-column>-->
       <el-table-column prop="tentativePhase" label="计划员排产时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>
-<!--      <el-table-column prop="salesReply" label="销售开始时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>-->
-<!--      <el-table-column prop="salesEndReply" label="销售结束时间" align="center" width="100"></el-table-column>-->
-      <el-table-column prop="salesPhase" label="销售回复时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>
-      <el-table-column prop="salesPerson" label="销售回复人" align="center" width="100"></el-table-column>
       <el-table-column prop="noTaxAmount" label="产值(万元)" align="center" width="90"></el-table-column>
       <el-table-column prop="outPut" label="产量(万kVA)" align="center" width="90"></el-table-column>
     </el-table>
 
     <rejectPlanDialog ref="RejectPlanDialog" @refresh="queryTableDataParam"></rejectPlanDialog>
     <addProductDialog ref="addProductDialog" @refresh="queryTableDataParam"></addProductDialog>
-    <change-delivery-dialog ref="changeDeliveryDialogRef" @refresh="queryTableDataParam"></change-delivery-dialog>
   </div>
 </template>
 
 <script>
-// import LaminationPlan from '@/api/plan/laminationPlan'
 import planWeek from '@/api/plan/planWeek'
 import RejectPlanDialog from "./dialog/rejectPlanDialog.vue";
 import AddProductDialog from "./dialog/addProductDialog.vue";
-import changeDeliveryDialog from './dialog/changeSalesDialog.vue'
 import moment from "moment";
 const propertyClassFromDict = ['designSource', 'importmentLevel', 'urgentLevel', 'processStatus','nodeWeekStatus']
 const frozenDesc = '冻结'
@@ -93,7 +83,6 @@ export default {
   components:{
     RejectPlanDialog,
     AddProductDialog,
-    changeDeliveryDialog
   },
   data() {
     return {
@@ -109,8 +98,8 @@ export default {
         dateRange: '',
         sortedBy:'',
       },
-      planType: 'experiment',
       laminationTables:[],
+      planType: 'dismantle',
     }
   },
   created(){
@@ -126,7 +115,7 @@ export default {
     getParams(){
       let params = {
         productNo:this.searchQuery.productNo,
-        planType: this.planType
+        planType:this.planType,
       }
       if(this.searchQuery.dateRange != null){
         params.startDate=this.searchQuery.dateRange[0]==null?null:moment(this.searchQuery.dateRange[0]).format('YYYY-MM-DD')
@@ -192,12 +181,11 @@ export default {
         type: 'warning'
       }).then(() => {
         let nodeId = '23'
-        let idKvArray = []
         let planId = []
         this.tableData.forEach(item=>{
           if(item.id && item.confirmStatus === 1){
             nodeId = item.nodeId
-            planId.push(item.productPlanId)
+            planId.push(item.pl14Id)
           }
         })
         planWeek.applyWeekPlan({planId:planId,nodeId:nodeId}).then(res=>{
@@ -221,8 +209,7 @@ export default {
       this.selectList.forEach(item=>{
         nodeId = item.nodeId
         let passPlan = {}
-        passPlan.pl14Id = item.productPlanId
-        passPlan.pl66Id = item.id
+        passPlan.pl14Id = item.pl14Id
         passPlan.isPass = this.$constants.isPass.yes
         passInfo.push(passPlan)
       })
@@ -252,7 +239,7 @@ export default {
       }
       let delId = []
       this.selectList.forEach(item=>{
-        delId.push(item.id)
+        delId.push(item.pl14Id)
       })
       planWeek.delPlan({planType:this.planType,ids:delId}).then(res=>{
         if(res.err_code===10000){

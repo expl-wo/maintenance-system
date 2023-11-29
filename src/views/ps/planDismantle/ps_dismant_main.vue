@@ -16,8 +16,8 @@
 </template>
 
 <script type="text/jsx">
-import optionalProduct from './optionalProduct.vue'
-import planInfo from './planInfo.vue'
+import optionalProduct from '@/views/ps/planExperiment/optionalProduct.vue'
+import planInfo from './dismantlePlanInfo.vue'
 import moment from 'moment/moment'
 
 export default {
@@ -31,7 +31,7 @@ export default {
   data() {
     let isApprovePage = false , isApprove = this.$constants.isApprove.no;
     let routePath = this.$route.fullPath;
-    if(routePath.indexOf('ps_041_mainApproval')>=0){
+    if(routePath.indexOf('0407dismantling_plan_approval')>=0){
       isApprovePage = true
       isApprove = this.$constants.isApprove.yes
     }
@@ -44,7 +44,8 @@ export default {
       this.search();
     },
     search(){
-      this.$refs.optionalProduct.initData(this.isApprove,'experiment');
+      debugger
+      this.$refs.optionalProduct.initData(this.isApprove,'dismantle');
       this.$refs.planInfo.initData(this.isApprove);
     },
   }

@@ -9,20 +9,18 @@
         </el-col>
       </el-row>
     </el-form>
-    <template #footer>
-      <div class="dialog-footer">
+    <div slot="footer">
       <el-button @click="dialogVisible=false">取消</el-button>
       <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
-    </template>
   </el-dialog>
 </template>
 
 <script>
-import planWeekHttp from '@/api/plan/planWeek'
+import planWeek from '@/api/plan/planWeek'
 
 export default {
-  name: 'rejectDialog',
+  name: 'rejectPlanDialog',
   data(){
     return {
       dialogVisible: false,
@@ -35,38 +33,40 @@ export default {
         rejectReason: [{
           required: true,message: '驳回原因不能为空', trigger: 'blur'
         }]
-      }
+      },
+      planType: 'experiment',
     }
   },
   methods: {
-    initData(selectedData, searchParams){
+    initData(selectedData){
       this.model.rejectReason = '';
       this.$refs.form && this.$refs.form.clearValidate();
-      this.searchParams = searchParams;
       this.selectedData = selectedData;
       this.dialogVisible = true;
     },
     handleSubmit(){
+      debugger
       this.$refs.form.validate(valid=>{
         if(!valid){
           return;
         }
-        let submitData = {
-          nodeId: this.listQuery.nodeId,
-          planId: [],
-          approvalStatus: this.$constants.isPass.yes,
-          rejectReason: this.model.rejectReason
-        };
-        selectedData.forEach(item=>{
-          submitData.planId.push({
-            planId: item.id,
-          })
+        let nodeId = '23'
+        let rejectInfo = []
+        this.selectedData.forEach(item=>{
+          nodeId = item.nodeId
+          let rejectPlan = {}
+          rejectPlan.pl14Id = item.pl14Id
+          rejectPlan.pl66Id = item.id
+          rejectPlan.isPass = this.$constants.isPass.no
+          rejectPlan.rejectReason = this.model.rejectReason
+          rejectInfo.push(rejectPlan)
         })
-        planWeekHttp.approvalPlan(submitData).then(response=>{
+        planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
           if(response.err_code ===this.$constants.status.success){
             this.$message.success('数据审批完成');
             this.dialogVisible = false;
             this.$emit('refresh', {})
+            this.$emit('queryRightData',null)
           }else{
             this.$message.error(response.err_msg);
           }

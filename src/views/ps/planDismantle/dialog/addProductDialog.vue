@@ -8,16 +8,6 @@
           placeholder="请选择计划开工时间">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="试验场所">
-        <el-select size="mini" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
-          <el-option
-            v-for="item in dialogForm.laminationTables"
-            :key="item.id"
-            :label="item.tableName"
-            :value="item.id">
-          </el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="计划完工时间" prop="planEndTime">
         <el-date-picker
           v-model="dialogForm.planEndTime"
@@ -36,12 +26,11 @@
 </template>
 
 <script>
-// import flipTable from '@/api/plan/flipTable'
 import planWeekHttp from '@/api/plan/planWeek'
 import moment from 'moment'
 
 export default {
-  name: 'addProductDialog',
+  name: 'addDismantlProductDialog',
   data(){
     return {
       dialogVisible: false,
@@ -58,7 +47,7 @@ export default {
       laminationTable:{},
       isAdd:this.$constants.flag01.n,
       isApproval:this.$constants.flag.n,
-      planType: 'experiment',
+      planType: 'dismantle',
     }
   },
   methods: {
@@ -66,10 +55,6 @@ export default {
       this.isApproval = isApproval
       this.rowData = rowData
       this.isAdd = isAdd
-      //获取试验场所
-      // flipTable.findAllFlipTable({tableCode: ''}).then(res => {
-      //   this.dialogForm.laminationTables = res.data
-      // })
       if (this.isAdd === this.$constants.flag.n) {
         this.dialogForm.planStartTime = rowData.planStartTime
         this.dialogForm.planEndTime = rowData.planEndTime
@@ -88,19 +73,15 @@ export default {
     },
     addToNodeInfo(dialogFormData) {
       debugger
-      // if(!dialogFormData.planStartTime || !dialogFormData.planEndTime || !this.dialogForm.spt){
-      //   this.$message.error("计划时间或叠片台为空，不允许提交");
-      //   return
-      // }
       this.nodeInfo = []
       this.addInfo.planStartTime = moment(dialogFormData.planStartTime).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
       this.addInfo.planEndTime = moment(dialogFormData.planEndTime).format('YYYY-MM-DD HH:mm:ss');
       // this.addInfo.planEndTime = dialogFormData.planEndTime;
       this.addInfo.isMultiple = parseInt(dialogFormData.isMultipleType);
-      this.addInfo.productNodeId = this.rowData.productNodeId
-      this.addInfo.productPlanId = this.rowData.productPlanId
+      this.addInfo.productNodeId = this.rowData.pl15Id
+      this.addInfo.productPlanId = this.rowData.pl14Id
       this.addInfo.nodeId = this.rowData.nodeId
-      this.addInfo.productNodeName = this.rowData.productNodeName
+      this.addInfo.productNodeName = this.rowData.nodeName
       this.addInfo.productNo = this.rowData.productNo
       this.addInfo.id = this.rowData.id
 

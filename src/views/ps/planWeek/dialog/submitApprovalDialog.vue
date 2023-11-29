@@ -71,15 +71,15 @@ export default {
     handleSubmit(){
       let commitData = {
         nodeId: this.params.nodeId,
-        weekId: this.params.weekId,
-        workshopId:this.params.workshopId,
-        condition: []
+        condition: [],
+        planId: []
       }
       this.dataList.forEach(item=>{
-        commitData.condition.push({
-          k: this.notNeedGx ? item.pl14Id : item.productPlanId,
-          v: this.formatData(item._condition)
-        })
+        commitData.planId.push(item.pl14Id);
+        // commitData.condition.push({
+        //   k: this.notNeedGx ? item.pl14Id : item.productPlanId,
+        //   v: this.formatData(item._condition)
+        // })
       })
       planWeek.applyWeekPlan(commitData).then(response=>{
         if(response.err_code === this.$constants.status.success){

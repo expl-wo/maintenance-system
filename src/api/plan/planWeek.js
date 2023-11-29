@@ -68,12 +68,14 @@ const url = {
   addToExperimentPlan: '/api/gcplan/plan/proplan/addToExperimentPlan',//已完成
   //试验计划-修改销售回复时间和回复人
   updateSales: '/api/gcplan/plan/proplan/updateSales',//已完成
-  //车间周计划申请-按钮-选择工单申请周计划 POST
-  applyWeekPlan: '/api/gcplan/plan/week/applyWeekPlan',
-  //审批试验计划  POST
+  //车间计划申请-按钮-选择工单申请周计划 POST
+  applyWeekPlan: '/api/gcplan/productPlan/compilation/applayPlan',
+  //计划审批  POST
   approvalPlan: '/api/gcplan/plan/proplan/approvalPlan',
   //删除试验计划  POST
   delPlan: '/api/gcplan/plan/proplan/delPlan',
+  //计划审批
+  approvalPlanZ: '/api/gcplan/productPlan/compilation/approvePlan'
 }
 
 export default {
@@ -326,6 +328,13 @@ export default {
   delPlan(params) {
     return request({
       url: url.delPlan,
+      method: 'post',
+      data: params
+    })
+  },
+  approvalPlanZ(params) {
+    return request({
+      url: url.approvalPlanZ,
       method: 'post',
       data: params
     })
