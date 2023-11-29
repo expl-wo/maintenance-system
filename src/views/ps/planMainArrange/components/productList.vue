@@ -51,8 +51,11 @@
             header-align="center"
             align="center"
             label="审批状态"
-            property="approvalName"
+            property="approvalStatus"
             width="100">
+          <template #default="{row}">
+            <xui-dictionary itemCode="mainConfirmStatus" :code="row.approvalStatus"></xui-dictionary>
+          </template>
         </el-table-column>
         <el-table-column
             header-align="center"
@@ -97,6 +100,7 @@
 import {defineComponent, computed, onMounted, ref, watch, reactive, nextTick, defineEmits} from "vue";
 import {transformDictDetail} from '@/components/xui/dictionary'
 import {ElMessage} from "element-plus";
+import constants from "@/utils/constants";
 
 const props = defineProps({
   list: Array,
@@ -135,7 +139,9 @@ const cellClassName = ({row, column, rowIndex, columnIndex}) => {
   if (column.property === 'processStatus') {
     //从字典中获取数据
     return transformDictDetail('processStatus', row.processStatus, 'remark')
-  } else {
+  } else if(column.type ==='selection' && row.dataType === constants.productOrGx.gx){
+    return 'hidden-checkbox';
+  }else{
     return ''
   }
 }
@@ -187,8 +193,8 @@ const init = tempDataList => {
 const getSelectedData = () => {
   let selectRows = tableRef.value.getSelectionRows();
   if (selectRows.length <= 0) {
-    ElMessage.warning("请勾选数据后再提交审批");
-    return [];
+    ElMessage.warning("请先勾选列表数据后再处理");
+    return;
   }
   let productList = [];
   selectRows.forEach(item => {
