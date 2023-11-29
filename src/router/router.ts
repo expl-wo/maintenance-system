@@ -447,16 +447,16 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				}
 			},
-			{
-				//工单二维码
-				path: 'ps_020_workOrderQRCode',
-				name: '0403qrCode',
-				component: () => import('@/views/ps/ps_020_workOrderQRCode.vue'),
-				meta: {
-					title: '工单二维码',
-					icon: 'ps_011'
-				}
-			},
+			// {
+			// 	//工单二维码
+			// 	path: 'ps_020_workOrderQRCode',
+			// 	name: '0403qrCode',
+			// 	component: () => import('@/views/ps/ps_020_workOrderQRCode.vue'),
+			// 	meta: {
+			// 		title: '工单二维码',
+			// 		icon: 'ps_011'
+			// 	}
+			// },
 		{
         //拆解计划
         path: '0407dismantling_plan',
