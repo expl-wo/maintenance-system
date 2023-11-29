@@ -2,8 +2,8 @@
   <div  class="wp hp app-containerC">
     <div class="panel-menu-search filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="子工艺模板头名称" >
-          <el-input v-model="listQuery.craftsName" placeholder="请输入子工艺模板头名称" style="width: 180px;" class="filter-item" clearable />
+        <el-form-item label="中工序名称" >
+          <el-input v-model="listQuery.craftsName" placeholder="请输入中工序名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item size="mini">
           <el-button type="primary" icon="Search" @click="handleSearch">查询
@@ -14,8 +14,8 @@
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
         <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
-          <el-table-column prop="craftsCode" align="center" width="150" label="子工艺模板头编码" />
-          <el-table-column prop="craftsName" align="center" width="150" label="子工艺模板头名称"/>
+          <el-table-column prop="craftsCode" align="center" width="150" label="中工序编码" />
+          <el-table-column prop="craftsName" align="center" width="150" label="中工序名称"/>
           <el-table-column prop="isOntology" label="是否本体" align="center" width="100">
             <template v-slot="{row}">
               <div v-if="row.isOntology == 0">否</div>

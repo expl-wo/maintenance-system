@@ -5,8 +5,8 @@
     </div>
       <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
                   style="font-size: 0.7rem">
-        <el-table-column prop="craftsDeCode" align="center"  width="120"   label="子工艺模板行编码" />
-        <el-table-column prop="craftsDeName" align="center" width="120" label="子工艺模板行名称" />
+        <el-table-column prop="craftsDeCode" align="center"  width="120"   label="工步编码" />
+        <el-table-column prop="craftsDeName" align="center" width="120" label="工步名称" />
         <el-table-column label="前置条件" align="center" min-width="200">
           <template v-slot="scope">
             <el-select multiple value-key="k" v-model="scope.row.preCraftsDe" style="width: 270px">
@@ -37,16 +37,16 @@
       <el-form :model="listItemUpdate" ref="formRef" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="craftsDeCode" label="子工艺模板行编码" >
-              <el-input v-model="listItemUpdate.craftsDeCode" placeholder="请输入子工艺模板行编码" style="width: 350px;"
+            <el-form-item prop="craftsDeCode" label="工步编码" >
+              <el-input v-model="listItemUpdate.craftsDeCode" placeholder="请输入工步编码" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 子工艺模板行名称:" prop="craftsDeCode" >
-              <el-input v-model="listItemUpdate.craftsDeName" placeholder="请输入子工艺模板行名称" style="width: 350px;"
+            <el-form-item label=" 工步名称:" prop="craftsDeCode" >
+              <el-input v-model="listItemUpdate.craftsDeName" placeholder="请输入工步名称" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
           </el-col>

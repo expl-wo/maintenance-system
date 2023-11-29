@@ -11,9 +11,6 @@
     <div class="app-container app-containerC">
       <div class="otherCon wp">
         <el-table stripe   :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id">
-          <el-table-column align="center" width="110" label="工步Id" property="stepId"></el-table-column>
-          <el-table-column align="center" label="工步编码"  property="stepCode"></el-table-column>
-          <el-table-column  align="center" label="工步名称"  property="stepName"></el-table-column>
           <el-table-column align="center" width="110" label="操作项名称" property="operationName"></el-table-column>
           <el-table-column  align="center" label="标准工时"  property="standardWorkingHour"></el-table-column>
           <el-table-column align="center" label="设备名称" property="equipmentTypeName"></el-table-column>
@@ -73,9 +70,6 @@ export default {
       entity: {},
       dataList: [],
       listQuery:{
-        stepId:'',
-        stepName:'',
-        stepCode:'',
         operationName:'',
         lowerLimit:'',
         upperLimit:'',

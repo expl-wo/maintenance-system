@@ -2,8 +2,8 @@
   <div  class="wp hp app-containerC">
     <div class="panel-menu-search filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="PLM工序名称" >
-          <el-input v-model="listQuery.gxName" placeholder="输入工序名称" style="width: 180px;" class="filter-item"
+        <el-form-item label="标准工序名称" >
+          <el-input v-model="listQuery.gxName" placeholder="输入标准工序名称" style="width: 180px;" class="filter-item"
                     clearable />
         </el-form-item>
         <el-form-item size="mini">
@@ -17,8 +17,8 @@
         <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
           <el-table-column header-align="center" align="center" label="序号" width="50">
             <template v-slot="scope"><span>{{ scope.$index + 1 }}</span></template></el-table-column>
-          <el-table-column prop="gxUid" label="PLM工序编码" align="center" min-width="250"/>
-          <el-table-column prop="gxName" label="PLM工序名称" align="center" min-width="250"/>
+          <el-table-column prop="gxUid" label="标准工序编码" align="center" min-width="250"/>
+          <el-table-column prop="gxName" label="标准工序名称" align="center" min-width="250"/>
         </el-table>
       </div>
       <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination"

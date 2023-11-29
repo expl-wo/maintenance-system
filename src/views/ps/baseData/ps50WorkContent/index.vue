@@ -2,8 +2,8 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="子工艺模板行名称" >
-          <el-input v-model="listQuery.craftsDeName" placeholder="输入子工艺模板行名称" style="width: 180px;" class="filter-item"
+        <el-form-item label="工步名称" >
+          <el-input v-model="listQuery.craftsDeName" placeholder="输入工步名称" style="width: 180px;" class="filter-item"
                     clearable />
         </el-form-item>
         <el-form-item >
@@ -14,8 +14,8 @@
       </el-form>
     </div>
     <el-table stripe   :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id">
-      <el-table-column prop="craftsDeCode" align="center" label="子工艺模板行编码" />
-      <el-table-column prop="craftsDeName" align="center" label="子工艺模板行名称" />
+      <el-table-column prop="craftsDeCode" align="center" label="工步编码" />
+      <el-table-column prop="craftsDeName" align="center" label="工步名称" />
       <el-table-column prop="standardWorkingHour" align="center" label="标准工时" />
       <el-table-column label="操作" width="300" align="center">
         <template v-slot="scope">

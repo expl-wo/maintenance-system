@@ -6,7 +6,7 @@
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
                   style="font-size: 0.7rem">
-        <el-table-column prop="craftsName" align="center" label="子工艺模板头名称" />
+        <el-table-column prop="craftsName" align="center" label="中工序名称" />
 
         <el-table-column prop="isOntology" align="center" width="100" label="是否本体">
           <template v-slot="{row}">
@@ -33,16 +33,16 @@
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="craftsCode" label="子工艺模板头编码" >
-              <el-input v-model="listItemUpdate.craftsCode" placeholder="请输入子工艺模板头编码" style="width: 350px;"
+            <el-form-item prop="craftsCode" label="中工序编码" >
+              <el-input v-model="listItemUpdate.craftsCode" placeholder="请输入中工序编码" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 子工艺模板头名称:" prop="craftsName" >
-              <el-input v-model="listItemUpdate.craftsName" placeholder="请输入子工艺模板头名称" style="width: 350px;"
+            <el-form-item label=" 中工序名称:" prop="craftsName" >
+              <el-input v-model="listItemUpdate.craftsName" placeholder="请输入中工序名称" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
           </el-col>
