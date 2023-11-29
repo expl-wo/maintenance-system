@@ -3,36 +3,36 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="craftsDeCode" label="子工艺模板行编码：" size="mini">
+          <el-form-item prop="craftsDeCode" label="子工艺模板行编码：" >
             <el-input v-model="model.craftsDeCode"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="craftsDeName" label="子工艺模板行名称：" size="mini">
+          <el-form-item prop="craftsDeName" label="子工艺模板行名称：" >
             <el-input v-model="model.craftsDeName"  ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="standardWorkingHour" label="标准工时：" size="mini">
+          <el-form-item prop="standardWorkingHour" label="标准工时：" >
             <el-input v-model="model.standardWorkingHour"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="equipmentTypeName" label="设备名称：" size="mini">
+          <el-form-item prop="equipmentTypeName" label="设备名称：" >
             <el-input v-model="model.equipmentTypeName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button  @click="dialogVisible=false">取消</el-button>
+      <el-button  type="primary" @click="handleSubmit">保存</el-button>
     </div>
 
   </el-dialog>

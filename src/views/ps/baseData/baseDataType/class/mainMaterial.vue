@@ -4,7 +4,7 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="主材类型名称" size="mini">
+        <el-form-item label="主材类型名称" >
           <el-input v-model="listQuery.mainTypeName" placeholder="主材类型名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
         </el-form-item>
         <el-form-item >

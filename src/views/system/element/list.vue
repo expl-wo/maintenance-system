@@ -2,12 +2,12 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="参数编码" size="mini">
+        <el-form-item label="参数编码" >
           <el-input v-model="listQuery.code" @keyup.enter.native="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item >
           <el-button @click="handleSearch"  icon="Search" >查询</el-button>
           <el-button type="primary"  icon="Plus"  @click="handleAdd" >新增
           </el-button>

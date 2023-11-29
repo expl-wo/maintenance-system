@@ -5,19 +5,19 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
 
-        <el-form-item label="用户姓名" size="mini">
+        <el-form-item label="用户姓名" >
           <el-input v-model="listQuery.name" placeholder="模糊查询用户姓名" style="width: 180px;" class="filter-item" clearable/>
-        </el-form-item><el-form-item label="用户编号" size="mini">
+        </el-form-item><el-form-item label="用户编号" >
           <el-input v-model="listQuery.code" placeholder="模糊查询用户编号" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="排序方式" size="mini">
+        <el-form-item label="排序方式">
           <el-select v-model="listQuery.orderBy" style="width: 200px;" @change="onQuery">
             <el-option label="登录次数倒序" value="1" />
             <el-option label="登录次数正序" value="2" />
             <el-option label="用户名称排序" value="3" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item >
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>

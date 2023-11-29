@@ -2,7 +2,7 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini">
+        <el-form-item >
           <el-button @click="handleSearch" icon="refresh" >刷新</el-button>
           <el-button type="primary" @click="handleAdd" icon="plus" >新增</el-button>
         </el-form-item>

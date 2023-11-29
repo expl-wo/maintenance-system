@@ -24,7 +24,7 @@
       <el-table-column prop="unit" label="单位" align="center" min-width="200"/>
       <el-table-column prop="" align="center" label="操作" width:="150">
         <template v-slot="scope">
-            <el-button  type="primary" size="mini" icon="edit"
+            <el-button  type="primary"  icon="edit"
                         @click="click(scope.row)">
 
             </el-button>
@@ -38,7 +38,7 @@
     <el-dialog v-dialogDrag  :close-on-click-modal="false" title="查看物料信息" :visible.sync="dialogFormVisible" class="roleDialog800">
       <material ref="materialChild" :fatherData="clickData"></material>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">关 闭</el-button>
+        <el-button @click="dialogFormVisible = false" >关 闭</el-button>
       </div>
     </el-dialog>
 

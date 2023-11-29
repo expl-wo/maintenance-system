@@ -3,34 +3,34 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="code" label="参数名称：" size="mini">
+          <el-form-item prop="code" label="参数名称：" >
             <el-input v-model="model.name"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="name" label="参数编码：" size="mini">
+          <el-form-item prop="name" label="参数编码：" >
             <el-input v-model="model.code"  ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="value" label="参数值：" size="mini">
+          <el-form-item prop="value" label="参数值：" >
             <el-input v-model="model.value"  ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="remark" label="备注：" size="mini">
+          <el-form-item prop="remark" label="备注：" >
             <el-input v-model="model.remark " type="textarea" rows="5"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
 
   </el-dialog>

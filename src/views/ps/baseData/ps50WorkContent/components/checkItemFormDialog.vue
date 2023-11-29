@@ -3,48 +3,48 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="operationName" label="操作项名称：" size="mini">
+          <el-form-item prop="operationName" label="操作项名称：" >
             <el-input v-model="model.operationName"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="lowerLimit" label="上限：" size="mini">
+          <el-form-item prop="lowerLimit" label="上限：" >
             <el-input v-model="model.upperLimit"  ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="upperLimit" label="下限：" size="mini">
+          <el-form-item prop="upperLimit" label="下限：" >
             <el-input v-model="model.lowerLimit"  ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="correctValue" label="正确值：" size="mini">
+          <el-form-item prop="correctValue" label="正确值：" >
             <el-input v-model="model.correctValue " ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="maximumContentLength" label="内容最大长度：" size="mini">
+          <el-form-item prop="maximumContentLength" label="内容最大长度：" >
             <el-input v-model="model.maximumContentLength"  ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="dataUnit" label="数据单位：" size="mini">
+          <el-form-item prop="dataUnit" label="数据单位：" >
             <el-input v-model="model.dataUnit " ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="requireImageFile" label="是否需要上传图片/文件：" size="mini">
+          <el-form-item prop="requireImageFile" label="是否需要上传图片/文件：" >
             <el-input v-model="model.requireImageFile"  ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item prop="isMultiline" label="是否多行：" size="mini">
+          <el-form-item prop="isMultiline" label="是否多行：" >
             <el-input v-model="model.isMultiline " ></el-input>
           </el-form-item>
         </el-col>
@@ -52,26 +52,26 @@
       <el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="standardWorkingHour" label="标准工时：" size="mini">
+            <el-form-item prop="standardWorkingHour" label="标准工时：" >
               <el-input v-model="model.standardWorkingHour"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="equipmentTypeName" label="设备名称：" size="mini">
+            <el-form-item prop="equipmentTypeName" label="设备名称：" >
               <el-input v-model="model.equipmentTypeName"  ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-col :span="24">
-          <el-form-item prop="isRequired" label="是否必填：" size="mini">
+          <el-form-item prop="isRequired" label="是否必填：" >
             <el-input v-model="model.isRequired"  ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <el-button  @click="dialogVisible=false">取消</el-button>
+      <el-button  type="primary" @click="handleSubmit">保存</el-button>
     </div>
 
   </el-dialog>

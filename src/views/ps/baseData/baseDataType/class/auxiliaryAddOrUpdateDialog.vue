@@ -3,7 +3,7 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="150px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="value" label="辅材类型名称：" size="mini">
+          <el-form-item prop="value" label="辅材类型名称：" >
             <el-input v-model="model.auxiliaryTypeName"  ></el-input>
           </el-form-item>
         </el-col>

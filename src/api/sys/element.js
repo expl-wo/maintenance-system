@@ -2,7 +2,6 @@
  * Created by fp
  */
 import request from '@/utils/request';
-import data from "@/utils/data";
 export function pageList(params) {
   return request({
     url: '/api/gcplan/element/pageList',
