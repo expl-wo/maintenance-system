@@ -1,11 +1,10 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     :title="modalTitle"
     width="70%"
     :model-value="visible"
     :close-on-click-modal="false"
     :destroy-on-close="true"
-    draggable
     @close="handleClose"
   >
     <div class="form-wrapper">
@@ -43,7 +42,7 @@
       <span class="dialog-footer">
         <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          
+
           type="primary"
           :loading="loading"
           @click="handleConfirm"
@@ -174,16 +173,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.form-wrapper ::v-deep(.el-input) {
+.form-wrapper :deep(.el-input) {
   width: 250px;
 }
 .tinymce-wrapper {
   margin-top: 10px;
-  ::v-deep(.tox-tinymce) {
+  :deep(.tox-tinymce) {
     width: 100% !important;
   }
 }
-::v-deep(.tox-menu) {
+:deep(.tox-menu) {
   z-index: 3000 !important;
 }
 </style>

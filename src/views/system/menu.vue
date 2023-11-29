@@ -12,24 +12,35 @@
       </el-form>
     </div>
 
-    <el-table stripe  highlight-current-row
-      :data="tableData"
-      style="width: 100%;font-size:12px;"
-      row-key="id"
-      border
-      default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-      <el-table-column prop="name" width="400" label="菜单名称" />
-      <el-table-column prop="code" width="200" label="权限编号" align="center" />
+    <el-table stripe highlight-current-row
+              :data="tableData"
+              row-key="id"
+              border
+              default-expand-all
+              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+      <el-table-column prop="name" width="400" label="菜单名称"/>
+      <el-table-column prop="code" width="200" label="权限编号" align="center"/>
       <el-table-column prop="type" label="类型" align="center">
         <template v-slot:default="scope">
           <span v-if="scope.row.type === 1">菜单</span>
           <span v-if="scope.row.type === 2">按钮</span>
         </template>
       </el-table-column>
+      <el-table-column prop="url" label="后端功能路径" align="center"/>
+      <el-table-column prop="showOrder" label="显示顺序号" align="center"/>
+      <el-table-column label="是否可用" prop="enabled" width="90" align="center">
+        <template #default="{row}">
+          <div v-if="row.enabled == '0'" class="xui-content__fail">
+            <xui-dictionary item-code="flag01" :code="row.enabled"></xui-dictionary>
+          </div>
+          <div v-else  class="xui-content__success">
+            <xui-dictionary  item-code="flag01" :code="row.enabled"></xui-dictionary>
+          </div>
+        </template>
+      </el-table-column>
       <!-- <el-table-column prop="method" label="请求方式" align="center" />
       <el-table-column prop="type" label="物料名称" align="center">
-        <template slot-scope="scope">
+        <template  #default="scope">
           <span v-if="scope.row.enabled == 1">可用</span>
           <span v-if="scope.row.enabled == 0">不可用</span>
         </template>
@@ -53,39 +64,43 @@
     </el-table>
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
-      <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
+    <el-dialog draggable :close-on-click-modal="false" width="600px" :title="textMap[dialogStatus]" v-model="dialogFormVisible"
+               class="roleDialog">
+      <el-form ref="listUpdate" label-position="right" label-width="160px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="权限名称:" prop="name">
-          <el-input v-model="listUpdate.name" placeholder="权限名称" style="width: 360px;" class="filter-item" />
+          <el-input v-model="listUpdate.name" placeholder="权限名称" style="width: 360px;" class="filter-item"/>
         </el-form-item>
         <el-form-item label="权限编号:" prop="code">
-          <el-input v-model="listUpdate.code" placeholder="权限编号" style="width: 360px;" class="filter-item" />
+          <el-input v-model="listUpdate.code" placeholder="权限编号" style="width: 360px;" class="filter-item"/>
         </el-form-item>
         <el-form-item label="权限类型:" prop="type">
-          <el-select v-model="listUpdate.type" placeholder="请选择权限类型" style="width: 120px;" :disabled="listUpdate.id">
+          <el-select v-model="listUpdate.type" placeholder="请选择权限类型" style="width: 360px;" :disabled="listUpdate.id">
             <el-option label="菜单" value="1"/>
             <el-option label="按钮" value="2"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限服务端功能路径:" prop = "url">
-          <el-input v-model="listUpdate.url" placeholder="权限服务端功能路径" style="width: 360px;" class="filter-item" />
+        <el-form-item label="权限服务端功能路径:" prop="url">
+          <el-input v-model="listUpdate.url" placeholder="权限服务端功能路径" style="width: 360px;" class="filter-item"/>
         </el-form-item>
         <el-form-item label="权限对应的视图组件路径:">
-          <el-input v-model="listUpdate.viewPath" placeholder="权限对应的视图组件路径" style="width: 360px;" class="filter-item" />
+          <el-input v-model="listUpdate.viewPath" placeholder="权限对应的视图组件路径" style="width: 360px;" class="filter-item"/>
         </el-form-item>
-        <el-form-item label="图标:" prop = "iconName">
-          <el-input v-model="listUpdate.iconName" placeholder="图标" style="width: 360px;" class="filter-item" />
+        <el-form-item label="图标:" prop="iconName">
+          <el-input v-model="listUpdate.iconName" placeholder="图标" style="width: 360px;" class="filter-item"/>
         </el-form-item>
         <el-form-item label="请求方式:" prop="method">
-          <el-select v-model="listUpdate.method" placeholder="请选择权限类型" style="width: 120px;">
+          <el-select v-model="listUpdate.method" placeholder="请选择权限类型" style="width: 360px;">
             <el-option label="GET" value="GET"/>
             <el-option label="POST" value="POST"/>
             <el-option label="DELETE" value="DELETE"/>
             <el-option label="PUT" value="PUT"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="显示顺序号:" prop="showOrder">
+          <el-input-number min="0" v-model="listUpdate.showOrder" style="width: 360px;"/>
+        </el-form-item>
         <el-form-item label="是否可用:" prop="enabled">
-          <el-select v-model="listUpdate.enabled" placeholder="请选择是否可用" style="width: 120px;">
+          <el-select v-model="listUpdate.enabled" placeholder="请选择是否可用" style="width: 360px;">
             <el-option label="是" value="1"/>
             <el-option label="否" value="0"/>
           </el-select>
@@ -93,11 +108,11 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveData('listUpdate')">
-          保存
-        </el-button>
-      </div>
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="saveData('listUpdate')">
+            保存
+          </el-button>
+        </div>
       </template>
     </el-dialog>
 
@@ -109,10 +124,12 @@
  * 1.父菜单选择查询
  * 2.菜单新增或编辑
  */
-import { getPermissiontreeList, getPermissiontreeUpdate } from '@/api/permission'
+import {getPermissiontreeList, getPermissiontreeUpdate} from '@/api/permission'
+import XuiDictionary from "@/components/xui/dictionary/dictionary";
 
 export default {
   name: 'Table',
+  components: {XuiDictionary},
   data() {
     return {
       dialogStatus: '', // 角色列表表格新增或者修改状态控制
@@ -132,13 +149,13 @@ export default {
       tableData: [], // 表格数据
       // 检验规则
       submitRules: {
-        name: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        code: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        type: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        method: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        enabled: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        showOrder: [{ required: true, trigger: 'change', message: '该项为必填项' }],
-        url: [{ required: true, trigger: 'change', message: '该项为必填项' }]
+        name: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        code: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        type: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        method: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        enabled: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        showOrder: [{required: true, trigger: 'change', message: '该项为必填项'}],
+        url: [{required: true, trigger: 'change', message: '该项为必填项'}]
       },
       listUpdate: { // 弹窗
         code: '', // 是 权限编号,唯一，新增时填写，编辑时不可修改
@@ -163,21 +180,21 @@ export default {
       getPermissiontreeList().then(response => {
         this.tableData = response.data
         console.log(this.tableData)
-        this.tableData.forEach(element =>{
-          if(element.sub && element.sub.length > 0) {
+        this.tableData.forEach(element => {
+          if (element.sub && element.sub.length > 0) {
             element.children = element.sub
             select(element.sub)
-          }else{
+          } else {
             element.children = []
           }
         })
 
         function select(subFather) {
-          subFather.forEach(element =>{
-            if(element.sub && element.sub.length > 0) {
+          subFather.forEach(element => {
+            if (element.sub && element.sub.length > 0) {
               element.children = element.sub
               select(element.sub)
-            }else{
+            } else {
               element.children = []
             }
           })
@@ -224,8 +241,8 @@ export default {
         method: row.method, // 是 用方法，GET, POST, PUT等
         iconName: row.iconName ? row.iconName.toString() : '', // 否 权限图标名称
         fid: row.fid, // 是 父权限ID
-        enabled: row.enabled ? row.enabled.toString() : '', // 是 本功能权限是否可用 枚举 0：否 1：是
-        showOrder: row.showOrder ? row.enabled.toString() : '' // 是 显示顺序
+        enabled: (row.enabled !== undefined && row.enabled !== null) ? row.enabled.toString() : '', // 是 本功能权限是否可用 枚举 0：否 1：是
+        showOrder: row.showOrder // 是 显示顺序
       }
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
@@ -234,14 +251,14 @@ export default {
     saveData(listUpdate) {
       this.$refs[listUpdate].validate((valid) => {
         if (valid) {
-          const req = { ...this.listUpdate }
+          const req = {...this.listUpdate}
           getPermissiontreeUpdate(req).then(response => {
             this.dialogFormVisible = false
-            this.$message({ message: this.dialogStatus == 'create' ? '添加成功' : '修改成功', type: 'success' })
+            this.$message({message: this.dialogStatus == 'create' ? '添加成功' : '修改成功', type: 'success'})
             this.onQuery() // 查询
           })
         } else {
-          this.$message({ message: '请填写必填项', type: 'warning' })
+          this.$message({message: '请填写必填项', type: 'warning'})
           return false
         }
       })
@@ -251,10 +268,11 @@ export default {
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
-.el-form-item{
+
+.el-form-item {
   margin-bottom: 10px;
 }
 </style>

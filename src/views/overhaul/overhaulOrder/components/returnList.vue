@@ -55,43 +55,18 @@
       :limit="pageOptions.pageSize"
       @pagination="pageChange"
     />
-    <add-modal
-      v-if="showAdd"
-      :operateRow="operateRow"
-      modalName="showAdd"
-      :dialogStatus="dialogStatus"
-      @closeModal="closeModal"
-    ></add-modal>
-    <dispatch-modal
-      v-if="showAppoint"
-      :operateRow="operateRow"
-      modalName="showAppoint"
-      @closeModal="closeModal"
-    ></dispatch-modal>
+   
   </div>
-  <!-- 详情界面 -->
-  <detail-modal
-    v-else
-    class="order-info"
-    :operateRow="operateRow"
-    modalName="showInfo"
-    :visible="showInfo"
-    @closeModal="closeModal"
-  ></detail-modal>
 </template>
 
 <script>
 import Pagination from "@/components/Pagination"; // 分页
-import AddModal from "@/views/overhaul/overhaulOrder/components/addModal"; // 新增和编辑弹窗
-import DetailModal from "@/views/overhaul/overhaulOrder/components/detailModal"; //工单详情
 import { RETURN_COLUMNS, BOM_STATUS } from "../config.js";
 import { Download, Refresh, Stamp } from "@element-plus/icons-vue";
 export default {
   name: "ReturnList",
   components: {
     Pagination,
-    AddModal,
-    DetailModal,
     Download,
     Refresh,
     Stamp,
@@ -104,9 +79,6 @@ export default {
   data() {
     return {
       RETURN_COLUMNS: Object.freeze(RETURN_COLUMNS),
-      //模板选择
-      templateOptions: [{ label: "模板1", value: 1 }],
-      templateChoose: undefined,
       listLoading: true,
       tableData: [],
       //分页参数
@@ -120,23 +92,14 @@ export default {
         deviceName: "",
       },
       dialogStatus: "add",
-      showAdd: false,
       operateRow: null, //操作行
-      showInfo: false, //详情
-      showAppoint: false, //指派
-      showPause: false, //暂停
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    /**
-     * 模板选择
-     */
-    handleTemplateChange(val) {
-      console.log("????");
-    },
+
     /**
      * 关闭弹窗
      */
@@ -151,20 +114,6 @@ export default {
       this.operateRow = row;
       this[modeName] = true;
     },
-    /**
-     * 新增和编辑
-     */
-    handleCreate(row = null, type = "add") {
-      this.operateRow = row;
-      this.dialogStatus = type;
-      this.showAdd = true;
-    },
-    //结束工单
-    closeTask(row) {},
-    //暂停工单
-    pauseTask(row) {},
-    //删除工单
-    handleDelete(row, index) {},
             //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
@@ -192,29 +141,10 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(.pagination-container) {
+:deep(.pagination-container) {
   padding: 0;
 }
 .mrb15 {
   margin-bottom: 15px;
-}
-.mrl10 {
-  margin-left: 10px;
-}
-.operate-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.order-list-box {
-  position: relative;
-  .order-info {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: fit-content;
-    padding: 0;
-    z-index: 999;
-  }
 }
 </style>

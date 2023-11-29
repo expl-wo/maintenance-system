@@ -1,182 +1,251 @@
 import request from '@/utils/request'
 import { getPlanSimpleList } from '@/api/process'
 
-// 设备分类查询
-export function getCateList(params) {
+// 辅材类型查询
+export function getAuxiliaryType(params) {
   return request({
-    url: '/eqpLedger/cate',
+    url: '/api/gcplan/baseData/getAuxiliaryType',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      auxiliaryTypeName: params.auxiliaryTypeName || '', // 模糊匹配，分类名称
+    }
+  })
+}
+/**新增、修改辅材类型**/
+export function saveAuxiliaryType(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveAuxiliaryType',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除辅材类型**/
+export function deleteAuxiliaryType(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteAuxiliaryType',
+    method: 'post',
+    data
+  })
+}
+
+// 主材类型查询
+export function getMainMaterialType(params) {
+  return request({
+    url: '/api/gcplan/baseData/getMainMaterialType',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      mainTypeName: params.mainTypeName || '', // 模糊匹配，分类名称
+    }
+  })
+}
+
+
+/**新增、修改主材类型**/
+export function saveMainMaterialType(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveMainMaterialType',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除主材类型**/
+export function deleteMainMaterialType(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteMainMaterialType',
+    method: 'post',
+    data
+  })
+}
+// 设备类型查询
+export function getEquipmentType(params) {
+  return request({
+    url: '/api/gcplan/baseData/getEquipmentType',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      equipmentTypeName: params.equipmentTypeName || '', // 模糊匹配，分类名称
+    }
+  })
+}
+
+/**新增、修改设备类型**/
+export function saveEquipmentType(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveEquipmentType',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除设备类型**/
+export function deleteEquipmentType(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteEquipmentType',
+    method: 'post',
+    data
+  })
+}
+// 工器具类型查询
+export function getToolsType(params) {
+  return request({
+    url: '/api/gcplan/baseData/getToolsType',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      toolsTypeName: params.toolsTypeName || '', // 模糊匹配，分类名称
+    }
+  })
+}
+/**新增、修改工器具类型**/
+export function saveToolsType(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveToolsType',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除工器具类型**/
+export function deleteToolsType(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteToolsType',
+    method: 'post',
+    data
+  })
+}
+
+
+
+/**新增、修改中工序对应辅材表信息**/
+export function saveAuxiliary(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveAuxiliary',
+    method: 'post',
+    data:params
+  })
+}
+
+/**查询中工序对应的辅材表信息**/
+export function getCrafsAndAuxiliary(params) {
+  return request({
+    url: '/api/gcplan/baseData/getCrafsAndAuxiliary',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      name: params.name || '', // 模糊匹配，分类名称
-      description: params.description || '' ,// 模糊匹配，分类描述，描述此分类的意义等
-      type: params.type,//区分数据查询类型
+      auxiliaryTypeName: params.auxiliaryTypeName || '', // 模糊匹配，分类名称
+      crafsName:params.crafsName
     }
   })
 }
 
-// 查询设备分类，主用于在下拉列表中显示
-export function getEqCateList() {
+/**删除中工序对应辅材表信息**/
+export function deleteAuxiliary(data) {
   return request({
-    url: '/eqpLedger/eqpClazz',
-    method: 'get'
+    url: '/api/gcplan/baseData/deleteAuxiliary',
+    method: 'post',
+    data
   })
 }
 
-// 设备台账查询
-export function getInfoList(params) {
+// 查询中工序对应主材表信息
+export function getCrafsAndMain(params) {
   return request({
-    url: '/eqpLedger/info',
+    url: '/api/gcplan/baseData/getCrafsAndMain',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      mainTypeName: params.mainTypeName ,// 模糊匹配，分类名称
+      crafsName:params.crafsName
+    }
+  })
+}
+
+
+/**新增、修改中工序对应主材表信息**/
+export function saveMain(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveMain',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除中工序对应主材表信息**/
+export function deleteMain(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteMain',
+    method: 'post',
+    data
+  })
+}
+// 查询中工序对应设备表信息
+export function getCrafsAndEquipment(params) {
+  return request({
+    url: '/api/gcplan/baseData/getCrafsAndEquipment',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize,
+      pg_pagenum: params.pg_pagenum ,
+      equipmentTypeName: params.equipmentTypeName , // 模糊匹配，分类名称
+      crafsName:params.crafsName
+    }
+  })
+}
+
+/**新增、修改中工序对应设备表信息**/
+export function saveEquipment(params) {
+  return request({
+    url: '/api/gcplan/baseData/saveEquipment',
+    method: 'post',
+    data:params
+  })
+}
+
+/**删除中工序对应设备表信息**/
+export function deleteEquipment(data) {
+  return request({
+    url: '/api/gcplan/baseData/deleteEquipment',
+    method: 'post',
+    data
+  })
+}
+// 查询中工序对应工器具表信息
+export function getCrafsAndTools(params) {
+  return request({
+    url: '/api/gcplan/baseData/getCrafsAndTools',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      name: params.name || '', // 模糊匹配，设备名称
-      number: params.number || '', // 模糊匹配，设备编号
-      eqpClazz: params.eqpClazz || '', // 设备分类
-      usingDepartment: params.usingDepartment || '', // 模糊匹配，使用部门
-      status: params.status || '', // 模糊匹配，使用状态，枚举
-      isLimit: params.isLimit,
-      workshop: params.workshop || '',
-      usingDepId: params.usingDepId || null
+      toolsTypeName: params.toolsTypeName || '', // 模糊匹配，分类名称
+      crafsName:params.crafsName
     }
   })
 }
-//查询NC
-export function getNcData(data){
+/**新增、修改中工序对应工器具表信息**/
+export function saveTools(params) {
   return request({
-    url: '/dncEqp/getNcData',
-    method: 'get',
-    params:data
+    url: '/api/gcplan/baseData/saveTools',
+    method: 'post',
+    data:params
   })
 }
 
-//生产图号查询
-export function getDrawNo(params){
+/**删除中工序对应工器具表信息**/
+export function deleteTools(data) {
   return request({
-    url: '/planproduct/getDrawingNO',
-    method: 'get',
-    param: {
-      productNo:params.productionCode,
-    }
-  })
-}
-// 设备等级查询
-//hsseg
-export function getHsseManageLevelList(params) {
-  return request({
-    url: '/eqpLedger/hsseManageLevel',
-    method: 'get',
-    params: {
-      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      name: params.name || '', // 模糊匹配，等级名称
-      description: params.description || '' ,// 模糊匹配，等级描述
-    }
-  })
-}
-//生产管理
-export function getProductionManageLevelList(params) {
-  return request({
-    url: '/eqpLedger/productionManageLevel',
-    method: 'get',
-    params: {
-      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      name: params.name || '', // 模糊匹配，等级名称
-      description: params.description || '' ,// 模糊匹配，等级描述
-    }
-  })
-}
-
-// 设备图片保存
-export function getPicUpdate(data) {
-  return request({
-    url: '/eqpLedger/pic',
-    method: 'POST',
+    url: '/api/gcplan/baseData/deleteTools',
+    method: 'post',
     data
-  })
-}
-
-// 设备文件查询
-export function getFileList(params) {
-  return request({
-    url: '/eqpLedger/file',
-    method: 'get',
-    params: {
-      id: params.id || '' // 设备id
-    }
-  })
-}
-export function getFileUpdate(data) {
-  return request({
-    url: '/eqpLedger/file',
-    method: 'POST',
-    data
-  })
-}
-// 设备文件删除
-export function deleteFile(data) {
-  return request({
-    url: '/eqpLedger/file',
-    method: 'DELETE',
-    data
-  })
-}
-
-// 设备图片查询
-export function getPicList(params) {
-  return request({
-    url: '/eqpLedger/pic',
-    method: 'get',
-    params: {
-      id: params.id || '' // 设备id
-    }
-  })
-}
-
-// 设备图片删除
-export function deletePic(data) {
-  return request({
-    url: '/eqpLedger/pic',
-    method: 'DELETE',
-    data
-  })
-}
-
-export function timetoandon(params) {
-  return request({
-    url: '/eqpLedger/timetoandon',
-    method: 'POST',
-    params: {
-      eqpClassId: params.eqpClassId || '', // 分类id
-      toAndonTime: params.toAndonTime
-    }
-  })
-}
-
-export function responseConfirm(data) {
-  return request({
-    url: '/eqpLedger/eqpManager',
-    method: 'POST',
-    data
-  })
-}
-
-//导入设备责任人
-export function importManager(data) {
-    return request({
-        url: '/endpoint/qrcodeexcel/importManager',
-        method: 'POST',
-        data
-    })
-}
-
-//查寻设备使用部门
-export function finEqpDep(params) {
-  return request({
-    url: '/eqpLedger/finEqpDep',
-    method: 'get',
   })
 }

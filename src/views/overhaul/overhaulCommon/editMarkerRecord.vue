@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    draggable
     title="标记信息编辑"
     append-to-body
     :model-value="true"
@@ -12,7 +13,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
       label-width="120px"
     >
       <el-row type="flex" align="middle" justify="space-between">
@@ -96,7 +96,8 @@
 </template>
 
 <script>
-import { requiredVerify, safeLimit } from "@/common/js/validator";
+import { safeLimit } from "@/common/js/validator";
+import { addVideoMarker, updateVideoMarker } from "@/api/overhaul/videoApi.js";
 
 const markTypeOptions = [
   { label: "图片", value: 1 },
@@ -145,6 +146,11 @@ export default {
           return false;
         }
         this.saveLoading = true;
+        if (Reflect.has(this.operateRow, "id")) {
+          updateVideoMarker();
+        } else {
+          addVideoMarker();
+        }
         //请求保存接口
       });
     },
@@ -156,7 +162,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep(.el-input-number .el-input--small .el-input__inner) {
+// :deep(.el-input-number .el-input--small .el-input__inner) {
 //   width: inherit;
 // }
 </style>

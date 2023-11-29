@@ -111,7 +111,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                 @pagination="getList" />
 
-  <el-dialog v-dialogDrag  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
+  <el-dialog draggable  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
     <el-form :inline="true" :model="handQuery" class="demo-form-inline demo-form-zdy">
       <el-form-item label="数据来源:" prop="nodeType">
         <el-select v-model="handQuery.isOrder" placeholder="请选择节点类型">

@@ -22,18 +22,18 @@
               style="width: 100%" @selection-change="handlerSelect">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column align="center" label="表名">
-        <template #default="scope">
+        <template  #default="scope">
           <span>{{ scope.row.tableName }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="表备注">
-        <template #default="scope">
+        <template  #default="scope">
           <span>{{ scope.row.tableComment }}</span>
         </template>
       </el-table-column>
       <el-table-column width="200px" align="center" label="创建时间">
-        <template #default="scope">
+        <template  #default="scope">
           <span>{{ scope.row.createTime }}</span>
         </template>
       </el-table-column>

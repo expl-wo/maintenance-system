@@ -254,7 +254,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep(.el-input--small .el-input__inner) {
+// :deep(.el-input--small .el-input__inner) {
 //   width: 220px;
 // }
 </style>

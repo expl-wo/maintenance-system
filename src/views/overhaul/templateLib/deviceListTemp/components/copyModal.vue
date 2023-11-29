@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="复制模板"
     width="30%"
     :model-value="visible"
@@ -25,7 +25,7 @@
       <span class="dialog-footer">
         <el-button  @click="handleClose">取 消</el-button>
         <el-button
-          
+
           type="primary"
           :loading="loading"
           @click="handleConfirm"

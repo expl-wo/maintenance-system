@@ -121,7 +121,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag append-to-body :close-on-click-modal="false" :title="textMap[dialogStatus]"
+    <el-dialog draggable append-to-body :close-on-click-modal="false" :title="textMap[dialogStatus]"
                v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="角色名称:" prop="name">
@@ -159,7 +159,7 @@
     </el-dialog>
 
     <!--查看-->
-    <el-dialog v-dialogDrag append-to-body :close-on-click-modal="false" title="查看" top="5vh"
+    <el-dialog draggable append-to-body :close-on-click-modal="false" title="查看" top="5vh"
                v-model="dialogViewVisible" class="roleDialog">
       <el-form label-position="right" label-width="120px" :model="dataListUpdate">
         <el-form-item label="角色名称:" size="small">
@@ -201,7 +201,7 @@
     </el-dialog>
 
     <!--包含权限编辑-->
-    <el-dialog v-dialogDrag append-to-body top="5vh" :close-on-click-modal="false" title="权限编辑"
+    <el-dialog draggable append-to-body top="5vh" :close-on-click-modal="false" title="权限编辑"
                v-model="dialogPermissionVisible"  class="xui-dialog__limit-min">
       <el-form label-position="right" label-width="120px" :model="dataListUpdate">
         <el-form-item label="角色名称" style="line-height: 36px !important;">
@@ -565,20 +565,15 @@ export default {
   margin-bottom: 10px;
 }
 
-//>>> .el-form-item--small .el-form-item__content {
+//:deep .el-form-item--small .el-form-item__content {
 //  line-height: 32px !important;
 //}
 //
-//>>> .el-form-item--medium .el-form-item__content {
+//:deep .el-form-item--medium .el-form-item__content {
 //  line-height: 36px !important;
 //}
 
-::deep(.el-dialog__body) {
-  max-height: 75vh !important;
-  overflow: auto;
-}
-
->>> .el-dialog__body {
+:deep .el-dialog__body {
   max-height: 75vh !important;
   overflow: auto;
 }

@@ -5,7 +5,7 @@
           ref="tableRef"
           :data="dataList"
           border stripe
-          size="medium"
+          size="default"
           class="el-table__row-pointer"
           height="100%"
           default-expand-all
@@ -14,6 +14,7 @@
           @row-click="handlerRowClick"
           @expand-change="handlerExpand"
           :cell-class-name="cellClassName"
+          scrollbar-always-on
       >
         <el-table-column
             type="selection"
@@ -50,8 +51,11 @@
             header-align="center"
             align="center"
             label="审批状态"
-            property="approvalName"
+            property="approvalStatus"
             width="100">
+          <template #default="{row}">
+            <xui-dictionary itemCode="mainConfirmStatus" :code="row.approvalStatus"></xui-dictionary>
+          </template>
         </el-table-column>
         <el-table-column
             header-align="center"
@@ -95,12 +99,14 @@
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, watch, reactive, nextTick, defineEmits} from "vue";
 import {transformDictDetail} from '@/components/xui/dictionary'
+import {ElMessage} from "element-plus";
+import constants from "@/utils/constants";
 
 const props = defineProps({
   list: Array,
   BGScrollTop: Number
 })
-const emits = defineEmits(["handlerRowClick", "tableScrollTop"])
+const emits = defineEmits(["handlerRowClick", "tableScrollTop", "handlerExpandRow"])
 
 const dataList = ref([]);
 const rightLineX = ref(600);
@@ -110,23 +116,32 @@ const tableRef = ref();
 
 watch(() => props.BGScrollTop, () => {
   if (tableRef.value) {
-    let tableWrapper = tableRef.value.$refs.bodyWrapper;
-    tableWrapper.scrollTo(0, props.BGScrollTop);
+    tableRef.value.setScrollTop(props.BGScrollTop);
   }
 })
 
 const handlerWatchScroll = () => {
-  let table = tableRef.value.$refs.bodyWrapper;
-  table.addEventListener("scroll", e => {
+  let tableScrollBarRef = tableRef.value.$refs.scrollBarRef.wrapRef;
+  tableScrollBarRef.addEventListener("scroll", e => {
     emits("tableScrollTop", e.srcElement.scrollTop);
   });
+}
+
+const handleScroll = position => {
+  emits("tableScrollTop", position);
+}
+
+const handlerExpand = (row, expand) => {
+  emits("handlerExpandRow", row, expand);
 }
 
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
   if (column.property === 'processStatus') {
     //从字典中获取数据
     return transformDictDetail('processStatus', row.processStatus, 'remark')
-  } else {
+  } else if(column.type ==='selection' && row.dataType === constants.productOrGx.gx){
+    return 'hidden-checkbox';
+  }else{
     return ''
   }
 }
@@ -149,8 +164,7 @@ const handlerSelect = (row) => {
 }
 
 const handlerRowClick = (row, column) => {
-  debugger
-    emits("handlerRowClick", row);
+  emits("handlerRowClick", row);
 }
 
 const setScroll = (scrollTop) => {
@@ -175,9 +189,54 @@ const init = tempDataList => {
   });
 }
 
+//获取选中的行
+const getSelectedData = () => {
+  let selectRows = tableRef.value.getSelectionRows();
+  if (selectRows.length <= 0) {
+    ElMessage.warning("请先勾选列表数据后再处理");
+    return;
+  }
+  let productList = [];
+  selectRows.forEach(item => {
+    let productNo = item.productNo;
+    if (!productList.includes(productNo)) {
+      productList.push(productNo);
+    }
+  })
+  return productList;
+}
+
+const setCurrentRow = row => {
+  if (!row) {
+    tableRef.value.setCurrentRow();
+  } else {
+    dataList.value.some(item => {
+      if (item.id === row.id) {
+        tableRef.value.setCurrentRow(item);
+        return true;
+      }
+      if (item.children && item.children.length > 0) {
+        item.children.some(subItem => {
+          if (subItem.id === row.id) {
+            tableRef.value.setCurrentRow(subItem);
+          }
+        })
+      }
+    })
+  }
+}
+
+onMounted(() => {
+  setTimeout(() => {
+    handlerWatchScroll();
+  }, 1000)
+})
+
 defineExpose({
   init,
-  handleToggleExpandAll
+  handleToggleExpandAll,
+  setCurrentRow,
+  getSelectedData
 })
 </script>
 

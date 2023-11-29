@@ -28,7 +28,6 @@ import {useRoute} from "vue-router";
 import { hasDepartPrivilege, notNullUndefined } from "@/utils";
 import {transformList2Tree} from "@/utils";
 import constants from "@/utils/constants";
-import Constants from "@/utils/constants";
 
 export default defineComponent({
   name: "SideBar",
@@ -56,7 +55,11 @@ export default defineComponent({
       let result = [];
       let rootList = [];
       // 从sessionStorage得到菜单结构
-      const tempMenuList = JSON.parse(sessionStorage.getItem('menuList'));
+      let tempMenuList = JSON.parse(sessionStorage.getItem('menuList'));
+      //过滤父节点为空的菜单
+      tempMenuList = tempMenuList.filter(item=>{
+        return constants.isEmpty(item.fid)
+      })
       console.log("菜单",tempMenuList)
       rootList = (tempMenuList||[]).map((list)=>transformStruct(list));
       console.log("新菜单",rootList)

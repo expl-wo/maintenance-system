@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="查看"
     custom-class="detail-modal"
     width="520px"
@@ -65,7 +65,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-::v-deep(.el-dialog__header){
+:deep(.el-dialog__header){
   border-bottom: 1px solid #eee;
 }
 .ml24 {

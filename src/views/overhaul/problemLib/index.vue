@@ -34,7 +34,7 @@
         >
         </el-table-column>
         <el-table-column label="操作" width="120">
-          <template #default="scope">
+          <template  #default="scope">
             <el-button-group>
               <el-button
                 type="primary"
@@ -194,20 +194,20 @@ export default {
   width: 100%;
   height: calc(100% - 32px);
 }
-.search-wrapper ::v-deep(.el-form-item) {
+.search-wrapper :deep(.el-form-item) {
   margin-bottom: 0;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;
   overflow-y: auto;

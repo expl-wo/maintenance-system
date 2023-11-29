@@ -19,6 +19,7 @@
             :expand-on-click-node="false"
             :data="treeData"
             :props="defaultProps"
+            highlight-current
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
@@ -278,7 +279,7 @@ $left-title-height: 36px;
 $left-search-height: 36px;
 $left-width: 255px;
 $left-search-time: 200px;
-::v-deep(.el-input) {
+:deep(.el-input) {
   width: 220px;
 }
 .video-box {

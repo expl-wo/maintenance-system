@@ -38,7 +38,7 @@
         </el-dropdown-menu>
       </template>
     </el-dropdown>
-    <el-dialog v-dialogDrag  :close-on-click-modal="false"  :append-to-body="true" title="修改密码" v-model="dialogRePasswordsisible" class="roleDialog" >
+    <el-dialog v-draggable  :close-on-click-modal="false"  :append-to-body="true" title="修改密码" v-model="dialogRePasswordsisible" class="roleDialog" >
       <el-form ref="rePasswords" label-position="right" label-width="140px" :rules="submitRules" :model="rePasswords">
         <el-form-item label="旧密码:" prop="name">
           <el-input v-model="rePasswords.oldPwd" placeholder="输入旧密码" style="width: 310px;" show-password class="filter-item" />
@@ -108,6 +108,8 @@ export default defineComponent({
         newPwd:'',
         reNewPwd:''
       },
+	  mssg:'',
+	  builtin:0,
       submitRules: {
         oldPwd: [
           { required: true, trigger: 'change', message: '该项为必填项' }

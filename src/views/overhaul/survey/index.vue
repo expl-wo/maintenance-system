@@ -494,6 +494,13 @@ export default {
   },
 };
 </script>
+<style  lang="scss">
+.el-date-picker {
+  .normal {
+    background-color: transparent !important;
+  }
+}
+</style>
 <style scoped lang="scss">
 .mrb15 {
   margin-bottom: 15px;

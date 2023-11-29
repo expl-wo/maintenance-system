@@ -49,15 +49,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination
-            :current-page="searchModel.pg_pagenum"
-            :page-sizes="[100, 200, 500]"
-            :page-size="searchModel.pg_pagesize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          />
         </div>
         <!--<ul class="panel-menu">
           <li v-for="(item, key) in dataList" :class="{'cur': item.id===curId}"
@@ -80,7 +71,7 @@
         </ul>-->
       </div>
 
-    <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" v-model="dialogVisible" modal>
+    <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'" v-model="dialogVisible" modal>
       <el-form :model="model" ref="form" :rules="rules" label-width="100px">
         <el-row>
           <el-col :span="12">

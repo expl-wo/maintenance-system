@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="厂内完工时间修改申请" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="厂内完工时间修改申请" v-model="dialogVisible" modal>
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="120px"
     >

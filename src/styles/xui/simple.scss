@@ -20,15 +20,25 @@
 }
 
 @include b(dialog) {
+  @include e(control) {
+    .el-dialog__body {
+      min-height: 40vh;
+      max-height: 78vh;
+      overflow: auto;
+    }
+  }
+}
+
+@include b(dialog) {
   @include e(limit) {
     .el-dialog__body {
-      height: 70vh;
+      height: 78vh;
       overflow: auto;
     }
   }
   @include e(limit-min) {
     .el-dialog__body {
-      height: 64vh;
+      height: 74vh;
       overflow: auto;
     }
   }
@@ -66,4 +76,6 @@
   }
 
 }
+
+
 

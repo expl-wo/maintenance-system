@@ -107,6 +107,7 @@ import { Delete, Edit } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 import EditMarkerModal from "./editMarkerRecord.vue";
 import Pagination from "@/components/Pagination"; // 分页
+import { pageVideoMarker, deleteVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   components: {
     EditMarkerModal,
@@ -277,6 +278,10 @@ export default {
           captureTime: "2023-11-17 10:22:23",
         },
       ];
+      const { pageSize, pageNum } = this.pageOptions;
+      pageVideoMarker({ pageSize, pageNum }).then((res) => {
+        debugger;
+      });
     },
     /**
      * 关闭弹窗
@@ -313,12 +318,13 @@ export default {
         type: "error",
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          console.log(params);
           //请求接口
+          deleteVideoMarker(params).then((res) => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+          });
         })
         .catch(() => {
           console.log("已取消");
@@ -356,10 +362,10 @@ $warp-height: 40px;
 $card-height: 428px;
 $card-img-height: 220px;
 $card-footer-height: 40px;
-::v-deep(.pagination-container) {
+:deep(.pagination-container) {
   padding: 0;
 }
-::v-deep(.el-image-viewer__mask) {
+:deep(.el-image-viewer__mask) {
   background-color: #00000047;
 }
 .mark-box {

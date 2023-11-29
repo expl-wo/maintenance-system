@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="BOM数量编辑" width="600px" v-model="dialogVisible" modal>
     <div class="otherCon wp">
       <el-table stripe  ref="tableRef" height="500px" highlight-current-row border :data="bomInfoList"
                 style="font-size: 0.7rem"
@@ -10,7 +10,7 @@
           label="序号"
           width="100"
         >
-          <template slot-scope="scope">
+          <template  #default="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
@@ -25,7 +25,7 @@
           label="数量"
           property="amount"
         >
-          <template slot-scope="scope">
+          <template  #default="scope">
             <el-input-number v-model="scope.row.amount" :min="0"></el-input-number>
           </template>
         </el-table-column>

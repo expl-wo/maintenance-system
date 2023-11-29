@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="this.updateForm.productNo+'计划时间修改'" v-model="dialogVisible" class="roleDialog720">
+  <el-dialog draggable  :close-on-click-modal="false" :title="this.updateForm.productNo+'计划时间修改'" v-model="dialogVisible" class="roleDialog720">
     <el-form label-position="right" label-width="160px" :model="updateForm" :rules="rules" ref="updateRuleForm">
       <el-form-item label="生产号:">
         <el-input v-model="updateForm.productNo" placeholder="生产号" style="width: 240px;" class="filter-item" disabled></el-input>
@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  >>>.el-form-item{
+  :deep .el-form-item{
     margin-bottom: 16px;
   }
 </style>

@@ -34,6 +34,11 @@
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, reactive, defineEmits, toRef, watch, nextTick} from "vue";
 
+const props = defineProps({
+  currentProjectMsg: Object,
+  isShowMsg: Boolean
+})
+
 </script>
 
 <style scoped lang="scss">

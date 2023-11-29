@@ -137,7 +137,7 @@
     />
 
     <!-- 新增期量弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :title=title v-model="addMainDialogVisible"
+    <el-dialog draggable :close-on-click-modal="false" :title=title v-model="addMainDialogVisible"
                class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="mainAddOrUpdateForm" :rules="mainRules"
                ref="mainRuleForm">
@@ -176,16 +176,16 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <!-- <el-button @click="resetForm('mainRuleForm')">取 消</el-button> -->
-        <el-button @click="addMainDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('mainRuleForm')">
-          保存
-        </el-button>
-      </div>
+			<!-- <el-button @click="resetForm('mainRuleForm')">取 消</el-button> -->
+			<el-button @click="addMainDialogVisible = false">取 消</el-button>
+			<el-button type="primary" @click="submitForm('mainRuleForm')">
+			保存
+			</el-button>
+		</div>
       </template>
     </el-dialog>
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="查看期量明细" v-model="detailDialog" width="70%">
+    <el-dialog draggable :close-on-click-modal="false" title="查看期量明细" v-model="detailDialog" width="70%">
       <el-form :inline="true" :model="detailQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="节点名称">
           <el-input v-model="detailQuery.nodeName" placeholder="节点名称" style="width: 180px;" class="filter-item"
@@ -247,7 +247,7 @@
     </el-dialog>
 
     <!-- 新增节点弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="新增" v-model="addDialogVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="新增" v-model="addDialogVisible" class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="addOrUpdateForm" :rules="deRules" ref="deRuleForm">
         <el-form-item label="节点类型:" prop="nodeType">
           <el-select v-model="addOrUpdateForm.nodeType" clearable placeholder="请选择节点类型">
@@ -294,7 +294,7 @@
     </el-dialog>
 
     <!-- 修改节点弹窗 -->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="修改" v-model="dialogFormEditVisible"
+    <el-dialog draggable :close-on-click-modal="false" title="修改" v-model="dialogFormEditVisible"
                class="roleDialog"
                @close="dialogFormClosed">
       <el-form label-position="right" label-width="160px" :model="addOrUpdateForm" :rules="deRules" ref="deRuleForm">

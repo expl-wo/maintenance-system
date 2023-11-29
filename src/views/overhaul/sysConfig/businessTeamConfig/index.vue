@@ -33,7 +33,9 @@ export default {
       configList: Object.freeze([
         {label: '勘查技术负责人组', key: 'survey'},
         {label: '运检项目经理组', key: 'overhaulGroup'},
+        {label: '运检部班组', key: 'transportationGroup'},
         {label: '生产部总装项目经理组', key: 'assembleGroup'},
+        {label: '生产部班组', key: 'productionGroup'},
         {label: '厂区生产-生产部项目经理组', key: 'prodDeptGroup'},
         {label: '质量部实验主管组', key: 'experimentalGroup'}
       ]),
@@ -117,7 +119,7 @@ export default {
     padding-top: 40px;
   }
 }
-::v-deep(.el-select){
+:deep(.el-select){
   width: 500px;
 }
 .mr12 {

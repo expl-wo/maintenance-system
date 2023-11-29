@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="修改干燥罐" width="500px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="修改干燥罐" width="500px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">

@@ -26,7 +26,6 @@ const formatTreeToList = (dictList, result) => {
 
 // 翻译，根据key itemCode 翻译得到itemName  如 把 y 翻译成是
 export const transformDictDetail = function (key, value, attr = 'name') {
-    debugger
     if (value === undefined || value === null) {
         return ''
     }

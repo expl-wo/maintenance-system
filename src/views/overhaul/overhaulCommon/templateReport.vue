@@ -215,8 +215,8 @@ export default {
      * 上传前置操作
      */
     beforeUpload(file) {
-      if (file.size > MAX_FILE_SIZE) {
-        this.$message.error(`附件大小请勿超过${MAX_FILE_SIZE / 1024 / 1024}M`);
+      if (file.size / 1024 / 1024 > MAX_FILE_SIZE) {
+        this.$message.error(`附件大小请勿超过${MAX_FILE_SIZE}M`);
         return false;
       }
       return true;

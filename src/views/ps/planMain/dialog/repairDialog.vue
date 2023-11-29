@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="this.selectedData.productNo+'返修'" v-model="dialogVisible" modal width="30%">
+  <el-dialog draggable  appendToBody :title="this.selectedData.productNo+'返修'" v-model="dialogVisible" modal width="30%">
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="100px"
     >

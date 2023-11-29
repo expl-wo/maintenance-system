@@ -372,7 +372,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(.main-layout_fixed-nav-bar) {
+:deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;
 }
 .mrb15 {

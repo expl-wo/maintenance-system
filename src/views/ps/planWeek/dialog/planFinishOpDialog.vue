@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="预排检查" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="预排检查" width="800px" v-model="dialogVisible" modal>
     <div class="otherCon wp">
       <div class="xui-check-panel">
         <div class="xui-check-panel__item" v-for="(opItem,index) in dataList" :key="'op' + index">

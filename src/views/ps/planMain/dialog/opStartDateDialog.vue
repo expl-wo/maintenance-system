@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  append-to-body title="开始时间处理" v-model="dialogVisible" modal>
+  <el-dialog draggable  append-to-body title="开始时间处理" v-model="dialogVisible" modal>
     <el-form
       ref="formRef"
       :model="model"

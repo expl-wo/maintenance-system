@@ -118,7 +118,7 @@
     </el-row>
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible"
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible"
                class="roleDialog720">
       <el-form ref="listUpdate" label-position="right" label-width="150px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="分配角色:" prop="roleName">
@@ -157,7 +157,7 @@
     </el-dialog>
 
     <!--选择角色-->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
+    <el-dialog draggable :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
                v-model="dialogTableVisible" class="roleDialog800">
       <el-form label-position="right" label-width="90px" :model="listTableUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">
@@ -245,7 +245,7 @@
     </el-dialog>
 
     <!--选择部门-->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
+    <el-dialog draggable :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
                v-model="dialogTableDeptVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTableDeptUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">
@@ -325,7 +325,7 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-dialogDrag :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
+    <el-dialog draggable :close-on-click-modal="false" :title="textTableMap[dialogTableStatus]"
                v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true"
                class="demo-form-inline demo-form-zdy">

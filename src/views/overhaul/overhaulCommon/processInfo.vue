@@ -1,22 +1,18 @@
 <template>
   <div class="process-box">
-    <template v-if="isRoleContorl.isCanChoose">
-      模板选择：
-      <select-page
-        v-model="templateChoose"
-        :getOptions="getProcedureTemplateOptions"
-        @change="handleTemplateChange"
-      />
-    </template>
-    <div class="process-content" v-if="isRoleContorl.isCanOperate">
+    模板选择：
+    <select-page
+      v-model="templateChoose"
+      :clearable="false"
+      :disabled="isRoleContorl.isDisabled"
+      :getOptions="getProcedureTemplateOptions"
+      @change="handleTemplateChange"
+    />
+    <div class="process-content" v-if="isRoleContorl.isCanShowTree">
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">工序结构</div>
         <div class="process-content-left-search">
-          <el-input
-            
-            placeholder="输入关键字进行过滤"
-            v-model="filterText"
-          >
+          <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           </el-input>
         </div>
 
@@ -40,7 +36,6 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(1, 'distributeModalFlag')"
           >
@@ -50,7 +45,6 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(2, 'distributeModalFlag')"
           >
@@ -60,17 +54,24 @@
           <el-button
             v-if="btnRoleList.includes('setBtn')"
             type="primary"
-            
             :disabled="isPause"
             @click="openModal(3, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Pointer /></el-icon>
             派工
           </el-button>
+          <el-button
+            v-if="btnRoleList.includes('setBtn')"
+            type="primary"
+            :disabled="isPause"
+            @click="openModal(4, 'distributeModalFlag')"
+          >
+            <el-icon class="el-icon--left"><Tools /></el-icon>
+            大件设备
+          </el-button>
         </div>
         <div class="operate-wrap" v-else>
           <el-button
-            
             type="primary"
             :disabled="isPause"
             title="保存"
@@ -79,7 +80,6 @@
             <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
           </el-button>
           <el-button
-            
             type="primary"
             :disabled="isPause"
             title="发起审核"
@@ -87,23 +87,22 @@
           >
             <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
           </el-button>
-
           <el-tag
-            :key="REPORT_CHECK_STATUS[workTreeStatus].label"
-            :type="REPORT_CHECK_STATUS[workTreeStatus].type"
+            :key="WORK_TREE_CHECK_STATUS[workTreeStatus].label"
+            :type="WORK_TREE_CHECK_STATUS[workTreeStatus].type"
             effect="plain"
             class="mgl12"
             round
           >
-            {{ REPORT_CHECK_STATUS[workTreeStatus].label }}
+            {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
           </el-tag>
         </div>
         <el-table
           :data="tableData"
           stripe
-          
           style="width: 100%"
           show-overflow-tooltip
+          v-if="columns"
         >
           <template v-for="item in columns">
             <el-table-column
@@ -114,7 +113,6 @@
               <template #default="{ row }">
                 <el-button
                   v-if="btnRoleList.includes('addBtn')"
-                  
                   type="primary"
                   title="添加问题"
                   :disabled="isPause"
@@ -124,12 +122,11 @@
                 </el-button>
                 <!-- 只有叶子节点有复核 -->
                 <el-button
-                  
                   type="primary"
                   :disabled="isPause"
                   v-if="
                     btnRoleList.includes('checkBtn') &&
-                    currentSelectNode.type === 2
+                    currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE
                   "
                   title="复核"
                   @click="check"
@@ -158,11 +155,18 @@
             ></el-table-column>
           </template>
         </el-table>
+        <!-- 执行项操作 -->
+        <work-step-content
+          :workOrderInfo="workOrderInfo"
+          :onlyTabName="onlyTabName"
+          v-else
+        />
         <!-- 派工配置 -->
         <distribute-modal
           v-if="distributeModalFlag"
           :operateRow="operateRow"
           :workOrderInfo="workOrderInfo"
+          :onlyTabName="onlyTabName"
           modalName="distributeModalFlag"
           @closeModal="closeModal"
         ></distribute-modal>
@@ -182,10 +186,12 @@
 import AddIssue from "@/views/overhaul/workIssueCommon/addIssue.vue";
 import DistributeModal from "./distributeModal.vue"; //派工配置弹窗
 import SelectPage from "@/components/SelectPage/selectPage.vue";
+import WorkStepContent from "./workStepContent/index.vue"; //执行项
 import {
   COMMON_PROCESS_COLUMNS_MAP,
   COMMOM_WORK_ORDER_MAP,
-  REPORT_CHECK_STATUS,
+  WORK_TREE_CHECK_STATUS,
+  PROCESS_NODE_ENUM,
 } from "@/views/overhaul/constants.js";
 import {
   Setting,
@@ -194,13 +200,13 @@ import {
   Pointer,
   UserFilled,
   SuccessFilled,
+  Tools,
 } from "@element-plus/icons-vue";
 import { ElMessageBox } from "element-plus";
 import {
   getProcedureTemplate,
   getWorkTree,
 } from "@/api/overhaul/workOrderApi.js";
-
 const testTreeData = [
   {
     procedureCode: "",
@@ -214,6 +220,7 @@ const testTreeData = [
         procedureName: "测试_标准工序_1",
         procedureType: "1",
         uniqueCode: "1_4",
+        ifChoice: true,
         childNodeList: [
           {
             procedureCode: "4",
@@ -335,6 +342,7 @@ export default {
   },
   components: {
     DistributeModal,
+    WorkStepContent,
     Pointer,
     UserFilled,
     AddIssue,
@@ -343,13 +351,15 @@ export default {
     Setting,
     Stamp,
     DocumentAdd,
+    Tools,
   },
   data() {
     return {
-      REPORT_CHECK_STATUS,
+      WORK_TREE_CHECK_STATUS,
       COMMOM_WORK_ORDER_MAP,
+      PROCESS_NODE_ENUM,
       //工序审核树状态
-      workTreeStatus: 1,
+      workTreeStatus: 0,
       //表格loading效果
       tableListLoading: false,
       //tree的loading效果
@@ -397,27 +407,37 @@ export default {
     },
     //来控制下拉框和工序的显影
     isRoleContorl() {
-      let isCanChoose, isCanOperate;
+      let isCanShowTree, isDisabled;
       if (+this.workOrderInfo.workOrderType === 1) {
-        isCanChoose = [COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
+        isDisabled = ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
           this.workOrderInfo.orderStatus
         );
-        isCanOperate =
+        isCanShowTree =
           ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
             this.workOrderInfo.orderStatus
           ) || this.templateChoose;
+      } else if (this.onlyTabName === "surveyItem-processInfo") {
+        //在检修中查看勘查
+        isDisabled = true;
+        isCanShowTree = true;
       } else {
-        isCanChoose = false;
-        isCanOperate = true;
+        isDisabled = false; //目前暂时置为显示状态 保存成功之后为false
+        isCanShowTree = true;
       }
+      //审核之后均为置灰
+      // if (this.workTreeStatus === 2) {
+      //   isDisabled = true;
+      // }
       return {
-        isCanChoose,
-        isCanOperate,
+        isDisabled,
+        isCanShowTree,
       };
     },
     //表格渲染列表
     columns() {
-      return COMMON_PROCESS_COLUMNS_MAP[this.currentSelectNode.type || 0];
+      return COMMON_PROCESS_COLUMNS_MAP[
+        this.currentSelectNode.type || PROCESS_NODE_ENUM.ROOT
+      ];
     },
   },
   methods: {
@@ -504,8 +524,13 @@ export default {
     },
     //工序树保存
     workTreeSave() {
-      const currentNodeKey = this.$refs["treeRef"].getCheckedNodes();
+      const currentNodeKey = this.$refs["treeRef"].getCheckedKeys();
       if (currentNodeKey && currentNodeKey.length) {
+        console.log("@!@!2");
+        //回填check的节点
+        const tempTree = this.setChoiceTree(currentNodeKey, this.treeData);
+        let parmas = tempTree[0];
+
         debugger;
       } else {
         this.$message({
@@ -515,12 +540,14 @@ export default {
       }
     },
     //工序树审核
-    workTreeCheck() {},
+    workTreeCheck() {
+      //发起审核接口
+    },
     /**
      *  打开弹窗
      */
     openModal(row = "", modalName) {
-      const currentNodeKey = this.$refs["treeRef"].getCheckedNodes();
+      const currentNodeKey = this.$refs["treeRef"].getCheckedKeys();
       if (!currentNodeKey.length && modalName === "distributeModalFlag") {
         this.$message({
           message: "请先选择工序再进行派发操作！",
@@ -539,7 +566,31 @@ export default {
         this.currentSelectNode = { ...data, type: +data.procedureType };
       }
     },
-
+    //获取后端返回的树结构的ifchoice为true的节点key
+    getChoiceKeys(treeData) {
+      let chioceKeys = [];
+      if (!treeData || !treeData.length) return [];
+      for (const item of treeData) {
+        if (item.ifChoice) {
+          chioceKeys.push(item.uniqueCode);
+        }
+        if (item.childNodeList && item.childNodeList.length) {
+          chioceKeys = chioceKeys.concat(
+            this.getChoiceKeys(item.childNodeList)
+          );
+        }
+      }
+      return chioceKeys;
+    },
+    //将选中的节点回显到树上
+    setChoiceTree(checkList = [], treeData = []) {
+      if (!treeData || !treeData.length) return [];
+      for (const item of treeData) {
+        item.ifChoice = checkList.includes(item.uniqueCode);
+        item.childNodeList = this.setChoiceTree(checkList, item.childNodeList);
+      }
+      return treeData;
+    },
     /**
      * 获取树的 数据
      */
@@ -548,12 +599,25 @@ export default {
       this.treeData = testTreeData;
       if (!this.templateChoose) return;
       this.treeLoading = true;
-      getWorkTree({ templateCode: this.templateChoose })
-        .then(({ data }) => {
+      getWorkTree({
+        templateCode: this.templateChoose,
+        procedureTypeList: [
+          PROCESS_NODE_ENUM.NORM,
+          PROCESS_NODE_ENUM.MIDDLE,
+          PROCESS_NODE_ENUM.STEP,
+        ],
+      })
+        .then(({ data: { oaExamineStatus, treeNode } }) => {
           this.treeData = testTreeData;
+          this.workTreeStatus = oaExamineStatus || 0;
+          const currentKeysList = this.getChoiceKeys(this.treeData);
           this.$nextTick(() => {
-            this.$refs["treeRef"] &&
-              this.$refs["treeRef"].setCurrentKey(this.treeData[0].uniqueCode);
+            if (this.$refs["treeRef"]) {
+              this.$refs["treeRef"].setCurrentKey(
+                this.treeData[0].uniqueCode || "root"
+              );
+              this.$refs["treeRef"].setCheckedKeys(currentKeysList);
+            }
             this.getList();
           });
         })

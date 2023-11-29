@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="预排审批" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="预排审批" width="600px" v-model="dialogVisible" modal>
     <div class="otherCon wp">
       <el-table stripe  ref="tableRef" height="500px" highlight-current-row border :data="dataList"
                 style="font-size: 0.7rem"

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody title="驳回原因" width="600px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody title="驳回原因" width="600px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// import LaminationPlan from '@/api/plan/laminationPlan'
+import planWeek from '@/api/plan/planWeek'
 
 export default {
   name: 'rejectPlanDialog',
@@ -44,21 +44,23 @@ export default {
       this.dialogVisible = true;
     },
     handleSubmit(){
+      debugger
       this.$refs.form.validate(valid=>{
         if(!valid){
           return;
         }
-        let nodeId = '4'
+        let nodeId = '23'
         let rejectInfo = []
         this.selectedData.forEach(item=>{
           nodeId = item.nodeId
           let rejectPlan = {}
-          rejectPlan.pl14Id = item.pl14Id
+          rejectPlan.pl14Id = item.productPlanId
+          rejectPlan.pl66Id = item.id
           rejectPlan.isPass = this.$constants.isPass.no
           rejectPlan.rejectReason = this.model.rejectReason
           rejectInfo.push(rejectPlan)
         })
-        LaminationPlan.approvalPlan({nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
+        planWeek.approvalPlan({nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
           if(response.err_code ===this.$constants.status.success){
             this.$message.success('数据审批完成');
             this.dialogVisible = false;

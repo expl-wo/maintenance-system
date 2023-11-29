@@ -56,7 +56,7 @@
         :total="total"
       ></el-pagination>
 
-      <el-dialog v-dialogDrag  :close-on-click-modal="false" title="期量绑定" v-model="dialogVisible" class="roleDialog">
+      <el-dialog draggable  :close-on-click-modal="false" title="期量绑定" v-model="dialogVisible" class="roleDialog">
         <el-form label-position="right" label-width="160px" :model="limitModel" :rules="rules" ref="limitModel">
           <el-form-item label="设计型号:" prop="model">
             <el-input v-model="limitModel.model" placeholder="设计型号" style="width: 180px;" class="filter-item" disabled>

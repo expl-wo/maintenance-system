@@ -1,22 +1,9 @@
 <template>
   <div class="detail-box">
-    <!-- 固定锚点 -->
-    <div class="affix-box">
-      <div class="affix-anchor-box">
-        <div class="affix-anchor" v-if="isOpen">
-          <el-tree
-            :data="affixTreeData"
-            @node-click="toViewMenu"
-            highlight-current
-            default-expand-all
-          />
-        </div>
-        <el-button @click="isOpen = !isOpen"
-          ><el-icon v-if="!isOpen" size="22"><Expand /></el-icon>
-          <el-icon v-else size="22"> <Fold /></el-icon>
-        </el-button>
-      </div>
-    </div>
+    <affix-anchor
+      :affixTreeData="affixTreeData"
+      v-model:activeName="activeName"
+    />
     <header class="detail-box-header">
       <img
         src="@/icons/svg/back.svg"
@@ -49,11 +36,9 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag
-                
-                :type="WORK_ORDER_STATUS[item.value].tagType"
-                >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
-              >
+              <el-tag :type="WORK_ORDER_STATUS[item.value].tagType">{{
+                WORK_ORDER_STATUS[item.value].text
+              }}</el-tag>
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
               <file-list
@@ -77,22 +62,12 @@
           >
             <el-button
               v-if="!item.hiddenAssign"
-              
               title="工序指派"
               type="primary"
               @click="openModal(item, 'showAppoint')"
             >
               <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
             </el-button>
-            <!-- <span slot="label"
-              >{{ item.label }}
-              <i
-                v-if="!item.hiddenAssign"
-                class="el-icon-thumb"
-                title="派工"
-                @click.stop="openModal(item, 'showAppoint')"
-              ></i>
-            </span> -->
             <!-- 中间件 -->
             <middle-ware
               v-else
@@ -123,62 +98,18 @@ import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指
 import MiddleWare from "../modules/middleWare.vue";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
-import { TAB_LIST_MAP } from "../config";
-import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
+import { TAB_LIST_MAP, TAB_LIST_OUT } from "../config";
+import { Pointer } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor.vue";
 import dayjs from "dayjs";
-//外层tab 配置项  其中 name修改时需要注意与config.js中的TAB_LIST_MAP的 key对应
-const TAB_LIST = [
-  {
-    label: "现场勘查",
-    name: "surveyItem",
-    workClazzType: "survey", //班组字段
-    hiddenAssign: true,
-  },
-  {
-    label: "现场检修",
-    name: "siteOverhaul",
-    hiddenAssign: false,
-    workClazzType: "overhaulGroup",
-  },
-  {
-    label: "返厂检修-现场拆解",
-    name: "siteDismantle",
-    hiddenAssign: false,
-    workClazzType: "overhaulGroup",
-  },
-  {
-    label: "返厂检修-厂内拆解",
-    name: "factoryDismantle",
-    workClazzType: "assembleGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-厂内生产",
-    name: "factoryCreate",
-    workClazzType: "prodDeptGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-试验",
-    name: "experiment",
-    workClazzType: "experimentalGroup",
-    hiddenAssign: false,
-  },
-  {
-    label: "返厂检修-检修报告",
-    name: "finishReport",
-    hiddenAssign: true,
-  },
-];
 export default {
   components: {
+    AffixAnchor,
     MiddleWare,
     TimeLine,
     DispatchModal,
     Pointer,
-    Expand,
-    Fold,
     FileList,
   },
   props: {
@@ -243,31 +174,15 @@ export default {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = data;
         //根据不同的检修类型定义不同的时间轴
-        this.overhaulType = this.info.retFactory; //现场检修
+        this.overhaulType = this.info.retFactory || 1; //现场检修
         this.timeLineData = TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
       } catch (error) {
-        this.handleClose(true);
+        // this.handleClose(true);
       }
       this.dealTabList(); //获取当前用户的工序权限
-    },
-    /**
-     * 锚点定位
-     */
-    toViewMenu(node) {
-      let dom = document.querySelector(`#${node.anchorId}`);
-      if (dom) {
-        dom.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        });
-        if (node.tabName) {
-          this.activeName = node.tabName;
-        }
-      }
     },
     /**
      * 获取当前用户的工序权限
@@ -275,10 +190,12 @@ export default {
     dealTabList() {
       //现场检修
       if (this.overhaulType === 0) {
-        this.tabList = TAB_LIST.slice(0, 2);
+        this.tabList = TAB_LIST_OUT.slice(0, 2);
       } else {
         //返厂检修
-        this.tabList = TAB_LIST.filter((item) => item.name !== "siteOverhaul");
+        this.tabList = TAB_LIST_OUT.filter(
+          (item) => item.name !== "siteOverhaul"
+        );
       }
     },
     /**
@@ -389,7 +306,6 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
-    handleOk() {},
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);
     },
@@ -423,37 +339,14 @@ export default {
 
 <style lang="scss" scoped>
 $conent-padding: 15px;
-// ::v-deep(.el-input--small .el-input__inner) {
+// :deep(.el-input--small .el-input__inner) {
 //   width: 220px;
 // }
-::v-deep(.el-descriptions__body) {
+:deep(.el-descriptions__body) {
   margin-left: 20px;
 }
-::v-deep(.el-tabs__content) {
+:deep(.el-tabs__content) {
   min-height: 660px;
-}
-.affix-box {
-  height: 0;
-  text-align: right;
-  position: fixed;
-  top: 320px;
-  right: 100px;
-  z-index: 1000;
-  .affix-anchor-box {
-    display: inline-block;
-    position: relative;
-  }
-  .affix-anchor {
-    display: inline-block;
-    position: absolute;
-    width: 170px;
-    height: fit-content;
-    top: 25px;
-    right: 0px;
-    background-color: #ffffff;
-    box-shadow: 0px 6px 15px 0px rgba(0, 0, 0, 0.32);
-    border-radius: 4px;
-  }
 }
 .detail-box {
   width: 100%;
@@ -485,7 +378,7 @@ $conent-padding: 15px;
     width: 100%;
     background: #fff;
     padding: 15px;
-    ::v-deep(.el-descriptions-item__container .el-descriptions-item__label) {
+    :deep(.el-descriptions-item__container .el-descriptions-item__label) {
       display: inline-block;
       width: 110px;
       text-align: right;

@@ -148,7 +148,7 @@ export default {
       this.pageParams.totalPage = totalPage;
       const filterOptions = (options || []).filter((item) => {
         if (Array.isArray(this.defaultSelectVal)) {
-          return !this.defaultSelectVal.includes(item.value);
+          return !this.defaultSelectVal.find(ele=>(item.value===ele.value));
         } else if (Object.keys(this.defaultSelectVal).length) {
           return this.defaultSelectVal.value !== item.value;
         }

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="'查看'+this.params.productNo +'历史备注信息'" width="1000px" v-model="dialogVisible" modal>
+  <el-dialog draggable  appendToBody :title="'查看'+this.params.productNo +'历史备注信息'" width="1000px" v-model="dialogVisible" modal>
     <el-table stripe  ref="tableDataRef" height="400" highlight-current-row border :data="dataList"
               style="font-size: 0.7rem">
       <el-table-column

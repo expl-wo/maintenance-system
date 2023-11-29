@@ -1,5 +1,5 @@
 <template>
-  <el-dialog
+  <el-dialog draggable
     title="模板详情"
     width="40%"
     :model-value="visible"
@@ -19,7 +19,7 @@
     <div class="table-wrapper">
       <el-table
         :data="tableData"
-        
+
         border
       >
         <el-table-column
@@ -38,7 +38,7 @@
        <span class="dialog-footer">
       <el-button  type="primary" @click="handleClose">确 定</el-button>
     </span>
-    </template> 
+    </template>
   </el-dialog>
 </template>
 <script>
@@ -88,17 +88,17 @@ export default {
 .table-wrapper {
   height: 500px;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 41px);
   width: 100%;
   overflow-y: auto;

@@ -39,6 +39,10 @@ export default {
     yes: 1,
     no: 0
   },
+  productOrGx: {
+    product: 'product',
+    gx: 'gx'
+  },
   pageEntryCount: 1000,
   defaultMainPath: '/main',
   fileType: {
@@ -78,11 +82,11 @@ export default {
   },
   confirmStatus: {
     //Reject(-1,"驳回"),Normal(0,"待排"),Beforehand(1,"预排"),Apply(2,"待审批"),Pass(3,"通过");
-    reject: '-1',
-    normal: '0',
-    beforehand: '1',
-    apply: '2',
-    pass: '3',
+    reject: -1,
+    normal: 0,
+    beforehand: 1,
+    apply: 2,
+    pass: 3,
 
     suspended: 4, //暂停
     canAdd: ['-1', '0'], //是否能加入处理

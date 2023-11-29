@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    draggable
     title="二维码打印"
     :model-value="true"
     width="500px"
@@ -11,13 +12,22 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
       label-width="100px"
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="24">
           <el-form-item label="打印数量" prop="number">
             <el-input-number v-model="form.number" :min="1" :max="100000" />
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="空白二维码" prop="bomNodeType">
+            <el-select v-model="form.bomType" placeholder="请选择">
+              <el-option label="否" :value="0" />
+              <el-option label="是" :value="1" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -46,9 +56,11 @@ export default {
     return {
       form: {
         number: 10,
+        bomType: 0, //空白二维码携带生产号
       },
       rules: {
         number: requiredVerify(),
+        bomType: requiredVerify(),
       },
     };
   },
