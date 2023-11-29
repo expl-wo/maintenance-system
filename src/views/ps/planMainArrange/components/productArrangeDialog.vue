@@ -8,13 +8,13 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="工序:" prop="gx">
-						<xui-dict-select item-code="yn" class="width100Percent" v-model="model.gx"></xui-dict-select>
+					<el-form-item label="工序:" prop="opName">
+						<el-input v-model="model.opName" disabled />
 					</el-form-item>
 				</el-col>
 				<el-col :span="24">
 					<el-form-item label="计划时间:" prop="time" >
-						<el-date-picker v-model="time" @change="dateChange" type="datetimerange"
+						<el-date-picker v-model="model.time" type="datetimerange"
 							:popper-options="pickerOptions0" 
 							:disabled-date = "disabledDate"
 							value-format="YYYY-MM-DD HH:mm:ss" 	
@@ -74,8 +74,11 @@
 	
 	const initModel = {
 		productNo: '',
-		gx: 'y',
+		opName: 'y',
 		opType: 3,
+		time:[],
+		planStartTime:'',
+		planEndTime:'',
 		work:'',
 		works:''
 	}
@@ -134,35 +137,21 @@
 	
 	const model = reactive(deepClone(initModel));
 
-	const time = ref<[String,String]>( [
-		"",
-		""	
-	]);
-	
-	const dateChange = (event: boolean)=>{
-		if (event) {
-			model.planStartTime = time.value[0] // 开始日期
-			model.planEndTime =   time.value[1] // 结束日期
-		} else {
-			model.planStartTime = '' // 开始日期
-			model.planEndTime = '' // 结束日期
-		}
-		console.log(model);
-	}
-	
+
 	const init = row => {
 		let data = {
 			...initModel,
 		}
-		time.value[0] = '';
-		time.value[1] = '';
 		data.productNo = row.productNo;
+		data.opName = row.opName;
 		Object.assign(model, data);
 		dialogVisible.value = true;
 	}
 
 	const saveData = () => {
-		emits("handleRefresh", model);
+		// emits("handleRefresh", model);
+		model.planStartTime = model.time.value[0]
+		model.planEndTime = model.time.value[1]
 		dialogVisible.value = false;
 	}
 
