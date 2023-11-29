@@ -10,11 +10,11 @@
           <el-input v-model="listQuery.processPlanName" placeholder="输入工艺模板名称" style="width: 120px;" class="filter-item"
                     clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item >
           <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-form-item size="mini">
+        <el-form-item >
+          <el-form-item >
             <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
           </el-form-item>
         </el-form-item>
@@ -31,11 +31,11 @@
           </el-table-column>
           <el-table-column align="center" min-width="300" label="操作">
             <template v-slot="scope">
-                <el-button size="mini" title="" type="primary" icon="Edit"
+                <el-button  title="" type="primary" icon="Edit"
                            @click="initEditData(scope.row)">
                   编辑模板
                 </el-button>
-                <el-button size="mini" title="" type="primary" icon="Plus"
+                <el-button  title="" type="primary" icon="Plus"
                            @click="handleItemAddDict(scope.row);">
                   添加工序
                 </el-button>
@@ -49,7 +49,7 @@
       <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="processPlanNumber" label="工艺模板编码" size="mini">
+            <el-form-item prop="processPlanNumber" label="工艺模板编码" >
               <el-input v-model="listModeUpdate.processPlanNumber" placeholder="请输入子工艺模板编码" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
@@ -57,7 +57,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 工艺模板名称:" prop="processPlanName" size="mini">
+            <el-form-item label=" 工艺模板名称:" prop="processPlanName">
               <el-input v-model="listModeUpdate.processPlanName" placeholder="请输入子工艺模板名称" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
@@ -65,7 +65,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 是否可用:" prop="isUse" size="mini">
+            <el-form-item label=" 是否可用:" prop="isUse" >
               <el-switch v-model="listModeUpdate.isUse" active-value='1' inactive-value='0' active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>
@@ -73,21 +73,21 @@
         </el-row>
       </el-form>
       <div slot="footer">
-        <el-button size="mini" @click="dialogVisible=false"> 取消</el-button>
-        <el-button size="mini" type="primary" @click="createOrUpdateProcess">保存</el-button>
+        <el-button  @click="dialogVisible=false"> 取消</el-button>
+        <el-button  type="primary" @click="createOrUpdateProcess">保存</el-button>
       </div>
     </el-dialog>
 
     <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="工序编号" size="mini">
+          <el-form-item label="工序编号" >
             <el-input v-model="listQueryProduces.gxUid" placeholder="工序编号" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="工序名称" size="mini">
+          <el-form-item label="工序名称" >
             <el-input v-model="listQueryProduces.gxName" placeholder="工序名称" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item >
             <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
@@ -99,7 +99,7 @@
         <el-table-column header-align="center" align="center" width="160" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="mini" type="primary"
+              <el-button type="primary"
                          @click="chooseItemData(scope.row)">
                 选择
               </el-button>

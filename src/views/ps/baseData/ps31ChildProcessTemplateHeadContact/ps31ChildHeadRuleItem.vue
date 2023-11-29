@@ -18,11 +18,11 @@
         <el-table-column header-align="center" align="center" width="160" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="mini" title="操作" type="primary" icon="Cellphone"
+              <el-button  title="操作" type="primary" icon="Cellphone"
                          @click="saveItemDataCondition(scope.row)">
                 保存
               </el-button>
-              <el-button size="mini" title="删除" type="danger" icon="Delete"
+              <el-button  title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
             </el-button-group>
           </template>

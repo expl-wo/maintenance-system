@@ -27,7 +27,7 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="maximumContentLength" label="内容最大长度：" >
+          <el-form-item prop="maximumContentLength" label="内容最大长度：">
             <el-input v-model="model.maximumContentLength"  ></el-input>
           </el-form-item>
         </el-col>
@@ -63,7 +63,7 @@
           </el-col>
         </el-row>
         <el-col :span="24">
-          <el-form-item prop="isRequired" label="是否必填：" >
+          <el-form-item prop="isRequired" label="是否必填：" size="mini">
             <el-input v-model="model.isRequired"  ></el-input>
           </el-form-item>
         </el-col>
@@ -71,7 +71,7 @@
     </el-form>
     <div slot="footer">
       <el-button  @click="dialogVisible=false">取消</el-button>
-      <el-button  type="primary" @click="handleSubmit">保存</el-button>
+      <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
 
   </el-dialog>

@@ -10,7 +10,7 @@
       </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="craftsDeName" label="子工艺模板行名称：" >
+          <el-form-item prop="craftsDeName" label="子工艺模板行名称：">
             <el-input v-model="model.craftsDeName"  ></el-input>
           </el-form-item>
         </el-col>
@@ -31,7 +31,7 @@
       </el-row>
     </el-form>
     <div slot="footer">
-      <el-button  @click="dialogVisible=false">取消</el-button>
+      <el-button @click="dialogVisible=false">取消</el-button>
       <el-button  type="primary" @click="handleSubmit">保存</el-button>
     </div>
 

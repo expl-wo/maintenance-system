@@ -26,9 +26,9 @@
         <el-table-column header-align="center" align="center" width="150" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="mini" title="删除" type="danger" icon="Delete"
+              <el-button  title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
-              <el-button size="mini" title="保存" type="primary" icon="Equipment" @click="saveItemDataCondition(scope.row)">
+              <el-button s title="保存" type="primary" icon="Equipment" @click="saveItemDataCondition(scope.row)">
                 保存
               </el-button>
             </el-button-group>

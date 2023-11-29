@@ -33,7 +33,7 @@
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="craftsCode" label="子工艺模板头编码" size="mini">
+            <el-form-item prop="craftsCode" label="子工艺模板头编码" >
               <el-input v-model="listItemUpdate.craftsCode" placeholder="请输入子工艺模板头编码" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
@@ -41,7 +41,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 子工艺模板头名称:" prop="craftsName" size="mini">
+            <el-form-item label=" 子工艺模板头名称:" prop="craftsName" >
               <el-input v-model="listItemUpdate.craftsName" placeholder="请输入子工艺模板头名称" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
@@ -49,7 +49,7 @@
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 是否本体:" prop="isOntology" size="mini">
+            <el-form-item label=" 是否本体:" prop="isOntology">
               <el-switch v-model="listItemUpdate.isOntology" active-value='1' inactive-value='0' active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>

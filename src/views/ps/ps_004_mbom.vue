@@ -10,7 +10,7 @@
         <el-form-item label="物料编号">
           <el-input v-model="listQuery.number" placeholder="物料编号" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item >
           <el-button type="primary" icon="search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -53,7 +53,7 @@
             <el-input v-model="listQueryProduces.gxName" placeholder="工序名称" style="width: 110px;" class="filter-item"
                       clearable />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item >
             <el-button type="primary" icon="search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
@@ -64,8 +64,8 @@
       <table-simple :isPagination="false" :height="500" :data="tableRuleConfigData" :row-header="rowRuleConfigHeader" />
 
       <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogConfigCaiGouFormVisible=false, owner.ownerIdArray = [];owner.ownerNameArray = [];owner.ownerItemArray = []" >取消</el-button>
-        <el-button size="mini" type="primary" @click="createProcedures">保存</el-button>
+        <el-button  @click="dialogConfigCaiGouFormVisible=false, owner.ownerIdArray = [];owner.ownerNameArray = [];owner.ownerItemArray = []" >取消</el-button>
+        <el-button type="primary" @click="createProcedures">保存</el-button>
       </div>
     </el-dialog>
 
