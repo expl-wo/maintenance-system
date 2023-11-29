@@ -254,8 +254,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.position-icon {
-  vertical-align: middle;
-  margin-left: 5px;
-}
+// :deep(.el-input--small .el-input__inner) {
+//   width: 220px;
+// }
 </style>
