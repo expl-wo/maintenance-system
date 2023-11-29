@@ -8,23 +8,23 @@
     @close="closeModal"
   >
     <div>
-      <div class="ml24">
+      <!-- <div class="ml24">
         <span class="item-label">标题：</span>
         <span class="item-content">{{ info.title }}</span>
-      </div>
-      <div class="ml24">
+      </div> -->
+      <!-- <div class="ml24">
         <span class="item-label">来源：</span>
         <span class="item-content">{{ info.source }}</span>
-      </div>
+      </div> -->
       <div class="ml24">
         <span class="item-label">类型：</span>
-        <span class="item-content">{{ info.type }}</span>
+        <span class="item-content">{{ typeOptions[info.noticeStatus].text }}</span>
       </div>
       <div class="ml24">
         <span class="item-label">接收时间：</span>
-        <span class="item-content">{{ info.handleDate }}</span>
+        <span class="item-content">{{ info.createTime }}</span>
       </div>
-      <div class="notice-content">{{ info.detail }}</div>
+      <div class="notice-content">{{ info.noticeContent }}</div>
     </div>
     <template #footer>
       <el-button  type="primary" @click="closeModal"
@@ -34,6 +34,12 @@
   </el-dialog>
 </template>
 <script>
+
+const typeOptions = [
+  { value: 1, text: "任务通知" },
+  { value: 2, text: "超时通知" },
+];
+
 export default {
   props: {
     visible: {
@@ -46,7 +52,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      typeOptions: Object.freeze(typeOptions)
+    };
   },
   methods: {
     // 关闭弹框
@@ -57,7 +65,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-::v-deep(.el-dialog__header){
+:deep(.el-dialog__header){
   border-bottom: 1px solid #eee;
 }
 .ml24 {

@@ -222,7 +222,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-::v-deep(.pagination-container) {
+:deep(.pagination-container) {
   padding: 0;
 }
 .mrb15 {

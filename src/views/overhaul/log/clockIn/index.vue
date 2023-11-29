@@ -3,11 +3,11 @@
     <div class="table-top">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
         <el-form-item label="姓名">
-          <el-input placeholder="请输入" v-model="searchForm.userName">
+          <el-input v-model="searchForm.userName" @keyup.enter="onSearch">
           </el-input>
         </el-form-item>
         <el-form-item label="工号">
-          <el-input placeholder="请输入" v-model="searchForm.userCode">
+          <el-input v-model="searchForm.userId" @keyup.enter="onSearch">
           </el-input>
         </el-form-item>
         <el-form-item label="签到时间">
@@ -34,27 +34,50 @@
     <div class="table-wrapper">
       <el-table
         :data="tableData"
-        size="medium"
+        v-loading="loading"
         border
         @sort-change="sortChange"
       >
-        <el-table-column
-          v-for="item in columns"
-          :key="item.key"
-          :prop="item.prop"
-          :label="item.label"
-          :sortable="item.sortable"
-          :width="item.width"
-          :filters="item.filters"
-          :filter-multiple="item.filterMultiple"
-          :column-key="item.columnKey"
-          :filter-method="item.filterHandler"
-        >
-        </el-table-column>
+        <template v-for="item in columns">
+          <el-table-column
+            v-if="!item.needSlot"
+            :key="item.key"
+            :prop="item.prop"
+            :label="item.label"
+            :type="item.type"
+            :sortable="item.sortable"
+            :width="item.width"
+            :min-width="item.minWidth"
+            :filters="item.filters"
+            :filter-multiple="item.filterMultiple"
+            :column-key="item.columnKey"
+          >
+          </el-table-column>
+          <el-table-column
+            v-else
+            :key="item.key"
+            :prop="item.prop"
+            :label="item.label"
+            :type="item.type"
+            :sortable="item.sortable"
+            :width="item.width"
+            :min-width="item.minWidth"
+            :filters="item.filters"
+            :filter-multiple="item.filterMultiple"
+            :column-key="item.columnKey"
+          >
+            <template #default="scope">
+              <div v-if="scope.column.columnKey === 'clockInTime'">
+                <span>{{ moment(scope.row.clockInTime).format('YYYY-MM-DD HH:mm:ss') }}</span>
+              </div>
+            </template>
+          </el-table-column>
+        </template>
       </el-table>
     </div>
     <div class="pagination-wrapper">
       <el-pagination
+        v-if="total"
         layout="total, sizes, prev, pager, next, jumper"
         background
         :current-page="pageNum"
@@ -70,6 +93,9 @@
 </template>
 <script>
 import { Search, RefreshLeft } from "@element-plus/icons-vue";
+import { getClockInList } from '@/api/overhaul/logApi';
+import moment from "moment";
+
 const typeOptions = [
   { text: "WEB", value: 1 },
   { text: "APP", value: 2 },
@@ -83,80 +109,116 @@ export default {
     return {
       searchForm: {
         userName: "",
-        userCode: "",
-        signInTime: "",
-        type: "",
-        object: "",
+        userId: "",
+        signInTime: [
+          moment().startOf("day").valueOf(),
+          moment().endOf("day").valueOf(),
+        ]
       },
       columns: [
-        { label: "序号", key: "optTime", prop: "optTime", sortable: true },
-        { label: "姓名", key: "userName", prop: "userName", sortable: true },
-        {
-          label: "工号",
-          key: "terminalIp",
-          prop: "terminalIp",
-          sortable: true,
-        },
+        { prop: "", label: "序号", width: "80", type: "index" },
+        { label: "姓名", key: "userName", prop: "userName", width: "120" },
+        { label: "工号", key: "userId", prop: "userId", width: "120" },
         {
           label: "所属部门",
-          key: "terminalType",
-          prop: "terminalType",
-          sortable: false,
-          columnKey: "terminalType",
-          filters: typeOptions,
-          filterMultiple: true,
-          filterHandler: this.handleFilter,
+          key: "userDepartment",
+          prop: "userDepartment"
         },
-        {
-          label: "岗位",
-          key: "moduleCode",
-          prop: "moduleCode",
-          sortable: true,
-        },
+        { label: "签到时间", key: "clockInTime", prop: "clockInTime", sortable: 'custom', columnKey: "clockInTime", needSlot: true },
         {
           label: "签到地点",
-          key: "optEvent",
-          prop: "optEvent",
-          sortable: true,
+          key: "clockInAddress",
+          prop: "clockInAddress"
         },
         {
-          label: "所在项目",
-          key: "bisTargetName",
-          prop: "bisTargetName",
-          sortable: false,
+          label: "所在项目编号",
+          key: "clockInProjNo",
+          prop: "clockInProjNo",
+          // sortable: 'custom'
         },
-        { label: "签到时间", key: "memo", prop: "memo", sortable: false },
-      ],
-      tableData: [
         {
-          id: 1,
-          optTime: "2023-10-25 12:00:00",
-          userName: "system",
-          terminalIp: "124.228.34.36",
-          terminalType: 1,
-          moduleCode: "EVOBRM_001002",
-          optEvent: "登录",
-          bisTargetName: "system",
-          status: 1,
-        },
+          label: "所在项目名称",
+          key: "clockInProjName",
+          prop: "clockInProjName"
+        }
       ],
+      tableData: [],
       pageNum: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
+      loading: false,
+      sortInfo: {}
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
-    onSerach() {},
-    onReset() {},
+    moment,
+    onSearch() {
+      this.pageNum = 1;
+      this.getData();
+    },
+    onReset() {
+      this.searchForm = {
+        userName: "",
+        userId: "",
+        signInTime: [
+          moment().startOf("day").valueOf(),
+          moment().endOf("day").valueOf(),
+        ]
+      }
+      this.pageNum = 1;
+      this.getData();
+    },
+    // 获取数据
+    getData() {
+      this.loading = true;
+      let params = {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        userName: this.searchForm.userName,
+        userId: this.searchForm.userId,
+        startTime: moment(this.searchForm.signInTime[0]).format("YYYY-MM-DD HH:mm:ss"),
+        endTime: moment(this.searchForm.signInTime[1]).format("YYYY-MM-DD HH:mm:ss"),
+        ...this.sortInfo
+      }
+      getClockInList(params)
+      .then(res => {
+        if (res.success && res.data) {
+          this.tableData = res.data.pageList || [];
+          this.total = res.data.total;
+        } else {
+          this.$message.error(res.errMsg);
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      })
+    },
+    // 列表排序
     sortChange({ column, prop, order }) {
-      debugger;
+      this.sortInfo = null;
+      if (order && prop) {
+        this.sortInfo = {
+          sort: prop,
+          sortType: order === "ascending" ? "ASC" : "DESC",
+        };
+      }
+      this.pageNum = 1;
+      this.getData();
     },
-    handleFilter(value, row, column) {
-      debugger;
+    // 每页条数发生变化
+    sizeChange(size) {
+      this.pageSize = size;
+      this.pageNum = 1;
+      this.getData();
     },
-    //
-    handleSizeChange() {},
-    handlePageChange() {},
+    // 页码发生变化
+    pageChange(page) {
+      this.pageNum = page;
+      this.getData();
+    },
   },
 };
 </script>
@@ -177,20 +239,20 @@ export default {
     margin-top: 12px;
   }
 }
-::v-deep(.el-form-item) {
+:deep(.el-form-item) {
   margin-bottom: 0;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;
   overflow-y: auto;

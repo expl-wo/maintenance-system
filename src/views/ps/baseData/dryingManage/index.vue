@@ -196,7 +196,7 @@
 import dryingManage from '@/api/plan/dryingManage'
 import Pagination from '@/components/Pagination/index.vue'
 import addOrUpdateDialog from '@/views/ps/baseData/dryingManage/addOrUpdate/addOrUpdateDialog.vue'
-import deleteMainConf from '@/api/eqpCheck'
+import deleteMainConf from '@/api/em/eqpCheck'
 import Constants from "../../../../utils/constants";
 
 export default {

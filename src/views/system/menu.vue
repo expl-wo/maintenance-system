@@ -40,7 +40,7 @@
       </el-table-column>
       <!-- <el-table-column prop="method" label="请求方式" align="center" />
       <el-table-column prop="type" label="物料名称" align="center">
-        <template slot-scope="scope">
+        <template  #default="scope">
           <span v-if="scope.row.enabled == 1">可用</span>
           <span v-if="scope.row.enabled == 0">不可用</span>
         </template>

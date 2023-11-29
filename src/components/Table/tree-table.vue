@@ -11,7 +11,7 @@
           :width="col.width"
           :align="col.align"
           >
-          <template slot-scope="scope" >
+          <template  #default="scope" >
             <ex-slot v-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index" :column="col" />
             <span v-else>
               <span v-if="col.prop == 'check'">

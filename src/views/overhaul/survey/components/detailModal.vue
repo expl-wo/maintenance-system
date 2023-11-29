@@ -345,13 +345,13 @@ export default {
 
 <style lang="scss" scoped>
 $conent-padding: 15px;
-// ::v-deep(.el-input--small .el-input__inner) {
+// :deep(.el-input--small .el-input__inner) {
 //   width: 220px;
 // }
-::v-deep(.el-descriptions__body) {
+:deep(el-descriptions__body) {
   margin-left: 20px;
 }
-::v-deep(.el-tabs__content) {
+:deep(.el-tabs__content) {
   min-height: 660px;
 }
 .detail-box {
@@ -384,7 +384,7 @@ $conent-padding: 15px;
     width: 100%;
     background: #fff;
     padding: 15px;
-    ::v-deep(.el-descriptions-item__container .el-descriptions-item__label) {
+    :deep(.el-descriptions-item__container .el-descriptions-item__label) {
       display: inline-block;
       width: 110px;
       text-align: right;

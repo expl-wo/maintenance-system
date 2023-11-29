@@ -565,20 +565,15 @@ export default {
   margin-bottom: 10px;
 }
 
-//>>> .el-form-item--small .el-form-item__content {
+//:deep .el-form-item--small .el-form-item__content {
 //  line-height: 32px !important;
 //}
 //
-//>>> .el-form-item--medium .el-form-item__content {
+//:deep .el-form-item--medium .el-form-item__content {
 //  line-height: 36px !important;
 //}
 
-::deep(.el-dialog__body) {
-  max-height: 75vh !important;
-  overflow: auto;
-}
-
->>> .el-dialog__body {
+:deep .el-dialog__body {
   max-height: 75vh !important;
   overflow: auto;
 }

@@ -119,7 +119,7 @@ export default {
     padding-top: 40px;
   }
 }
-::v-deep(.el-select){
+:deep(.el-select){
   width: 500px;
 }
 .mr12 {

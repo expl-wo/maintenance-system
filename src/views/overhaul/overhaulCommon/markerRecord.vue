@@ -362,10 +362,10 @@ $warp-height: 40px;
 $card-height: 428px;
 $card-img-height: 220px;
 $card-footer-height: 40px;
-::v-deep(.pagination-container) {
+:deep(.pagination-container) {
   padding: 0;
 }
-::v-deep(.el-image-viewer__mask) {
+:deep(.el-image-viewer__mask) {
   background-color: #00000047;
 }
 .mark-box {

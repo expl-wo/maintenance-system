@@ -59,7 +59,7 @@ export default {
     padding: 0 12px;
     .tab-wrapper {
       height: 100%;
-      ::v-deep(.el-tabs__content) {
+      :deep(.el-tabs__content) {
         height: calc(100% - 55px);
         .el-tab-pane {
             height: 100%;

@@ -162,7 +162,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// ::v-deep(.el-input-number .el-input--small .el-input__inner) {
+// :deep(.el-input-number .el-input--small .el-input__inner) {
 //   width: inherit;
 // }
 </style>

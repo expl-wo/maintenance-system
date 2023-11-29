@@ -118,7 +118,7 @@
   import {findAllNode, queryListMaterialNode,insertMaterialNode,deleteMaterNode,queryMaterialNotNode} from '@/api/plan'
   // 浏览器获取访问文件的根路径
   import {getRooturl} from '@/api/endpoint'
-  import {getEqCateList} from '@/api/eqpLedger'
+  import {getEqCateList} from '@/api/em/eqpLedger'
   import { Vue } from 'vue';
   export default {
     name: 'Table',

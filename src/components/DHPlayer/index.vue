@@ -125,8 +125,8 @@ export default {
             isUsePanTilt: false
         }
     },
-    beforeDestroy() {
-        this.destroy()
+    beforeuUnmount() {
+        this.unmounted()
     },
     mounted() {
         this.$nextTick(() => {

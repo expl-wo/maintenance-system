@@ -39,9 +39,9 @@
             @click="markAll(false)"
             >全部标记为未读</el-button
           >
-          <el-button type="primary"  @click="searchAll"
+          <!-- <el-button type="primary"  @click="searchAll"
             >搜索所有通知</el-button
-          >
+          > -->
         </el-form-item>
       </el-form>
     </div>
@@ -49,7 +49,6 @@
       <el-table
         ref="noticeTable"
         v-loading="loading"
-        size="medium"
         border
         :data="tableData"
         :highlight-current-row="true"
@@ -87,17 +86,20 @@
             :column-key="item.columnKey"
           >
             <template #default="scope">
-              <div v-if="scope.column.columnKey === 'status'">
-                <span>{{ scope.row.status === 0 ? "未读" : "已读" }}</span>
+              <div v-if="scope.column.columnKey === 'noticeStatus'">
+                <span>{{ scope.row.noticeStatus === 0 ? "未读" : "已读" }}</span>
                 <span class="mark-btn mark" @click="mark(scope.row)"
-                  >标为{{ scope.row.status ? "未读" : "已读" }}</span
+                  >标为{{ scope.row.noticeStatus ? "未读" : "已读" }}</span
                 >
+              </div>
+              <div v-if="scope.column.columnKey === 'noticeType'">
+                <span>{{ typeMap[scope.row.noticeType] }}</span>
               </div>
             </template>
           </el-table-column>
         </template>
         <el-table-column label="操作" width="100">
-          <template #default="scope">
+          <template  #default="scope">
             <el-button-group>
               <el-button
                 type="primary"
@@ -110,7 +112,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="pagination-wrapper">
+    <div v-if="total" class="pagination-wrapper">
       <el-pagination
         layout="total, sizes, prev, pager, next, jumper"
         background
@@ -134,13 +136,14 @@
 import DetailModal from "./components/detailModal.vue";
 import moment from "moment";
 import { Search, View } from "@element-plus/icons-vue";
+import { getNoticeList, markNotice } from '@/api/overhaul/profileApi';
 const statusOptions = [
   { value: 0, text: "未读" },
   { value: 1, text: "已读" },
 ];
 const typeOptions = [
-  { value: 0, text: "复核任务" },
-  { value: 1, text: "工单管理" },
+  { value: 1, text: "任务通知" },
+  { value: 2, text: "超时通知" },
 ];
 export default {
   components: {
@@ -159,64 +162,44 @@ export default {
       },
       columns: [
         { type: "selection", width: "55" },
-        { prop: "title", key: "title", label: "通知标题", minWidth: "160px" },
         {
-          prop: "source",
-          key: "source",
-          label: "通知来源",
-          minWidth: "100px",
-          needSlot: false,
-        },
-        {
-          prop: "handleDate",
-          key: "handleDate",
+          prop: "createTime",
+          key: "createTime",
           label: "通知接收时间",
           sortable: "custom",
           minWidth: "100px",
           needSlot: false,
         },
         {
-          prop: "type",
+          prop: "noticeType",
           key: "noticeType",
           label: "通知类型",
-          minWidth: "160px",
-          columnKey: "type",
+          minWidth: "80px",
+          columnKey: "noticeType",
           filters: typeOptions,
-          needSlot: false,
+          needSlot: true,
         },
         {
-          prop: "status",
-          key: "status",
+          prop: "noticeContent",
+          key: "noticeContent",
+          label: "通知内容",
+          minWidth: "160px"
+        },
+        {
+          prop: "noticeStatus",
+          key: "noticeStatus",
           label: "通知状态",
           minWidth: "100px",
-          columnKey: "status",
+          columnKey: "noticeStatus",
           filters: statusOptions,
           needSlot: true,
         },
       ],
       loading: false,
-      tableData: [
-        {
-          id: 1,
-          title: "测试通知标题1",
-          source: "测试来源1",
-          handleDate: "2023-11-01 12:00:00",
-          type: "复核任务",
-          status: 0,
-        },
-        {
-          id: 2,
-          title: "测试通知标题2",
-          source: "测试来源2",
-          handleDate: "2023-11-01 12:00:00",
-          type: "复核任务",
-          status: 1,
-        },
-      ],
-
+      tableData: [],
       pageNum: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
       selectList: [],
       sortInfo: {},
       filterInfo: {},
@@ -228,17 +211,24 @@ export default {
     disabled() {
       return !this.selectList.length;
     },
+    typeMap() {
+      let tempObj = {};
+      typeOptions.forEach(item => {
+        tempObj[item.value] = item.text;
+      })
+      return tempObj;
+    }
+  },
+  mounted() {
+    this.getData();
   },
   methods: {
-    //
-    formatterStatus(row, column, cellValue, index) {
-      debugger;
-    },
     // 查询列表数据
     getData() {
       this.selectList = [];
       // 清除表格选中行
       this.$refs.noticeTable && this.$refs.noticeTable.clearSelection();
+      this.loading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
@@ -252,7 +242,18 @@ export default {
         ...this.sortInfo,
         ...this.filterInfo,
       };
-      console.log("我的通知----", params);
+      getNoticeList(params)
+      .then(res => {
+        if (res.success && res.data) {
+          this.tableData = res.data.pageList || [];
+          this.total = res.data.total || 0;
+        } else {
+          this.$message.error(res.errMsg);
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      })
     },
     // 搜索
     onSearch() {
@@ -261,11 +262,11 @@ export default {
     },
     // 标记
     mark(row) {
-      debugger;
+      this.markNotice([row.id], !row.noticeStatus);
     },
     // 标记所有通知
     markAll(flag) {
-      let unReadData = this.selectList.filter((item) => item.status === 0);
+      let unReadData = this.selectList.filter((item) => item.noticeStatus === 0);
       // 标记已读
       if (flag && !unReadData.length) {
         this.$message.warning("没有需要标注为已读的通知，请重新选择");
@@ -276,6 +277,23 @@ export default {
         return;
       }
       // TODO
+      this.markNotice(this.selectList.map(item => item.id), flag);
+    },
+    // 标记通知
+    markNotice(idList, flag) {
+      let params = {
+        idList,
+        noticeStatus: +flag
+      }
+      markNotice(params)
+      .then(res => {
+        if (res.success) {
+          this.$message.success('操作成功');
+          this.getData();
+        } else {
+          this.$message.error('操作失败');
+        }
+      })
     },
     // 搜索所有通知
     searchAll() {
@@ -283,7 +301,6 @@ export default {
     },
     // 列表排序
     sortChange({ column, prop, order }) {
-      debugger;
       this.sortInfo = null;
       if (order && prop) {
         this.sortInfo = {
@@ -297,7 +314,7 @@ export default {
     // 列表筛选
     filterChange(filters) {
       let objKey = Object.keys(filters)[0];
-      this.filterInfo[objKey] = filters[objKey];
+      this.filterInfo[`${objKey}List`] = filters[objKey];
       this.pageNum = 1;
       this.getData();
     },
@@ -355,29 +372,29 @@ export default {
 }
 .pagination-wrapper {
 }
-.search-wrapper ::v-deep(.el-form-item) {
+.search-wrapper :deep(.el-form-item) {
   margin-bottom: 0;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__column-filter-trigger) {
+:deep(.el-table__column-filter-trigger) {
   padding-left: 8px;
   .el-icon-arrow-down {
     transform: scale(1.5);
   }
 }
-::v-deep(.el-table__header) tr th {
+:deep(.el-table__header) tr th {
   background-color: rgba(102, 102, 102, 0.1);
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;
   overflow-y: auto;

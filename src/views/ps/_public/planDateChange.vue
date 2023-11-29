@@ -108,7 +108,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  >>>.el-form-item{
+  :deep .el-form-item{
     margin-bottom: 16px;
   }
 </style>

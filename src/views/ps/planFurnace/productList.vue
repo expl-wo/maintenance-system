@@ -153,7 +153,7 @@
               label="计划开始"
               property="startDate"
               width="330">
-              <template slot="header" slot-scope="scope">
+              <template #header>
                 <el-date-picker
                   v-model="dateValue"
                   type="datetimerange"
@@ -169,7 +169,7 @@
                   :picker-options="pickerOptions">
                 </el-date-picker>
               </template>
-              <template slot-scope="scope">
+              <template  #default="scope">
                 <el-date-picker
                   v-model="scope.row.daterange"
                   type="datetimerange"
@@ -201,7 +201,7 @@
               property="bomInfo"
               width="250"
             >
-              <template slot-scope="scope" >
+              <template  #default="scope" >
                 <div style="display: flex;flex-wrap: wrap;">
                   <span v-for="(item, index) in scope.row._bomInfo" :key="index">{{item}}</span>
                 </div>
@@ -612,12 +612,12 @@ export default {
 </script>
 
 <style scoped>
->>>.el-table-column--selection .cell{
+:deep .el-table-column--selection .cell{
   text-align: center;
   padding-right: 10px;
 }
 
-/deep/.selected-row {
+:deep .selected-row {
     background: rgb(235, 244, 255);
 }
 

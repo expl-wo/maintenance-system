@@ -232,7 +232,7 @@ export default {
   left: -12px;
 }
 
-///deep/.selected-row {
+//:deep(.selected-row) {
 //  background: rgb(235, 244, 255);
 //}
 

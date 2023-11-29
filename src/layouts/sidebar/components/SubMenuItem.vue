@@ -1,7 +1,7 @@
 <template>
   <el-sub-menu
     :index="generatorPath(item.pUrl)"
-    popper-append-to-body
+    teleported
   >
     <template #title>
       <el-icon>

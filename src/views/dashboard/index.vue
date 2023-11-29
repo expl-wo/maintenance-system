@@ -30,7 +30,7 @@
                 prop="title"
                 label="消息标题"
                 align="center">
-                <template slot-scope="scope">
+                <template  #default="scope">
                   <el-tooltip class="item" effect="light" :content="scope.row.cont" placement="top">
                     <span v-if="scope.row.toWebLink==null">{{scope.row.title}}</span>
                     <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click.native="onMessageRead(scope.row.id)">
@@ -43,7 +43,7 @@
                 label="跳转"
                 align="center"
                 width="70">
-                <template slot-scope="scope">
+                <template  #default="scope">
                 <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click.native="onMessageRead(scope.row.id)">
                   <a class="el-icon-link" style="color: blue;font-size: 23px"></a>
                 </router-link>

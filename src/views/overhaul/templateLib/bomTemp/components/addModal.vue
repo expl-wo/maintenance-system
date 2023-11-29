@@ -441,7 +441,7 @@ export default {
       font-weight: bold;
       color: #606266;
     }
-    ::v-deep(.el-input) {
+    :deep(.el-input) {
       width: 220px;
     }
   }
