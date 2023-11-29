@@ -199,7 +199,7 @@ export default {
       tableData: [],
       pageNum: 1,
       pageSize: 10,
-      total: 100,
+      total: 0,
       selectList: [],
       sortInfo: {},
       filterInfo: {},
@@ -228,6 +228,7 @@ export default {
       this.selectList = [];
       // 清除表格选中行
       this.$refs.noticeTable && this.$refs.noticeTable.clearSelection();
+      this.loading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
@@ -249,6 +250,9 @@ export default {
         } else {
           this.$message.error(res.errMsg);
         }
+      })
+      .finally(() => {
+        this.loading = false;
       })
     },
     // 搜索

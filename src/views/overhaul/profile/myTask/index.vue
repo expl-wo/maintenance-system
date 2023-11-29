@@ -161,6 +161,7 @@ export default {
     // 查询列表数据
     getData() {
       this.selectList = [];
+      this.loading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
@@ -178,6 +179,9 @@ export default {
         } else {
           this.$message.error(res.errMsg);
         }
+      })
+      .finally(() => {
+        this.loading = false;
       })
     },
     // 搜索
