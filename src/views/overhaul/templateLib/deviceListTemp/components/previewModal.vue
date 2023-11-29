@@ -88,17 +88,17 @@ export default {
 .table-wrapper {
   height: 500px;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 41px);
   width: 100%;
   overflow-y: auto;

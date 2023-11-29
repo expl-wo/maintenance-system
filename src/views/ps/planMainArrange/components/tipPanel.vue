@@ -1,5 +1,5 @@
 <template>
-  <transition name="el-zoom-in-center" >
+  <transition name="el-zoom-in-center" v-if="isShowMsg">
     <div
         class="projectMsg"
         :style="{

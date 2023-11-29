@@ -68,7 +68,7 @@
             :filter-multiple="item.filterMultiple"
             :column-key="item.columnKey"
           >
-            <template #default="scope">
+            <template  #default="scope">
               <div v-if="scope.column.columnKey === 'status'">
                 <span
                   class="status-dot"
@@ -298,17 +298,17 @@ export default {
     height: calc(100% - 94px);
     margin-top: 12px;
   }
-  ::v-deep(.el-table)  {
+  :deep(.el-table)  {
     overflow: auto;
     width: 100%;
     height: 100%;
   }
-  ::v-deep(.el-table__header-wrapper) {
+  :deep(.el-table__header-wrapper) {
     position: sticky;
     top: 0;
     z-index: 10;
   }
-  ::v-deep(.el-table__body-wrapper) {
+  :deep(.el-table__body-wrapper) {
     height: calc(100% - 56px);
     width: 100%;
     overflow-y: auto;

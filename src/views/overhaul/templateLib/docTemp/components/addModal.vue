@@ -160,16 +160,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.form-wrapper ::v-deep(.el-input) {
+.form-wrapper :deep(.el-input) {
   width: 250px;
 }
 .tinymce-wrapper {
   margin-top: 10px;
-  ::v-deep(.tox-tinymce) {
+  :deep(.tox-tinymce) {
     width: 100% !important;
   }
 }
-::v-deep(.tox-menu) {
+:deep(.tox-menu) {
   z-index: 3000 !important;
 }
 </style>

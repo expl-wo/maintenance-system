@@ -176,12 +176,12 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <!-- <el-button @click="resetForm('mainRuleForm')">取 消</el-button> -->
-        <el-button @click="addMainDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('mainRuleForm')">
-          保存
-        </el-button>
-      </div>
+			<!-- <el-button @click="resetForm('mainRuleForm')">取 消</el-button> -->
+			<el-button @click="addMainDialogVisible = false">取 消</el-button>
+			<el-button type="primary" @click="submitForm('mainRuleForm')">
+			保存
+			</el-button>
+		</div>
       </template>
     </el-dialog>
 

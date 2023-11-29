@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-dialogDrag  appendToBody :title="this.productNo+'当前工单各阶段状态'"
+  <el-dialog v-draggable  appendToBody :title="this.productNo+'当前工单各阶段状态'"
              v-model="dialogVisible" v-if="dialogVisible" @close="handleClose" modal width="80vw"  top="2vh">
    <!-- <div class="btn-wrapper">
       <div @click="reload" style="color: #000;cursor:pointer;">初始化</div>
@@ -571,20 +571,20 @@ export default {
   }
 }
 
->>>.el-dialog{
+:deep(.el-dialog){
   margin-bottom: 10px;
 }
 
->>>.el-dialog__body{
+:deep(.el-dialog__body){
   padding: 0 !important;
 }
 
->>>.el-dialog__header{
+:deep(.el-dialog__header){
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
->>>.el-dialog__headerbtn {
+:deep(.el-dialog__headerbtn) {
   top: 10px;
 }
 </style>

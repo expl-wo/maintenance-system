@@ -16,17 +16,17 @@
               style="width: 100%">
       <el-table-column width="140" align="center" type="index" label="序号"></el-table-column>
       <el-table-column min-width="300" align="center" label="文件名">
-        <template #default="scope">
+        <template  #default="scope">
           <span>{{ scope.row.fileName }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="500" align="center" label="文件地址">
-        <template #default="scope">
+        <template  #default="scope">
           <span>{{ scope.row.filePath }}</span>
         </template>
       </el-table-column>
       <el-table-column min-width="300" align="center" label="操作">
-        <template #default="scope">
+        <template  #default="scope">
           <el-button-group>
             <el-button type="primary" icon="Edit" @click="handleDownload(scope.row)">
               下载

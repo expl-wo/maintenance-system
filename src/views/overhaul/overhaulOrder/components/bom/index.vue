@@ -379,7 +379,7 @@ export default {
 <style lang="scss" scoped>
 $left-title-height: 50px;
 $left-width: 330px;
-::v-deep(.el-input) {
+:deep(.el-input) {
   width: 100%;
 }
 .mrl10 {
@@ -410,7 +410,7 @@ $left-width: 330px;
   margin-top: 15px;
   height: 580px;
   border: 1px solid #e9ebee;
-  ::v-deep(.el-input--small .el-input__inner) {
+  :deep(.el-input--small .el-input__inner) {
     width: inherit;
   }
   &-left {

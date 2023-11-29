@@ -67,14 +67,14 @@
             :filter-multiple="item.filterMultiple"
             :column-key="item.columnKey"
           >
-          <template #default="scope">
+          <template  #default="scope">
             <span v-if="scope.column.columnKey === 'type'">{{ typeMap[scope.row.type] }}</span>
             <span v-if="scope.column.columnKey === 'status'">{{ statusMap[scope.row.status] }}</span>
           </template>
           </el-table-column>
         </template>
         <el-table-column label="操作" width="100">
-          <template #default="scope">
+          <template  #default="scope">
             <el-button-group>
               <el-button type="primary" title="查看" @click="jumpTo(scope.row)">
                 <el-icon><View /></el-icon>
@@ -244,29 +244,29 @@ export default {
     }
   }
 }
-.search-wrapper ::v-deep(.el-form-item) {
+.search-wrapper :deep(.el-form-item) {
   margin-bottom: 0;
 }
-::v-deep(.el-table) {
+:deep(.el-table) {
   overflow: auto;
   width: 100%;
   height: 100%;
 }
-::v-deep(.el-table__header-wrapper) {
+:deep(.el-table__header-wrapper) {
   position: sticky;
   top: 0;
   z-index: 10;
 }
-::v-deep(.el-table__column-filter-trigger) {
+:deep(.el-table__column-filter-trigger) {
   padding-left: 8px;
   .el-icon-arrow-down {
     transform: scale(1.5);
   }
 }
-::v-deep(.el-table__header) tr th {
+:deep(.el-table__header) tr th {
   background-color: rgba(102, 102, 102, 0.1);
 }
-::v-deep(.el-table__body-wrapper) {
+:deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;
   overflow-y: auto;

@@ -163,7 +163,7 @@ $search-height: 36px;
   line-height: $search-height;
   padding: 0 10px;
 }
-::v-deep(.el-input) {
+:deep(.el-input) {
   width: 100%;
 }
 .bom-tree-box {

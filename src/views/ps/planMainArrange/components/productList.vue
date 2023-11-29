@@ -5,7 +5,7 @@
           ref="tableRef"
           :data="dataList"
           border stripe
-          size="medium"
+          size="default"
           class="el-table__row-pointer"
           height="100%"
           default-expand-all

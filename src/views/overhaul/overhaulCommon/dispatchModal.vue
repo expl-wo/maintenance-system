@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    draggable
     title="工序指派"
     :model-value="true"
     :close-on-click-modal="false"
@@ -13,58 +12,52 @@
       :rules="rules"
       :model="form"
       label-position="right"
+      
       label-width="100px"
     >
-      <el-form-item label="项目经理" prop="projectManager">
-        <el-select-v2
-          v-model="form.projectManager"
-          class="filter-item"
-          placeholder="请选择"
-          :options="projectManagerOptions"
-        >
-        </el-select-v2>
-      </el-form-item>
-      <el-form-item label="项目副经理">
-        <el-select-v2
-          v-model="form.phuocManager"
-          class="filter-item"
-          placeholder="请选择"
-          :options="phuocManagerOptions"
-        >
-        </el-select-v2>
-      </el-form-item>
-      <el-form-item label="任务人员" prop="taskTeamPerson">
-        <el-cascader
-          v-model="form.taskTeamPerson"
-          :options="options"
-          :show-all-levels="false"
-          max-collapse-tags="3"
-          filterable
-          :props="{ multiple: true, emitPath: false }"
-          collapse-tags
-          collapse-tags-tooltip
-          clearable
-        >
-          <template #default="{ node, data }">
-            <span>{{ data.label }}</span>
-            <el-popover
-              v-if="node.isLeaf"
-              placement="bottom"
-              effect="dark"
-              :width="200"
-              trigger="click"
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="项目经理" prop="projectManager">
+            <el-select-v2
+              v-model="form.projectManager"
+              class="filter-item"
+              placeholder="请选择"
+              :options="projectManagerOptions"
             >
-              <template #reference>
-                <el-icon class="position-icon" @click.stop="showLocation(data)"
-                  ><QuestionFilled
-                /></el-icon>
-              </template>
-              <div>{{ personArea }}</div>
-            </el-popover>
-          </template>
-        </el-cascader>
-      </el-form-item>
-
+            </el-select-v2>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="项目副经理">
+            <el-select-v2
+              v-model="form.phuocManager"
+              class="filter-item"
+              placeholder="请选择"
+              :options="phuocManagerOptions"
+            >
+            </el-select-v2>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="任务人员" prop="taskTeamPerson">
+            <el-cascader
+              v-model="form.taskTeamPerson"
+              :options="options"
+              :show-all-levels="false"
+              max-collapse-tags="3"
+              filterable
+              :props="{ multiple: true }"
+              collapse-tags
+              collapse-tags-tooltip
+              clearable
+            />
+          </el-form-item>
+        </el-col>
+      </el-row>
       <!-- <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
           <el-form-item label="任务描述" prop="taskDescription">
@@ -91,16 +84,66 @@
 import { safeLimit } from "@/common/js/validator";
 import {
   getConfiguredWorkClazz,
+  getWorkClazzList,
   getPersonByWorkClazz,
-  getPersonStatusByBusId,
 } from "@/api/overhaul/workClazzApi.js";
-import { dispatchWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { INPLAN_OR_OUT } from "@/views/overhaul/constants.js";
-import { QuestionFilled } from "@element-plus/icons-vue";
-export default {
-  components: {
-    QuestionFilled,
+const options = [
+  {
+    value: 1,
+    label: "空闲人员",
+    children: [
+      {
+        value: 2,
+        label: "张三",
+        children: [],
+      },
+      {
+        value: 6,
+        label: "李四",
+        children: [],
+      },
+      {
+        value: 10,
+        label: "王五",
+        children: [],
+      },
+    ],
   },
+  {
+    value: 14,
+    label: "繁忙人员",
+    children: [
+      {
+        value: 15,
+        label: "陈奕迅",
+        children: [],
+      },
+      {
+        value: 19,
+        label: "周杰伦",
+        children: [],
+      },
+    ],
+  },
+  {
+    value: 23,
+    label: "请假人员",
+    children: [
+      {
+        value: 24,
+        label: "刘德华",
+        children: [],
+      },
+      {
+        value: 28,
+        label: "张学友",
+        children: [],
+      },
+    ],
+  },
+];
+export default {
   props: {
     //操作行
     operateRow: {
@@ -129,28 +172,12 @@ export default {
   },
   data() {
     return {
-      options: [
-        {
-          value: 1,
-          label: "空闲人员",
-          children: [],
-        },
-        {
-          value: 2,
-          label: "繁忙人员",
-          children: [],
-        },
-        {
-          value: 3,
-          label: "请假人员",
-          children: [],
-        },
-      ],
-      personArea: "",
+      options,
       form: {
         projectManager: undefined,
         phuocManager: undefined,
         taskTeamPerson: [],
+        // taskDescription: "",
       },
       rules: {
         projectManager: safeLimit("", true),
@@ -158,34 +185,28 @@ export default {
       },
       projectManagerOptions: [],
       phuocManagerOptions: [],
-      // taskTeamOptions: [],
+      taskTeamOptions: [],
     };
   },
   mounted() {
     this.initData();
-    // this.getTaskTeamOptions();
+    this.getTaskTeamOptions();
   },
   methods: {
-    /**
-     * 显示当前选择人员的位置
-     */
-    showLocation(data) {
-      this.personArea = data; //获取位置
+    //获取所有任务班组
+    async getTaskTeamOptions() {
+      try {
+        const {
+          data: { value },
+        } = await getWorkClazzList();
+        this.taskTeamOptions = (value || []).map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+      } catch (error) {
+        this.taskTeamOptions = [];
+      }
     },
-    // //获取所有任务班组
-    // async getTaskTeamOptions() {
-    //   try {
-    //     const {
-    //       data: { value },
-    //     } = await getWorkClazzList();
-    //     this.taskTeamOptions = (value || []).map((item) => ({
-    //       label: item.name,
-    //       value: item.id,
-    //     }));
-    //   } catch (error) {
-    //     this.taskTeamOptions = [];
-    //   }
-    // },
     /**
      * 获取所有的已配置的班组
      */
@@ -193,65 +214,36 @@ export default {
       const {
         data: { value },
       } = await getConfiguredWorkClazz();
-      let targetWorkId, taskTempClazzId;
+      let targetWorkBusId, taskTempClazzBusId;
       value.forEach((item) => {
         if (item.workClazzType === this.workClazzType) {
-          targetWorkId = item.workClazzId;
+          targetWorkBusId = item.busId;
         }
         if (item.workClazzType === this.taskTempClazzType) {
-          taskTempClazzId = item.workClazzId;
+          taskTempClazzBusId = item.busId;
         }
       });
-      //获取项目经理和项目副经理
-      this.getManagerOptions(targetWorkId);
-      //获取任务人员
-      this.getTaskPersonOptions(taskTempClazzId);
-    },
-    //获取任务人员
-    async getTaskPersonOptions(workClazzId) {
-      if (workClazzId) {
-        const { data } = await getPersonStatusByBusId(workClazzId);
-        this.options.forEach((item) => {
-          item.children = (data[item.value] || []).map((a) => ({
-            ...item,
-            label: a.userName,
-            value: a.userId,
-          }));
-        });
-      }
-    },
-    //获取项目经理和项目副经理的人选
-    async getManagerOptions(workClazzId) {
-      if (workClazzId) {
+      console.log("taskTempClazzBusId:", taskTempClazzBusId);
+      if (targetWorkBusId) {
         let {
           data: { value },
-        } = await getPersonByWorkClazz(workClazzId);
+        } = await getPersonByWorkClazz(targetWorkBusId);
         this.phuocManagerOptions = (value || []).map((item) => ({
-          value: item.userId,
-          label: item.userName,
+          value: item.id,
+          name: item.name,
         }));
         this.projectManagerOptions = this.phuocManagerOptions;
-      } else {
-        this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
+        return;
       }
+      this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
     },
     handleOk() {
+        this.$emit("onSave", this.modalName);
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) return;
-        let params = {
-          orderId: this.operateRow.id,
-          sceneType: "SURVEY_SCENE",
-          projManagerId: this.form.projectManager,
-          deputyManagerId: this.form.phuocManager,
-          taskUserIds: this.form.taskTeamPerson
-            // .flat()
-            // .filter((item) => ![1, 2, 3].includes(item)),
-        };
-        dispatchWorkOrder(params).then((res) => {
-          this.$emit("onSave", this.modalName);
-          this.$emit("closeModal", this.modalName);
-          this.$message.success("指派成功!");
-        });
+        debugger;
+        this.$emit("onSave", this.modalName);
+        this.$emit("closeModal", this.modalName);
       });
     },
     handleClose(isSearch = false) {
