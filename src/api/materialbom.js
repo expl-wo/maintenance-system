@@ -22,13 +22,14 @@ export function getMaterialList(params) {
 // 分页查询父节点为空的BOM根节点
 export function getMaterialTopBomList(params) {
   return request({
-    url: '/materialbom/topbom',
+    url: '/api/gcplan/materialbom/topBom',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       name: params.name || '', // 模糊匹配，物料名称
-      number: params.number || '' // 模糊匹配，物料编号
+      number: params.number || '' ,// 模糊匹配，物料编号
+      unit:params.unit
     }
   })
 }
@@ -50,7 +51,7 @@ export function getMaterialDirectsubbomList(params) {
 // 查询所有物料分类
 export function getMaterialCatesList(params) {
   return request({
-    url: '/materialbom/material/cates',
+    url: 'api/plan/materialbom/materialCates',
     method: 'get',
     params: {
       clazzCode: params.clazzCode || '', // 分类编号，模糊匹配

@@ -42,22 +42,6 @@ export function getUser(params) {
   })
 }
 
-export function getRepairUser(params) {
-  return request({
-    url: '/api/gcproduction/reportInfo/getReporterUser',
-    method: 'get',
-    data: {
-      pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
-      uName: params.uName || '', // 模糊匹配，用户姓名
-      uPy: params.uPy || '', // 模糊匹配，用户姓名拼音
-      userId: params.userId || '', // 模糊匹配，员工编号
-      gsbmId: params.gsbmId || '', // 模糊匹配，归属部门名称
-      gsbmName: params.gsbmName || '', // 模糊匹配，归属部门名称
-      reportId:params.reportId
-    }
-  })
-}
 
 /**
  * https://www.showdoc.com.cn/meswd?page_id=5922114439493728
@@ -105,5 +89,32 @@ export function setNonLocal(data) {
     url: '/user/setNonLocal',
     method: 'post',
     data
+  })
+}
+
+//统计用户历史登录信息npm
+export function getUserLgnCrd(data) {
+  return request({
+    url: 'api/gcplan/userLgnCod/pageList',
+    method: 'get',
+    data:data
+  })
+}
+
+
+export function getRepairUser(params) {
+  return request({
+    url: '/api/gcproduction/reportInfo/getReporterUser',
+    method: 'get',
+    data: {
+      pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
+      uName: params.uName || '', // 模糊匹配，用户姓名
+      uPy: params.uPy || '', // 模糊匹配，用户姓名拼音
+      userId: params.userId || '', // 模糊匹配，员工编号
+      gsbmId: params.gsbmId || '', // 模糊匹配，归属部门名称
+      gsbmName: params.gsbmName || '', // 模糊匹配，归属部门名称
+      reportId:params.reportId
+    }
   })
 }

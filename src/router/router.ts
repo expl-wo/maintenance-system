@@ -62,6 +62,26 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				}
 			},
+			{
+				path: 'element',
+				name: '0203_element',
+				component: () => import('@/views/system/element/list.vue'),
+				meta: {
+					title: '参数管理',
+					icon: 'sys_004',
+					keepAlive: true
+				}
+			},
+			{
+				path: 'userLoginStatistics',
+				name: '0204_userLogin',
+				component: () => import('@/views/system/userLoginStatistics.vue'),
+				meta: {
+					title: '用户登录统计',
+					icon: 'sys_004',
+					keepAlive: true
+				}
+			},
 		]
 	},
 	{
@@ -154,6 +174,70 @@ export const sysRouter : Array<RouteRecordRaw> = [
 						component: () => import('@/views/ps/timeLimit/timeLimitModel.vue'),
 						meta: {
 							title: '设计型号与期量表匹配',
+							icon: 'ps_011'
+						}
+					},
+					{
+						//工步管理
+						path: 'ps_50_workContent',
+						name: 'workContent',
+						component: () => import('@/views/ps/baseData/ps50WorkContent/list.vue'),
+						meta: {
+							title: '工步管理',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'classIndex',
+						name: '040317_classIndex',
+						component: () => import('@/views/ps/baseData/baseDataType/classIndex.vue'),
+						meta: {
+							title: '基础数据类型',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_029_nodeAndPlm',
+						name: '040312_nodeAnd',
+						component: () => import('@/views/ps/ps_029_nodeAndPlm.vue'),
+						meta:{
+							title: 'PLM工序对应节点',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_30_childProcessTemplateHead',
+						name: '040313_childProcessTemplate',
+						component: () => import('@/views/ps/baseData/ps30ChildProcessTemplateHead/index.vue'),
+						meta:{
+							title: 'PLM工序对应子工艺模板头',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_31_childProcessTemplateHeadContact',
+						name: '040316_TemplateHeadContact',
+						component: () => import('@/views/ps/baseData/ps31ChildProcessTemplateHeadContact/index.vue'),
+						meta:{
+							title: '子工艺模板头先后关系',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps34ProcessTemplateHngc',
+						name: '040307_mesProcessModel',
+						component: () => import('@/views/ps/baseData/ps34ProcessTemplateHngc/index.vue'),
+						meta:{
+							title: 'MES工艺模板(湖南工程)',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_004_mbom',
+						name: 'mbom',
+						component: () => import('@/views/ps/ps_004_mbom.vue'),
+						meta:{
+							title: 'MBOM管理',
 							icon: 'ps_011'
 						}
 					},
@@ -253,46 +337,6 @@ export const sysRouter : Array<RouteRecordRaw> = [
 							icon: 'ps_011'
 						}
 					},
-					// {
-					//   path: 'ps_29_nodeAndPlm',
-					//   name: 'mesSYJH50029',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_29_nodeAndPlm'),
-					//   meta: {
-					//     title: 'PLM工序对应节点',
-					//     icon: 'ps_011'
-					//   }
-					// },
-					// {
-					//   path: 'ps_034_processTemplateHb',
-					//   name: 'mesGYMBHB50034',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_034_processTemplateHb'),
-					//   meta: {
-					//     title: 'MES工艺模板(本部)',
-					//     icon: 'ps_011'
-					//   }
-					// },
-					// {
-					//   path: 'ps_30_childProcessTemplateHead',
-					//   name: 'mesCPTH50030',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_30_childProcessTemplateHead'),
-					//   meta: {
-					//     title: 'PLM工序对应子工艺模板头',
-					//     icon: 'ps_011'
-					//   }
-					// },
-					// {
-					//   path: 'ps_31_childProcessTemplateHeadContact',
-					//   name: 'mesCPTHC50031',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_31_childProcessTemplateHeadContact'),
-					//   meta: {
-					//     title: '子工艺模板头先后关系',
-					//     icon: 'ps_011'
-					//   }
-					// },
 				]
 			},
 			{
@@ -402,7 +446,17 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					icon: 'ps_011',
 					keepAlive: true
 				}
-			}
+			},
+			{
+				//工单二维码
+				path: 'ps_020_workOrderQRCode',
+				name: '0403qrCode',
+				component: () => import('@/views/ps/ps_020_workOrderQRCode.vue'),
+				meta: {
+					title: '工单二维码',
+					icon: 'ps_011'
+				}
+			},
 		],
 	},
 	{
