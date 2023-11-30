@@ -55,12 +55,10 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { BIG_COMPONENTS_COLUMNS } from "../config.js";
-import { Search } from "@element-plus/icons-vue";
 export default {
   name: "ReturnList",
   components: {
     Pagination,
-    Search,
   },
   data() {
     return {

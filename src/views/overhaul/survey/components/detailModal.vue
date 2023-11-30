@@ -61,7 +61,10 @@
         <div class="el-descriptions__title" style="fontsize: 14px">
           现场勘查
           <el-button
-            v-if="[WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
+            v-if="
+              $isAuth('2004_survey_appoint') &&
+              [WORK_ORDER_MAP['check'].value].includes(info.orderStatus)
+            "
             title="工序指派"
             type="primary"
             @click="openModal(row, 'showAppoint')"
@@ -69,11 +72,7 @@
             <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
           </el-button>
         </div>
-        <el-tabs
-          v-model="activeName"
-          @tab-click="handleClick"
-          v-if="![WORK_ORDER_MAP['check'].value].includes(info.orderStatus)"
-        >
+        <el-tabs v-model="activeName" v-if="showTabsFlag">
           <el-tab-pane
             v-for="item in tabList"
             :label="item.label"
@@ -84,6 +83,8 @@
               :is="item.components"
               :workOrderInfo="info"
               :onlyTabName="item.name"
+              :appointInfo="appointInfo"
+              :sceneType="sceneType"
               :workType="item.workType"
           /></el-tab-pane>
         </el-tabs>
@@ -93,7 +94,9 @@
       v-if="showAppoint"
       :operateRow="operateRow"
       workClazzType="survey"
+      :sceneType="sceneType"
       modalName="showAppoint"
+      @onSave="init"
       @closeModal="closeModal"
     ></dispatch-modal>
   </div>
@@ -107,13 +110,13 @@ import TimeLine from "@/components/TimeLine/index.vue";
 import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //标记记录
 import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
 import VideoMark from "@/views/overhaul/overhaulCommon/videoMark.vue";
-import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
+import { findWorkOrder, getAppiontInfo } from "@/api/overhaul/workOrderApi.js";
 import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
-import { Pointer, Expand, Fold } from "@element-plus/icons-vue";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor";
 import dayjs from "dayjs";
+import { create } from 'domain';
 export default {
   components: {
     ProcessInfo,
@@ -124,9 +127,6 @@ export default {
     VideoMark,
     SurveyReport,
     IssueTable,
-    Pointer,
-    Expand,
-    Fold,
     FileList,
   },
   props: {
@@ -155,32 +155,33 @@ export default {
           label: "工序信息",
           name: "processInfo",
           components: "ProcessInfo",
-          menuCode: "2004_survey_btn_info",
+          menuCode: "2004_survey_processInfo",
         },
         //IssueTable
         {
           label: "工序问题查看",
           name: "issueTable",
           components: "IssueTable",
-          menuCode: "2004_survey_btn_issue",
+          menuCode: "2004_survey_issue",
         },
         {
           label: "勘查报告",
           name: "report",
           components: "SurveyReport",
           workType: 1,
-          menuCode: "2004_survey_btn_report",
+          menuCode: "2004_report_view_1",
         },
         // { label: "录像标记", name: "videoAndImg", components: "videoMark" },
         // { label: "标记记录", name: "markRecord", components: "MarkerRecord" },
       ],
       timeLineData: TIME_LINE,
+      sceneType: "SURVEY_SCENE",
       info: {},
       WORK_ORDER_MAP,
-      menuList: [],
+      appointInfo: {}, //指派人员信息
     };
   },
-  async mounted() {
+  async created() {
     this.init();
   },
   computed: {
@@ -204,21 +205,38 @@ export default {
         },
       ];
     },
+    showTabsFlag() {
+      //创建工单和审核工单的适合不展示tab
+      return ![
+        WORK_ORDER_MAP["check"].value,
+        WORK_ORDER_MAP["createOrder"].value,
+      ].includes(this.info.orderStatus);
+    },
   },
   methods: {
     async init() {
       try {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = { ...data };
-        this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
         this.tabList = this.tabList.filter((item) =>
-          this.menuList.includes(item.menuCode)
+          this.$isAuth(item.menuCode)
         );
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
+        this.getAppointSetting();
       } catch (error) {
         // this.handleClose(true);
       }
+    },
+    //获取配置信息
+    getAppointSetting() {
+      if (!this.showTabsFlag) return;
+      getAppiontInfo({
+        sceneType: this.sceneType,
+        orderId: this.operateRow.id,
+      }).then(({ data }) => {
+        this.appointInfo = data;
+      });
     },
     /**
      * 处理事件轴顺序
@@ -323,9 +341,6 @@ export default {
           fileName: fileNameArr[i],
         });
       }
-    },
-    handleClick(tab, event) {
-      console.log(tab, event);
     },
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);

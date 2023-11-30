@@ -149,6 +149,17 @@
               :limit="maxUpload"
               :fileUrl="fileUrl"
               :fileName="fileName"
+              :isCanDelete="
+                ![
+                  COMMOM_WORK_ORDER_MAP['pause'].value,
+                  COMMOM_WORK_ORDER_MAP['finish'].value,
+                ].includes(operateRow.orderStatus)
+              "
+              :disabled="
+                [COMMOM_WORK_ORDER_MAP['pause'].value].includes(
+                  operateRow.orderStatus
+                )
+              "
               @uploadSuccess="uploadSuccess"
             ></multi-upload-vue>
           </el-form-item>
@@ -177,7 +188,10 @@ import {
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import { WORK_ORDER_MAP } from "../config.js";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import {
+  COMMON_FORMAT,
+  COMMOM_WORK_ORDER_MAP,
+} from "@/views/overhaul/constants.js";
 import dayjs from "dayjs";
 import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 const MODAL_TYPE = {
@@ -210,6 +224,7 @@ export default {
     return {
       defaultTime: new Date(0, 0, 0, 23, 59, 59), //默认时间
       COMMON_FORMAT,
+      COMMOM_WORK_ORDER_MAP,
       saveLoading: false,
       MODAL_TYPE,
       defaultSelectVal: {}, //用于下拉框回显

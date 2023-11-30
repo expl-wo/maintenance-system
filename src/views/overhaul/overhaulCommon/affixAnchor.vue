@@ -24,12 +24,7 @@
 </template>
 
 <script>
-import { Expand, Fold } from "@element-plus/icons-vue";
 export default {
-  components: {
-    Expand,
-    Fold,
-  },
   props: {
     affixTreeData: {
       type: Array,
@@ -51,28 +46,34 @@ export default {
   methods: {
     moveTo(e) {
       e.preventDefault();
-      this.abortContance = new AbortController();
-      this.cursor = "move"; //更改鼠标样式
-      document.addEventListener(
-        "mousemove",
-        (e) => {
-          if (e.buttons !== 1) return;
-          this.left = e.clientX + "px";
-          this.top = e.clientY + "px";
-        },
-        { signal: this.abortContance.signal }
-      );
-      document.addEventListener(
-        "mouseup",
-        () => {
-          if (this.abortContance) {
-            this.abortContance.abort();
-            this.abortContance = null;
-          }
-          this.cursor = "pointer";
-        },
-        { signal: this.abortContance.signal }
-      );
+      if (this.abortContance) {
+        this.abortContance.abort();
+        this.abortContance = null;
+      }
+      setTimeout(() => {
+        this.abortContance = new AbortController();
+        this.cursor = "move"; //更改鼠标样式
+        document.addEventListener(
+          "mousemove",
+          (e) => {
+            if (e.buttons !== 1) return;
+            this.left = e.clientX - 23 + "px"; //其中23时按钮的宽的一半 12为高的一半
+            this.top = e.clientY - 12 + "px";
+          },
+          { signal: this.abortContance.signal }
+        );
+        document.addEventListener(
+          "mouseup",
+          () => {
+            if (this.abortContance) {
+              this.abortContance.abort();
+              this.abortContance = null;
+            }
+            this.cursor = "pointer";
+          },
+          { signal: this.abortContance.signal }
+        );
+      }, 100);
     },
     moveEnd() {
       if (this.abortContance) {

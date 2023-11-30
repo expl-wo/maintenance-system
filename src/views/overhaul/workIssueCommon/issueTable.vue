@@ -103,14 +103,9 @@
 import dayjs from "dayjs";
 import Pagination from "@/components/Pagination"; // 分页
 import { ISSUE_COLUMNS } from "./config.js";
-import {
-  Search,
-  PictureFilled,
-  VideoCameraFilled,
-} from "@element-plus/icons-vue";
 export default {
   name: "IssueTable",
-  components: { Pagination, Search, PictureFilled, VideoCameraFilled },
+  components: { Pagination},
 
   data() {
     return {
