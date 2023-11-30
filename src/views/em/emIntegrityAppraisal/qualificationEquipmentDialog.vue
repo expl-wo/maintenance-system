@@ -75,7 +75,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onEquipmenQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onEquipmenQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="equipmenData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
@@ -101,7 +101,7 @@
           <el-input v-model="listTablePeopleUpdate.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="userData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">

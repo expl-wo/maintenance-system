@@ -1,14 +1,12 @@
 <template>
   <div class="app-container app-containerC">
-
-
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="库存编码"  size="small">
           <el-input v-model="listQuery.warehouseCode" placeholder="输入库存编码" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="addOrEdit(true)">{{ $t('button.add') }}</el-button>
@@ -73,7 +71,7 @@
   import QRCode from 'qrcodejs2'
   export default {
     name: 'emWarehouseIndex',
-    components: { TableSimple,reactorCapacity,emWarehouse,TableCheckAll },
+    components: { TableCheckAll },
     data() {
       return {
         total: 0, // 角色列表表格总条数

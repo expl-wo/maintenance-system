@@ -61,7 +61,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -92,7 +92,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -132,7 +132,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item  size="small">
-              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">{{ $t('button.query') }}</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>

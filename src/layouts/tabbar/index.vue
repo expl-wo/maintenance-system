@@ -9,13 +9,12 @@
           :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
           tag="span"
           class="tags-view-item"
-          @click.middle.native="!isAffix(tag)?removeTab(tag):''"
-          @contextmenu.prevent.native="onContextMenu(tag,$event)"
+          @click.middle="!isAffix(tag)?removeTab(tag):''"
+          @contextmenu.prevent="onContextMenu(tag,$event)"
       >
         {{ tag.title }}
         <span class="tags-icon" v-if="!isAffix(tag)" @click.prevent.stop="removeTab(tag)" >
            <el-icon :size="12">
-              <Close />
             </el-icon>
         </span>
       </router-link>
@@ -161,7 +160,7 @@ export default {
           temp.push({
             name: it.name,
             path: path.resolve(basePath, it.path),
-            path: it.path,
+            // path: it.path,
             meta: it.meta,
           });
         }

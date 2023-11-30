@@ -6,7 +6,7 @@
           <el-input v-model="listQuery.name" placeholder="鉴定名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="addOrUpdate()">新增</el-button>

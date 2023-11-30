@@ -1,5 +1,4 @@
 <template>
-  <!--维修记录 未连接接口-->
   <div class="app-container app-containerC">
 
      <div class="filter-container searchCon">
@@ -24,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-download" @click="onExport()">结果导出</el-button>

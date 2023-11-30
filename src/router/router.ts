@@ -843,9 +843,9 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				},
 				children: [{
-					path: 'equipParamete',
-					component: () => import('@/views/em/emBasicData/equipParamete.vue'),
-					name: 'baseData30001_equipParamete',
+					path: 'equipParameter',
+					component: () => import('@/views/em/emBasicData/equipParameter.vue'),
+					name: '030101_equipParameter',
 					meta: {
 						title: '设备台账',
 						icon: 'em_002_001',
@@ -854,7 +854,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				}, {
 					path: 'equipDetail',
 					component: () => import('@/views/em/emBasicData/equipDetail.vue'),
-					name: 'baseData30001_equipDetail',
+					name: '030102_equipDetail',
 					meta: {
 						title: '运维记录',
 						icon: 'em_002_001',
@@ -864,7 +864,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				{
 					path: 'equipPrint',
 					component: () => import('@/views/em/emBasicData/equipPrint.vue'),
-					name: 'equipPrint',
+					name: '030103_equipPrint',
 					meta: {
 						title: '二维码打印'
 					},
@@ -872,12 +872,86 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				{
 					path: 'classIndex',
 					component: () => import('@/views/em/emBasicData/classIndex.vue'),
-					name: 'baseData30001_classIndex',
+					name: '030104_classIndex',
 					meta: {
 						title: '设备分类',
 						icon: 'em_002_002',
 						keepAlive: true
 					}
+				},{
+					path: 'equipLevel',
+					component: () => import('@/views/em/emBasicData/levelIndex.vue'),
+					name: '030105_equipLevel',
+					meta: {
+						title: '设备分类',
+						icon: 'em_002_002',
+						keepAlive: true
+					}
+				}]
+			},{
+				path: 'check',
+				component: Layout,
+				name: '0302_check',
+				meta: {
+					title: '设备点检',
+					icon: 'em_002',
+					keepAlive: true
+				},
+				children : [{
+					path: 'checkPlan',
+					component: () => import('@/views/em/emCheck/emCheck_001_Plan.vue'),
+					name: '030201_checkPlan',
+					meta: {
+						title: '点检配置',
+						icon: 'em_002_001',
+						keepAlive: true
+					},
+				},{
+					path: 'checkRecord',
+					component: () => import('@/views/em/emCheck/emCheck_002_Record.vue'),
+					name: '030202_checkRecord',
+					meta: {
+						title: '点检记录',
+						icon: 'em_002_002',
+						keepAlive: true
+					},
+				}]
+			},{
+				path: 'maintenance',
+				component: Layout,
+				name: '0303_maintenance',
+				meta: {
+					title: '设备保养',
+					icon: 'em_002',
+					keepAlive: true
+				},
+				children : [{
+					path: 'plan',
+					component: () => import('@/views/em/emMaintenance/emMaintenance_001_plan.vue'),
+					name: '030301_maintenancePlan',
+					meta: {
+						title: '保养配置',
+						icon: 'em_002_001',
+						keepAlive: true
+					},
+				},{
+					path: 'order',
+					component: () => import('@/views/em/emMaintenance/emMaintenance_002_repairOrder.vue'),
+					name: '030302_order',
+					meta: {
+						title: '保养派工',
+						icon: 'em_002_002',
+						keepAlive: true
+					},
+				},{
+					path: 'record',
+					component: () => import('@/views/em/emMaintenance/emMaintenance_003_record.vue'),
+					name: '030303_record',
+					meta: {
+						title: '保养记录',
+						icon: 'em_002_002',
+						keepAlive: true
+					},
 				}]
 			}
 		]
