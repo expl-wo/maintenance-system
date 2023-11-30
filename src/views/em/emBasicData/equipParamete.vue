@@ -4,46 +4,46 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设备分类" size="mini">
-          <el-select v-model="listQuery.eqpClazz" size="mini" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="设备分类"  size="small">
+          <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
             <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="设备名称" size="mini">
-          <el-input v-model="listQuery.name" placeholder="设备名称" style="width: 180px;" class="filter-item" size="mini" clearable />
+        <el-form-item label="设备名称"  size="small">
+          <el-input v-model="listQuery.name" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small" clearable />
         </el-form-item>
-        <el-form-item label="设备编号" size="mini">
-          <el-input v-model="listQuery.number" placeholder="设备编号" style="width: 180px;" class="filter-item" size="mini" clearable />
+        <el-form-item label="设备编号"  size="small">
+          <el-input v-model="listQuery.number" placeholder="设备编号" style="width: 180px;" class="filter-item"  size="small" clearable />
         </el-form-item>
-        <el-form-item label="使用部门" size="mini">
-          <el-select v-model="listQuery.usingDepId" size="mini" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="(items,index) in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
+        <el-form-item label="使用部门"  size="small">
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+            <el-option v-for="(items) in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否限制部门" size="mini">
-          <el-select v-model="listQuery.isLimit" size="mini" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="(items,index) in options" :key="items.value " :label="items.label" :value="items.value" />
+        <el-form-item label="是否限制部门"  size="small">
+          <el-select v-model="listQuery.isLimit"  size="small" style="width: 120px;" filterable default-first-option>
+            <el-option v-for="(items) in options" :key="items.value " :label="items.label" :value="items.value" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+        <el-form-item  size="small">
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="setWorkTime">设置工作时间</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onConfirmResponser">确定责任人</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onConfirmResponser2">确定保养责任人</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">责任人导入</el-button>
         </el-form-item>
       </el-form>
@@ -64,7 +64,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="异常名称:" prop="name" size="small">
           <el-input v-model="listUpdate.name" placeholder="异常名称" style="width: 320px;" class="filter-item" size="small" />
@@ -73,7 +73,7 @@
           <el-input v-model="listUpdate.description" placeholder="异常描述" style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')">
           保存
@@ -82,19 +82,19 @@
     </el-dialog>
 
     <!--查看二维码-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码" :visible.sync="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogQRCodeFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogQRCodeFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!--查看文件或图片-->
-   <el-dialog v-draggable  :close-on-click-modal="false" title="查看" :visible.sync="dialogFileFormVisible" class="roleDialog">
+   <el-dialog v-draggable  :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
      <span style = "width: 150px">
-       <el-button style="margin-left: -20px;" size="mini" type="primary" class="el-icon-upload" ></el-button>
+       <el-button style="margin-left: -20px;"  size="small" type="primary" class="el-icon-upload" ></el-button>
        <input name="file" type="file" class="fileCls"  @change="changeUploadFile($event, scope.row)"/>
      </span>
 
@@ -105,29 +105,29 @@
         :total="totalFile"
         :hide-page="true"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFileFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogFileFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!--设备备件信息-->
-    <el-dialog v-draggable  title="设备备件查看" :visible.sync="dialogSparePartsFormVisible"  width="70%"
+    <el-dialog v-draggable  title="设备备件查看"  v-model="dialogSparePartsFormVisible"  width="70%"
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <spareParts ref="child"></spareParts>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogSparePartsFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogSparePartsFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!--工作时间确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看" :visible.sync="dialogWorkTimeFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogWorkTimeFormVisible" class="roleDialog">
       <el-form ref="workRef" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
-        <el-form-item label="工作时间" size="mini">
+        <el-form-item label="工作时间"  size="small">
           <el-input-number v-model="listResponse.workTime"  :min="0" :max="24"></el-input-number>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button @click="onCancelDialog()">取 消</el-button>
         <el-button type="primary" @click="responseConfirm3()">
           保存
@@ -137,14 +137,14 @@
 
 
     <!--责任人确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看" :visible.sync="dialogResponserFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible" class="roleDialog">
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
-        <el-form-item label="责任人:" prop="userName" size="mini">
+        <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
           <el-button type="primary" icon="el-icon-add" @click="choosePeople">请选择人员</el-button>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button @click="onCancelDialog()">取 消</el-button>
         <el-button type="primary" @click="responseConfirm()">
           保存
@@ -152,14 +152,14 @@
       </div>
     </el-dialog>
     <!--责任人确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看" :visible.sync="dialogResponserFormVisible2" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible2" class="roleDialog">
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
-        <el-form-item label="责任人:" prop="userName" size="mini">
+        <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
           <el-button type="primary" icon="el-icon-add" @click="choosePeople">请选择人员</el-button>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button @click="onCancelDialog()">取 消</el-button>
         <el-button type="primary" @click="responseConfirm2()">
           保存
@@ -168,18 +168,18 @@
     </el-dialog>
 
     <!--选择人员(责任人)多选-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择责任人" :visible.sync="dialogTablePeopleVisible" class="" append-to-body>
+    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择责任人"  v-model="dialogTablePeopleVisible" class="" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
-        <el-form-item label="" prop="name" size="mini">
+        <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>
@@ -193,9 +193,9 @@
         :limit="listPeopleQuery.pg_pagesize"
         @pagination="getPeopleList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogTablePeopleVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="createTablePeopleData()" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogTablePeopleVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="createTablePeopleData()"  size="small">
           确 认
         </el-button>
       </div>
@@ -203,7 +203,7 @@
 
     <el-dialog
       title="导入"
-      :visible.sync="uploadDialogVisible"
+       v-model="uploadDialogVisible"
       width="400px"
       @close="handleClose"
     >
@@ -219,7 +219,7 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button slot="trigger" size="medium" type="primary">
+            <el-button  size="medium" type="primary">
               选取文件
             </el-button>
             <el-button
@@ -236,7 +236,7 @@
               style="margin-left: 20px;"
               >上传
             </el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
@@ -572,9 +572,6 @@ export default {
       self.onQuery() // 查询
       self.onEqCateQuery()
       self.getEqpDpt()
-    },
-    upLoadEquipFile(){
-
     },
     onSparePart(row){
       this.$nextTick(()=>{

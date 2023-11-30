@@ -4,16 +4,16 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="库存编码" size="mini">
+        <el-form-item label="库存编码"  size="small">
           <el-input v-model="listQuery.warehouseCode" placeholder="输入库存编码" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="addOrEdit(true)">{{ $t('button.add') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
       </el-form>
@@ -24,42 +24,42 @@
                   :page="listQuery.pageNum" :limit="listQuery.pageSize" @pagination="getList" />
 
     <!-- 新增/修改节点弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title=title :visible.sync="addDialogVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="listQueryDe" :rules="deRules" ref="listQueryDe" >
-        <el-form-item label="库位区:" size="mini" prop="locationArea">
-          <el-input v-model="listQueryDe.locationArea" typt="number" placeholder="库位区" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="库位区:"  size="small" prop="locationArea">
+          <el-input v-model="listQueryDe.locationArea" typt="number" placeholder="库位区" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
-        <el-form-item label="横坐标:" size="mini" prop="abscissa">
-          <el-input v-model="listQueryDe.abscissa" typt="number" placeholder="横坐标" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="横坐标:"  size="small" prop="abscissa">
+          <el-input v-model="listQueryDe.abscissa" typt="number" placeholder="横坐标" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
-        <el-form-item label="纵坐标:" size="mini" prop="ordinate">
-          <el-input v-model="listQueryDe.ordinate" typt="number" placeholder="纵坐标" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="纵坐标:"  size="small" prop="ordinate">
+          <el-input v-model="listQueryDe.ordinate" typt="number" placeholder="纵坐标" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
-        <el-form-item label="长:" size="mini" prop="length">
-          <el-input v-model="listQueryDe.length" typt="number" placeholder="长" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="长:"  size="small" prop="length">
+          <el-input v-model="listQueryDe.length" typt="number" placeholder="长" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
-        <el-form-item label="宽:" size="mini" prop="width">
-          <el-input v-model="listQueryDe.width" typt="number" placeholder="宽" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="宽:"  size="small" prop="width">
+          <el-input v-model="listQueryDe.width" typt="number" placeholder="宽" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="addDialogVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="addOrUpdateDe('listQueryDe')">
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="addOrUpdateDe('listQueryDe')">
           保存
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码" :visible.sync="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogQRCodeFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogQRCodeFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
   </div>

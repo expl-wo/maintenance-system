@@ -9,7 +9,7 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="试验场所">
-        <el-select size="mini" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
+        <el-select  size="small" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
           <el-option
             v-for="item in dialogForm.laminationTables"
             :key="item.id"

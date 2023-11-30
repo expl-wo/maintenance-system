@@ -7,7 +7,7 @@
       </el-icon>
     </span>
     <template #dropdown>
-      <el-dropdown-menu slot="dropdown" class="xui-legend_wrapper">
+      <el-dropdown-menu class="xui-legend_wrapper">
         <el-dropdown-item :command="item"
                           v-for="(item, index) in dateList" :key="index">
           <div class="xui-legend__item">

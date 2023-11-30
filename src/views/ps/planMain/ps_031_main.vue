@@ -90,7 +90,7 @@
           ></el-table-column>
           <el-table-column label="操作"
                            align="center" width="78" fixed property="caozuo">
-            <template v-slot="scope">
+            <template #default="scope">
               <el-button-group>
                 <el-button type="default"
                            @click="handleShowFlowchart(scope.row)">进度查询
@@ -135,7 +135,7 @@
             width="100"
             fixed
           >
-            <template v-slot="scope">
+            <template #default="scope">
               {{ dateFilter(scope.row.dateEnd) }}
             </template>
           </el-table-column>
@@ -154,7 +154,7 @@
             property="customerName"
             width="230"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <div>
                 <el-tooltip
                   class="item"
@@ -174,7 +174,7 @@
             property="noTaxAmount"
             width="80"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               {{ numFilter(scope.row.noTaxAmount) }}
             </template>
           </el-table-column>
@@ -201,7 +201,7 @@
             property="isExportProduct"
             width="130"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <el-select :disabled="!$isAuth('mainPlan_editData')" v-model="scope.row.isExportProduct"
                          @change="changeExport(scope.row)" clearable placeholder="请选择">
                 <el-option
@@ -220,7 +220,7 @@
             property="designSource"
             width="70"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="designSource" :code="scope.row.designSource"></xui-dictionary>
             </template>
           </el-table-column>
@@ -247,7 +247,7 @@
             property="importmentLevel"
             width="60"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="importmentLevel" :code="scope.row.importmentLevel"></xui-dictionary>
             </template>
           </el-table-column>
@@ -258,7 +258,7 @@
             property="urgentLevel"
             width="60"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="urgentLevel" :code="scope.row.urgentLevel"></xui-dictionary>
             </template>
           </el-table-column>
@@ -269,7 +269,7 @@
             property="processStatus"
             width="70"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="processStatus" :code="scope.row.processStatus"></xui-dictionary>
             </template>
           </el-table-column>
@@ -297,7 +297,7 @@
             property="orderIssuedTime"
             width="100"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               {{ dateFilter(scope.row.orderIssuedTime) }}
             </template>
           </el-table-column>
@@ -308,7 +308,7 @@
             property="limitRelation"
             width="80"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="flag01" :code="scope.row.limitRelation"></xui-dictionary>
             </template>
           </el-table-column>
@@ -329,7 +329,7 @@
                 align="center" width="85"
                 :class-name="item3.className"
               >
-                <template v-slot="scope">
+                <template #default="scope">
                   <cell-transform :item="item" :item3="item3" :property="item3.property"
                                   :data="scope.row"></cell-transform>
                 </template>
@@ -373,7 +373,7 @@ import OpPurchaseTreeDialog from './dialog/opPurchaseTreeDialog'
 import opStartDateDialog from './dialog/opStartDateDialog'
 import timeLimitDialog from './dialog/timeLimitDialog'
 import changeDeliveryDialog from './dialog/changeDeliveryDialog'
-import { selectUserDialog } from '@/views/ps/planTentative/dialog/selectUserDialog'
+import selectUserDialog  from '@/views/ps/planTentative/dialog/selectUserDialog'
 import processFlowchart from '@/components/x6/processFlowchart'
 import configColumnDialog from '@/views/ps/_public/configColumnDialog.vue'
 import configColumnMixins from '@/views/ps/_public/configColumnMixins'

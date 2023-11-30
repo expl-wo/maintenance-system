@@ -17,7 +17,7 @@
           <div class="wp hp app-containerC">
             <div class="xui-gant show-more-text">
               <div class="xui-gant__time">
-                <div class="xui-gant__time-item"  :style="{'marginRight': item.width - 80 + 'px'}" v-for="(item, index) in timeLineList">
+                <div class="xui-gant__time-item"  :style="{'marginRight': item.width - 80 + 'px'}" v-for="(item, index) in timeLineList" :key="index">
                   <div class="xui-gant__time-name">{{item.label}}
                   </div>
                   <div class="xui-gant__time-line is-first" :class="{'is-first': index === 0}">

@@ -4,20 +4,20 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设备名称" size="mini">
-          <el-input v-model="listQuery.name" placeholder="设备名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="设备名称"  size="small">
+          <el-input v-model="listQuery.name" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
-        <el-form-item label="OA流程审批状态" size="mini" >
-          <xui-dict-select multiple item-code="OverHaulOaStatus" size="mini"  includeAll v-model="listQuery.oaStatus"
+        <el-form-item label="OA流程审批状态"  size="small" >
+          <xui-dict-select multiple item-code="OverHaulOaStatus"  size="small"  includeAll v-model="listQuery.oaStatus"
                            style="width:200px;" class="filter-item" :clearable="false"></xui-dict-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="turnToOA()">转OA审批</el-button>
         </el-form-item>
       </el-form>
@@ -37,16 +37,16 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="设备名称:" prop="eqpName" size="mini">
+        <el-form-item label="设备名称:" prop="eqpName"  size="small">
           <el-input v-model="listUpdate.eqpName" placeholder="请选择设备名称" style="width: 245px;" class="filter-item" disabled />
           <el-button type="primary" @click="onSelectEquip">请选择</el-button>
         </el-form-item>
-        <el-form-item label="设备编号:" prop="eqpNumber" size="mini">
+        <el-form-item label="设备编号:" prop="eqpNumber"  size="small">
           <el-input v-model="listUpdate.eqpNumber" style="width: 245px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="使用部门:" prop="usingDepName" size="mini">
+        <el-form-item label="使用部门:" prop="usingDepName"  size="small">
           <el-input v-model="listUpdate.usingDepName" style="width: 245px;" class="filter-item" disabled />
         </el-form-item>
         <el-form-item label="设备现状:" prop="situation" >
@@ -55,23 +55,23 @@
         <el-form-item label="技术要求:" prop="requirement" >
           <el-input v-model="listUpdate.requirement" type="textarea" :rows="3" style="width: 245px;" class="filter-item"  />
         </el-form-item>
-        <el-form-item label="计划开始时间:" prop="planStarttime" size="mini">
+        <el-form-item label="计划开始时间:" prop="planStarttime"  size="small">
           <el-date-picker v-model="listUpdate.planStarttime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="计划开始时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="计划结束时间:" prop="planEndtime" size="mini">
+        <el-form-item label="计划结束时间:" prop="planEndtime"  size="small">
           <el-date-picker v-model="listUpdate.planEndtime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="计划结束时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="实际开始时间:" size="mini">
+        <el-form-item label="实际开始时间:"  size="small">
           <el-date-picker v-model="listUpdate.starttime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="实际开始时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="实际结束时间:" size="mini">
+        <el-form-item label="实际结束时间:"  size="small">
           <el-date-picker v-model="listUpdate.endtime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="实际结束时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="申请提交部门:" prop="subDepName" size="mini">
+        <el-form-item label="申请提交部门:" prop="subDepName"  size="small">
           <el-input v-model="listUpdate.subDepName" style="width: 245px;" class="filter-item"  disabled/>
           <el-button type="primary" @click="onSelectOrg">请选择</el-button>
         </el-form-item>
-        <!--<el-form-item label="大修状态:" prop="status" size="mini">-->
+        <!--<el-form-item label="大修状态:" prop="status"  size="small">-->
           <!--<el-select v-model="listUpdate.status" placeholder="请选择" style="width: 245px;">-->
             <!--<el-option label="计划" value="0" />-->
             <!--<el-option label="维修中" value="1" />-->
@@ -79,22 +79,22 @@
           <!--</el-select>-->
         <!--</el-form-item>-->
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')"  size="small">
           保存
         </el-button>
       </div>
     </el-dialog>
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择设备" :visible.sync="dialogEquipFormVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择设备"  v-model="dialogEquipFormVisible" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listEquipQuery" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="设备名称" size="mini">
-            <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+          <el-form-item label="设备名称"  size="small">
+            <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="getEquipList">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -108,18 +108,18 @@
         :limit="listEquipQuery.pg_pagesize"
         @pagination="getEquipList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEquipFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogEquipFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择组织" :visible.sync="dialogOrgFormVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择组织"  v-model="dialogOrgFormVisible" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listOrgQuery" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="组织名称" size="mini">
-            <el-input v-model="listOrgQuery.orgName" placeholder="组织名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+          <el-form-item label="组织名称"  size="small">
+            <el-input v-model="listOrgQuery.orgName" placeholder="组织名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="getOrgList">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -133,8 +133,8 @@
         :limit="listOrgQuery.pg_pagesize"
         @pagination="getOrgList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogOrgFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogOrgFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
     <apply-overhaul-dialog ref="applyOverhaulDialogRef" @refresh="onQuery"></apply-overhaul-dialog>

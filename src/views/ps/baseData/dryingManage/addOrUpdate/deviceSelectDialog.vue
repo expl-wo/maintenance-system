@@ -3,7 +3,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备名称">
-          <el-input v-model="listQuery.equipmentName" @keyup.enter.native="handleSearch"
+          <el-input v-model="listQuery.equipmentName" @keyup.enter="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
@@ -39,7 +39,7 @@
         >
         </el-table-column>
         <el-table-column label="操作" align="center" fixed="right" width="100">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button type="primary"
                        @click="handleSelect(scope.row)"
             >选择

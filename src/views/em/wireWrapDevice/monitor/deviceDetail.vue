@@ -3,36 +3,36 @@
     <div class="detail-wrapper el-radius">
       <div class="detail-title">
         <div class="ml-5 mr-5">{{ name }}当前状态</div>
-        <el-button type="primary" icon="el-icon-refresh" size="mini">刷新</el-button>
+        <el-button type="primary" icon="el-icon-refresh"  size="small">刷新</el-button>
       </div>
-      <el-form ref="form" size="mini" label-position="right" label-width="180px">
+      <el-form ref="form"  size="small" label-position="right" label-width="180px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="设备运行状态：" size="mini">
+            <el-form-item label="设备运行状态："  size="small">
               <el-tag class="ml-2" type="success">{{ deviceRunningParams.status }}</el-tag>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item class="" label="目标值（毫米）：" size="mini">
+            <el-form-item class="" label="目标值（毫米）："  size="small">
               <div class="detail-desc">{{ deviceRunningParams.targetValue }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="上模直径（毫米）：" size="mini">
+            <el-form-item label="上模直径（毫米）："  size="small">
               <div class="detail-desc">{{ deviceRunningParams.upValue }}</div>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="下模直径（毫米）：" size="mini">
+            <el-form-item label="下模直径（毫米）："  size="small">
               <div class="detail-desc">{{ deviceRunningParams.downValue }}</div>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
         <el-col :span="24">
-          <el-form-item label="数据采集时间：" size="mini">
+          <el-form-item label="数据采集时间："  size="small">
             <div class="detail-desc">{{ deviceRunningParams.dateTime }}</div>
           </el-form-item>
         </el-col>
@@ -47,7 +47,7 @@
       <el-form ref="formRef" :model="config" :rules="rules" label-position="right" label-width="180px">
         <el-row>
           <el-col :span="24">
-            <el-form-item  prop="targetValue" class="el-form-item__flex" label="设置目标值（毫米）：" size="mini">
+            <el-form-item  prop="targetValue" class="el-form-item__flex" label="设置目标值（毫米）："  size="small">
               <el-input style="width: 160px;" type="number" v-model="config.targetValue"></el-input>
               <el-button type="primary" class="ml-5" @click="handleSendTargetValue">下发</el-button>
             </el-form-item>
@@ -60,8 +60,8 @@
         工单管理
       </div>
       <div>
-        <el-button type="primary" size="mini" @click="handleStartWorkOrder">工单开始</el-button>
-        <el-button type="success" size="mini" @click="handleEndWorkOrder">工单结束</el-button>
+        <el-button type="primary"  size="small" @click="handleStartWorkOrder">工单开始</el-button>
+        <el-button type="success"  size="small" @click="handleEndWorkOrder">工单结束</el-button>
       </div>
       <div :class="runningWorkOrder.id?'success': 'error'" class="tipDesc">{{workHistoryDesc}}</div>
     </div>
@@ -102,7 +102,7 @@ export default {
       timer: null
     }
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.clearTimer();
   },
   methods: {
@@ -121,7 +121,7 @@ export default {
     },
     //获取最新的数据
     getLatelyDeviceStatus(){
-
+      console.log("123")
     },
     handleSendTargetValue() {
       this.$refs.formRef.validate(valid=>{

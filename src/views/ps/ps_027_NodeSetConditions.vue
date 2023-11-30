@@ -23,14 +23,14 @@
         </template>
       </el-table-column>
       <el-table-column label="前置条件" align="center" width="300">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-select multiple value-key="k" v-model="scope.row.preNodeBasic" style="width: 270px">
             <el-option v-for="item in scope.row.allNodeBasic" :key="item.k" :value="item" :label="item.v"></el-option>
           </el-select>
         </template>
       </el-table-column>
       <el-table-column header-align="center" align="center" width="160" label="操作">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button title="操作" type="primary" icon="Cellphone"
               @click="handleItemAddDict(scope.row)">

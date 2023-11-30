@@ -8,8 +8,8 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="工序:" prop="opName">
-						<el-input v-model="model.opName" disabled />
+					<el-form-item label="工序:" prop="nodeName">
+						<el-input v-model="model.nodeName" disabled />
 					</el-form-item>
 				</el-col>
 				<el-col :span="24">
@@ -24,28 +24,24 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="24">
-					<el-form-item label="工位" name="" v-if="model.opType != 3">
-						<el-select v-model="model.work"  placeholder="工位选择" >
-							<el-option v-for="items in work" :key="items.id" :label="items.name" :value="items.id" />
-						</el-select>
-					</el-form-item>
-					<el-form-item label="工位" name="" v-if="model.opType == 3">
-						<el-table :data="coilData">
-							<el-table-column prop="name" label="线圈类型/项号" width="140px">
+					<el-form-item label="工位" name="" >
+						<el-table ref="multipleTableRef" :key="id" :data="midOp" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" />
+							<el-table-column prop="name" label="名称" width="140px">
 								<template #default="scope">
 									<el-input v-model="scope.row.name" disabled :min="0"></el-input>
 								</template>
 							</el-table-column>
-							<el-table-column prop="count" label="数量" width="140px">
-								<template #default="scope">
-									<el-input-number v-model="scope.row.count" :min="0"></el-input-number>
-								</template>
-							</el-table-column>
+<!--							<el-table-column prop="count" label="数量" width="140px">-->
+<!--								<template #default="scope">-->
+<!--									<el-input-number v-model="scope.row.count" :min="0"></el-input-number>-->
+<!--								</template>-->
+<!--							</el-table-column>-->
 							<el-table-column prop="work" label="工位" width="140px">
 								<template #default="scope">
 									<el-select v-model="scope.row.work" size="small" placeholder="工位选择"
 										style="width: 120px;">
-										<el-option v-for="items in work" :key="items.id" :label="items.name"
+										<el-option v-for="items in work" :key="items.id" :label="items.typeName"
 											:value="items.id" />
 									</el-select>
 								</template>
@@ -67,54 +63,53 @@
 <script lang="ts" setup>
 	import { defineComponent, computed, onMounted, ref, reactive, defineEmits, toRef, watch, nextTick } from "vue";
 	import { deepClone } from "@/utils";
-
+	import planMain from '@/api/plan/planMain'
+  import { ElMessage,ElTable  } from 'element-plus'
 	const emits = defineEmits(["handleRefresh"])
 
+  const multipleTableRef = ref<InstanceType<typeof ElTable>>()
+  const multipleSelection = ref<any[]>([])
+  const handleSelectionChange = (val: any[]) => {
+    multipleSelection.value = val
+  }
+  const toggleSelection = (rows?: any[]) => {
+    if (rows) {
+      rows.forEach((row) => {
+        // TODO: improvement typing when refactor table
+        multipleTableRef.value!.toggleRowSelection(row, undefined)
+      })
+    } else {
+      multipleTableRef.value!.clearSelection()
+    }
+  }
+
+  const openSuccess = (msg:string) => {
+    ElMessage( {
+      message:msg,
+      type: 'success',
+    })
+  }
+  const openWarning = (msg:string) => {
+    ElMessage( {
+      message:msg,
+      type: 'warning',
+    })
+  }
 	const dialogVisible = ref(false);
 	
 	const initModel = {
+		productPlanId:'',
+		productNodeId:'',
 		productNo: '',
-		opName: 'y',
-		opType: 3,
+		nodeName: 'y',
+    workspaceName : "",
+    workspaceNumber : "",
 		time:[],
-		planStartTime:'',
-		planEndTime:'',
-		work:'',
-		works:''
+		nodeId:'',
+		works:[],
 	}
 	
-	const coilData = reactive([
-		{
-			name:"高压线圈A",
-			count:1,
-			work:"",
-		},
-		{
-			name:"高压线圈B",
-			count:1,
-			work:"",
-		},
-		{
-			name:"高压线圈C",
-			count:1,
-			work:"",
-		},
-		{
-			name:"低压线圈A",
-			count:1,
-			work:"",
-		},
-		{
-			name:"低压线圈B",
-			count:1,
-			work:"",
-		},
-		{
-			name:"低压线圈C",
-			count:1,
-			work:"",
-		}
-	])
+	const midOp = reactive([])
 	
 	const work = reactive([])
 	
@@ -137,22 +132,67 @@
 	
 	const model = reactive(deepClone(initModel));
 
+	const init = async(row) => {
+		let response = await planMain.getOpInfo({productPlanId:row.productplanId,nodeId:row.nodeId})
+    if((response as any).err_code === 10000 ){
+      response.data.instances.forEach(item =>{
+        work.push(item)
+      })
+      response.data.midOp.forEach(item =>{
+        midOp.push({id:item.id,name:item.craftsName,work:null})
+      })
+      console.log(work)
+      console.log(midOp)
+      // toggleSelection(work)
+    }else {
+      openWarning("查询节点信息失败")
+    }
 
-	const init = row => {
+		console.log(row);
 		let data = {
 			...initModel,
 		}
 		data.productNo = row.productNo;
-		data.opName = row.opName;
+		data.nodeName = row.nodeName;
+		data.productPlanId = row.productplanId;
+		data.productNodeId = row.id;
+		data.nodeId = row.nodeId;
+    data.workspaceName = response.data.workspaceName;
+    data.workspaceNumber = response.data.workspaceNumber;
 		Object.assign(model, data);
 		dialogVisible.value = true;
 	}
 
+
+
+  const getProcedureWorkspace =()=>{
+    let data =[]
+    multipleSelection.value.forEach( item =>{
+      data.push({k: item.id, v: item.work})
+    })
+    return data
+  }
+
 	const saveData = () => {
-		// emits("handleRefresh", model);
-		model.planStartTime = model.time.value[0]
-		model.planEndTime = model.time.value[1]
-		dialogVisible.value = false;
+		let params = {
+			productPlanId : model.productPlanId,
+			productNodeId : model.productNodeId, 
+			planStartTime : model.time[0],
+			planEndTime   : model.time[1],
+      workspaceName : model.workspaceName,
+      workspaceNumber : model.workspaceNumber,
+			procedureWorkspace: getProcedureWorkspace()
+		}
+    console.log(params)
+    planMain.editNodePlan(params).then( (res:any) =>{
+      if(res.err_code === 10000){
+        dialogVisible.value = false;
+        openSuccess("设置成功!")
+      }else {
+        openWarning("设置失败!")
+        // (this as any).$message.error("设置失败！")
+      }
+    })
 	}
 
 	defineExpose({

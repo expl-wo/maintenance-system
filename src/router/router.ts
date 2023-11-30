@@ -231,7 +231,17 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				}
 			},
-
+			{
+				//试验计划审批
+				path: 'ps_041_mainApproval',
+				name: '0406ExperimentApproval',
+				component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
+				meta: {
+					title: '试验计划审批',
+					icon: 'ps_011',
+					keepAlive: true
+				}
+			},
 			{
 				//试验计划(新)
 				path: 'ps_041_mainTentative',
@@ -664,5 +674,64 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				children: []
 			},
 		],
+	},
+
+	{
+		path: '/equip',
+		component: Layout,
+		name: '03_equipmentGL',
+		meta: {
+			title: '设备管理',
+			icon: 'sheBei'
+		},
+		children: [
+			{
+				path: 'baseData',
+				component: Layout,
+				name: '0301_baseData',
+				meta: {
+					title: '基础数据',
+					icon: 'em_001',
+					keepAlive: true
+				},
+				children: [{
+					path: 'equipParamete',
+					component: () => import('@/views/em/emBasicData/equipParamete.vue'),
+					name: 'baseData30001_equipParamete',
+					meta: {
+						title: '设备台账',
+						icon: 'em_002_001',
+						keepAlive: true
+					},
+				}, {
+					path: 'equipDetail',
+					component: () => import('@/views/em/emBasicData/equipDetail.vue'),
+					name: 'baseData30001_equipDetail',
+					meta: {
+						title: '运维记录',
+						icon: 'em_002_001',
+						keepAlive: false
+					},
+				},
+				{
+					path: 'equipPrint',
+					component: () => import('@/views/em/emBasicData/equipPrint.vue'),
+					name: 'equipPrint',
+					meta: {
+						title: '二维码打印'
+					},
+				},
+				{
+					path: 'classIndex',
+					component: () => import('@/views/em/emBasicData/classIndex.vue'),
+					name: 'baseData30001_classIndex',
+					meta: {
+						title: '设备分类',
+						icon: 'em_002_002',
+						keepAlive: true
+					}
+				}]
+			}
+		]
 	},
 ]

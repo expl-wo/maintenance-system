@@ -4,7 +4,7 @@
              :rules="rules" label-width="100px"
     >
       <div class="col-md-12">
-        <el-form-item prop="newDeliveryDate" label="销售回复时间" required size="mini">
+        <el-form-item prop="newDeliveryDate" label="销售回复时间" required  size="small">
           <el-date-picker
             v-model="model.newDeliveryDate"
             type="datetimerange" range-separator="至" style="width: 330px;" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -14,8 +14,8 @@
     </el-form>
     <template #footer>
     <div>
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+      <el-button  size="small" @click="dialogVisible=false">取消</el-button>
+      <el-button  size="small" type="primary" @click="handleSubmit">提交</el-button>
     </div>
     </template>
   </el-dialog>
@@ -45,8 +45,7 @@
         },
       }
     },
-    created(){
-    },
+
     methods: {
       init(selectedData) {
         this.model = {

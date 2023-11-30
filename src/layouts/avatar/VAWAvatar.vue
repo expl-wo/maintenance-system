@@ -6,11 +6,14 @@
         切换角色-{{roleslogin.currRole.v}}
         <i class="el-icon-caret-bottom" />
       </div>
-      <el-dropdown-menu slot="dropdown" class="user-dropdown" v-if="roleslogin.roles && roleslogin.roles.length > 0">
-        <el-dropdown-item v-for="x in roleslogin.roles" :key="x.id">
-          <div @click="switchRoles(x)" :class="{'col_blue': roleslogin.currRole.k == x.id}">{{x.roleName}}</div>
-        </el-dropdown-item>
-      </el-dropdown-menu>
+	  <template v-slot:dropdown>
+		  <el-dropdown-menu  class="user-dropdown" v-if="roleslogin.roles && roleslogin.roles.length > 0">
+		    <el-dropdown-item v-for="x in roleslogin.roles" :key="x.id">
+		      <div @click="switchRoles(x)" :class="{'col_blue': roleslogin.currRole.k == x.id}">{{x.roleName}}</div>
+		    </el-dropdown-item>
+		  </el-dropdown-menu>
+	  </template>
+      
     </el-dropdown>
     <el-dropdown>
       <div class="action-wrapper">

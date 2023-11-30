@@ -5,6 +5,7 @@ import "./utils/router";
 import ElementPlus from "element-plus";
 import '@/styles/index.scss' // global css
 import '@/styles/x6.scss' // global css
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import "element-plus/dist/index.css";
 import "dayjs/locale/zh-cn";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
@@ -36,6 +37,9 @@ install(app);
 Object.keys(Icons).forEach((it) => {
   app.component(it, (Icons as any)[it]);
 });
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 app.use(LayoutStore, {
   state: {
     layoutMode: "ltr",

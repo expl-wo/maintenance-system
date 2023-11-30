@@ -35,7 +35,7 @@
                 <template  #default="scope">
                   <el-tooltip class="item" effect="light" :content="scope.row.cont" placement="top">
                     <span v-if="scope.row.toWebLink==null">{{ scope.row.title }}</span>
-                    <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click.native="onMessageRead(scope.row.id)">
+                    <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click="onMessageRead(scope.row.id)">
                       {{ scope.row.title }}
                     </router-link>
                   </el-tooltip>
@@ -47,7 +47,7 @@
                 width="70"
               >
                 <template  #default="scope">
-                  <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click.native="onMessageRead(scope.row.id)">
+                  <router-link v-if="scope.row.toWebLink!=null" :to="scope.row.toWebLink" @click="onMessageRead(scope.row.id)">
                     <a class="el-icon-link" style="color: blue;font-size: 23px" />
                   </router-link>
                 </template>
@@ -86,7 +86,7 @@
 </template>
 
 <script>
-import echarts from 'echarts'
+import * as echarts from 'echarts'
 import { getMyMessage, postMessRead } from '@/api/my.js'
 import { getLineOut, getBarOut, getPieOut } from '@/api/m4index.js'
 

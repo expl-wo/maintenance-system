@@ -19,7 +19,7 @@
           <span class="el-dropdown-link">
             更多图例<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>
           </span>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu v-slot:append>
               <el-dropdown-item>
                 <div class="legend-dropdown-item"  v-for="(item,index) in hiddenData" :key="index">
                   <div class="legend-block" :class="item.clz">

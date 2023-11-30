@@ -71,7 +71,7 @@
         property="noTaxAmount"
         width="150"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           {{numFilter(scope.row.noTaxAmount)}}
         </template>
       </el-table-column>
@@ -87,7 +87,7 @@
         label="交货期"
         min-width="5%"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           {{timeTranslate(scope.row.delivery)}}
         </template>
       </el-table-column>
@@ -97,7 +97,7 @@
         label="厂内完成时间"
         min-width="10%"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           {{timeTranslate(scope.row.factoryStorageDate)}}
         </template>
       </el-table-column>
@@ -189,7 +189,7 @@
         property="noTaxAmount"
         width="140"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           {{numFilter(scope.row.noTaxAmount)}}
         </template>
       </el-table-column>
@@ -222,7 +222,7 @@
         align="center"
         label="操作"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button
 
             plain
