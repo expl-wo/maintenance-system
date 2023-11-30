@@ -65,42 +65,26 @@
     </div>
     <add-modal :visible="addModalFlag" :info="recordInfo" @closeModal="closeModal" />
     <copy-modal :visible="copyModalFlag" :info="recordInfo" @closeModal="closeModal" />
-    <!-- <preview-modal :visible="previewModalFlag" :info="recordInfo" @closeModal="closeModal" /> -->
   </div>
 </template>
 <script>
 import AddModal from './components/addModal';
 import CopyModal from './components/copyModal';
-// import PreviewModal from './components/previewModal';
-import {
-  Delete,
-  Edit,
-  Search,
-  View,
-  Plus,
-  DocumentCopy,
-} from "@element-plus/icons-vue";
 
 import { getBomTemplateList, deleteBomTemplate, getBomTemplateById } from '@/api/overhaul/templateLib';
 
 const columns = [
   {type: 'selection', width: '55'},
   { prop: '', label: '序号', width: '80', type: 'index' },
+  { prop: 'templateCode', label: '模板编号' },
   { prop: 'templateName', label: '模板名称' },
-  { prop: 'accountName', label: '创建人' },
+  { prop: 'createName', label: '创建人' },
   { prop: 'updateTime', label: '更新时间', sortable: 'custom' },
 ];
 export default {
   components: {
     AddModal,
-    CopyModal,
-      Delete,
-  Edit,
-  Search,
-  View,
-  Plus,
-  DocumentCopy,
-    // PreviewModal
+    CopyModal
   },
   data() {
     return {
@@ -139,13 +123,13 @@ export default {
         templateName: this.searchKey,
         ...this.sortInfo
       }
-      console.log(params)
-      // TODO
       getBomTemplateList(params)
       .then(res => {
         if(res.success && res.data) {
           this.tableData = res.data.pageList || [];
           this.total = res.data.total || 0;
+        } else {
+          this.$message.error(res.errMsg);
         }
       })
       .catch(() => {
@@ -220,6 +204,8 @@ export default {
           if (res.success) {
             this.$message.success('操作成功');
             this.getData();
+          } else {
+            this.$message.error(res.errMsg);
           }
         })
         .catch(err => {
