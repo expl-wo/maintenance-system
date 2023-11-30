@@ -2,37 +2,37 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="点检名称" size="mini">
+        <el-form-item label="点检名称"  size="small">
           <el-input v-model="listQuery.name" placeholder="点检名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="设备名称" size="mini">
+        <el-form-item label="设备名称"  size="small">
           <el-input v-model="listQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="点检类型" size="mini">
-          <el-select v-model="listQuery.type" size="mini" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="点检类型"  size="small">
+          <el-select v-model="listQuery.type"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in eqType" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="是否绑定设备" size="mini">
+        <el-form-item label="是否绑定设备"  size="small">
           <el-radio-group v-model="listQuery.isLinked">
             <el-radio :label="0">全部</el-radio>
             <el-radio :label="1">是</el-radio>
             <el-radio :label="2">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="generateCheckTask">生成点检任务</el-button>
         </el-form-item>
       </el-form>
@@ -41,7 +41,7 @@
     <el-table stripe  highlight-current-row
       :data="tableData"
       class="otherCon wp"
-      :stripe="true"
+
       style="width: 100%;font-size:0.7rem;"
       row-key="id"
       border
@@ -53,7 +53,7 @@
         <template #default="props">
 
           <!--第二层表格-->
-          <el-table stripe  highlight-current-row  :data="props.row.dicts" :stripe="true" style="font-size:0.7rem;">
+          <el-table stripe  highlight-current-row  :data="props.row.dicts"  style="font-size:0.7rem;">
             <el-table-column prop="step" width="60" align="center" label="步骤" />
             <el-table-column prop="name" align="center" width="250" label="点检项名称" />
             <el-table-column prop="description" align="center" label="点检内容" />
@@ -73,7 +73,7 @@
             <el-table-column header-align="center" align="center" width="120" label="点检项二维码">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button size="mini" title="编辑" type="text" @click="handleQRCode(scope.row)">
+                  <el-button  size="small" title="编辑" type="text" @click="handleQRCode(scope.row)">
                     查看二维码
                   </el-button>
                 </el-button-group>
@@ -82,8 +82,8 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button size="mini" title="编辑" type="primary" icon="el-icon-edit" @click="handleItemUpdateDict(props.row,scope.row)" />
-                  <el-button size="mini" title="删除" type="danger" icon="el-icon-delete" @click="handleItemDeleteDict(scope.row)" />
+                  <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleItemUpdateDict(props.row,scope.row)" />
+                  <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleItemDeleteDict(scope.row)" />
                 </el-button-group>
               </template>
             </el-table-column>
@@ -100,7 +100,7 @@
       </el-table-column>
       <el-table-column prop="address" align="center" width="80" label="点检设备">
         <template  #default="scope">
-          <el-button size="mini" title="查看" type="text" @click="checkEqp(row)">
+          <el-button  size="small" title="查看" type="text" @click="checkEqp(scope.row)">
             查看
           </el-button>
         </template>
@@ -108,11 +108,11 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button size="mini" title="编辑" type="primary" icon="el-icon-edit" @click="handleEditDict(scope.row)">
+            <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleEditDict(scope.row)">
               <i icon="el-icon-edit" />
             </el-button>
-            <el-button size="mini" title="删除" type="danger" icon="el-icon-delete" @click="handleDeleteDict(scope.row)" />
-            <el-button size="mini" title="添加点检规则" type="primary" icon="el-icon-plus" @click="handleItemAddDict(scope.row)">
+            <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleDeleteDict(scope.row)" />
+            <el-button  size="small" title="添加点检规则" type="primary" icon="el-icon-plus" @click="handleItemAddDict(scope.row)">
               添加点检规则
             </el-button>
           </el-button-group>
@@ -123,24 +123,24 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!--弹窗新增或修改点检计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="110px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="点检名称:" prop="name" size="mini">
-          <el-input v-model="listUpdate.name" placeholder="点检名称" style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="点检名称:" prop="name"  size="small">
+          <el-input v-model="listUpdate.name" placeholder="点检名称" style="width: 320px;" class="filter-item"  size="small" />
         </el-form-item>
-        <el-form-item label="点检描述:" size="mini">
+        <el-form-item label="点检描述:"  size="small">
           <el-input v-model="listUpdate.description" placeholder="点检描述" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="点检类型:" prop="type" size="mini">
+        <el-form-item label="点检类型:" prop="type"  size="small">
           <el-select v-model="listUpdate.type" placeholder="请选择" style="width: 100px;" @change="typeChange">
             <el-option label="日常点检" value="0" />
             <el-option label="专业点检" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item  label="点检周期:" prop="type" size="mini">
+        <el-form-item  label="点检周期:" prop="type"  size="small">
           <el-input-number v-model="listUpdate.cycle" label="点检周期" :min="0" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item  label="点检周期单位:" prop="type" size="mini">
+        <el-form-item  label="点检周期单位:" prop="type"  size="small">
           <el-select v-model="listUpdate.cycleUnit" placeholder="请选择" style="width: 100px;">
             <el-option label="日" value="0" />
             <el-option label="月" value="1" />
@@ -148,83 +148,83 @@
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')">
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')">
           保存
         </el-button>
       </div>
     </el-dialog>
 
     <!--弹窗新增或修改点检计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]+'(点检规则)'" :visible.sync="dialogItemFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]+'(点检规则)'"  v-model="dialogItemFormVisible" class="roleDialog">
       <el-form ref="listItemUpdate" label-position="right" label-width="100px" :rules="submitItemRules" :model="listItemUpdate">
-        <el-form-item label="步骤:" prop="step" size="mini">
+        <el-form-item label="步骤:" prop="step"  size="small">
           <el-input-number v-model="listItemUpdate.step" label="步骤" :min="1" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="点检项名称:" prop="name" size="mini">
+        <el-form-item label="点检项名称:" prop="name"  size="small">
           <el-input v-model="listItemUpdate.name" placeholder="点检项名称" style="width: 350px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="点检内容:" prop="description" size="mini">
+        <el-form-item label="点检内容:" prop="description"  size="small">
           <el-input v-model="listItemUpdate.description" placeholder="点检内容" type="textarea" :rows="3" style="width: 350px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="点检项类型:" prop="itemCategory" size="mini">
+        <el-form-item label="点检项类型:" prop="itemCategory"  size="small">
           <el-select v-model="listItemUpdate.itemCategory" placeholder="请选择" style="width: 120px;">
             <el-option label="安全部位类" value='0' />
             <el-option label="核心部位类" value='1' />
             <el-option label="其他" value='2' />
           </el-select>
         </el-form-item>
-        <el-form-item label="拍照检查:" prop="needPhoto" size="mini">
+        <el-form-item label="拍照检查:" prop="needPhoto"  size="small">
           <el-select v-model="listItemUpdate.needPhoto" placeholder="请选择" style="width: 100px;">
             <el-option label="不需要" value="0" />
             <el-option label="需要" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item label="文字描述:" v-if="listItemUpdate.checkType==='1'" size="mini">
+        <el-form-item label="文字描述:" v-if="listItemUpdate.checkType==='1'"  size="small">
           <el-select v-model="listItemUpdate.needText" placeholder="请选择" style="width: 100px;">
             <el-option label="不需要" value="0" />
             <el-option label="需要" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item label="点检类别:" prop="type" size="mini">
+        <el-form-item label="点检类别:" prop="type"  size="small">
           <el-select v-model="listItemUpdate.type" placeholder="请选择" style="width: 100px;">
             <el-option label="常规检查" value="0" />
             <el-option label="数据检查" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据上限:" size="mini">
+        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据上限:"  size="small">
           <el-input-number v-model="listItemUpdate.upperLimit" label="数据上限" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据下限:" size="mini">
+        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据下限:"  size="small">
           <el-input-number v-model="listItemUpdate.lowerLimit" label="数据下限" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据单位:" size="mini">
+        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据单位:"  size="small">
           <el-input v-model="listItemUpdate.unit" label="数据单位" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <!-- <el-form-item label="点检图标:" size="small">
         </el-form-item> -->
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogItemFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="dialogStatus==='create'?createItemData('listItemUpdate', '添加成功'):updateItemData('listItemUpdate', '修改成功')">
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogItemFormVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="dialogStatus==='create'?createItemData('listItemUpdate', '添加成功'):updateItemData('listItemUpdate', '修改成功')">
           保存
         </el-button>
       </div>
     </el-dialog>
 
     <!--查看点检设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="编辑点检设备" :visible.sync="dialogCheckFormVisible" class="roleBigDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="编辑点检设备"  v-model="dialogCheckFormVisible" class="roleBigDialog">
       <div>
         <div class="filter-container searchCon">
           <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
-            <el-form-item label="设备编号" size="mini">
+            <el-form-item label="设备编号"  size="small">
               <el-input v-model="listQueryEqp.id" placeholder="设备编号" style="width: 180px;" class="filter-item" clearable />
             </el-form-item>
-            <el-form-item label="设备名称" size="mini">
+            <el-form-item label="设备名称"  size="small">
               <el-input v-model="listQueryEqp.name" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
             </el-form-item>
-            <el-form-item size="mini">
+            <el-form-item  size="small">
               <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">{{ $t('button.query') }}</el-button>
             </el-form-item>
           </el-form>
@@ -232,7 +232,7 @@
         <div class="app-containerR wp" style="height:350px;">
           <div class="hp otherCon">
             <el-card shadow="hover" class="hp">
-              <div slot="header" class="clearfix">
+              <div  class="clearfix">
                 <span>未绑定设备</span>
               </div>
               <div class="wp hp app-containerC">
@@ -255,7 +255,7 @@
           </div>
           <div class="hp otherCon">
             <el-card shadow="hover" class="hp">
-              <div slot="header" class="clearfix">
+              <div  class="clearfix">
                 <span>已绑定设备</span>
               </div>
               <div class="wp hp app-containerC">
@@ -274,28 +274,28 @@
           </div>
         </div>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogCheckFormVisible = false">关 闭</el-button>
-        <!-- <el-button type="primary" @click="updateTransferData()" size="mini">
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogCheckFormVisible = false">关 闭</el-button>
+        <!-- <el-button type="primary" @click="updateTransferData()"  size="small">
           保存
         </el-button> -->
       </div>
     </el-dialog>
 
     <!--查看二维码-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码" :visible.sync="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogQRCodeFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogQRCodeFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!-- 导入 -->
     <el-dialog
       title="导入"
-      :visible.sync="uploadDialogVisible"
+       v-model="uploadDialogVisible"
       width="400px"
       @close="handleClose"
     >
@@ -311,7 +311,7 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button slot="trigger" size="medium" type="primary">
+            <el-button  size="medium" type="primary">
               选取文件
             </el-button>
             <el-button
@@ -321,16 +321,16 @@
               style="margin-left: 70px;"
               >上传
             </el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择点检设备" :visible.sync="dialogProCheckFormVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择点检设备"  v-model="dialogProCheckFormVisible" class="roleDialog800">
       <proCheckEquip ref="equipAction" :checkDataSelected="checkDataSelected"></proCheckEquip>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogProCheckFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogProCheckFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
 
@@ -578,7 +578,7 @@ export default {
           this.expandedRowData = [item]
         }
       })
-      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData = this.expandedRowData
+      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData
       if (expandedRows.length) {
         this.expands = []
         if (row) {

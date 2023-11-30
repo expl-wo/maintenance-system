@@ -5,7 +5,7 @@
         <el-col :span="24">
           <el-form-item prop="pl14Id" label="生产号：">
            <el-select v-model="model.pl14Id" placeholder="请选择生产号" style="width: 100%;" v-if="productNos.length>1">
-             <el-option v-for="(item,index) in productNos" :key="item.pl14Id" :label="item.productNo" :value="item.pl14Id"></el-option>
+             <el-option v-for="item in productNos" :key="item.pl14Id" :label="item.productNo" :value="item.pl14Id"></el-option>
            </el-select>
            <span v-if="productNos.length==1">{{productNo}}</span>
           </el-form-item>
@@ -15,7 +15,7 @@
         <el-col :span="24">
           <el-form-item prop="tankId" label="干燥罐：">
             <el-select v-model="model.tankId" style="width: 100%;">
-              <el-option v-for="(item,index) in selectData" :key="item.id" :label="item.tableName" :value="item.id"></el-option>
+              <el-option v-for="item in selectData" :key="item.id" :label="item.tableName" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -38,7 +38,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <div slot="footer">
+    <div  >
       <el-button @click="dialogVisible=false">取消</el-button>
       <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;">
     <el-card shadow="hover" class="hp">
-      <div slot="header" class="hasLegend">
+      <div  class="hasLegend">
         <div class="filter-container searchCon hasLegend">
           <el-form
             ref="listQuery"
@@ -10,7 +10,7 @@
             class="demo-form-inline demo-form-zdy"
           >
             <el-form-item>
-              <el-input @keyup.enter.native="handleSearch" v-model="listQuery.productNumber" placeholder="请输入生产号" style="width: 150px;" class="filter-item" clearable />
+              <el-input @keyup.enter="handleSearch" v-model="listQuery.productNumber" placeholder="请输入生产号" style="width: 150px;" class="filter-item" clearable />
             </el-form-item>
             <el-form-item>
               <xui-dict-select multiple item-code="nodeConfirmStatus" includeAll v-model="listQuery.statusModel"
@@ -76,7 +76,7 @@
                 label="周期"
                 property="duration"
                 width="50">
-                <template v-slot="scope">
+                <template #default="scope">
                   <span>{{scope.row.duration}}天</span>
                 </template>
               </el-table-column>
@@ -94,7 +94,7 @@
                 label="状态"
                 width="60"
                 property="status">
-                <template v-slot="scope">
+                <template #default="scope">
                   <xui-dictionary itemCode="confirmStatus" :code="scope.row.status"></xui-dictionary>
                 </template>
               </el-table-column>
@@ -119,7 +119,7 @@
               label="序号"
               width="50"
             >
-              <template v-slot="scope">
+              <template #default="scope">
                 {{scope.$index + 1}}
               </template>
             </el-table-column>
@@ -136,7 +136,7 @@
               property=""
               width="100"
             >
-              <template v-slot="scope">
+              <template #default="scope">
                 {{opName}}
               </template>
             </el-table-column>
@@ -191,7 +191,7 @@
               property="relativeBom"
               width="110"
             >
-              <template v-slot="scope">
+              <template #default="scope">
                 <xui-dictionary itemCode="flag01" :code="scope.row.relativeBom"></xui-dictionary>
               </template>
             </el-table-column>
@@ -213,7 +213,7 @@
               property="haveGyjh"
               width="150"
             >
-              <template v-slot="scope">
+              <template #default="scope">
                 <xui-dictionary itemCode="flag01" :code="scope.row.haveGyjh"></xui-dictionary>
               </template>
             </el-table-column>
@@ -225,7 +225,7 @@
             >
             </el-table-column>
             <el-table-column label="操作" align="center" fixed="right" width="120">
-              <template v-slot="scope">
+              <template #default="scope">
                 <el-button-group>
                   <el-button type="danger"  @click="handleDelete(scope.row)"  icon="Delete">删除</el-button>
                 </el-button-group>

@@ -2,19 +2,19 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="鉴定名称" size="mini">
+        <el-form-item label="鉴定名称"  size="small">
           <el-input v-model="listQuery.name" placeholder="鉴定名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="addOrUpdate()">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="excelDialogVisible = true">导入</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="exportExcel('forExportExcelFile','鉴定配置')">导出</el-button>
         </el-form-item>
       </el-form>
@@ -40,8 +40,8 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button size="mini" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdateDe(scope.row,false)" />
-                  <el-button size="mini" title="删除" type="danger" icon="el-icon-delete" @click="deleteDe(scope.row)" />
+                  <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdateDe(scope.row,false)" />
+                  <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteDe(scope.row)" />
                 </el-button-group>
               </template>
             </el-table-column>
@@ -64,10 +64,10 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button size="mini" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row)"></el-button>
-            <el-button size="mini" title="删除" type="danger" icon="el-icon-delete" @click="deleteMain(scope.row)" />
-            <el-button size="mini" title="添加鉴定项" type="primary" icon="el-icon-plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
-            <el-button size="mini" title="选择设备" type="primary" icon="el-icon-plus" @click="selectEquipment(scope.row)">选择设备</el-button>
+            <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row)"></el-button>
+            <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteMain(scope.row)" />
+            <el-button  size="small" title="添加鉴定项" type="primary" icon="el-icon-plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
+            <el-button  size="small" title="选择设备" type="primary" icon="el-icon-plus" @click="selectEquipment(scope.row)">选择设备</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -76,55 +76,55 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!-- 新增/修改鉴定类别弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title" :visible.sync="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="mainForm" label-position="right" label-width="110px" :rules="rules" :model="mainForm">
-        <el-form-item label="鉴定名称:" prop="name" size="mini">
-          <el-input v-model="mainForm.name" placeholder="鉴定名称" style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="鉴定名称:" prop="name"  size="small">
+          <el-input v-model="mainForm.name" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />
         </el-form-item>
-        <el-form-item label="鉴定周期:" prop="cycle" size="mini">
+        <el-form-item label="鉴定周期:" prop="cycle"  size="small">
           <el-input v-model="mainForm.cycle" placeholder="鉴定周期" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="鉴定周期单位:" prop="cycleUnit" size="mini">
+        <el-form-item label="鉴定周期单位:" prop="cycleUnit"  size="small">
           <el-input v-model="mainForm.cycleUnit" placeholder="鉴定周期单位" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="鉴定前提醒日:" prop="remindDay" size="mini">
+        <el-form-item label="鉴定前提醒日:" prop="remindDay"  size="small">
 <!--          <el-date-picker v-model="mainForm.remindDay" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker> -->
-          <el-input v-model="mainForm.remindDay" placeholder="鉴定前提醒日" style="width: 320px;" class="filter-item"><template slot="append">天</template></el-input>
+          <el-input v-model="mainForm.remindDay" placeholder="鉴定前提醒日" style="width: 320px;" class="filter-item"><template v-slot:append>天</template></el-input>
         </el-form-item>
-        <el-form-item label="鉴定滞后提醒日:" prop="waringDay" size="mini">
+        <el-form-item label="鉴定滞后提醒日:" prop="waringDay"  size="small">
           <!-- <el-date-picker v-model="mainForm.waringDay" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker> -->
-          <el-input v-model="mainForm.waringDay" placeholder="鉴定滞后提醒日" style="width: 320px;" class="filter-item"><template slot="append">天</template></el-input>
+          <el-input v-model="mainForm.waringDay" placeholder="鉴定滞后提醒日" style="width: 320px;" class="filter-item"><template v-slot:append>天</template></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogMainFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('mainForm')">保存</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogMainFormVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="submitForm('mainForm')">保存</el-button>
       </div>
     </el-dialog>
 
     <!-- 新增/修改鉴定内容弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title" :visible.sync="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="deForm" label-position="right" label-width="110px" :rules="rules" :model="deForm">
-        <el-form-item label="步骤:" prop="step" size="mini">
-          <el-input v-model="deForm.step" placeholder="鉴定名称" style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="步骤:" prop="step"  size="small">
+          <el-input v-model="deForm.step" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />
         </el-form-item>
-        <el-form-item label="项目:" prop="project" size="mini">
+        <el-form-item label="项目:" prop="project"  size="small">
           <el-input v-model="deForm.project" placeholder="项目" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="检测设备及器具:" prop="method" size="mini">
+        <el-form-item label="检测设备及器具:" prop="method"  size="small">
           <el-input v-model="deForm.method" placeholder="检测设备及器具" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="标准值:" prop="standardValue" size="mini">
+        <el-form-item label="标准值:" prop="standardValue"  size="small">
           <el-input v-model="deForm.standardValue" placeholder="标准值" style="width: 320px;" class="filter-item" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogDeFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('deForm')">保存</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogDeFormVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="submitForm('deForm')">保存</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog title="图片上传" :visible.sync="uploadDialogVisible" width="30%" @close="handleClose">
+    <el-dialog title="图片上传"  v-model="uploadDialogVisible" width="30%" @close="handleClose">
       <el-row>
         <el-col>
           <el-upload
@@ -137,9 +137,9 @@
             accept=".jpg,.png"
             list-type="picture"
             :auto-upload="false">
-            <el-button slot="trigger" size="small" type="primary">选择图片</el-button>
+            <el-button  size="small" type="primary">选择图片</el-button>
             <el-button size="medium" type="success" @click="submitUpload">上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
+            <div   class="el-upload__tip">只能上传jpg/png文件</div>
           </el-upload>
         </el-col>
       </el-row>
@@ -148,7 +148,7 @@
     <!-- 导入 -->
     <el-dialog
       title="导入"
-      :visible.sync="excelDialogVisible"
+       v-model="excelDialogVisible"
       width="400px"
       @close="handleClose"
     >
@@ -164,7 +164,7 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button slot="trigger" size="medium" type="primary">
+            <el-button  size="medium" type="primary">
               选取文件
             </el-button>
             <el-button
@@ -181,7 +181,7 @@
               style="margin-left: 20px;"
               >上传
             </el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
@@ -247,7 +247,7 @@ export default {
       dialogEquipmentVisible: false,
       mainId: null,
       excelDialogVisible: false,
-      fileList: [],
+
     }
   },
   mounted() {
@@ -391,10 +391,6 @@ export default {
       this.uploadDialogVisible = true;
       this.detailData = row;
     },
-    handleClose() {
-      this.fileList = [];
-      this.uploadDialogVisible = false;
-    },
     handleChange(file, fileList) {
       this.fileList = fileList
     },
@@ -426,12 +422,6 @@ export default {
     selectEquipment(row) {
       this.dialogEquipmentVisible = true;
       this.mainId = row.id;
-    },
-    handleChange(file, fileList) {
-      this.fileList = [fileList[fileList.length - 1]]
-    },
-    handleRemove() {
-      this.fileList = [];
     },
     async excelUpload() {
       if (this.fileList.length > 0) {

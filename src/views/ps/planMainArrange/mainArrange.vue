@@ -4,7 +4,7 @@
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="关键字">
           <el-input v-model="listQuery.search" placeholder="项目名、生产号、图号"
-                    style="width:170px;" @keyup.enter.native="handleSearch" @clear="handleSearch" class="filter-item"
+                    style="width:170px;" @keyup.enter="handleSearch" @clear="handleSearch" class="filter-item"
                     clearable/>
         </el-form-item>
         <el-form-item label="审批状态">

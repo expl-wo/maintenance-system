@@ -2,43 +2,43 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="" size="mini" v-if="needShow">
+        <el-form-item label=""  size="small" v-if="needShow">
           <el-input v-model="listQuery.creatorName" placeholder="点检人" style="width: 130px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="点检类型:" size="mini">
+        <el-form-item label="点检类型:"  size="small">
           <el-radio-group v-model="listQuery.checkType">
             <el-radio :label="100">全部</el-radio>
             <el-radio :label="0">日常点检</el-radio>
             <el-radio :label="1">专业点检</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="是否完成:" size="mini">
+        <el-form-item label="是否完成:"  size="small">
           <el-radio-group v-model="listQuery.status">
             <el-radio :label="100">全部</el-radio>
             <el-radio :label="0">未完成</el-radio>
             <el-radio :label="1">已完成</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="" size="mini">
+        <el-form-item label=""  size="small">
           <el-input v-model="listQuery.eqpName" placeholder="设备名称/编号" style="width: 130px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="设备分类" size="mini" v-if="needShow">
-          <el-select v-model="listQuery.eqpClazz" size="mini" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="设备分类"  size="small" v-if="needShow">
+          <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
             <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="时间:" size="mini" prop="dateCount">
+        <el-form-item label="时间:"  size="small" prop="dateCount">
           <el-date-picker v-model="listQuery.dateGroup" type="daterange" style="width: 230px;" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" />
         </el-form-item>
-        <el-form-item label="使用部门" size="mini" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId" size="mini" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="使用部门"  size="small" v-if="needShow">
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
             <el-option v-for="(items,index) in usingDepData" :key="index" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-download" @click="onExport">结果导出</el-button>
         </el-form-item>
       </el-form>
@@ -50,7 +50,6 @@
       class="otherCon wp"
       style="width: 100%;font-size:0.7rem;"
       row-key="id"
-      :stripe=true
       border
       :expand-row-keys="expands"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -59,7 +58,7 @@
       <el-table-column type="expand" prop="name" width="60" align="center" label="">
         <template #default="props">
           <!--第二层表格 开始-->
-          <el-table stripe  highlight-current-row  :data="props.row.dicts" :stripe="true" style="font-size:0.7rem;">
+          <el-table stripe  highlight-current-row  :data="props.row.dicts"  style="font-size:0.7rem;">
             <el-table-column prop="step" width="60" align="center" label="步骤" />
             <el-table-column prop="itemName" align="center" width="300" label="点检项名称" />
             <el-table-column prop="itemDesc" align="center" label="点检内容" />
@@ -209,7 +208,7 @@ export default {
           this.expandedRowData = [item]
         }
       })
-      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData = this.expandedRowData
+      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData
       if (expandedRows.length) {
         this.expands = []
         if (row) {

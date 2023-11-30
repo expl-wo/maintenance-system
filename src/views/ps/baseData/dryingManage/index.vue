@@ -3,7 +3,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="炉号">
-          <el-input v-model="listQuery.dryingTankCode" @keyup.enter.native="handleSearch"
+          <el-input v-model="listQuery.dryingTankCode" @keyup.enter="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
@@ -76,7 +76,7 @@
             fixed
             width="90"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="dryingClassification" :code="scope.row.classification"></xui-dictionary>
             </template>
           </el-table-column>
@@ -88,7 +88,7 @@
             property="dryingMethod"
             width="90"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <xui-dictionary itemCode="dryingMethod" :code="scope.row.dryingMethod"></xui-dictionary>
             </template>
           </el-table-column>
@@ -173,7 +173,7 @@
           >
           </el-table-column>
           <el-table-column label="操作" align="center"  fixed="right">
-            <template v-slot="scope">
+            <template #default="scope">
               <el-button-group>
                 <el-button  type="primary" icon="Edit"
                             @click="handleEdit(scope.row)">

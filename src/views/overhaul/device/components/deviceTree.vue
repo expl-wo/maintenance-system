@@ -6,7 +6,7 @@
       placeholder="搜索"
       suffix-icon="el-icon-search"
       v-model="filterText"
-      @keyup.enter.native="onSearch">
+      @keyup.enter="onSearch">
     </el-input>
     <div class="tree-container">
       <el-tree

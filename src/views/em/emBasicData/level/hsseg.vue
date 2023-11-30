@@ -4,13 +4,13 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="等级名称" size="mini">
-          <el-input v-model="listQuery.name" placeholder="等级名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="等级名称"  size="small">
+          <el-input v-model="listQuery.name" placeholder="等级名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
-        <el-form-item label="等级描述" size="mini">
-          <el-input v-model="listQuery.description" placeholder="等级描述" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="等级描述"  size="small">
+          <el-input v-model="listQuery.description" placeholder="等级描述" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>

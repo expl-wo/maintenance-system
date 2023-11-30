@@ -9,7 +9,7 @@
         label="序号"
         width="50"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
@@ -19,8 +19,8 @@
         property="oldDeliveryDate"
         width="140"
       >
-        <template v-slot="scope">
-          <span>{{ scope.row.oldDeliveryDate| formatTimeToYmd }}</span>
+        <template #default="scope">
+          <span>{{ scope.row.oldDeliveryDate | formatTimeToYmd }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -43,7 +43,7 @@
         label="审批状态"
         property="status"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <xui-dictionary itemCode="finishTimeApprovalStatus" :code="scope.row.status"></xui-dictionary>
         </template>
       </el-table-column>

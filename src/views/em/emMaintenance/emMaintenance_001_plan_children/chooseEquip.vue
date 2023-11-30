@@ -2,13 +2,13 @@
   <div class="app-container">
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd"></el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-input v-model="listQuery.eqpId" placeholder="设备编号"></el-input>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-search" @click="onQuery">搜索</el-button>
         </el-form-item>
       </el-form>
@@ -24,57 +24,57 @@
     />
 
     <!--弹窗新增或修改保养设备定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog" :append-to-body="true">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
       <el-form ref="listUpdate" label-position="right" label-width="125px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="保养计划名称:" size="mini">
+        <el-form-item label="保养计划名称:"  size="small">
           <el-input v-model="listUpdate.mtcName" placeholder="保养计划名称" style="width: 250px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="设备名称:" prop="eqpName" size="mini">
+        <el-form-item label="设备名称:" prop="eqpName"  size="small">
           <el-input v-model="listUpdate.eqpName" placeholder="设备名称" style="width: 250px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectEquip">选择设备</el-button>
+          <el-button  size="small" type="primary" @click="onSelectEquip">选择设备</el-button>
         </el-form-item>
-        <el-form-item label="下次保养时间:" prop="nextMtcTime" size="mini">
+        <el-form-item label="下次保养时间:" prop="nextMtcTime"  size="small">
           <el-date-picker v-model="listUpdate.nextMtcTime" :picker-options="pickerOptions0" value-format="yyyy-MM-dd" type="date" placeholder="下次保养时间" style="width: 250px;" class="filter-item" />
         </el-form-item>
-<!--        <el-form-item label="派工提醒人:" prop="reminderName" size="mini">-->
+<!--        <el-form-item label="派工提醒人:" prop="reminderName"  size="small">-->
 <!--          <el-input v-model="listUpdate.reminderName" placeholder="派工提醒人" style="width: 250px;" class="filter-item" disabled />-->
-<!--          <el-button size="mini" type="primary" @click="onSelectPeople">选择提醒人</el-button>-->
+<!--          <el-button  size="small" type="primary" @click="onSelectPeople">选择提醒人</el-button>-->
 <!--        </el-form-item>-->
-        <el-form-item v-if="equipRowSelected.cycleType==1" label="保养负责人:" prop="maintenanceHeadName" size="mini">
+        <el-form-item v-if="equipRowSelected.cycleType==1" label="保养负责人:" prop="maintenanceHeadName"  size="small">
           <el-input  v-model="listUpdate.maintenanceHeadName" placeholder="保养负责人" style="width: 250px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectPeople">选择负责人</el-button>
+          <el-button  size="small" type="primary" @click="onSelectPeople">选择负责人</el-button>
         </el-form-item>
-        <el-form-item v-if="equipRowSelected.cycleType==1" label="保养参与人:" prop="maintenanceOtherNames" size="mini">
+        <el-form-item v-if="equipRowSelected.cycleType==1" label="保养参与人:" prop="maintenanceOtherNames"  size="small">
           <el-input  v-model="listUpdate.maintenanceOtherNames" placeholder="保养参与人" style="width: 250px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectPeoples">选择参与人</el-button>
+          <el-button  size="small" type="primary" @click="onSelectPeoples">选择参与人</el-button>
         </el-form-item>
-        <el-form-item  v-if="equipRowSelected.cycleType==1" label="保养检查人:" prop="maintenanceOtherNames" size="mini">
+        <el-form-item  v-if="equipRowSelected.cycleType==1" label="保养检查人:" prop="maintenanceOtherNames"  size="small">
           <el-input  v-model="listUpdate.maintenanceCheckNames" placeholder="保养参与人" style="width: 250px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectCheck">选择参与人</el-button>
+          <el-button  size="small" type="primary" @click="onSelectCheck">选择参与人</el-button>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('listUpdate')" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="saveData('listUpdate')"  size="small">
           保存
         </el-button>
       </div>
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人" :visible.sync="dialogPeopleFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="" prop="name" size="mini">
+          <el-form-item label="" prop="name"  size="small">
             <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -88,24 +88,24 @@
         :limit="listPeopleQuery.pg_pagesize"
         @pagination="getPeopleList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogPeopleFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogPeopleFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
 
     <!--选择人员(参与人)多选-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择参与人" :visible.sync="dialogPeoplesFormVisible" class="roleDialog800" append-to-body>
+    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择参与人"  v-model="dialogPeoplesFormVisible" class="roleDialog800" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
-        <el-form-item label="" prop="name" size="mini">
+        <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>
@@ -119,28 +119,28 @@
         :limit="listPeopleQuery.pg_pagesize"
         @pagination="getPeopleList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogPeoplesFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="createTablePeopleData()" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogPeoplesFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="createTablePeopleData()"  size="small">
           确 认
         </el-button>
       </div>
     </el-dialog>
 
     <!--选择检查人-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择检查人" :visible.sync="dialogCheckFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择检查人"  v-model="dialogCheckFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="" prop="name" size="mini">
+          <el-form-item label="" prop="name"  size="small">
             <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -154,9 +154,9 @@
         :limit="listPeopleQuery.pg_pagesize"
         @pagination="getPeopleList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogCheckFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="createTableCheckerData()" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogCheckFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="createTableCheckerData()"  size="small">
           确 认
         </el-button>
       </div>
@@ -164,23 +164,23 @@
 
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备" :visible.sync="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="设备编号" size="mini">
+          <el-form-item label="设备编号"  size="small">
             <el-input v-model="listQueryEqp.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="设备名称" size="mini">
+          <el-form-item label="设备名称"  size="small">
             <el-input v-model="listQueryEqp.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="绑定其他配置" size="mini">
+          <el-form-item label="绑定其他配置"  size="small">
             <el-radio-group v-model="listQueryEqp.isLinked">
               <el-radio :label="-1">全部</el-radio>
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -201,8 +201,8 @@
           </el-card>
         </div>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEquipFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogEquipFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
 

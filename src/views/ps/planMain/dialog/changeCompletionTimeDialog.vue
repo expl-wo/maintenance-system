@@ -5,7 +5,7 @@
       <el-table stripe  ref="tableRef" height="360" highlight-current-row border :data="formList.dataList"
                 style="font-size: 0.7rem">
         <el-table-column label="序号" width="50" align="center">
-          <template v-slot="scope">
+          <template #default="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
@@ -17,7 +17,7 @@
         >
         </el-table-column>
         <el-table-column  align="center" label="生产完工时间" >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-form-item :prop="'dataList.' + scope.$index + '.completionTime'" :rules="rules.completionTime">
               <el-date-picker
                 v-model="scope.row.completionTime"

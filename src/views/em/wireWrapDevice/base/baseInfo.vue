@@ -3,12 +3,12 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="searchParams" class="form-inline">
-        <el-form-item label="" size="mini">
-          <el-input placeholder="编号、名称搜索" v-model="searchParams.keywords" @keyup.enter.native="searchHandle"></el-input>
+        <el-form-item label=""  size="small">
+          <el-input placeholder="编号、名称搜索" v-model="searchParams.keywords" @keyup.enter="searchHandle"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="searchHandle" icon="el-icon-search"  size="mini">查询</el-button>
-          <el-button type="primary" icon="el-icon-plus"  @click="addHandle" size="mini">新增</el-button>
+          <el-button @click="searchHandle" icon="el-icon-search"   size="small">查询</el-button>
+          <el-button type="primary" icon="el-icon-plus"  @click="addHandle"  size="small">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -16,7 +16,7 @@
     <div class="app-container app-containerC">
       <div class="otherCon wp">
         <el-table stripe  :data="dataList"
-                  size="mini"
+                   size="small"
                   highlight-current-row border
                   style="font-size: 0.7rem"
                   :height="'100%'"
@@ -28,10 +28,10 @@
           <el-table-column label="操作" align="center">
             <template  #default="scope">
               <el-button-group>
-                <el-button  type="primary" size="mini" icon="el-icon-edit"
+                <el-button  type="primary"  size="small" icon="el-icon-edit"
                             @click="handleEdit(scope.row)">
                 </el-button>
-                <el-button type="danger" size="mini" icon="el-icon-delete"
+                <el-button type="danger"  size="small" icon="el-icon-delete"
                            @click="deleteHandle(scope.row)">
                 </el-button>
               </el-button-group>
@@ -45,34 +45,34 @@
                      @current-change="handlePgChange"
       ></el-pagination>
     </div>
-    <el-dialog v-draggable  appendToBody :title="model.id ? '修改': '新增'" :visible.sync="dialogVisible" modal>
+    <el-dialog v-draggable  appendToBody :title="model.id ? '修改': '新增'"  v-model="dialogVisible" modal>
       <el-form :model="model" class="element-list" ref="form"
                :rules="rules"
                style="overflow-y: auto;" label-width="100px"
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item prop="code" label="设备编号" size="mini">
+            <el-form-item prop="code" label="设备编号"  size="small">
               <el-input v-model="model.code"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item prop="name" label="设备名称" size="mini">
+            <el-form-item prop="name" label="设备名称"  size="small">
               <el-input v-model="model.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="remark" label="备注" size="mini">
+            <el-form-item prop="remark" label="备注"  size="small">
               <el-input v-model="model.remark" type="textarea" :rows="5"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="handleSubmit">保存</el-button>
+      <div  >
+        <el-button  size="small" @click="dialogVisible=false">取消</el-button>
+        <el-button  size="small" type="primary" @click="handleSubmit">保存</el-button>
       </div>
     </el-dialog>
   </div>

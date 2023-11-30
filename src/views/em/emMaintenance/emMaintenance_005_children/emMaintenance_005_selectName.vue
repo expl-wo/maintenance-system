@@ -1,17 +1,17 @@
 <template>
   <!--选择人员-->
-  <el-dialog v-draggable  :close-on-click-modal="false" title="请选择检修人员" :visible.sync="dialogVisible" class="roleDialog800">
+  <el-dialog v-draggable  :close-on-click-modal="false" title="请选择检修人员"  v-model="dialogVisible" class="roleDialog800">
     <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-      <el-form-item label="" prop="name" size="mini">
-        <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter.native="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
+      <el-form-item label="" prop="name"  size="small">
+        <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
-      <el-form-item label="" prop="intro" size="mini">
-        <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" @keyup.enter.native="onPeopleQuery" clearable  style="width: 180px;" class="filter-item" />
+      <el-form-item label="" prop="intro"  size="small">
+        <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" @keyup.enter="onPeopleQuery" clearable  style="width: 180px;" class="filter-item" />
       </el-form-item>
-      <el-form-item label="" prop="intro" size="mini">
-        <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter.native="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
+      <el-form-item label="" prop="intro"  size="small">
+        <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
-      <el-form-item size="mini">
+      <el-form-item  size="small">
         <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
       </el-form-item>
     </el-form>
@@ -38,9 +38,9 @@
       </el-table>
       <xui-pagination :total="total" :page="listPeopleQuery.pageNum" :limit="listPeopleQuery.pg_pagesize" @pagination="handlePagination" class="searchCon wp"/>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" size="mini" @click="savePeopleData()">
+    <div   class="dialog-footer">
+      <el-button  size="small" @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary"  size="small" @click="savePeopleData()">
         保存
       </el-button>
     </div>

@@ -99,7 +99,7 @@
         align="center"
         label="操作"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button
 
             plain
@@ -213,7 +213,7 @@
           label="类型"
           width="150"
           align="center">
-          <template v-slot="scope">
+          <template #default="scope">
             <span v-if="scope.row.type === 0">设计</span>
             <span v-if="scope.row.type === 1">采购</span>
             <span v-if="scope.row.type === 2">生产</span>
@@ -228,13 +228,13 @@
           prop="duration"
           label="周期"
           align="center">
-          <template v-slot="scope">
+          <template #default="scope">
             <span v-if="scope.row.duration">{{ scope.row.duration }} 天</span>
           </template>
         </el-table-column>
         <el-table-column
           label="操作">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button type="primary" v-if="scope.row.type == null" style="margin-left: 60px;"
                        @click="updateDetail(scope.row)">编辑节点
             </el-button>
@@ -278,7 +278,7 @@
         <el-form-item label="周期:" prop="duration">
           <el-input v-model="addOrUpdateForm.duration" placeholder="周期" style="width: 180px;" class="filter-item"
                    >
-            <template slot="append">天</template>
+            <template v-slot:append>天</template>
           </el-input>
         </el-form-item>
       </el-form>
@@ -327,7 +327,7 @@
         <el-form-item label="周期:" prop="duration">
           <el-input v-model="addOrUpdateForm.duration" placeholder="周期" style="width: 180px;" class="filter-item"
                    >
-            <template slot="append">天</template>
+            <template v-slot:append>天</template>
           </el-input>
         </el-form-item>
       </el-form>

@@ -10,6 +10,7 @@ module.exports = {
 		es6: true,
 	},
 	"plugins": ['@typescript-eslint'],
+	
 	extends: [
 		"plugin:vue/vue3-essential",
 		"eslint:recommended",
@@ -33,6 +34,14 @@ module.exports = {
 		"no-irregular-whitespace": "off", //不能有不规则的空格
 		"no-mixed-spaces-and-tabs": "off",//禁止混用tab和空格
 		"prettier/prettier": "off",
+		"@typescript-eslint/no-this-alias": [
+		    "error",
+		    {
+		      "allowDestructuring": false, // Disallow `const { props, state } = this`; true by default
+		      "allowedNames": ["that","self","_this"] // Allow `const self = this`; `[]` by default
+		    }
+		],
+		// "@typescript-eslint/no-empty-function":"off",
 		"@typescript-eslint/ban-ts-comment": "off",
 		// "off"或者0    关闭规则关闭
 		// "warn"或者1    在打开的规则作为警告（不影响退出代码）

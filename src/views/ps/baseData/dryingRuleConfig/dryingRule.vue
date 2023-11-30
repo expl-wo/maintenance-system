@@ -3,7 +3,7 @@
     <div class="panel-menu-search filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="类别名称">
-          <el-input v-model="listQuery.tlmname" @keyup.enter.native="handleSearch"
+          <el-input v-model="listQuery.tlmname" @keyup.enter="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
@@ -24,7 +24,7 @@
             label="序号"
             width="50"
           >
-            <template v-slot="scope">
+            <template #default="scope">
               <span>{{ scope.$index + 1 }}</span>
             </template>
           </el-table-column>
@@ -45,7 +45,7 @@
           >
           </el-table-column>
           <el-table-column label="操作" width="80" align="center">
-            <template v-slot="scope">
+            <template #default="scope">
               <el-button-group>
                 <el-button  type="primary"
                             @click="handleEdit(scope.row)">保存

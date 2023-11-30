@@ -4,7 +4,7 @@ import { getPlanSimpleList } from '@/api/process'
 // 设备分类查询
 export function getCateList(params) {
   return request({
-    url: '/eqpLedger/cate',
+    url: '/api/equipment/eqpLedger/cate',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -19,7 +19,7 @@ export function getCateList(params) {
 // 查询设备分类，主用于在下拉列表中显示
 export function getEqCateList() {
   return request({
-    url: '/eqpLedger/eqpClazz',
+    url: '/api/equipment/eqpLedger/eqpClazz',
     method: 'get'
   })
 }
@@ -27,7 +27,7 @@ export function getEqCateList() {
 //
 export function setWorkTime(data) {
   return request({
-    url: '/eqpLedger/setEqpWorkTime',
+    url: '/api/equipment/eqpLedger/setEqpWorkTime',
     method: 'post',
     data
   })
@@ -35,7 +35,7 @@ export function setWorkTime(data) {
 // 设备台账查询
 export function getInfoList(params) {
   return request({
-    url: '/eqpLedger/info',
+    url: '/api/equipment/eqpLedger/info',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -51,30 +51,12 @@ export function getInfoList(params) {
     }
   })
 }
-//查询NC
-export function getNcData(data){
-  return request({
-    url: '/dncEqp/getNcData',
-    method: 'get',
-    params:data
-  })
-}
 
-//生产图号查询
-export function getDrawNo(params){
-  return request({
-    url: '/planproduct/getDrawingNO',
-    method: 'get',
-    param: {
-      productNo:params.productionCode,
-    }
-  })
-}
 // 设备等级查询
 //hsseg
 export function getHsseManageLevelList(params) {
   return request({
-    url: '/eqpLedger/hsseManageLevel',
+    url: '/api/equipment/eqpLedger/hsseManageLevel',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -87,7 +69,7 @@ export function getHsseManageLevelList(params) {
 //生产管理
 export function getProductionManageLevelList(params) {
   return request({
-    url: '/eqpLedger/productionManageLevel',
+    url: '/api/equipment/eqpLedger/productionManageLevel',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -101,7 +83,7 @@ export function getProductionManageLevelList(params) {
 // 设备图片保存
 export function getPicUpdate(data) {
   return request({
-    url: '/eqpLedger/pic',
+    url: '/api/equipment/eqpLedger/pic',
     method: 'POST',
     data
   })
@@ -110,7 +92,7 @@ export function getPicUpdate(data) {
 // 设备文件查询
 export function getFileList(params) {
   return request({
-    url: '/eqpLedger/file',
+    url: '/api/equipment/eqpLedger/file',
     method: 'get',
     params: {
       id: params.id || '' // 设备id
@@ -119,7 +101,7 @@ export function getFileList(params) {
 }
 export function getFileUpdate(data) {
   return request({
-    url: '/eqpLedger/file',
+    url: '/api/equipment/eqpLedger/file',
     method: 'POST',
     data
   })
@@ -127,7 +109,7 @@ export function getFileUpdate(data) {
 // 设备文件删除
 export function deleteFile(data) {
   return request({
-    url: '/eqpLedger/file',
+    url: '/api/equipment/eqpLedger/file',
     method: 'DELETE',
     data
   })
@@ -136,7 +118,7 @@ export function deleteFile(data) {
 // 设备图片查询
 export function getPicList(params) {
   return request({
-    url: '/eqpLedger/pic',
+    url: '/api/equipment/eqpLedger/pic',
     method: 'get',
     params: {
       id: params.id || '' // 设备id
@@ -147,7 +129,7 @@ export function getPicList(params) {
 // 设备图片删除
 export function deletePic(data) {
   return request({
-    url: '/eqpLedger/pic',
+    url: '/api/equipment/eqpLedger/pic',
     method: 'DELETE',
     data
   })
@@ -155,7 +137,7 @@ export function deletePic(data) {
 
 export function timetoandon(params) {
   return request({
-    url: '/eqpLedger/timetoandon',
+    url: '/api/equipment/eqpLedger/timetoandon',
     method: 'POST',
     params: {
       eqpClassId: params.eqpClassId || '', // 分类id
@@ -166,7 +148,7 @@ export function timetoandon(params) {
 
 export function responseConfirm(data) {
   return request({
-    url: '/eqpLedger/eqpManager',
+    url: '/api/equipment/eqpLedger/eqpManager',
     method: 'POST',
     data
   })
@@ -184,7 +166,7 @@ export function importManager(data) {
 //查寻设备使用部门
 export function finEqpDep(params) {
   return request({
-    url: '/eqpLedger/finEqpDep',
+    url: '/api/equipment/eqpLedger/finEqpDep',
     method: 'get',
   })
 }

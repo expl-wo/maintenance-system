@@ -6,7 +6,7 @@
           <div class="xui-check-panel__title">{{opItem.name }}</div>
           <div class="xui-check-panel__content">
             <el-radio-group v-model="opItem.v" @change="val=>handleChangeRadio(val, opItem)">
-              <el-radio v-for="(item, index) in opItem.sub" :label="item.id" :key="item.id">{{ item.opName }}</el-radio>
+              <el-radio v-for="item in opItem.sub" :label="item.id" :key="item.id">{{ item.opName }}</el-radio>
             </el-radio-group>
           </div>
         </div>
@@ -96,6 +96,7 @@ export default {
           }
         })
       }catch (e){
+        console.error(e)
       }
       return level;
     },

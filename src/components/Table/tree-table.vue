@@ -37,7 +37,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import Pagination from '../Pagination/index'
 
 // 自定义内容的组件
@@ -128,8 +127,6 @@ export default {
       }
     }
   },
-  mounted() {
-  },
   // 初始化函数，赋值，menusTree =>menusTable
   // created() {
   //   this.menusTable = this.menusTree;
@@ -153,7 +150,7 @@ export default {
     // 树节点开关操作
     openToggle: function (item, menusTable) {
       // 这里只是展开和关闭样式的变换方法
-      Vue.set(item, 'open', !item.open);
+      this.$set(item, 'open', !item.open);
       // 展开的时候，显示子节点，关闭的时候隐藏子节点
       // 遍历所有的子节点，加入到menuTable中
       for (let j = 0; j < this.menusTable.length; j++) {

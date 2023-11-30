@@ -3,13 +3,13 @@
   <el-dialog draggable  :close-on-click-modal="false" title="请选择项目经理" v-model="dialogVisible" class="roleDialog800">
     <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
       <el-form-item label="" prop="name">
-        <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter.native="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
+        <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item label="" prop="intro">
-        <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" @keyup.enter.native="onPeopleQuery" clearable  style="width: 180px;" class="filter-item" />
+        <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" @keyup.enter="onPeopleQuery" clearable  style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item label="" prop="intro">
-        <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter.native="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
+        <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
@@ -27,7 +27,7 @@
         <el-table-column type="selection" width="60"  align="center">
         </el-table-column>
         <el-table-column label="序号" width="50" align="center">
-          <template v-slot="scope">
+          <template #default="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>

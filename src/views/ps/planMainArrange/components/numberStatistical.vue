@@ -32,8 +32,6 @@ export default {
       this.calc();
     }
   },
-  mounted() {
-  },
   methods: {
     calc(){
       let noTaxMoney= 0.0,  weekProductCount= 0.0, actualNoTaxMoney =0.0, actualWeekProductCount = 0.0;

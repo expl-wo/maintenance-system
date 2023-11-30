@@ -36,7 +36,7 @@
           property="isMatch"
           label="是否齐套"
           min-width="40%">
-          <template v-slot="scope">
+          <template #default="scope">
             <span v-if="scope.row.isMatch === '0'">不齐套</span>
             <span v-if="scope.row.isMatch === '1'">齐套</span>
           </template>

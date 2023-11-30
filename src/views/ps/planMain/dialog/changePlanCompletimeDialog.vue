@@ -52,8 +52,6 @@
         },
       }
     },
-    created(){
-    },
     methods: {
       initData(selectedData) {
         this.model = {

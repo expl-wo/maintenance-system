@@ -22,14 +22,14 @@
       border :expand-row-keys="expands" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       @expand-change="handleExpendRow">
       <el-table-column type="expand" prop="name" width="60" align="center" label="">
-        <template v-slot="props">
+        <template #default="props">
           <!--第二层表格-->
           <el-table stripe  highlight-current-row  :data="props.row.dicts" style="font-size:0.7rem;">
             <el-table-column prop="drawingFeature" align="center" width="250" label="图纸特征号" />
             <el-table-column prop="drawingName" align="center" label="图纸名称·" />
             <!-- 子表格操作列 -->
             <el-table-column header-align="center" align="center" width="120" label="操作">
-              <template v-slot="scope">
+              <template #default="scope">
                 <el-button-group>
                   <el-button title="修改" type="primary" icon="Edit"
                     @click="updateItemData(scope.row)" />
@@ -53,7 +53,7 @@
         </template>
       </el-table-column>
       <el-table-column header-align="center" align="center" width="160" label="操作">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button title="" type="primary" icon="Plus" @click="handleItemAddDict(scope.row)">
               添加图纸
@@ -207,7 +207,7 @@
             this.expandedRowData = [item]
           }
         })
-        checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData = this.expandedRowData
+        checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData 
         if (expandedRows.length) {
           this.expands = []
           if (row) {

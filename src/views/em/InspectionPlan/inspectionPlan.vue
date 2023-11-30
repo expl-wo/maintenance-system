@@ -2,24 +2,24 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy ">
-        <el-form-item label="设备编号：" v-if="needShow" size="mini">
-          <el-input v-model="searchParam.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item" size="mini"
+        <el-form-item label="设备编号：" v-if="needShow"  size="small">
+          <el-input v-model="searchParam.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item"  size="small"
                     clearable />
         </el-form-item>
-        <el-form-item label="设备名称：" v-if="needShow" size="mini">
-          <el-input v-model="searchParam.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" size="mini"
+        <el-form-item label="设备名称：" v-if="needShow"  size="small">
+          <el-input v-model="searchParam.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small"
                     clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="loadData()">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
       </el-form>
@@ -59,9 +59,9 @@
       <el-table-column label="提醒人" prop="remindPersonName"></el-table-column>
       <el-table-column label="查看">
         <template  #default="scope">
-            <el-button type="text" size="mini" @click="showFile(scope.row)">技术文件</el-button>
-            <el-button type="text" size="mini" @click="showPicture(scope.row)">图片</el-button>
-            <el-button type="text" size="mini" @click="showInspectionPlanFile(scope.row)">检测记录</el-button>
+            <el-button type="text"  size="small" @click="showFile(scope.row)">技术文件</el-button>
+            <el-button type="text"  size="small" @click="showPicture(scope.row)">图片</el-button>
+            <el-button type="text"  size="small" @click="showInspectionPlanFile(scope.row)">检测记录</el-button>
         </template>
       </el-table-column>
       <el-table-column label="备注" prop="remark">
@@ -70,8 +70,8 @@
       <!-- ...其他列 -->
       <el-table-column label="操作">
         <template  #default="scope">
-          <el-button type="primary" size="mini" @click="onEdit(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="onDelete(scope.row)">删除</el-button>
+          <el-button type="primary"  size="small" @click="onEdit(scope.row)">编辑</el-button>
+          <el-button type="danger"  size="small" @click="onDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,7 +81,7 @@
     <!-- 导入 -->
     <el-dialog
       title="导入"
-      :visible.sync="uploadDialogVisible"
+       v-model="uploadDialogVisible"
       width="400px"
       @close="handleClose"
     >
@@ -97,7 +97,7 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button slot="trigger" size="medium" type="primary">
+            <el-button  size="medium" type="primary">
               选取文件
             </el-button>
             <el-button
@@ -107,7 +107,7 @@
               style="margin-left: 70px;"
               >上传
             </el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
@@ -116,14 +116,14 @@
     <!-- 新增/编辑模态框组件 -->
     <el-dialog :visible="dialogVisible" title="新增/编辑" @close="dialogVisible=false" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form ref="form" label-position="right" :rules="submitRules"  :model="form" label-width="180px">
-        <el-form-item prop="eqpName" label="设备名称及型号规格:" size="mini">
+        <el-form-item prop="eqpName" label="设备名称及型号规格:"  size="small">
           <el-input v-model="form.eqpName" style="width: 250px;" class="filter-item" ></el-input>
-          <el-button size="mini" type="primary" style="width: 80px;" @click="onSelectEquip">选择设备</el-button>
+          <el-button  size="small" type="primary" style="width: 80px;" @click="onSelectEquip">选择设备</el-button>
         </el-form-item>
-        <el-form-item prop="manufacturer" label="制造厂家:" size="mini">
+        <el-form-item prop="manufacturer" label="制造厂家:"  size="small">
           <el-input v-model="form.manufacturer" style="width: 250px;" class="filter-item" ></el-input>
         </el-form-item>
-        <el-form-item prop="purchaseDate" label="购买年月:" size="mini">
+        <el-form-item prop="purchaseDate" label="购买年月:"  size="small">
           <el-date-picker
                 v-model="form.purchaseDate"
                 style="width: 250px;"
@@ -132,7 +132,7 @@
                 placeholder="选择月">
               </el-date-picker>
         </el-form-item>
-        <el-form-item prop="startDate" label="启用年月:" size="mini">
+        <el-form-item prop="startDate" label="启用年月:"  size="small">
           <el-date-picker
                 v-model="form.startDate"
                 style="width: 250px;"
@@ -141,21 +141,21 @@
                 placeholder="选择月">
               </el-date-picker>
         </el-form-item>
-        <el-form-item prop="departmentName" label="使用部门:" size="mini">
+        <el-form-item prop="departmentName" label="使用部门:"  size="small">
           <el-select v-model="form.departmentName"  @change="departmentChange($event)" filterable placeholder="使用部门" style="width: 250px;" class="filter-item">
             <el-option v-for="item in departments" :value="item" :key="item.k" :label="item.v"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="location" label="安装地点:" size="mini">
+        <el-form-item prop="location" label="安装地点:"  size="small">
           <el-input v-model="form.location" style="width: 250px;" class="filter-item" ></el-input>
         </el-form-item>
-        <el-form-item prop="inUse" label="是否在用:" size="mini">
+        <el-form-item prop="inUse" label="是否在用:"  size="small">
           <el-radio-group v-model="form.inUse">
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="plannedInspectDate" label="上次检测日期:" size="mini">
+        <el-form-item prop="plannedInspectDate" label="上次检测日期:"  size="small">
           <el-date-picker
                 v-model="form.plannedInspectDate"
                 style="width: 250px;"
@@ -164,46 +164,46 @@
                 placeholder="选择日期">
               </el-date-picker>
         </el-form-item>
-        <el-form-item prop="inspectCycle" label="检测周期:" size="mini">
+        <el-form-item prop="inspectCycle" label="检测周期:"  size="small">
           <el-input-number :controls="false" :min="1" v-model="form.inspectCycle" style="width: 250px;" class="filter-item" ></el-input-number>
         </el-form-item>
-        <el-form-item prop="inspectCycleUnit" label="检测周期单位:" size="mini">
+        <el-form-item prop="inspectCycleUnit" label="检测周期单位:"  size="small">
           <el-radio-group v-model="form.inspectCycleUnit">
             <el-radio :label="0">天</el-radio>
             <el-radio :label="1">月</el-radio>
             <el-radio :label="2">年</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="remindCycle" label="提前提醒周期(天 ):" size="mini">
+        <el-form-item prop="remindCycle" label="提前提醒周期(天 ):"  size="small">
           <el-input-number :controls="false" :min="0" v-model="form.remindCycle" style="width: 250px;" class="filter-item" ></el-input-number>
         </el-form-item>
-        <el-form-item prop="remindPersonName" label="提醒人:" size="mini">
+        <el-form-item prop="remindPersonName" label="提醒人:"  size="small">
           <el-input  v-model="form.remindPersonName" placeholder="提醒人" style="width: 250px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" style="width: 80px;" @click="onSelectCheck">选择提醒人</el-button>
+          <el-button  size="small" type="primary" style="width: 80px;" @click="onSelectCheck">选择提醒人</el-button>
         </el-form-item>
-        <el-form-item label="备注:" size="mini">
+        <el-form-item label="备注:"  size="small">
           <el-input v-model="form.remark" style="width: 250px;" class="filter-item" ></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogVisible = false">取消</el-button>
-        <el-button size="mini" type="primary" @click="onSubmit('')">提交</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogVisible = false">取消</el-button>
+        <el-button  size="small" type="primary" @click="onSubmit('')">提交</el-button>
       </div>
     </el-dialog>
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人" :visible.sync="dialogPeopleFormVisible"  class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible"  class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="" prop="name" size="mini">
+          <el-form-item label="" prop="name"  size="small">
             <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item label="" prop="intro" size="mini">
+          <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -220,15 +220,15 @@
           <el-table-column prop ="gsbmName" label="归属部门"></el-table-column>
       </el-table>
        <pagination :total="totalPeople" :page="listPeopleQuery.pg_pagenum" :limit="listPeopleQuery.pg_pagesize" class="searchCon" @pagination="onPeopleQuery" />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogPeopleFormVisible = false" size="mini">关 闭</el-button>
-        <el-button @click="checkPeople()" size="mini">确 定</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogPeopleFormVisible = false"  size="small">关 闭</el-button>
+        <el-button @click="checkPeople()"  size="small">确 定</el-button>
       </div>
     </el-dialog>
     <!--查看文件或图片-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看" :visible.sync="dialogFileFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
       <span style = "width: 150px">
-        <el-button style="margin-left: -20px;" size="mini" type="primary" class="el-icon-upload" ></el-button>
+        <el-button style="margin-left: -20px;"  size="small" type="primary" class="el-icon-upload" ></el-button>
         <input name="file" type="file" class="fileCls"  @change="changeUploadFile($event, currentRow)"/>
       </span>
 
@@ -239,21 +239,21 @@
          :total="totalFile"
          :hide-page="true"
        />
-       <div slot="footer" class="dialog-footer">
-         <el-button size="mini" @click="dialogFileFormVisible = false;this.isInspectionFile=false">关闭</el-button>
+       <div   class="dialog-footer">
+         <el-button  size="small" @click="dialogFileFormVisible = false;this.isInspectionFile=false">关闭</el-button>
        </div>
      </el-dialog>
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备" :visible.sync="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listEquipQuery" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="设备编号" size="mini">
+          <el-form-item label="设备编号"  size="small">
             <el-input v-model="listEquipQuery.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="设备名称" size="mini">
+          <el-form-item label="设备名称"  size="small">
             <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -269,8 +269,8 @@
         @node-click="handleNodeClick"
         style=" height: 350px; overflow: scroll;"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogEquipFormVisible = false" size="mini">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogEquipFormVisible = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
   </div>

@@ -3,7 +3,7 @@
     <div class="wp hp login-container-mask app-containerC cc animation-scale-up">
       <h1 class="col_white" style="margin:0 0 0.67em 0;">衡变LTC系统</h1>
       <el-form ref="loginFormRef" class="login-form" auto-complete="on"
-               label-position="left" :model="model" :rules="rules" @submit.native.prevent>
+               label-position="left" :model="model" :rules="rules" @submit.prevent>
         <div class="wp hp loginForm_border">
           <div class="title-container app-containerR cc">
             <img src="@/assets/logo.png" class="sidebar-logo">
@@ -18,7 +18,7 @@
                 type="text"
                 prefix-icon="User"
                 auto-complete="off"
-                @keyup.enter.native="onLogin"
+                @keyup.enter="onLogin"
             />
           </el-form-item>
 

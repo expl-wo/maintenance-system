@@ -1,22 +1,22 @@
 <template>
-  <el-dialog v-draggable  :close-on-click-modal="false" title="编辑设备" :visible.sync="dialogVisible" class="roleBigDialog">
+  <el-dialog v-draggable  :close-on-click-modal="false" title="编辑设备"  v-model="dialogVisible" class="roleBigDialog">
     <div>
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="params" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="设备编号" size="mini">
+          <el-form-item label="设备编号"  size="small">
             <el-input v-model="params.id" placeholder="设备编号" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="设备名称" size="mini">
+          <el-form-item label="设备名称"  size="small">
             <el-input v-model="params.name" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="绑定其他配置" size="mini">
+          <el-form-item label="绑定其他配置"  size="small">
             <el-radio-group v-model="params.isLinked">
               <el-radio :label="-1">全部</el-radio>
               <el-radio :label="1">是</el-radio>
               <el-radio :label="0">否</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery()">{{ $t('button.query') }}</el-button>
           </el-form-item>
         </el-form>
@@ -24,7 +24,7 @@
       <div class="app-containerR wp" style="height:350px;">
         <div class="hp otherCon">
           <el-card shadow="hover" class="hp">
-            <div slot="header" class="clearfix">
+            <div  class="clearfix">
               <span>未绑定设备</span>
             </div>
             <div class="wp hp app-containerC">
@@ -47,7 +47,7 @@
         </div>
         <div class="hp otherCon">
           <el-card shadow="hover" class="hp">
-            <div slot="header" class="clearfix">
+            <div  class="clearfix">
               <span>已绑定设备</span>
             </div>
             <div class="wp hp app-containerC">
@@ -66,8 +66,8 @@
         </div>
       </div>
     </div>
-    <div slot="footer" class="dialog-footer">
-      <el-button size="mini" @click="dialogVisible = false">关 闭</el-button>
+    <div   class="dialog-footer">
+      <el-button  size="small" @click="dialogVisible = false">关 闭</el-button>
     </div>
   </el-dialog>
 </template>
@@ -114,9 +114,9 @@ export default {
       this.dialogVisible = true;
       this.equipSearch()
     },
-    getParams(){
+    // getParams(){
 
-    },
+    // },
     equipSearch(){
       if(this.typeOfDialog == 'check'){
         getEqpConf(this.params).then(response => {

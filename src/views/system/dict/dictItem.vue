@@ -5,10 +5,10 @@
     <div class="c-search-wrapper">
       <el-form :inline="true" :model="searchModel" class="demo-form-inline">
         <el-form-item label="明细名称">
-          <el-input v-model="searchModel.name" @keyup.enter.native="handleSearch"></el-input>
+          <el-input v-model="searchModel.name" @keyup.enter="handleSearch"></el-input>
         </el-form-item>
         <el-form-item label="明细编码">
-          <el-input v-model="searchModel.code" @keyup.enter.native="handleSearch"></el-input>
+          <el-input v-model="searchModel.code" @keyup.enter="handleSearch"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="handleSearch" icon="Search" >查询</el-button>
@@ -33,7 +33,7 @@
       <el-table-column prop="sort" label="排序号" width="90" align="center"></el-table-column>
       <el-table-column prop="remark" label="补充字段1" width="180" align="center"></el-table-column>
       <el-table-column label="操作" width="200" align="center">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button  type="primary" icon="Edit"
                         @click="modifyHandle(scope.row)">

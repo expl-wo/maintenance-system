@@ -2,31 +2,31 @@
   <div class="app-container app-containerC">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="鉴定单号/名称" size="mini" v-if="needShow">
+          <el-form-item label="鉴定单号/名称"  size="small" v-if="needShow">
             <el-input v-model="listQuery.search" placeholder="" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="设备名字/编号" size="mini" v-if="needShow">
+          <el-form-item label="设备名字/编号"  size="small" v-if="needShow">
             <el-input v-model="listQuery.eqpName" placeholder="" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item label="设备分类" size="mini" v-if="needShow">
-            <el-select v-model="listQuery.eqpClazz" size="mini" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
+          <el-form-item label="设备分类"  size="small" v-if="needShow">
+            <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
               <el-option v-for="items in eqCateData" :key="items.id" :label="items.name" :value="items.id" />
             </el-select>
           </el-form-item>
-          <el-form-item label="使用部门" size="mini" v-if="needShow">
-            <el-select v-model="listQuery.usingDepId" size="mini" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-form-item label="使用部门"  size="small" v-if="needShow">
+            <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
               <el-option v-for="items in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
             </el-select>
           </el-form-item>
-          <el-form-item label="鉴定状态" size="mini">
-            <el-select v-model="listQuery.status" size="mini" placeholder="鉴定状态" style="width: 120px;" filterable default-first-option>
+          <el-form-item label="鉴定状态"  size="small">
+            <el-select v-model="listQuery.status"  size="small" placeholder="鉴定状态" style="width: 120px;" filterable default-first-option>
               <el-option v-for="items in orderStatus" :key="items.id" :label="items.name" :value="items.id" />
             </el-select>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary"  @click="onExport()"><svg-icon icon-class="qrcode" /> 导出</el-button>
           </el-form-item>
         </el-form>
@@ -74,7 +74,7 @@
         <el-table-column prop="finishDate" align="center" label="验收日期" />
         <el-table-column align="center" label="操作">
           <template  #default="scope">
-            <el-button @click="onDelete(scope.row.id)" type="danger" size="mini">删除</el-button>
+            <el-button @click="onDelete(scope.row.id)" type="danger"  size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

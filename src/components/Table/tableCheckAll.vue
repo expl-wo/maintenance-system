@@ -43,7 +43,7 @@
                 </span>
               </span>
               <span v-else-if="col.prop == 'upload'">
-                <el-button size="mini" type="primary" class="el-icon-upload" />
+                <el-button  size="small" type="primary" class="el-icon-upload" />
                 <input name="file" type="file" class="fileCls" :accept="acceptFormat" @change="changeUploadFile($event, scope.row)">
               </span>
               <span v-else> {{ scope.row[col.prop] }}</span>

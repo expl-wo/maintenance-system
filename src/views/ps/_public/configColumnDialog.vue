@@ -4,7 +4,7 @@
       <el-row :gutter="12" class="otherCon">
         <el-col :span="12" class="hp p-lf">
           <el-card shadow="hover" class="hp">
-            <div slot="header" class="clearfix">
+            <div  class="clearfix">
               <div>
                 <span>基础列配置</span>
                 <el-button @click="baseSelectedAll">全选</el-button>
@@ -27,7 +27,7 @@
         </el-col>
         <el-col :span="12" class="hp p-rf">
           <el-card shadow="hover" class="hp">
-            <div slot="header" class="clearfix">
+            <div  class="clearfix">
               <div>
                 <span>采购、设计、生产列配置</span>
                 <el-button @click="moreSelectedAll">全选</el-button>

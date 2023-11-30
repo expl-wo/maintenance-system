@@ -3,26 +3,26 @@
     <!-- 搜索框-->
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy ">
-        <el-form-item label="设备编号：" size="mini">
-          <el-input v-model="keyWords.eqpId" placeholder="设备编号" style="width: 150px;" class="filter-item" size="mini"
+        <el-form-item label="设备编号："  size="small">
+          <el-input v-model="keyWords.eqpId" placeholder="设备编号" style="width: 150px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item label="设备名称：" size="mini">
-          <el-input v-model="keyWords.eqpName" placeholder="设备名称" style="width: 150px;" class="filter-item" size="mini"
+        <el-form-item label="设备名称："  size="small">
+          <el-input v-model="keyWords.eqpName" placeholder="设备名称" style="width: 150px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item label="备品备件名称：" size="mini">
-          <el-input v-model="keyWords.materialName" placeholder="备品备件名称" style="width: 150px;" class="filter-item" size="mini"
+        <el-form-item label="备品备件名称："  size="small">
+          <el-input v-model="keyWords.materialName" placeholder="备品备件名称" style="width: 150px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item label="备品备件类型：" size="mini">
-          <el-select v-model="keyWords.spType" size="mini" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="备品备件类型："  size="small">
+          <el-select v-model="keyWords.spType"  size="small" style="width: 120px;" filterable default-first-option>
             <el-option   label="全部"     :value="null" />
             <el-option   label="电气配件"  :value="0" />
             <el-option   label="机械配件"  :value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onQuery()">查询</el-button>
         </el-form-item>
       </el-form>
