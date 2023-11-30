@@ -136,208 +136,14 @@ export const sysRouter : Array<RouteRecordRaw> = [
 		},
 		children: [
 			{
-				path: 'baseData',
-				name: '0403_basedata',
-				component: () => import('@/views/ps/baseData/index.vue'),
+				//试验计划审批
+				path: 'ps_041_mainApproval',
+				name: '0406ExperimentApproval',
+				component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
 				meta: {
-					title: '基础数据管理',
-					icon: 'qx_001',
-					keepAlive: true
-				},
-				children: [
-					//期量配置
-					// {
-					//   //电压等级月产能
-					//   path: 'ps_037_transformerClass',
-					//   name: 'mesGYBD50054',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_037_transformerClass'),
-					//   meta: {
-					//     title: '电压等级月产能',
-					//     icon: 'ps_011'
-					//   }
-					// },
-					{
-						//期量表配置
-						path: 'timeLimitConfig',
-						name: '040301_limitSet',
-						component: () => import('@/views/ps/timeLimit/timeLimitConfig.vue'),
-						meta: {
-							title: '期量表配置',
-							icon: 'ps_011'
-						}
-					},
-					{
-						//设计型号与工艺类型
-						path: 'timeLimitModel',
-						name: 'mesLIMIT_MODEL',
-						component: () => import('@/views/ps/timeLimit/timeLimitModel.vue'),
-						meta: {
-							title: '设计型号与期量表匹配',
-							icon: 'ps_011'
-						}
-					},
-					{
-						//工步管理
-						path: 'ps_50_workContent',
-						name: 'workContent',
-						component: () => import('@/views/ps/baseData/ps50WorkContent/list.vue'),
-						meta: {
-							title: '工步管理',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'classIndex',
-						name: '040317_classIndex',
-						component: () => import('@/views/ps/baseData/baseDataType/classIndex.vue'),
-						meta: {
-							title: '基础数据类型',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_029_nodeAndPlm',
-						name: '040312_nodeAnd',
-						component: () => import('@/views/ps/ps_029_nodeAndPlm.vue'),
-						meta:{
-							title: 'PLM工序对应节点',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_30_childProcessTemplateHead',
-						name: '040313_childProcessTemplate',
-						component: () => import('@/views/ps/baseData/ps30ChildProcessTemplateHead/index.vue'),
-						meta:{
-							title: 'PLM工序对应子工艺模板头',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_31_childProcessTemplateHeadContact',
-						name: '040316_TemplateHeadContact',
-						component: () => import('@/views/ps/baseData/ps31ChildProcessTemplateHeadContact/index.vue'),
-						meta:{
-							title: '子工艺模板头先后关系',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps34ProcessTemplateHngc',
-						name: '040307_mesProcessModel',
-						component: () => import('@/views/ps/baseData/ps34ProcessTemplateHngc/index.vue'),
-						meta:{
-							title: 'MES工艺模板(湖南工程)',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_004_mbom',
-						name: 'mbom',
-						component: () => import('@/views/ps/ps_004_mbom.vue'),
-						meta:{
-							title: 'MBOM管理',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_050_dryingManage',
-						component: () => import('@/views/ps/baseData/dryingManage/index.vue'),
-						name: 'mesGYBD50050',
-						meta: {
-							title: '干燥罐管理',
-							icon: 'ps_011',
-							keepAlive: true
-						}
-					},
-					{
-						path: 'ps_052_DryingRuleConfig',
-						component: () => import('@/views/ps/baseData/dryingRuleConfig/index.vue'),
-						name: 'mesGYBD50052',
-						meta: {
-							title: '入炉规则管理',
-							icon: 'ps_011',
-							keepAlive: true
-						}
-					},
-					// {
-					//   path: 'ps_052_FlipTable',
-					//   component: () => import('@/views/ps/baseData/flipTable/index'),
-					//   hidden: true,
-					//   name: 'mesGYBD50053',
-					//   meta: {
-					//     title: '翻转台管理',
-					//     icon: 'ps_011',
-					//     keepAlive: true
-					//   }
-					// },
-					{
-						path: 'ps_051_freezeReason',
-						component: () => import('@/views/ps/baseData/freezeReason/index.vue'),
-						name: 'mesGYBD50051',
-						meta: {
-							title: '冻结原因管理',
-							icon: 'ps_011',
-							keepAlive: true
-						}
-					},
-					{
-						path: 'ps_025_nodeData',
-						name: '040304_nodeBasedata',
-						component: () => import('@/views/ps/ps_025_nodeData.vue'),
-						meta: {
-							title: '节点基础数据',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_027_NodeSetConditions',
-						name: '040305_nodeRelation',
-						component: () => import('@/views/ps/ps_027_NodeSetConditions.vue'),
-						meta: {
-							title: '节点先后逻辑关系',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_33_nodeCoordinate',
-						name: '040306_nodePosition',
-						component: () => import('@/views/ps/ps_33_nodeCoordinate.vue'),
-						meta: {
-							title: '节点坐标管理',
-							icon: 'ps_011'
-						}
-					},
-					// {
-					//   path: 'ps_028_nodeWeekYield',
-					//   name: 'mesJDCL50028',
-					//   hidden: true,
-					//   component: () => import('@/views/ps/ps_028_nodeWeekYield'),
-					//   meta: {
-					//     title: '节点周产量',
-					//     icon: 'ps_011'
-					//   }
-					// },
-					{
-						path: 'ps_023_classifyAndNodeContact',
-						name: 'mesWLFLYGJJDGX50023',
-						component: () => import('@/views/ps/ps_023_classifyAndNodeContact.vue'),
-						meta: {
-							title: '物料分类与采购节点',
-							icon: 'ps_011'
-						}
-					},
-					{
-						path: 'ps_024_featureNumberAndNodeContact',
-						name: 'mesTZTZHYGXJDGX50024',
-						component: () => import('@/views/ps/ps_024_featureNumberAndNodeContact.vue'),
-						meta: {
-							title: '图纸特征号与设计节点',
-							icon: 'ps_011'
-						}
-					},
-				]
+					title: '试验计划审批',
+					icon: 'ps_011',
+				}
 			},
 			{
 				path: 'MesOrderPool',
@@ -425,17 +231,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				}
 			},
-			{
-				//试验计划审批
-				path: 'ps_041_mainApproval',
-				name: '0406ExperimentApproval',
-				component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
-				meta: {
-					title: '试验计划审批',
-					icon: 'ps_011',
-					keepAlive: true
-				}
-			},
+
 			{
 				//试验计划(新)
 				path: 'ps_041_mainTentative',
@@ -471,7 +267,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
       {
         //拆解计划审批
         path: '0407dismantling_plan_approval',
-        name: '0406ExperimentApproval',
+        name: '0406DismantlingApproval',
         component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
         meta: {
           title: '拆解计划审批',
@@ -479,6 +275,15 @@ export const sysRouter : Array<RouteRecordRaw> = [
           keepAlive: true
         }
       },
+			{
+				path: 'ps_004_mbom',
+				name: 'mbom',
+				component: () => import('@/views/ps/ps_004_mbom.vue'),
+				meta:{
+					title: 'MBOM管理',
+					icon: 'ps_011'
+				}
+			},
       ],
   },
   {
@@ -652,4 +457,212 @@ export const sysRouter : Array<RouteRecordRaw> = [
       }
     ]
   },
+	{
+		path: '/baseData',
+		component: Layout,
+		redirect: '/baseData/baseDataConfig',
+		name: '06_BaseDataGL',
+		meta: {
+			title: '基础数据',
+			icon: 'qx_003'
+		},
+		children: [
+			{
+				path: 'plan_baseData',
+				name: 'plan_baseData',
+				component: () => import('@/views/ps/baseData/index.vue'),
+				meta: {
+					title: '计划',
+					icon: 'qx_001',
+					keepAlive: true
+				},
+				children: [
+					{
+						path: 'ps_025_nodeData',
+						name: '040304_nodeBasedata',
+						component: () => import('@/views/ps/ps_025_nodeData.vue'),
+						meta: {
+							title: '节点基础数据',
+							icon: 'ps_011'
+						}
+					},
+					{
+						//期量表配置
+						path: 'timeLimitConfig',
+						name: '040301_limitSet',
+						component: () => import('@/views/ps/timeLimit/timeLimitConfig.vue'),
+						meta: {
+							title: '期量表配置',
+							icon: 'ps_011'
+						}
+					},
+					{
+						//设计型号与工艺类型
+						path: 'timeLimitModel',
+						name: 'mesLIMIT_MODEL',
+						component: () => import('@/views/ps/timeLimit/timeLimitModel.vue'),
+						meta: {
+							title: '设计型号与期量表匹配',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_027_NodeSetConditions',
+						name: '040305_nodeRelation',
+						component: () => import('@/views/ps/ps_027_NodeSetConditions.vue'),
+						meta: {
+							title: '节点先后逻辑关系',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_33_nodeCoordinate',
+						name: '040306_nodePosition',
+						component: () => import('@/views/ps/ps_33_nodeCoordinate.vue'),
+						meta: {
+							title: '节点坐标管理',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_023_classifyAndNodeContact',
+						name: 'mesWLFLYGJJDGX50023',
+						component: () => import('@/views/ps/ps_023_classifyAndNodeContact.vue'),
+						meta: {
+							title: '物料分类与采购节点',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_024_featureNumberAndNodeContact',
+						name: 'mesTZTZHYGXJDGX50024',
+						component: () => import('@/views/ps/ps_024_featureNumberAndNodeContact.vue'),
+						meta: {
+							title: '图纸特征号与设计节点',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_050_dryingManage',
+						component: () => import('@/views/ps/baseData/dryingManage/index.vue'),
+						name: 'mesGYBD50050',
+						meta: {
+							title: '干燥罐管理',
+							icon: 'ps_011',
+							keepAlive: true
+						}
+					},
+					{
+						path: 'ps_051_freezeReason',
+						component: () => import('@/views/ps/baseData/freezeReason/index.vue'),
+						name: 'mesGYBD50051',
+						meta: {
+							title: '冻结原因管理',
+							icon: 'ps_011',
+							keepAlive: true
+						}
+					},
+				]
+			},
+			{
+				path: 'process_baseData',
+				name: 'process_baseData',
+				component: () => import('@/views/ps/baseData/index.vue'),
+				meta: {
+					title: '工艺',
+					icon: 'qx_001',
+					keepAlive: true
+				},
+				children: [
+					{
+						path: 'ps_029_nodeAndPlm',
+						name: '040312_nodeAnd',
+						component: () => import('@/views/ps/ps_029_nodeAndPlm.vue'),
+						meta:{
+							title: '生产节点与标准工序',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'classIndex',
+						name: '040317_classIndex',
+						component: () => import('@/views/ps/baseData/baseDataType/classIndex.vue'),
+						meta: {
+							title: '中工序需求数据配置',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_30_childProcessTemplateHead',
+						name: '040313_childProcessTemplate',
+						component: () => import('@/views/ps/baseData/ps30ChildProcessTemplateHead/index.vue'),
+						meta:{
+							title: '标准工序与中工序',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_31_childProcessTemplateHeadContact',
+						name: '040316_TemplateHeadContact',
+						component: () => import('@/views/ps/baseData/ps31ChildProcessTemplateHeadContact/index.vue'),
+						meta:{
+							title: '中工序与工步',
+							icon: 'ps_011'
+						}
+					},
+					{
+						//工步管理
+						path: 'ps_50_workContent',
+						name: 'workContent',
+						component: () => import('@/views/ps/baseData/ps50WorkContent/list.vue'),
+						meta: {
+							title: '工步与工作内容',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps34ProcessTemplateHngc',
+						name: '040307_mesProcessModel',
+						component: () => import('@/views/ps/baseData/ps34ProcessTemplateHngc/index.vue'),
+						meta:{
+							title: 'MES工艺模板',
+							icon: 'ps_011'
+						}
+					},
+					{
+						path: 'ps_052_DryingRuleConfig',
+						component: () => import('@/views/ps/baseData/dryingRuleConfig/index.vue'),
+						name: 'mesGYBD50052',
+						meta: {
+							title: '入炉规则管理',
+							icon: 'ps_011',
+							keepAlive: true
+						}
+					},
+				]
+			},
+			{
+				path: 'Andon_baseData',
+				name: 'Andon_baseData',
+				component: () => import('@/views/ps/baseData/index.vue'),
+				meta: {
+					title: '安灯',
+					icon: 'qx_001',
+					keepAlive: true
+				},
+				children: []
+			},
+			{
+				path: 'production_baseData',
+				name: 'production_baseData',
+				component: () => import('@/views/ps/baseData/index.vue'),
+				meta: {
+					title: '生产',
+					icon: 'qx_001',
+					keepAlive: true
+				},
+				children: []
+			},
+		],
+	},
 ]
