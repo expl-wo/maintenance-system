@@ -102,6 +102,8 @@
 		productNodeId:'',
 		productNo: '',
 		nodeName: 'y',
+    workspaceName : "",
+    workspaceNumber : "",
 		time:[],
 		nodeId:'',
 		works:[],
@@ -155,6 +157,8 @@
 		data.productPlanId = row.productplanId;
 		data.productNodeId = row.id;
 		data.nodeId = row.nodeId;
+    data.workspaceName = response.data.workspaceName;
+    data.workspaceNumber = response.data.workspaceNumber;
 		Object.assign(model, data);
 		dialogVisible.value = true;
 	}
@@ -175,8 +179,11 @@
 			productNodeId : model.productNodeId, 
 			planStartTime : model.time[0],
 			planEndTime   : model.time[1],
+      workspaceName : model.workspaceName,
+      workspaceNumber : model.workspaceNumber,
 			procedureWorkspace: getProcedureWorkspace()
 		}
+    console.log(params)
     planMain.editNodePlan(params).then( (res:any) =>{
       if(res.err_code === 10000){
         dialogVisible.value = false;

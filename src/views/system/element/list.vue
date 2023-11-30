@@ -3,7 +3,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="参数编码" >
-          <el-input v-model="listQuery.code" @keyup.enter.native="handleSearch"
+          <el-input v-model="listQuery.code" @keyup.enter="handleSearch"
                     class="filter-item" clearable
           ></el-input>
         </el-form-item>
