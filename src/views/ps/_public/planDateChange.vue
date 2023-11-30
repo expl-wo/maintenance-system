@@ -6,7 +6,7 @@
       </el-form-item>
       <el-form-item label="期量周期:">
         <el-input v-model="updateForm.duration" placeholder="期量周期" style="width: 240px;" class="filter-item" disabled>
-          <template v-slot="append">天</template>
+          <template v-v-slot:append>天</template>
         </el-input>
       </el-form-item>
       <el-form-item label="计划时间:" prop="daterange" required>
@@ -64,8 +64,6 @@ export default {
         daterange: [{ validator: validDate , trigger: 'blur' }]
       }
     }
-  },
-  created() {
   },
   methods: {
     initData(data,isWeekPlan=false) {

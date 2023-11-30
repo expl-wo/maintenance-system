@@ -2,17 +2,17 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQueryDe" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设备名称" size="mini" v-if="needShow">
-          <el-input v-model="listQueryDe.name" placeholder="请输入设备名称"  @keyup.enter.native="handleSearch"
+        <el-form-item label="设备名称"  size="small" v-if="needShow">
+          <el-input v-model="listQueryDe.name" placeholder="请输入设备名称"  @keyup.enter="handleSearch"
                     style="width:210px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="OA流程审批状态" size="mini" >
-          <xui-dict-select multiple item-code="OverHaulOaStatus" size="mini" includeAll v-model="listQueryDe.oaStatus"
+        <el-form-item label="OA流程审批状态"  size="small" >
+          <xui-dict-select multiple item-code="OverHaulOaStatus"  size="small" includeAll v-model="listQueryDe.oaStatus"
                            style="width:200px;" class="filter-item" :clearable="false"></xui-dict-select>
         </el-form-item>
-        <el-button type="primary" @click="handleSearch" size="mini">查询</el-button>
-        <el-button type="primary" v-if="false" @click="updateBegin" size="mini">修改实际开始时间</el-button>
-        <el-button type="primary" v-if="false" @click="updateEnd" size="mini">修改实际结束时间</el-button>
+        <el-button type="primary" @click="handleSearch"  size="small">查询</el-button>
+        <el-button type="primary" v-if="false" @click="updateBegin"  size="small">修改实际开始时间</el-button>
+        <el-button type="primary" v-if="false" @click="updateEnd"  size="small">修改实际结束时间</el-button>
       </el-form>
     </div>
     <div class="app-container app-containerC">
@@ -185,11 +185,11 @@
                 effect="dark"
                 content="请选择word格式文档"
                 placement="top">
-                <el-button @click="upload('assignment')" icon="el-icon-upload" type="primary" size="mini"></el-button>
+                <el-button @click="upload('assignment')" icon="el-icon-upload" type="primary"  size="small"></el-button>
               </el-tooltip>
               <input  ref="fileA" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('assignment',$event, scope.row)">
               <el-button-group>
-                <el-button size="mini" title="" type="primary" icon="el-icon-folder"
+                <el-button  size="small" title="" type="primary" icon="el-icon-folder"
                            @click="viewFile('assignment',scope.row)">
                   查看任务书
                 </el-button>
@@ -208,11 +208,11 @@
                 effect="dark"
                 content="请选择word格式文档"
                 placement="top">
-                <el-button @click="upload('reform')" icon="el-icon-upload" type="primary" size="mini"></el-button>
+                <el-button @click="upload('reform')" icon="el-icon-upload" type="primary"  size="small"></el-button>
               </el-tooltip>
               <input ref="fileR" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('reform',$event, scope.row)">
               <el-button-group>
-                <el-button size="mini" title="" type="primary" icon="el-icon-folder"
+                <el-button  size="small" title="" type="primary" icon="el-icon-folder"
                            @click="viewFile('reform',scope.row)">
                   查看改造验收
                 </el-button>
@@ -227,7 +227,7 @@
           >
             <template  #default="scope">
               <el-button-group>
-                <el-button size="mini" title="转OA审批" type="primary" icon="el-icon-upload2"
+                <el-button  size="small" title="转OA审批" type="primary" icon="el-icon-upload2"
                            @click="oaApproval(scope.row)">
                  转OA审批
                 </el-button>
@@ -242,7 +242,7 @@
           >
             <template  #default="scope">
               <el-button-group>
-                <el-button size="mini" title="转OA审批" type="primary" icon="el-icon-upload2"
+                <el-button  size="small" title="转OA审批" type="primary" icon="el-icon-upload2"
                            @click="secondApproval(scope.row)">
                   转OA审批
                 </el-button>
@@ -252,7 +252,7 @@
           <el-table-column label="操作" width="80" align="center">
             <template  #default="scope">
               <el-button-group>
-                <el-button  type="primary" size="mini" icon="el-icon-edit" @click="handleEdit(scope.row)">修改
+                <el-button  type="primary"  size="small" icon="el-icon-edit" @click="handleEdit(scope.row)">修改
                 </el-button>
               </el-button-group>
             </template>
@@ -261,16 +261,16 @@
       </div>
       <pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon wp"/>
     </div>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="修改" :visible.sync="dialogFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="修改"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listQuery" label-position="right" label-width="130px" :rules="submitRules" :model="listQuery">
-        <el-form-item label="检修方案:" prop="maintenancePlan" size="mini">
+        <el-form-item label="检修方案:" prop="maintenancePlan"  size="small">
           <el-input v-model="listQuery.maintenancePlan"  type="textarea" :rows="3"  style="width: 245px;" class="filter-item"   />
         </el-form-item>
-        <el-form-item label="检修人员:" prop="maintenanceName" size="mini">
+        <el-form-item label="检修人员:" prop="maintenanceName"  size="small">
           <el-input v-model="listQuery.maintenanceName" style="width: 245px;" class="filter-item"  disabled/>
           <el-button type="primary" @click="onSelect">请选择</el-button>
         </el-form-item>
-        <el-form-item label="检修安全措施:" prop="safetyMeasures" size="mini">
+        <el-form-item label="检修安全措施:" prop="safetyMeasures"  size="small">
           <el-input v-model="listQuery.safetyMeasures" type="textarea" :rows="3"  style="width: 245px;" class="filter-item"   />
         </el-form-item>
         <el-form-item label="检修进度安排:" prop="maintenanceSchedule" >
@@ -279,13 +279,13 @@
         <el-form-item label="检修质量标准:" prop="qualityStandard" >
           <el-input v-model="listQuery.qualityStandard" type="textarea" :rows="3" style="width: 245px;" class="filter-item"  />
         </el-form-item>
-        <el-form-item label="费用:" prop="expenses" size="mini">
+        <el-form-item label="费用:" prop="expenses"  size="small">
           <el-input v-model="listQuery.expenses" type="number" style="width: 245px;" class="filter-item"  />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('listQuery', '修改成功')" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="saveData('listQuery', '修改成功')"  size="small">
           保存
         </el-button>
       </div>

@@ -8,26 +8,26 @@
         style="margin-bottom: 4px;"
         class="demo-form-inline demo-form-zdy"
       >
-        <el-form-item label="生产号:" size="mini" prop="model">
-          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter.native="queryTableDataParam" style="width: 180px;" class="filter-item" size="mini">
+        <el-form-item label="生产号:"  size="small" prop="model">
+          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter="queryTableDataParam" style="width: 180px;" class="filter-item"  size="small">
           </el-input>
         </el-form-item>
-        <el-form-item label="计划开始时间:" size="mini">
+        <el-form-item label="计划开始时间:"  size="small">
           <el-date-picker
             v-model="searchQuery.dateRange"
             type="daterange"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
-            size="mini"
+             size="small"
             @change="queryTableDataParam"
           ></el-date-picker>
         </el-form-item>
-        <el-button icon="Search" size="mini" v-if="$isAuth('0406Experiment.search')" @click="queryTableDataParam">查询</el-button>
-        <el-button type="primary" icon="Coordinate" size="mini" v-if="$isAuth('0406Experiment.approval')" @click="handleApply">提交审批</el-button>
-        <el-button type="danger" icon="Delete" size="mini"  v-if="$isAuth('0406Experiment.delete')" @click="handleDelete">取消计划</el-button>
-        <el-button type="success" icon="SuccessFilled" size="mini" v-if="isApproval === 1" @click="handlePass">审批通过</el-button>
-        <el-button type="warning" icon="CircleCloseFilled" size="mini" v-if="isApproval === 1" @click="handleReject">审批驳回</el-button>
+        <el-button icon="Search"  size="small" v-if="$isAuth('0406Experiment.search')" @click="queryTableDataParam">查询</el-button>
+        <el-button type="primary" icon="Coordinate"  size="small" v-if="$isAuth('0406Experiment.approval')" @click="handleApply">提交审批</el-button>
+        <el-button type="danger" icon="Delete"  size="small"  v-if="$isAuth('0406Experiment.delete')" @click="handleDelete">取消计划</el-button>
+        <el-button type="success" icon="SuccessFilled"  size="small" v-if="isApproval === 1" @click="handlePass">审批通过</el-button>
+        <el-button type="warning" icon="CircleCloseFilled"  size="small" v-if="isApproval === 1" @click="handleReject">审批驳回</el-button>
       </el-form>
     </div>
 
@@ -44,12 +44,12 @@
     >
       <el-table-column align="center" type="selection" :selectable="checkBoxT" width="40"></el-table-column>
       <el-table-column align="center" label="操作" width="70">
-        <template v-slot="scope">
-          <el-button size="mini" type="primary" v-if="scope.row.id && $isAuth('0406Experiment.editTime')" @click="editPlan(scope.row)">修改</el-button>
+        <template #default="scope">
+          <el-button  size="small" type="primary" v-if="scope.row.id && $isAuth('0406Experiment.editTime')" @click="editPlan(scope.row)">修改</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="confirmStatus" label="状态" align="center" width="50">
-        <template v-slot="scope">
+        <template #default="scope">
           <span v-if="scope.row.confirmStatus==1" :class="statusClass(scope.row.confirmStatus)">预排</span>
           <span v-if="scope.row.confirmStatus==2" :class="statusClass(scope.row.confirmStatus)">待审</span>
           <span v-if="scope.row.confirmStatus==3">通过</span>

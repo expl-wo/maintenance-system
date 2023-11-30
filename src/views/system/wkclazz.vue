@@ -3,7 +3,7 @@
     <el-row :gutter="12" class="hp">
       <el-col :span="6" class="hp p-lf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>班组</span>
           </div>
           <el-tree
@@ -20,7 +20,7 @@
       </el-col>
       <el-col :span="18" class="hp p-rf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>员工信息</span>
           </div>
           <div class="wp hp app-containerC">
@@ -100,7 +100,7 @@
                 label="上传"
                 min-width="5%"
               >
-                <template v-slot="scope">
+                <template #default="scope">
                 <el-button type="primary" icon="UploadFilled">
                   <input name="file" type="file" class="fileCls" :accept="acceptFormat" style="display: none;" @change="changeUploadFile($event, scope.row)"/>
                 </el-button>
@@ -111,7 +111,7 @@
                 align="center"
                 label="人员图片"
               >
-                <template v-slot="scope">
+                <template #default="scope">
                   <el-button
 
                     plain

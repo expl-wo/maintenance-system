@@ -19,6 +19,7 @@
         <div class="alldays">
           <div
               v-for="(subItem, subIndex) in allDetailDates"
+              :key="subIndex"
               class="day"
               :title="subItem.tooltip"
               :style="{ width: subItem.width + 'px' }"
@@ -62,7 +63,7 @@
       </div>
       <div class="lineBG" @scroll="handleBGScroll" ref="lineBGRef" style="overflow-y: auto;" @mousedown="
                 lineBGMousedown">
-        <template v-for="(item, index) in computedList">
+        <template v-for="(item, index) in computedList" :key="index">
           <div v-if="item.isShow" class="line-wrapper"
                :class="{'deepColorBg': index%2===1}">
             <div
@@ -383,6 +384,7 @@ const lineBGMousedown = (e) => {
       let newWidth = event.pageX - cp;
       let scrollLeft = 0;
       if ((ganttDateRef.value.scrollLeft - newWidth) > allDetailDates.value.length * detailIntervalWidth.value) {
+
       } else if ((ganttDateRef.value.scrollLeft - newWidth) <= 0) {
         scrollLeft = 0;
       } else {

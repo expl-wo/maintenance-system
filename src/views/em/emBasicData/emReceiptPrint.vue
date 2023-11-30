@@ -6,7 +6,7 @@
           <el-row>
             <el-button
               type="primary"
-              size="mini"
+               size="small"
               v-print="'#printTest'"
               style="margin: 10px 0"
             >打印
@@ -73,9 +73,8 @@
       };
     },
     components: { vueQr },
-    mounted() {
-    },
-    destroyed() {
+
+    unmounted() {
       this.rowData = null;
     },
     methods: {

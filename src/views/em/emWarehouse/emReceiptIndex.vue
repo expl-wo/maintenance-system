@@ -4,29 +4,29 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="物料简称" size="mini">
+        <el-form-item label="物料简称"  size="small">
           <el-input v-model="listQuery.abbreviation" placeholder="输入物料简称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="生产号" size="mini">
+        <el-form-item label="生产号"  size="small">
           <el-input v-model="listQuery.productionNo" placeholder="输入生产号" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="宽" size="mini">
+        <el-form-item label="宽"  size="small">
           <el-input v-model="listQuery.width" placeholder="输入物料宽" style="width: 180px;" type="number" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="状态" size="mini" >
+        <el-form-item label="状态"  size="small" >
           <el-select v-model="listQuery.status" placeholder="请选择" style="width: 140px;">
             <el-option label="已入库" value="0" />
             <el-option label="已生成出库任务" value="1" />
             <el-option label="已出库" value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="sendTask()">生成出库任务</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
       </el-form>
@@ -37,13 +37,13 @@
                      :page="listQuery.pageNum" :limit="listQuery.pageSize" @pagination="getList" />
 
     <!-- 新增/修改节点弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title=title :visible.sync="addDialogVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryDe" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="库位编码" size="mini">
+          <el-form-item label="库位编码"  size="small">
             <el-input v-model="listQueryDe.warehouseCode" placeholder="库位编码" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-search" @click="onRuleConfigQuery">{{ $t('button.query') }}
             </el-button>
           </el-form-item>
@@ -54,20 +54,20 @@
                     :page="listQueryDe.pageNum"
                     :limit="listQueryDe.pageSize"
                     @pagination="getListDe"/>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="addDialogVisible = false">取 消</el-button>
-        <!--<el-button type="primary" size="mini" @click="addOrUpdateDe('listQueryDe')">-->
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="addDialogVisible = false">取 消</el-button>
+        <!--<el-button type="primary"  size="small" @click="addOrUpdateDe('listQueryDe')">-->
           <!--保存-->
         <!--</el-button>-->
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码" :visible.sync="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogQRCodeFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogQRCodeFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
   </div>

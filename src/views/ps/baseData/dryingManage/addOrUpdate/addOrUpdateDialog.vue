@@ -16,8 +16,8 @@
       <el-row>
         <el-col :span="12">
           <el-form-item prop="deviceId" label="设备：">
-           <el-input @click.native="handleSelectDevice" :title="model.deviceName" v-model="model.deviceName" readonly class="cursorPointer">
-             <el-button slot="append" type="primary">选择</el-button>
+           <el-input @click="handleSelectDevice" :title="model.deviceName" v-model="model.deviceName" readonly class="cursorPointer">
+             <el-button type="primary">选择</el-button>
            </el-input>
           </el-form-item>
         </el-col>

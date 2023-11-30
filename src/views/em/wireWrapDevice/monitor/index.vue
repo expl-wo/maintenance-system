@@ -2,19 +2,19 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="绕线模设备" size="mini">
-          <el-select v-model="listQuery.code" @change="handleSelectDevice" size="mini" style="width: 180px;" filterable default-first-option>
+        <el-form-item label="绕线模设备"  size="small">
+          <el-select v-model="listQuery.code" @change="handleSelectDevice"  size="small" style="width: 180px;" filterable default-first-option>
             <el-option v-for="items in deviceList" :key="items.code" :label="items.name" :value="items.code" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="topWrapper">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>设备管理</span>
           </div>
           <div class="wp hp app-containerC">
@@ -24,7 +24,7 @@
     </div>
     <div class="downWrapper">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>运行数据展示</span>
           </div>
           <div class="wp hp app-containerC" ref="chartRef">
@@ -36,7 +36,7 @@
 
 <script>
 import moment from 'moment';
-import echarts from "echarts";
+import * as echarts from "echarts";
 import wireWrapInfoHttp from '@/api/em/wireWrapInfo'
 import wireWrapDataHttp from "@/api/em/wireWrapData";
 import {getThemeDefault} from '@/components/xui/chart/theme/theme'
@@ -63,7 +63,7 @@ export default {
     this.getDeviceList();
     this.echartsInstance = echarts.init(this.$refs.chartRef, getThemeDefault(echarts));
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.clearTimer();
   },
   methods: {

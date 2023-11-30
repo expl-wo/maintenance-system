@@ -4,13 +4,13 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="分类名称" size="mini">
-          <el-input v-model="listQuery.name" placeholder="分类名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="分类名称"  size="small">
+          <el-input v-model="listQuery.name" placeholder="分类名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
-        <el-form-item label="分类描述" size="mini">
-          <el-input v-model="listQuery.description" placeholder="分类描述" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="分类描述"  size="small">
+          <el-input v-model="listQuery.description" placeholder="分类描述" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>
@@ -26,18 +26,18 @@
       @pagination="getList"
     />
 
-    <!-- <el-dialog v-draggable  :close-on-click-modal="false" title="修改" :visible.sync="dialogFormEditVisible" class="roleDialog">
+    <!-- <el-dialog v-draggable  :close-on-click-modal="false" title="修改"  v-model="dialogFormEditVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="160px" :model="listUpdate">
-        <el-form-item label="分类名称:" size="mini">
-          <el-input v-model="listUpdate.name" placeholder="分类名称" style="width: 180px;" disabled class="filter-item" size="mini" clearable />
+        <el-form-item label="分类名称:"  size="small">
+          <el-input v-model="listUpdate.name" placeholder="分类名称" style="width: 180px;" disabled class="filter-item"  size="small" clearable />
         </el-form-item>
-        <el-form-item label="安灯提报时间上限:" size="mini" prop="toAndonTIme">
-          <el-input v-model="listUpdate.toAndonTime" placeholder="安灯触发时间上限" style="width: 180px;" class="filter-item" size="mini" />
+        <el-form-item label="安灯提报时间上限:"  size="small" prop="toAndonTIme">
+          <el-input v-model="listUpdate.toAndonTime" placeholder="安灯触发时间上限" style="width: 180px;" class="filter-item"  size="small" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormEditVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="saveUpdateData('listUpdate')">
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogFormEditVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="saveUpdateData('listUpdate')">
           保存
         </el-button>
       </div>

@@ -1,28 +1,28 @@
 <template>
-  <el-dialog v-draggable  appendToBody title="大修计划审批" :visible.sync="dialogVisible" modal>
+  <el-dialog v-draggable  appendToBody title="大修计划审批"  v-model="dialogVisible" modal>
     <el-form :model="model" class="element-list" ref="formRef"
              :rules="rules" label-width="120px"
     >
       <div class="col-md-12">
-        <el-form-item prop="checkBasis" label="验收依据" size="mini">
+        <el-form-item prop="checkBasis" label="验收依据"  size="small">
           <el-input v-model="model.checkBasis" type="textarea" :rows="2"></el-input>
         </el-form-item>
-        <el-form-item prop="checkRecord" label="验收记录" size="mini">
+        <el-form-item prop="checkRecord" label="验收记录"  size="small">
           <el-input v-model="model.checkRecord" type="textarea" :rows="4"></el-input>
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item  label="大修任务书" size="mini">
+        <el-form-item  label="大修任务书"  size="small">
         <el-tooltip
           class="item"
           effect="dark"
           content="请选择word格式文档"
           placement="top">
-          <el-button @click="upload('assignment')" icon="el-icon-upload" type="primary" size="mini"></el-button>
+          <el-button @click="upload('assignment')" icon="el-icon-upload" type="primary"  size="small"></el-button>
         </el-tooltip>
         <input  ref="fileA" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('assignment',$event )">
         <el-button-group>
-          <el-button size="mini" title="" type="primary" icon="el-icon-folder"
+          <el-button  size="small" title="" type="primary" icon="el-icon-folder"
                      @click="viewFile('assignment' )">
             查看任务书
           </el-button>
@@ -30,17 +30,17 @@
         </el-form-item>
       </div>
       <div class="col-md-12">
-        <el-form-item  label="大修改造验收" size="mini">
+        <el-form-item  label="大修改造验收"  size="small">
         <el-tooltip
           class="item"
           effect="dark"
           content="请选择word格式文档"
           placement="top">
-          <el-button @click="upload('reform')" icon="el-icon-upload" type="primary" size="mini"></el-button>
+          <el-button @click="upload('reform')" icon="el-icon-upload" type="primary"  size="small"></el-button>
         </el-tooltip>
         <input ref="fileR" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('reform',$event)">
         <el-button-group>
-          <el-button size="mini" title="" type="primary" icon="el-icon-folder"
+          <el-button  size="small" title="" type="primary" icon="el-icon-folder"
                      @click="viewFile('reform')">
             查看改造验收
           </el-button>
@@ -48,9 +48,9 @@
         </el-form-item>
       </div>
     </el-form>
-    <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+    <div  >
+      <el-button  size="small" @click="dialogVisible=false">取消</el-button>
+      <el-button  size="small" type="primary" @click="handleSubmit">提交</el-button>
     </div>
   </el-dialog>
 </template>

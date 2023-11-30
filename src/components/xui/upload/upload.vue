@@ -210,7 +210,7 @@ export default {
         }
       })
       percentage.value = Number((finishCount / count * 100).toFixed(2))
-      if(percentage>100){
+      if(percentage.value>100){
         percentage.value = 100;
       }
       console.log('per: ' + percentage.value);

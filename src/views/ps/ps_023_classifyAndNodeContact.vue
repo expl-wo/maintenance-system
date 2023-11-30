@@ -16,14 +16,14 @@
       border :expand-row-keys="expands" :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
       @expand-change="handleExpendRow">
       <el-table-column type="expand" prop="name" width="60" align="center" label="">
-        <template v-slot="props">
+        <template #default="props">
           <!--第二层表格-->
-          <el-table stripe  highlight-current-row  :data="props.row.dicts" :stripe=true style="font-size:0.7rem;">
+          <el-table stripe  highlight-current-row  :data="props.row.dicts" style="font-size:0.7rem;">
             <el-table-column prop="materialCode" align="center" width="250" label="分类编号" />
             <el-table-column prop="materialName" align="center" label="分类名称·" />
             <!-- 子表格操作列 -->
             <el-table-column header-align="center" align="center" width="120" label="操作">
-              <template v-slot="scope">
+              <template #default="scope">
                 <el-button-group>
                   <el-button title="删除" type="danger" icon="Delete"
                     @click="handleItemDeleteDict(scope.row)" />
@@ -42,7 +42,7 @@
           </template>
       </el-table-column>
       <el-table-column header-align="center" align="center" width="160" label="操作">
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button title="分类关系" type="primary" icon="Plus"
               @click="handleItemAddDict(scope.row)">
@@ -91,7 +91,7 @@
           min-width="15%"
         />
         <el-table-column header-align="center" align="center" width="160" label="操作">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button-group>
               <el-button type="primary"
                          @click="chooseItemData(scope.row)">
@@ -219,7 +219,7 @@
             this.expandedRowData = [item]
           }
         })
-        checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData = this.expandedRowData
+        checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData 
         if (expandedRows.length) {
           this.expands = []
           if (row) {

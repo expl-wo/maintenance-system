@@ -49,7 +49,7 @@
         align="center"
         label="操作"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button
                 type="primary"

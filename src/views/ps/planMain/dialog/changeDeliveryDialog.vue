@@ -31,8 +31,8 @@
             :before-upload="handleBeforeUpload"
             :on-success="handleUploadSuccess"
             :file-list="model.files">
-            <el-button v-slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">文件大小不能超过10M</div>
+            <el-button  size="small" type="primary">选取文件</el-button>
+            <div   class="el-upload__tip">文件大小不能超过10M</div>
           </el-upload>
         </el-form-item>
       </div>

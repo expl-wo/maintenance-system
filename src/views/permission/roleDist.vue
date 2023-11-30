@@ -4,7 +4,7 @@
     <el-row :gutter="12" class="hp">
       <el-col :span="6" class="hp p-lf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>组织机构</span>
           </div>
           <el-tree
@@ -21,7 +21,7 @@
       </el-col>
       <el-col :span="18" class="hp p-rf">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div  class="clearfix">
             <span>员工信息</span>
           </div>
           <div class="wp hp app-containerC">
@@ -91,7 +91,7 @@
                 align="center"
                 label="操作"
               >
-                <template v-slot="scope">
+                <template #default="scope">
                   <el-button
 
                     plain
@@ -297,7 +297,7 @@
           align="center"
           label="操作"
         >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button
 
               plain

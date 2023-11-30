@@ -2,16 +2,16 @@
   <div class="app-container">
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="showAdd()">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = false">导入</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-download" @click="onExport">导出</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-shopping-cart-2" @click="showApply()">请购</el-button>
         </el-form-item>
       </el-form>
@@ -35,11 +35,11 @@
           <el-table-column prop="price" label="金额(单价)"></el-table-column>
           <el-table-column>
            <template #header>
-              <el-input v-model="search1" size="mini" placeholder="输入关键字搜索" />
+              <el-input v-model="search1"  size="small" placeholder="输入关键字搜索" />
             </template>
             <template  #default="scope">
-              <el-button type="primary" size="mini"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
-              <el-button type="danger" size="mini"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
+              <el-button type="primary"  size="small"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
+              <el-button type="danger"  size="small"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -61,11 +61,11 @@
           <el-table-column prop="price" label="金额(单价)"></el-table-column>
           <el-table-column >
           <template #header>
-              <el-input v-model="search2" size="mini" placeholder="输入关键字搜索" />
+              <el-input v-model="search2"  size="small" placeholder="输入关键字搜索" />
             </template>
             <template  #default="scope"  >
-              <el-button type="primary" size="mini"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
-              <el-button type="danger" size="mini"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
+              <el-button type="primary"  size="small"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
+              <el-button type="danger"  size="small"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -73,96 +73,96 @@
       <Pagination :total="total" :page="listEqp.pg_pagenum" :limit="listEqp.pg_pagesize" class="searchCon" @pagination="getList"></Pagination>
     </el-tabs>
 
-    <el-dialog title="设备备件数据导入" :visible.sync="uploadDialogVisible" width="400px" @close="handleClose" append-to-body
+    <el-dialog title="设备备件数据导入"  v-model="uploadDialogVisible" width="400px" @close="handleClose" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <el-row>
         <el-col>
           <el-upload class="upload-demo" ref="upload" action="#" :on-change="handleChange" :on-remove="handleRemove"
             :file-list="fileList" :auto-upload="false" accept=".xls,.xlsx">
-            <el-button slot="trigger" size="medium" type="primary">选取文件</el-button>
+            <el-button  size="medium" type="primary">选取文件</el-button>
             <el-button size="medium" type="success" @click="download" style="margin-left: 20px;">模板下载</el-button>
             <el-button size="medium" type="success" @click="submitUpload" style="margin-left: 20px;">上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件请购" :visible.sync="dialogSparePartsApplyFormVisible"  width="70%" append-to-body
+    <el-dialog v-draggable  title="设备备件请购"  v-model="dialogSparePartsApplyFormVisible"  width="70%" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <sparePartsApply ref="sparePartsApply" @closeApply="closeApply()"></sparePartsApply>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="applySubmit()">提交</el-button>
-        <el-button size="mini" @click="dialogSparePartsApplyFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="applySubmit()">提交</el-button>
+        <el-button  size="small" @click="dialogSparePartsApplyFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件添加" :visible.sync="dialogSparePartsAddFormVisible"  width="60%"   append-to-body
+    <el-dialog v-draggable  title="设备备件添加"  v-model="dialogSparePartsAddFormVisible"  width="60%"   append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <el-form label-position="right" label-width="70px" :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini" >
+        <el-form-item  size="small" >
           <el-button type="primary" icon="el-icon-plus" @click="addColumn()">添加</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="addTableData" border>
         <el-table-column  label="配件编码" style="width: 150px;">
           <template  #default="scope">
-            <el-input v-model="scope.row.materialCode" size="mini" ></el-input>
+            <el-input v-model="scope.row.materialCode"  size="small" ></el-input>
           </template>
         </el-table-column>
         <el-table-column  label="配件名称" style="width: 150px;">
           <template  #default="scope" >
-            <el-input v-model="scope.row.spName" size="mini" ></el-input>
+            <el-input v-model="scope.row.spName"  size="small" ></el-input>
           </template>
         </el-table-column>
         <el-table-column  label="配件型号" style="width: 150px;">
           <template  #default="scope" >
-            <el-input v-model="scope.row.spModel" size="mini" ></el-input>
+            <el-input v-model="scope.row.spModel"  size="small" ></el-input>
           </template>
         </el-table-column>
         <el-table-column  label="配件类型" style="width: 300px;">
           <template  #default="scope">
-            <el-select v-model="scope.row.spType" size="mini" placeholder="配件类型"  filterable default-first-option>
+            <el-select v-model="scope.row.spType"  size="small" placeholder="配件类型"  filterable default-first-option>
               <el-option v-for="items in spType" :key="items.id" :label="items.name" :value="items.id" />
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="单位" style="width: 70px;">
           <template  #default="scope" >
-            <el-input v-model="scope.row.unit" size="mini"  ></el-input>
+            <el-input v-model="scope.row.unit"  size="small"  ></el-input>
           </template>
         </el-table-column>
         <el-table-column  label="配件数量"  style="width: 100px;">
           <template  #default="scope">
-            <el-input-number v-model="scope.row.quantity" :controls="false" :min="1" size="mini" style="width: 70px;"></el-input-number>
+            <el-input-number v-model="scope.row.quantity" :controls="false" :min="1"  size="small" style="width: 70px;"></el-input-number>
           </template>
         </el-table-column>
         <el-table-column  label="更换周期(天)"  style="width: 100px;">
           <template  #default="scope">
-            <el-input-number v-model="scope.row.cycle" :controls="false" :min="0" size="mini" style="width: 70px;"></el-input-number>
+            <el-input-number v-model="scope.row.cycle" :controls="false" :min="0"  size="small" style="width: 70px;"></el-input-number>
           </template>
         </el-table-column>
         <el-table-column label="金额(单价)"  style="width: 100px;">
           <template  #default="scope">
-            <el-input v-model="scope.row.price" size="mini" ></el-input>
+            <el-input v-model="scope.row.price"  size="small" ></el-input>
           </template>
         </el-table-column>
         <el-table-column label="操作" >
           <template  #default="scope">
-            <el-button type="danger" icon="el-icon-delete" @click.native.prevent="deleteRow(scope.$index, addTableData)"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click.prevent="deleteRow(scope.$index, addTableData)"></el-button>
           </template>
         </el-table-column>
       </el-table>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="onAdd()">提交</el-button>
-        <el-button size="mini" @click="dialogSparePartsAddFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="onAdd()">提交</el-button>
+        <el-button  size="small" @click="dialogSparePartsAddFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件修改" :visible.sync="dialogSparePartsEditFormVisible"  class="roleDialog" append-to-body
+    <el-dialog v-draggable  title="设备备件修改"  v-model="dialogSparePartsEditFormVisible"  class="roleDialog" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <el-form v-model="editItem" label-width="80px">
@@ -193,9 +193,9 @@
           <el-input v-model="editItem.price" ></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="editSubmit()">提交</el-button>
-        <el-button size="mini" @click="dialogSparePartsEditFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="editSubmit()">提交</el-button>
+        <el-button  size="small" @click="dialogSparePartsEditFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
@@ -278,7 +278,7 @@
           dataList: this.addTableData,
           eqpId:this.listEqp.eqpId
         }).then(res =>{
-          if(res.err_code=10000){
+          if(res.err_code == 10000){
             this.$message.success("添加成功！");
             this.onQuery()
             this.dialogSparePartsAddFormVisible=false
@@ -328,7 +328,7 @@
         editSparePartsBom({
           data:this.editItem
         }).then( res =>{
-          if(res.err_code=10000){
+          if(res.err_code == 10000){
             this.$message.success("修改成功！");
             this.onQuery()
             this.dialogSparePartsEditFormVisible=false
@@ -344,7 +344,7 @@
       },
       deleteOne(item){
         deleteSparePartsBom(item.id).then(res =>{
-          if(res.err_code=10000){
+          if(res.err_code == 10000){
             this.$message.success("删除成功！");
             this.onQuery()
           }else{

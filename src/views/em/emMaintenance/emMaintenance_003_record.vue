@@ -2,41 +2,41 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="" size="mini" v-if="needShow">
-          <el-input v-model="listQuery.eqpName" placeholder="设备名称/编号" style="width: 180px;" class="filter-item" size="mini" clearable />
+        <el-form-item label=""  size="small" v-if="needShow">
+          <el-input v-model="listQuery.eqpName" placeholder="设备名称/编号" style="width: 180px;" class="filter-item"  size="small" clearable />
         </el-form-item>
-        <el-form-item label="保养名称" size="mini" v-if="needShow">
+        <el-form-item label="保养名称"  size="small" v-if="needShow">
           <el-input v-model="listQuery.name" placeholder="保养名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="周期保养类型:" size="mini">
+        <el-form-item label="周期保养类型:"  size="small">
           <el-radio-group v-model="listQuery.cycleType">
             <el-radio :label="99">全部</el-radio>
             <el-radio :label="2">日常保养</el-radio>
             <el-radio :label="1">定期保养</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="保养状态" size="mini">
-          <el-select v-model="listQuery.status" size="mini" placeholder="保养状态" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="保养状态"  size="small">
+          <el-select v-model="listQuery.status"  size="small" placeholder="保养状态" style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in orderStatus" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="设备分类" size="mini" v-if="needShow">
-          <el-select v-model="listQuery.eqpClazz" size="mini" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="设备分类"  size="small" v-if="needShow">
+          <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in eqCateData" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="时间:" size="mini" prop="dateCount">
+        <el-form-item label="时间:"  size="small" prop="dateCount">
           <el-date-picker v-model="listQuery.dateGroup" style="width: 240px;" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" />
         </el-form-item>
-        <el-form-item label="使用部门" size="mini" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId" size="mini" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="使用部门"  size="small" v-if="needShow">
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-download" @click="onExport">结果导出</el-button>
         </el-form-item>
       </el-form>
@@ -48,7 +48,6 @@
       class="otherCon wp"
       style="height:100%; width: 100%;font-size:12px;"
       row-key="id"
-      :stripe="true"
       border
       :expand-row-keys="expands"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
@@ -67,7 +66,6 @@
           <el-table stripe  highlight-current-row
             :data="props.row.dicts"
             style="font-size:0.2em;"
-            :stripe="true"
           >
             <el-table-column prop="step" width="60" align="center" label="步骤" />
             <el-table-column prop="itemName" align="center"  width="400" label="保养项名称" />
@@ -120,7 +118,7 @@
         <template  #default="scope">
           <el-button-group>
             <el-button
-              size="mini"
+               size="small"
               title="查看"
               type="text"
               @click="handleSelect(scope.row)"
@@ -134,7 +132,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!--查看备件-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看备件" :visible.sync="dialogTablePcVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="查看备件"  v-model="dialogTablePcVisible" class="roleDialog800">
       <table-simple
         :height-table="heightTable"
         :data="tablePcData"
@@ -144,8 +142,8 @@
         :limit="listSpQuery.pg_pagesize"
         @pagination="getPcList"
       />
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogTablePcVisible = false">关 闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="dialogTablePcVisible = false">关 闭</el-button>
       </div>
     </el-dialog>
 
@@ -319,7 +317,7 @@ export default {
           this.expandedRowData = [item]
         }
       })
-      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData = this.expandedRowData
+      checkInt == 0 ? this.expandedRowData = [] : this.expandedRowData
       if (expandedRows.length) {
         this.expands = []
         if (row) {

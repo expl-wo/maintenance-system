@@ -76,7 +76,7 @@
         align="center"
         label="操作"
       >
-        <template v-slot="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button
 
@@ -430,13 +430,14 @@ export default {
       // 去除数组中重复的
       function unique(arr) {
         for (var i = 0, len = arr.length; i < len; i++) {
-          for (var j = i + 1, len = arr.length; j < len; j++) {
+          for (var j = i + 1; j < len; j++) {
             if (arr[i].id === arr[j].id) {
               arr.splice(j, 1);
               j--; // 每删除一个数j的值就减1
               len--; // j值减小时len也要相应减1（减少循环次数，节省性能）
             }
           }
+          len = arr.length
         }
         return arr;
       }

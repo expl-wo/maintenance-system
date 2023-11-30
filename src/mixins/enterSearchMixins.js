@@ -42,7 +42,7 @@ export default {
   deactivated() {
     this.cancelEnterLogin();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.cancelEnterLogin();
   }
 }

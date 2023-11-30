@@ -3,10 +3,10 @@
     <!-- 新增原因-->
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-				<el-form-item label="备品备件编号：" size="mini">
-				  <el-input v-model="listQuery.materialCode" placeholder="备品备件编号" style="width: 180px;" class="filter-item" size="mini" clearable/>
+				<el-form-item label="备品备件编号："  size="small">
+				  <el-input v-model="listQuery.materialCode" placeholder="备品备件编号" style="width: 180px;" class="filter-item"  size="small" clearable/>
 				</el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>

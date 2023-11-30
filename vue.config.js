@@ -19,8 +19,8 @@ module.exports = {
     },
     proxy: {
       '/api/*': {
-        // target: 'http://localhost:8765/',
-        target: 'http://10.16.64.245:8765/',
+        target: 'http://localhost:8765/',
+        // target: 'http://10.16.64.245:8765/',
         // target: 'http://ltc.cloud-hb.com/',
         // target: 'http://nw.tbea-hb.com.cn/',
         ws: true,

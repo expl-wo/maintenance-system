@@ -1,9 +1,9 @@
 <template>
   <div>
-    <el-dialog v-draggable  appendToBody title="鉴定设备" width="70%" :visible.sync="dialogVisible" @close="dialogClose" modal>
+    <el-dialog v-draggable  appendToBody title="鉴定设备" width="70%"  v-model="dialogVisible" @close="dialogClose" modal>
       <div class="filter-container searchCon">
         <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-          <el-form-item size="mini">
+          <el-form-item  size="small">
             <el-button type="primary" icon="el-icon-plus" @click="addOrUpdate()">新增</el-button>
           </el-form-item>
         </el-form>
@@ -26,98 +26,98 @@
         <el-table-column header-align="center" align="center" width="120" label="操作">
           <template  #default="scope">
             <el-button-group>
-              <el-button size="mini" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row,false)" />
-              <el-button size="mini" title="删除" type="danger" icon="el-icon-delete" @click="deleteEquipment(scope.row)" />
+              <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row,false)" />
+              <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteEquipment(scope.row)" />
             </el-button-group>
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
     <!--新增/修改鉴定设备弹窗-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title" :visible.sync="dialogFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="addOrUpdateForm" label-position="right" label-width="110px"  :rules="rules" :model="addOrUpdateForm" >
-        <el-form-item size="mini" prop="name" label="设备名称">
-          <el-input readonly v-model="addOrUpdateForm.name" style="width: 300px;"><el-button type="primary" size="mini" slot="append" @click="dialogTableEquipmentVisible = true">选择设备</el-button></el-input>
+        <el-form-item  size="small" prop="name" label="设备名称">
+          <el-input readonly v-model="addOrUpdateForm.name" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTableEquipmentVisible = true">选择设备</el-button></el-input>
         </el-form-item>
-        <el-form-item size="mini" prop="number" label="设备编码">
+        <el-form-item  size="small" prop="number" label="设备编码">
           <el-input readonly v-model="addOrUpdateForm.number" style="width: 300px;"></el-input>
         </el-form-item>
-        <el-form-item size="mini" prop="nextTime" label="下次鉴定时间">
+        <el-form-item  size="small" prop="nextTime" label="下次鉴定时间">
           <el-date-picker v-model="addOrUpdateForm.nextTime" style="width: 300px;" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
-<!--        <el-form-item size="mini" prop="remindTime" label="派工提醒时间">
+<!--        <el-form-item  size="small" prop="remindTime" label="派工提醒时间">
           <el-date-picker v-model="addOrUpdateForm.remindTime" style="width: 300px;" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item> -->
-        <el-form-item size="mini" prop="personLiable" label="鉴定责任人">
-          <el-input readonly v-model="addOrUpdateForm.personName" style="width: 300px;"><el-button type="primary" size="mini" slot="append" @click="dialogTablePeopleVisible = true">选择责任人</el-button></el-input>
+        <el-form-item  size="small" prop="personLiable" label="鉴定责任人">
+          <el-input readonly v-model="addOrUpdateForm.personName" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTablePeopleVisible = true">选择责任人</el-button></el-input>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer" style="margin-top: 0;">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="submitForm('addOrUpdateForm')">保存</el-button>
+      <div   class="dialog-footer" style="margin-top: 0;">
+        <el-button  size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary"  size="small" @click="submitForm('addOrUpdateForm')">保存</el-button>
       </div>
     </el-dialog>
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="设备选择" :visible.sync="dialogTableEquipmentVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="设备选择"  v-model="dialogTableEquipmentVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTableEquipmentUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="设备名称:" prop="name" size="mini">
+        <el-form-item label="设备名称:" prop="name"  size="small">
           <el-input v-model="listTableEquipmentUpdate.name" placeholder="设备名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="设备编码:" prop="name" size="mini">
+        <el-form-item label="设备编码:" prop="name"  size="small">
           <el-input v-model="listTableEquipmentUpdate.number" placeholder="设备编码" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="绑定其他配置" size="mini">
+        <el-form-item label="绑定其他配置"  size="small">
           <el-radio-group v-model="listTableEquipmentUpdate.isLinked">
             <el-radio :label="-1">全部</el-radio>
             <el-radio :label="1">是</el-radio>
             <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onEquipmenQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>
-      <el-table stripe  highlight-current-row  :data="equipmenData" border class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id">
+      <el-table stripe  highlight-current-row  :data="equipmenData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
         <el-table-column type="index" align="center" width="50" />
         <el-table-column prop="number" align="center" label="设备编号" />
         <el-table-column prop="name" align="center" label="设备名称" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="selectEquipment(scope.row)">选择</el-button>
+            <el-button type="primary"  size="small" icon="el-icon-edit" @click="selectEquipment(scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination :total="totalEquipment" :page="listTableEquipmentUpdate.pageNum" :limit="listTableEquipmentUpdate.pageSize" class="searchCon" @pagination="getEquipmentList" />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogTableEquipmentVisible = false" size="mini">取 消</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogTableEquipmentVisible = false"  size="small">取 消</el-button>
       </div>
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="人员选择" :visible.sync="dialogTablePeopleVisible" class="roleDialog800">
+    <el-dialog v-draggable  :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="员工姓名:" prop="name" size="mini">
+        <el-form-item label="员工姓名:" prop="name"  size="small">
           <el-input v-model="listTablePeopleUpdate.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
       </el-form>
-      <el-table stripe  highlight-current-row  :data="userData" border class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id">
+      <el-table stripe  highlight-current-row  :data="userData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
         <el-table-column type="index" align="center" width="50" />
         <el-table-column prop="userid" align="center" label="工号" />
         <el-table-column prop="name" align="center" label="用户姓名" />
         <el-table-column prop="gsbmName" align="center" label="归属部门" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="selectUser(scope.row)">选择</el-button>
+            <el-button type="primary"  size="small" icon="el-icon-edit" @click="selectUser(scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
       <pagination :total="totalPeople" :page="listTablePeopleUpdate.pg_pagenum" :limit="listTablePeopleUpdate.pg_pagesize" class="searchCon" @pagination="getList" />
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogTablePeopleVisible = false" size="mini">取 消</el-button>
+      <div   class="dialog-footer">
+        <el-button @click="dialogTablePeopleVisible = false"  size="small">取 消</el-button>
       </div>
     </el-dialog>
   </div>

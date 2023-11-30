@@ -15,7 +15,7 @@
       </el-form>
     </div>
 
-  <el-table stripe  highlight-current-row  :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id"
+  <el-table stripe  highlight-current-row  :data="tableData" class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id"
     border >
     <el-table-column prop="nodeId" align="center" width="250" label="节点编号" />
     <el-table-column prop="name" align="center" label="节点名称" />
@@ -39,7 +39,7 @@
     </el-table-column>
 
     <el-table-column header-align="center" align="center" width="240" label="操作">
-      <template v-slot="scope">
+      <template #default="scope">
         <el-button-group>
           <el-button title="修改" type="primary" icon="Edit"
             @click="updateOrAdd(scope.row)">保存修改</el-button>

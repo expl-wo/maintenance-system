@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="searchModel" class="demo-form-inline">
         <el-form-item label="">
           <el-input type="text" v-model="searchModel.keywords" class="form-control" placeholder="字典代码或名称"
-                    @keyup.enter.native="handleSearch"  style="width: 200px;" prefix-icon="el-icon-search"
+                    @keyup.enter="handleSearch"  style="width: 200px;" prefix-icon="el-icon-search"
           ></el-input>
         </el-form-item>
        <!-- <el-form-item label="">

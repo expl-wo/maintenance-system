@@ -4,13 +4,13 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="故障类别名称" size="mini">
+        <el-form-item label="故障类别名称"  size="small">
           <el-input v-model="listQuery.name" placeholder="故障类别名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
@@ -27,18 +27,18 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog">
+    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="故障类别名称:" prop="name" size="mini">
+        <el-form-item label="故障类别名称:" prop="name"  size="small">
           <el-input v-model="listUpdate.name" placeholder="故障类别名称" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="故障类别描述:" size="mini">
+        <el-form-item label="故障类别描述:"  size="small">
           <el-input v-model="listUpdate.description" placeholder="故障类别描述" style="width: 320px;" class="filter-item" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')" size="mini">
+      <div   class="dialog-footer">
+        <el-button @click="dialogFormVisible = false"  size="small">取 消</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData('listUpdate', '添加成功'):updateData('listUpdate', '修改成功')"  size="small">
           保存
         </el-button>
       </div>

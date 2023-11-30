@@ -3,45 +3,45 @@
     <!-- 搜索框-->
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy ">
-        <el-form-item label="设备编号：" size="mini">
-          <el-input v-model="keyWords.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item" size="mini"
+        <el-form-item label="设备编号："  size="small">
+          <el-input v-model="keyWords.eqpId" placeholder="设备编号" style="width: 180px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item label="设备名称：" size="mini">
-          <el-input v-model="keyWords.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" size="mini"
+        <el-form-item label="设备名称："  size="small">
+          <el-input v-model="keyWords.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item label="备品备件名称：" size="mini">
-          <el-input v-model="keyWords.spName" placeholder="备品备件名称" style="width: 180px;" class="filter-item" size="mini"
+        <el-form-item label="备品备件名称："  size="small">
+          <el-input v-model="keyWords.spName" placeholder="备品备件名称" style="width: 180px;" class="filter-item"  size="small"
             clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-date-picker v-model="keyWords.dataTime" type="daterange" align="right" unlink-panels range-separator="至"
             start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" :picker-options="pickerOptions">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="OA审批状态" size="mini">
-          <el-select v-model="keyWords.status" size="mini" style="width: 120px;" filterable default-first-option>
+        <el-form-item label="OA审批状态"  size="small">
+          <el-select v-model="keyWords.status"  size="small" style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in orderStatus" :key="items.id" :label="items.name" :value="items.id" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-search" @click="onQuery()">查询</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" @click="onGotoOA()" size="mini">转OA审批</el-button>
+        <el-form-item  size="small">
+          <el-button type="primary" @click="onGotoOA()"  size="small">转OA审批</el-button>
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" @click="ensureStock()" size="mini">确认入库</el-button>
+        <el-form-item  size="small">
+          <el-button type="primary" @click="ensureStock()"  size="small">确认入库</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -71,7 +71,7 @@
         <el-table-column label="期望到货时间" :width="100" prop="expectedArrivalTime"></el-table-column>
         <el-table-column label="单价"  :width="80" >
           <template  #default="scope">
-            <el-input-number @change="saveData(scope.row)" :controls="false" size="mini" :min="0" v-model="scope.row.price" style=" width: 60px;"></el-input-number>
+            <el-input-number @change="saveData(scope.row)" :controls="false"  size="small" :min="0" v-model="scope.row.price" style=" width: 60px;"></el-input-number>
           </template>
         </el-table-column>
         <el-table-column label="上次采购时间" :width="100" prop="lastPurchaseTime"></el-table-column>
@@ -81,8 +81,8 @@
         <el-table-column label="协议序号" prop="orderNumber"></el-table-column>
         <el-table-column label="操作" :width="100" fixed="right">
           <template  #default="scope">
-            <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)" size="mini"></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deleteApply(scope.row)" size="mini"></el-button>
+            <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)"  size="small"></el-button>
+            <el-button type="danger" icon="el-icon-delete" @click="deleteApply(scope.row)"  size="small"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -93,7 +93,7 @@
     <!-- 导入 -->
     <el-dialog
       title="导入"
-      :visible.sync="uploadDialogVisible"
+       v-model="uploadDialogVisible"
       width="400px"
       @close="handleClose"
     >
@@ -109,7 +109,7 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button slot="trigger" size="medium" type="primary">
+            <el-button  size="medium" type="primary">
               选取文件
             </el-button>
             <el-button
@@ -119,7 +119,7 @@
               style="margin-left: 70px;"
               >上传
             </el-button>
-            <div slot="tip" class="el-upload__tip">只能选取xls/xlsx文件</div>
+            <div   class="el-upload__tip">只能选取xls/xlsx文件</div>
           </el-upload>
         </el-col>
       </el-row>
@@ -127,80 +127,80 @@
 
     <el-dialog
     v-draggable title="设备备件请购"
-    :visible.sync="dialogSparePartsApplyFormVisible"
+     v-model="dialogSparePartsApplyFormVisible"
     width="70%" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <sparePartsApply ref="child" @closeApply="closeApply()"></sparePartsApply>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="onSubmit()">提交</el-button>
-        <el-button size="mini" @click="dialogSparePartsApplyFormVisible = false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="onSubmit()">提交</el-button>
+        <el-button  size="small" @click="dialogSparePartsApplyFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
 
-    <el-dialog v-draggable title="备件请购修改" :visible.sync="dialogEditFormVisible" class="roleDialog700" append-to-body>
+    <el-dialog v-draggable title="备件请购修改"  v-model="dialogEditFormVisible" class="roleDialog700" append-to-body>
       <div style="height: 230px;">
         <el-form label-width="90px"  :inline="true" v-model="selectItem" class="centered-label demo-form-inline demo-form-zdy">
           <el-col :span="12">
             <el-form-item label="配件名称">
-              <el-input size="mini" v-model="selectItem.spName" ></el-input>
+              <el-input  size="small" v-model="selectItem.spName" ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="物料编码">
-              <el-input size="mini" v-model="selectItem.materialCode" ></el-input>
+              <el-input  size="small" v-model="selectItem.materialCode" ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="型号规格">
-              <el-input size="mini" v-model="selectItem.spModel" ></el-input>
+              <el-input  size="small" v-model="selectItem.spModel" ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="单位">
-              <el-input size="mini" v-model="selectItem.unit" ></el-input>
+              <el-input  size="small" v-model="selectItem.unit" ></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="12">
             <el-form-item label="数量">
-              <el-input-number size="mini" :min="1" v-model="selectItem.quantity" style=" width: 165px;"></el-input-number>
+              <el-input-number  size="small" :min="1" v-model="selectItem.quantity" style=" width: 165px;"></el-input-number>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备编号">
-              <el-input size="mini" disabled v-model="selectItem.eqpId"></el-input>
+              <el-input  size="small" disabled v-model="selectItem.eqpId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="设备名称">
-              <el-input size="mini" disabled v-model="selectItem.eqpName"></el-input>
+              <el-input  size="small" disabled v-model="selectItem.eqpName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="使用部门">
-              <el-input size="mini" disabled v-model="selectItem.usingDepName"></el-input>
+              <el-input  size="small" disabled v-model="selectItem.usingDepName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="指定厂家">
-              <el-input size="mini" v-model="selectItem.factory"></el-input>
+              <el-input  size="small" v-model="selectItem.factory"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="期望到货时间">
-              <el-date-picker v-model="selectItem.expectedArrivalTime" style=" width: 165px;" size="mini" align="right"
+              <el-date-picker v-model="selectItem.expectedArrivalTime" style=" width: 165px;"  size="small" align="right"
                 type="date" placeholder="选择日期" :picker-options="pickerOptions2" value-format="yyyy-MM-dd">
               </el-date-picker>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="配件类型">
-              <el-radio-group v-model="selectItem.spType"  size="mini">
+              <el-radio-group v-model="selectItem.spType"   size="small">
                 <el-radio :label="0">机械配件</el-radio>
                 <el-radio :label="1">电气配件</el-radio>
               </el-radio-group>
@@ -208,9 +208,9 @@
           </el-col>
         </el-form>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="onEditApply()">提交</el-button>
-        <el-button size="mini" @click="dialogEditFormVisible=false">关闭</el-button>
+      <div   class="dialog-footer">
+        <el-button  size="small" @click="onEditApply()">提交</el-button>
+        <el-button  size="small" @click="dialogEditFormVisible=false">关闭</el-button>
       </div>
 
     </el-dialog>
@@ -326,11 +326,7 @@
         selectList:[],
       }
     },
-    mounted() {
-      $rooturl().then(response => {
-        this.rooturl = response.data
-      })
-    },
+
     methods: {
       getList(val) {
         this.pg_pagenum = val.page
@@ -402,7 +398,7 @@
       onGotoOA(){
         if(this.selectList)
         applyToOA({data:this.selectList}).then(res =>{
-          if(res.err_code=10000){
+          if(res.err_code == 10000){
             this.$message.success("提交OA审批成功！");
             this.onQuery()
           }else{
@@ -498,6 +494,9 @@
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 1);
       this.keyWords.dataTime = [start, end]
       this.onQuery();
+      $rooturl().then(response => {
+        this.rooturl = response.data
+      })
     }
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  appendToBody title="大修计划申请" :visible.sync="dialogVisible" modal>
+  <el-dialog v-draggable  appendToBody title="大修计划申请"  v-model="dialogVisible" modal>
     <el-form :model="model" class="element-list" ref="formRef" :rules="rules" label-width="120px">
       <div class="col-md-12">
         <el-form-item label="项目分类:">
@@ -10,7 +10,7 @@
             <el-radio label="本质安全提升">本质安全提升</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="freezeReason" label="附件" size="mini">
+        <el-form-item prop="freezeReason" label="附件"  size="small">
           <el-upload
             class="upload-demo"
             ref="uploadRef"
@@ -21,15 +21,15 @@
             :before-upload="handleBeforeUpload"
             :on-success="handleUploadSuccess"
             :file-list="model.files">
-            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-            <div slot="tip" class="el-upload__tip">文件大小不能超过10M</div>
+            <el-button  size="small" type="primary">选取文件</el-button>
+            <div   class="el-upload__tip">文件大小不能超过10M</div>
           </el-upload>
         </el-form-item>
       </div>
     </el-form>
-    <div slot="footer">
-      <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-      <el-button size="mini" type="primary" @click="handleSubmit">提交</el-button>
+    <div  >
+      <el-button  size="small" @click="dialogVisible=false">取消</el-button>
+      <el-button  size="small" type="primary" @click="handleSubmit">提交</el-button>
     </div>
   </el-dialog>
 </template>

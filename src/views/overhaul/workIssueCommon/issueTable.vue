@@ -200,7 +200,7 @@ export default {
       }
       this.getList();
     },
-    handleFilter() {},
+    // handleFilter() {},
     getList() {
       this.listLoading = false;
       new Array(10).fill(1).forEach((item, index) => {

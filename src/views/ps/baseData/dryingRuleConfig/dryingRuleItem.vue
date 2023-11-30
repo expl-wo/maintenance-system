@@ -31,7 +31,7 @@
           property="firstTime"
           width="150"
         >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-input-number v-model="scope.row.firstTime" :min="1" style="width: 100%;"></el-input-number>
           </template>
         </el-table-column>
@@ -42,7 +42,7 @@
           property="arrangeTime"
           width="130"
         >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-input-number v-model="scope.row.arrangeTime" :min="0" style="width: 100%;"></el-input-number>
           </template>
         </el-table-column>
@@ -53,7 +53,7 @@
           property="secondTime"
           width="150"
         >
-          <template v-slot="scope">
+          <template #default="scope">
             <el-input-number v-model="scope.row.secondTime" :min="0" style="width: 100%;"></el-input-number>
           </template>
         </el-table-column>

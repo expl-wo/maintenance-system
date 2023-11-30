@@ -3,7 +3,7 @@
     <el-row :gutter="12" class="otherCon">
       <el-col :span="12" class="hp p-lf">
         <el-card shadow="hover" class="hp">
-          <!--<div slot="header" class="clearfix">
+          <!--<div  class="clearfix">
             <span>字典项目</span>
           </div>-->
           <drying-rule ref="dryingRuleRef" @updateChild="handleUpdateChild"></drying-rule>
@@ -11,7 +11,7 @@
       </el-col>
       <el-col :span="12" class="hp p-rf">
         <el-card shadow="hover" class="hp">
-        <!--  <div slot="header" class="clearfix">
+        <!--  <div  class="clearfix">
             <span>字典明细</span>
           </div>-->
           <drying-rule-item ref="dryingRuleItemRef"></drying-rule-item>

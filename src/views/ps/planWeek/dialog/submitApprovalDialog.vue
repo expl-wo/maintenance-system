@@ -10,7 +10,7 @@
           label="序号"
           width="100"
         >
-          <template v-slot="scope">
+          <template #default="scope">
             {{scope.$index + 1}}
           </template>
         </el-table-column>
@@ -21,7 +21,7 @@
         >
         </el-table-column>
         <el-table-column label="完成至工序" align="center" v-if="!notNeedGx">
-          <template v-slot="scope">
+          <template #default="scope">
             <el-button type="primary"
                        @click="handleChooseOp(scope.row)">选择
             </el-button>
