@@ -22,22 +22,30 @@
           </el-col>
           <el-col :span="12">
             <el-form-item
-              label="图号"
-              prop="drawingNo"
-              :rules="safeLimit('图号', true)"
+              label="模板编号"
+              prop="templateCode"
+              :rules="safeLimit('模板编号', true)"
             >
-              <el-select
-                v-model="bomForm.drawingNo"
-                placeholder="请选择"
-                :disabled="!isAdd"
-              >
-                <el-option
-                  v-for="item in drawingNoList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                />
-              </el-select>
+              <el-input v-model="bomForm.templateCode" :maxlength="100" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" class="cust-select-wrapper">
+            <el-form-item
+              label="型号"
+              prop="templateModels"
+              :rules="requiredVerify('型号', true)"
+            >
+              <select-page
+                ref="modelSelectRef"
+                v-model="bomForm.templateModels"
+                collapse-tags
+                :multiple="true"
+                :collapse-tags-tooltip="true"
+                :defaultSelectVal="defaultSelectVal"
+                :getOptions="getOptions"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -85,44 +93,18 @@
                 </el-select>
               </el-form-item>
               <el-form-item
-                v-if="bomForm.nodeType === 1"
-                label="大部件"
+                v-if="bomForm.nodeType"
+                :label="labelStr"
                 prop="componentId"
-                :rules="requiredVerify('大部件类别', true)"
+                :rules="requiredVerify(labelStr, true)"
               >
-                <el-select
+                <select-page
+                  ref="componentIdRef"
                   v-model="bomForm.componentId"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in typeList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item
-                v-if="bomForm.nodeType === 2"
-                label="物料类别"
-                prop="componentId"
-                :rules="requiredVerify('物料类别', true)"
-              >
-                <el-select
-                  v-model="bomForm.componentId"
-                  filterable
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in materialList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select>
+                  :defaultSelectVal="defaultComponent"
+                  @change="componentChange"
+                  :getOptions="getComponentOptions"
+                />
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -155,15 +137,18 @@
 </template>
 <script>
 import BomTree from "@/components/BomTree/index";
+import SelectPage from "@/components/SelectPage/selectPage";
 import { safeLimit, requiredVerify } from "@/common/js/validator";
 import {
+  getModelList,
   getBomTemplateById,
-  getBigParts,
+  getBigComponent,
   getMaterial,
   addOrUpdateBomTemplate,
   addBomTreeNode,
   editBomTreeNode,
   deleteBomTreeNode,
+  getUsedModelList
 } from "@/api/overhaul/templateLib";
 
 const nodeTypeList = [
@@ -174,6 +159,7 @@ const nodeTypeList = [
 export default {
   components: {
     BomTree,
+    SelectPage
   },
   props: {
     visible: {
@@ -195,30 +181,21 @@ export default {
         id: "",
         templateName: "",
         name: "",
+        templateCode: "",
         drawingNo: "",
         nodeType: "",
         componentId: "",
+        templateModels: []
       },
       confirmLoading: false,
-      drawingNoList: [
-        { name: "测试图号1", id: 1 },
-        { name: "测试图号2", id: 2 },
-      ],
-      // 大部件可选项
-      typeList: [
-        { label: "大部件1", value: 1 },
-        { label: "大部件2", value: 2 },
-      ],
-      // 物料类别可选项
-      materialList: [
-        { label: "物料1", value: 1 },
-        { label: "物料2", value: 2 },
-        { label: "物料3", value: 3 },
-      ],
       // 节点类型
       nodeTypeList: Object.freeze(nodeTypeList),
       treeData: [],
       parentNode: null,
+      defaultSelectVal: [],
+      defaultComponent: {},
+      componentName: '',
+      usedModelList: []
     };
   },
   computed: {
@@ -227,6 +204,9 @@ export default {
     },
     modalTitle() {
       return `${this.isAdd ? "新增" : "编辑"}拆解BOM模板`;
+    },
+    labelStr() {
+      return this.bomForm.nodeType === 1 ? '大部件' : '物料';
     },
     isAddNode() {
       return this.operateType === 2;
@@ -237,9 +217,22 @@ export default {
   },
   watch: {
     visible(newVal) {
-      if (newVal && this.info) {
-        this.getBomTemplate();
+      
+      if (newVal) {
+        let params = {bomTemplateId: null};
+        if (this.info) {
+          params.bomTemplateId = this.info.id;
+          this.getBomTemplate();
+        }
+        this.getUsedModel(params);
       }
+    },
+    "bomForm.nodeType": {
+      handler(val) {
+        //切换节点类型时需要重置下拉选择框
+        this.$refs.componentIdRef && this.$refs.componentIdRef.selectSearch("");
+        this.defaultComponent = {};
+      },
     },
   },
   methods: {
@@ -247,14 +240,99 @@ export default {
     requiredVerify,
     addBomTreeNode,
     editBomTreeNode,
+    //获取下拉选择项
+    getOptions(params) {
+      return new Promise((resolve, reject) => {
+        const { pageNum, pageSize, searchKey } = params;
+        let queryParms = {
+          pageNum,
+          pageSize,
+          searchKey,
+          accountId: localStorage.getItem('userId')
+        };
+        getModelList(queryParms).then((res) => {
+          let usedModelList = this.usedModelList.map(item => item.modelName);
+          let options = (res.data.pageList || []).map((item) => ({
+            label: item.model,
+            value: item.model,
+            timeLimitId: item.timeLimitId,
+            disabled: usedModelList.includes(item.model)
+          }));
+          resolve({
+            options: options,
+            totalPage: res.data.total,
+          });
+        });
+      })
+    },
+    // 获取大部件/物料
+    getComponentOptions(params) {
+      return new Promise((resolve, reject) => {
+        const { pageNum, pageSize, searchKey } = params;
+        let queryParms = {
+          pageNum,
+          pageSize,
+          searchKey,
+        };
+        if (this.bomForm.nodeType === 1) {
+          getBigComponent(queryParms).then((res) => {
+            let options = (res.data.pageList || []).map((item) => ({
+              label: item.featureNo + item.name,
+              value: item.name,
+              featureNo: item.featureNo
+            }));
+            resolve({
+              options: options,
+              totalPage: res.data.total,
+            });
+          });
+        } else {
+          getMaterial(queryParms).then((res) => {
+            let options = (res.data.pageList || []).map((item) => ({
+              label: item.className,
+              value: item.classCode,
+              classCode: item.className
+            }));
+            resolve({
+              options: options,
+              totalPage: res.data.total,
+            });
+          });
+        }
+      });
+    },
+    componentChange(val) {
+      let objMap = {
+        1: 'featureNo',
+        2: 'classCode'
+      }
+      let options = this.$refs.componentIdRef.selectOptions;
+      let tempObj = {};
+      options.forEach(el => {
+        tempObj[el.value] = el[objMap[this.bomForm.nodeType]];
+      })
+      this.componentName = tempObj[val];
+    },
     async getBomTemplate() {
       let res = await getBomTemplateById({ id: this.info.id });
       if (res.success && res.data) {
-        let { templateName, drawingNo, id, bomTreeList } = res.data;
+        let { templateName, templateCode, id, bomTreeList, templateModels } = res.data;
         this.bomForm.templateName = templateName;
-        this.bomForm.drawingNo = +drawingNo;
+        this.bomForm.templateCode = templateCode;
+        this.bomForm.templateModels = (templateModels || []).map(item => item.modelId);
+        this.defaultSelectVal = (templateModels || []).map(item => {
+          return {
+            value: item.modelId
+          }
+        });
         this.bomForm.id = id;
         this.treeData = bomTreeList;
+      }
+    },
+    async getUsedModel(params) {
+      let res = await getUsedModelList(params);
+      if (res.success && res.data) {
+        this.usedModelList = res.data.value;
       }
     },
     // 组织树的单击事件
@@ -264,7 +342,6 @@ export default {
     },
     // 添加节点
     addNode(node, data) {
-
       let resetData = {
         name: "",
         nodeType: "",
@@ -276,14 +353,14 @@ export default {
     },
     // 更新节点
     updateNode(node, data) {
-
       this.bomForm = {
         ...this.bomForm,
         name: data.treeName,
         nodeType: data.nodeType,
-        componentId: data.componentId,
+        componentId: data.treeName,
       };
       this.nodeInfo = data;
+      this.parentNode = node.parent.data;
       this.operateType = 3;
     },
     // 删除节点
@@ -329,17 +406,21 @@ export default {
         let params = {
           bomTemplateId: this.info.id,
           nodeType: this.bomForm.nodeType,
-          componentId: this.bomForm.componentId,
+          treeName: this.bomForm.componentId,
+          pTreeId: this.parentNode.treeId
         };
-        // 区分
-        if (this.isAddNode) {
-          params.pTreeId = this.parentNode.treeId;
+        // 大部件和物料的componentId和componentName是反着的,主要是因为唯一值对应的不一样
+        if (this.bomForm.nodeType === 1) {
+          params.treeName = this.bomForm.componentId;
+          params.componentId = this.componentName;
         } else {
+          params.treeName = this.componentName;
+          params.componentId = this.bomForm.componentId;
+        }
+        // 区分
+        if (!this.isAddNode) {
           params.id = this.nodeInfo.id;
         }
-        params.treeName = this[
-          this.bomForm.nodeType === 1 ? "typeList" : "materialList"
-        ].filter((item) => item.value === this.bomForm.componentId)[0].label;
         this[`${this.isAddNode ? "addBomTreeNode" : "editBomTreeNode"}`](params)
           .then((res) => {
             if (res.success) {
@@ -354,6 +435,8 @@ export default {
                 };
               }
               this.operateType = 1;
+            } else {
+              this.$message.error(res.errMsg);
             }
           })
           .finally(() => {
@@ -368,7 +451,7 @@ export default {
     },
     // 确定
     handleConfirm() {
-      let validateField = ["templateName", "drawingNo"];
+      let validateField = ["templateName", "templateCode", "templateModels"];
       Promise.all(
         validateField.map((field) => {
           return new Promise((resolve) => {
@@ -384,8 +467,13 @@ export default {
         if (!valid) return;
         this.loading = true;
         let params = {
-          drawingNo: this.bomForm.drawingNo,
+          templateCode: this.bomForm.templateCode,
           templateName: this.bomForm.templateName,
+          templateModels: this.bomForm.templateModels.map((item, index) => {
+            return {
+              modelId: item
+            }
+          })
         };
         if (!this.isAdd) {
           params.id = this.bomForm.id;
@@ -396,6 +484,8 @@ export default {
               this.$message.success("操作成功");
               this.resetForm();
               this.$emit("closeModal", "add", true);
+            } else {
+              this.$message.error(res.errMsg);
             }
           })
           .finally(() => {
@@ -406,7 +496,6 @@ export default {
     // 重置表单
     resetForm() {
       this.$refs.bomForm.resetFields();
-      this.bomForm.deviceList = [];
     },
   },
 };
@@ -448,5 +537,8 @@ export default {
 }
 .ml20 {
   margin-left: 20px;
+}
+.cust-select-wrapper ::v-deep(.el-select) {
+  width: 100%;
 }
 </style>

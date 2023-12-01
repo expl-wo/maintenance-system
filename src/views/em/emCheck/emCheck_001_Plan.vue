@@ -21,7 +21,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
@@ -225,7 +225,7 @@
               <el-input v-model="listQueryEqp.name" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
             </el-form-item>
             <el-form-item  size="small">
-              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">{{ $t('button.query') }}</el-button>
+              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -357,7 +357,7 @@ import EquipBoundDialog from "@/views/em/common/equipBoundDialog.vue";
 import frozenDialog from "@/views/ps/planMain/dialog/frozenDialog.vue";
 export default {
   name: 'Table',
-  components: {frozenDialog, Pagination,proCheckEquip,EquipBoundDialog },
+  components: { Pagination,proCheckEquip,EquipBoundDialog },
   data() {
     return {
       eqType: [{ 'id': 100, 'name': '全部' }, { 'id': 0, 'name': '日常点检' }, { 'id': 1, 'name': '专业点检' }],

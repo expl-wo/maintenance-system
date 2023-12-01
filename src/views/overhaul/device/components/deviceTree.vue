@@ -75,7 +75,14 @@ export default {
       }
       getDeviceTree(params)
       .then(res => {
-        debugger;
+        if (res.success && res.data) {
+          this.treeData = res.data.value || [];
+        } else {
+          this.$message.error(res.errMsg);
+        }
+      })
+      .catch(() => {
+        this.treeData = [];
       })
   },
     methods: {

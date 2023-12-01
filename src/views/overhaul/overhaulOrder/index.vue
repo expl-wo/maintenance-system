@@ -19,6 +19,7 @@
           <el-icon class="el-icon--left"><Search /></el-icon> 查询
         </el-button>
         <el-button
+          v-if="$isAuth('2005_btn_delete')"
           :disabled="!selectRowList.length"
           title="删除"
           type="danger"
@@ -52,6 +53,7 @@
               <el-button-group>
                 <!-- 一直能操作 -->
                 <el-button
+                  v-if="$isAuth('2005_btn_edit')"
                   title="编辑"
                   type="primary"
                   :disabled="
@@ -70,6 +72,7 @@
                 </el-button>
                 <!-- 工单审批之后就不能删除了 -->
                 <el-button
+                  v-if="$isAuth('2005_btn_delete')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
@@ -81,6 +84,7 @@
                   ><el-icon><Delete /></el-icon>
                 </el-button>
                 <el-button
+                  v-if="$isAuth('2005_btn_finish')"
                   title="结束"
                   type="danger"
                   :disabled="
@@ -160,24 +164,12 @@ import {
   batchDelWorkOrder,
   setWorkOrderStatus,
 } from "@/api/overhaul/workOrderApi.js";
-import {
-  Delete,
-  Edit,
-  Search,
-  View,
-  CircleClose,
-} from "@element-plus/icons-vue";
 export default {
   name: "OverhaulOrder",
   components: {
     Pagination,
     AddModal,
     DetailModal,
-    Delete,
-    Edit,
-    Search,
-    View,
-    CircleClose,
   },
   data() {
     return {
@@ -347,14 +339,14 @@ export default {
       this.listLoading = true;
       try {
         const {
-          data: { allPageNum, pageList },
+          data: { total, pageList },
         } = await getWorkOrderPage({
           pageNum: this.pageOptions.pageNum,
           pageSize: this.pageOptions.pageSize,
           workOrderType: 2,
           ...this.queryParams,
         });
-        this.pageOptions.total = allPageNum;
+        this.pageOptions.total = total;
         this.tableData = pageList;
       } catch (error) {
         console.error(error);

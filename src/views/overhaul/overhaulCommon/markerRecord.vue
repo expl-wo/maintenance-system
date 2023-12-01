@@ -103,7 +103,6 @@
   </div>
 </template>
 <script>
-import { Delete, Edit } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 import EditMarkerModal from "./editMarkerRecord.vue";
 import Pagination from "@/components/Pagination"; // 分页
@@ -111,9 +110,7 @@ import { pageVideoMarker, deleteVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   components: {
     EditMarkerModal,
-    Pagination,
-    Delete,
-    Edit,
+    Pagination
   },
   props: {
     //当前工单的详情

@@ -50,13 +50,11 @@
               type="danger"
               @click="deleteTemplate(scope.row)"
             >
+            </el-button>
               <el-button
                 plain
-                icon="Delete"
-                type="danger"
                 @click="confirmChoose(scope.row)"
-              >确认选择
-            </el-button>
+              >确认选择</el-button>
           </el-button-group>
         </template>
       </el-table-column>

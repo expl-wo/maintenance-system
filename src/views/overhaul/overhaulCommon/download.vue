@@ -12,12 +12,8 @@
 
 <script>
 import { downloadClick } from "@/utils";
-import { Document } from "@element-plus/icons-vue";
 
 export default {
-  components: {
-    Document,
-  },
   props: {
     href: {
       type: String,

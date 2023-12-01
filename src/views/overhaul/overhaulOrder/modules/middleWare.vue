@@ -2,7 +2,7 @@
   <div class="work-tab-box">
     <el-tabs type="border-card" v-model="activeName">
       <el-tab-pane
-        v-for="item in tabList"
+        v-for="item in authTabList"
         :label="item.label"
         :key="item.name"
         :name="item.name"
@@ -61,6 +61,7 @@ export default {
   data() {
     return {
       activeName: "processInfo",
+      authTabList: [],
     };
   },
   computed: {
@@ -69,6 +70,10 @@ export default {
     },
   },
   created() {
+    //获取不需要权限和有权限的tab
+    this.authTabList = this.tabList.filter((item) => {
+      return !item.menuCode || this.$isAuth(item.menuCode);
+    });
     this.activeName = this.tabList[0].name;
   },
 };

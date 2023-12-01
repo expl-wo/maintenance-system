@@ -26,7 +26,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="项目名称" prop="projName">
-            <el-input v-model="form.projName" disabled/>
+            <el-input v-model="form.projName" disabled />
           </el-form-item>
         </el-col>
       </el-row>
@@ -113,6 +113,17 @@
               :limit="maxUpload"
               :fileUrl="fileUrl"
               :fileName="fileName"
+              :isCanDelete="
+                ![
+                  COMMOM_WORK_ORDER_MAP['pause'].value,
+                  COMMOM_WORK_ORDER_MAP['finish'].value,
+                ].includes(operateRow.orderStatus)
+              "
+              :disabled="
+                [COMMOM_WORK_ORDER_MAP['pause'].value].includes(
+                  operateRow.orderStatus
+                )
+              "
               @uploadSuccess="uploadSuccess"
             ></multi-upload-vue>
           </el-form-item>
@@ -140,7 +151,10 @@ import {
 } from "@/api/overhaul/workOrderApi.js";
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import {
+  COMMON_FORMAT,
+  COMMOM_WORK_ORDER_MAP,
+} from "@/views/overhaul/constants.js";
 import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 import dayjs from "dayjs";
 const MODAL_TYPE = {
@@ -171,13 +185,13 @@ export default {
   },
   data() {
     return {
+      COMMOM_WORK_ORDER_MAP,
       fileList: [],
       fileUrl: "",
       fileName: "",
       maxUpload: 30,
       defaultTime: new Date(0, 0, 0, 23, 59, 59), //默认时间
       COMMON_FORMAT,
-
       saveLoading: false,
       MODAL_TYPE,
       //form表格数据
@@ -210,6 +224,7 @@ export default {
       businessOrderOptions: [],
     };
   },
+
   async mounted() {
     const { data } = await getProdCategory();
     this.prodCategoryOptions = Object.keys(data).map((item) => ({

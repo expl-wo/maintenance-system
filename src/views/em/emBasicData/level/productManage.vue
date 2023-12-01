@@ -1,5 +1,4 @@
 <template>
-  <!--设备等级列表-->
   <div class="app-container app-containerC">
 
     <div class="filter-container searchCon">
@@ -11,7 +10,7 @@
           <el-input v-model="listQuery.description" placeholder="等级描述" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -1,5 +1,6 @@
 <template>
-  <el-dialog draggable
+  <el-dialog
+    draggable
     :title="modalTitle"
     append-to-body
     :model-value="true"
@@ -23,18 +24,12 @@
       >
         <el-col :span="24">
           <el-form-item label="视频通道选择" prop="channelCodes">
-            <el-select
+            <select-page
               v-model="form.channelCodes"
+              :getOptions="getChannelOptions"
               multiple
-              placeholder="请选择"
-            >
-              <el-option
-                v-for="item in channelOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+              disabled
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -45,27 +40,21 @@
         v-if="operateRow === 2"
       >
         <el-col :span="24">
-          <el-form-item label="审批人员" prop="approvalPerson">
-            <el-select
+          <el-form-item label="复核人员" prop="approvalPerson">
+            <el-select-v2
               v-model="form.approvalPerson"
-              multiple
               placeholder="请选择"
+              :options="taskPersonOptions"
             >
-              <el-option
-                v-for="item in approvalPersonlOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+            </el-select-v2>
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="标记类型">
-            <el-radio-group v-model="form.remind">
-              <el-radio :label="1">立即</el-radio>
-              <el-radio :label="2">2小时</el-radio>
-              <el-radio :label="3">4小时</el-radio>
+            <el-radio-group v-model="form.checkType">
+              <el-radio label="NOW">立即</el-radio>
+              <el-radio label="TWO_HOURS">2小时</el-radio>
+              <el-radio label="FOUR_HOURS">4小时</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -78,51 +67,41 @@
       >
         <el-col :span="24">
           <el-form-item label="组长" prop="groupLeader">
-            <el-select
+            <el-select-v2
               v-model="form.groupLeader"
               class="filter-item"
-              multiple
               placeholder="请选择"
+              :options="taskPersonOptions"
             >
-              <el-option
-                v-for="item in groupLeaderOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+            </el-select-v2>
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="副组长" prop="assistantGroupLeader">
-            <el-select
+            <el-select-v2
               v-model="form.assistantGroupLeader"
               class="filter-item"
-              multiple
               placeholder="请选择"
+              :options="taskPersonOptions"
             >
-              <el-option
-                v-for="item in assistantGroupLeaderOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+            </el-select-v2>
           </el-form-item>
         </el-col>
         <el-col :span="24">
           <el-form-item label="成员" prop="members">
-            <el-select v-model="form.members" multiple placeholder="请选择">
-              <el-option
-                v-for="item in membersOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
+            <el-select-v2
+              v-model="form.members"
+              multiple
+              style="width: 220px"
+              :multiple-limit="20"
+              placeholder="请选择"
+              class="filter-item"
+              :options="taskPersonOptions"
+            >
+            </el-select-v2>
           </el-form-item>
         </el-col>
-        <el-col :span="24">
+        <!-- <el-col :span="24">
           <el-form-item label="日期" prop="date">
             <el-date-picker
               v-model="form.date"
@@ -131,7 +110,7 @@
             >
             </el-date-picker>
           </el-form-item>
-        </el-col>
+        </el-col> -->
       </el-row>
       <el-row
         type="flex"
@@ -190,73 +169,22 @@
 <script>
 import dayjs from "dayjs";
 import { requiredVerify } from "@/common/js/validator";
-import { bindWorkInfo } from "@/api/overhaul/workOrderApi.js";
-import { QuestionFilled } from "@element-plus/icons-vue";
+import SelectPage from "@/components/SelectPage/selectPage.vue";
+import {
+  bindDev,
+  bindReview,
+  bindDispatch,
+  bindBigComponent,
+  getBigComponent,
+} from "@/api/overhaul/workOrderApi.js";
+import { getPersonByWorkClazz } from "@/api/overhaul/workClazzApi.js";
 const OPERATE_MAP = {
   1: { title: "视频绑定配置" },
   2: { title: "复核人员配置" },
   3: { title: "派工配置" },
   4: { title: "大件设备配置" },
 };
-const devOptions = [
-  {
-    value: 1,
-    label: "空闲人员",
-    children: [
-      {
-        value: 2,
-        label: "张三",
-        children: [],
-      },
-      {
-        value: 6,
-        label: "李四",
-        children: [],
-      },
-      {
-        value: 10,
-        label: "王五",
-        children: [],
-      },
-    ],
-  },
-  {
-    value: 14,
-    label: "繁忙人员",
-    children: [
-      {
-        value: 15,
-        label: "陈奕迅",
-        children: [],
-      },
-      {
-        value: 19,
-        label: "周杰伦",
-        children: [],
-      },
-    ],
-  },
-  {
-    value: 23,
-    label: "请假人员",
-    children: [
-      {
-        value: 24,
-        label: "刘德华",
-        children: [],
-      },
-      {
-        value: 28,
-        label: "张学友",
-        children: [],
-      },
-    ],
-  },
-];
 export default {
-  components: {
-    QuestionFilled,
-  },
   props: {
     //当前工单的详情
     workOrderInfo: {
@@ -283,19 +211,51 @@ export default {
       type: String,
       default: "",
     },
+    currentNode: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    sceneType: {
+      type: String,
+      default: "",
+    },
+    //指派人员信息
+    appointInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+  },
+  components: {
+    SelectPage,
   },
   data() {
     return {
-      devOptions,
+      //大件设备
+      devOptions: [
+        {
+          value: "BUSY",
+          label: "占用",
+          children: [],
+        },
+        {
+          value: "FREE",
+          label: "空闲",
+          children: [],
+        },
+      ],
       personArea: "",
       saveLoading: false,
       form: {
         channelCodes: [],
-        approvalPerson: [], //标记名称
-        remind: 1, //标记类型
+        approvalPerson: undefined, //复核人员
+        checkType: 'NOW', //复核及时性
         members: [],
-        assistantGroupLeader: [],
-        groupLeader: [],
+        assistantGroupLeader: undefined,
+        groupLeader: undefined,
         date: dayjs(),
       },
       rules: {
@@ -311,6 +271,7 @@ export default {
       membersOptions: [{ label: "四大天王", value: 1 }],
       groupLeaderOptions: [{ label: "四大天王", value: 1 }],
       channelOptions: [{ label: "视频通道1", value: 1 }],
+      taskPersonOptions: [], //任务人员
     };
   },
   computed: {
@@ -326,7 +287,60 @@ export default {
       ].includes(this.onlyTabName);
     },
   },
+  mounted() {
+    if (this.operateRow === 4) {
+      getBigComponent().then(({ data }) => {
+        this.devOptions.forEach((element) => {
+          element.children = data[element.value].map((item) => ({
+            ...item,
+            label: item.equipmentModel,
+            value: item.equipmentTypeId,
+          }));
+        });
+      });
+    }
+    this.getPersonOptions(this.appointInfo.taskGroupId || "120");
+    debugger;
+  },
   methods: {
+    /**
+     * 获取通道list
+     */
+    getChannelOptions() {
+      const { pageNum, pageSize, searchKey } = pageOptions;
+      let queryParms = {
+        pageNum,
+        pageSize,
+        searchKey,
+      };
+      return new Promise((resolve, reject) => {
+        getBusinessOrderList(queryParms).then((res) => {
+          resolve({
+            options: res.data.pageList.map((item) => ({
+              label: item.projName,
+              value: item.rowId,
+            })),
+            totalPage: res.data.allPageNum,
+          });
+        });
+      });
+    },
+    async getPersonOptions(workClazzId) {
+      if (workClazzId) {
+        let {
+          data: { value },
+        } = await getPersonByWorkClazz(workClazzId);
+        const taskUserIds = this.appointInfo.taskUserIds || [];
+        this.taskPersonOptions = (value || []).map((item) => ({
+          value: item.userId,
+          label: item.userName,
+        }));
+        // .filter((item) => taskUserIds.includes(item.value));
+        debugger;
+      } else {
+        this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
+      }
+    },
     /**
      * 显示当前选择人员的位置
      */
@@ -336,12 +350,79 @@ export default {
       });
       //获取位置
     },
+    //获取选中的组织节点
+    getProcedureInfoList(procedureType = 2) {
+      return this.currentNode
+        .filter((el) => +el.procedureType === procedureType)
+        .map((item) => ({
+          procedureCode: item.procedureCode,
+          procedureType: item.procedureType,
+        }));
+    },
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) {
           return false;
         }
         this.saveLoading = true;
+        if (this.operateRow === 1) {
+          //视频
+          bindDev({
+            workCode: this.workOrderInfo.id,
+            workOrderSceneType: this.sceneType,
+            procedureInfoList: this.getProcedureInfoList(2),
+            deviceInfoList: [],
+          }).then((res) => {
+            debugger;
+          });
+        } else if (this.operateRow === 2) {
+          //复核
+          bindReview({
+            workCode: this.workOrderInfo.id,
+            workOrderSceneType: this.sceneType,
+            procedureInfoList: this.getProcedureInfoList(2),
+            reviewInfo: {
+              personCode: this.form.approvalPerson,
+              checkType: this.form.checkType,
+            },
+          }).then((res) => {
+            this.saveLoading = false;
+            if (res.code === "0") {
+              this.$message.success("操作成功！");
+              this.handleClose();
+            }
+          });
+        } else if (this.operateRow === 3) {
+          //派工
+          bindDispatch({
+            workCode: this.workOrderInfo.id,
+            workOrderSceneType: this.sceneType,
+            procedureInfoList: this.getProcedureInfoList(2),
+            dispatchInfo: {
+              leaderPersonCodes: [this.form.groupLeader],
+              deputyLeaderPersonCodes: this.form.assistantGroupLeader
+                ? [this.form.assistantGroupLeader]
+                : [],
+              memberPersonCodes: this.form.members,
+            },
+          }).then((res) => {
+            this.saveLoading = false;
+            if (res.code === "0") {
+              this.$message.success("操作成功！");
+              this.handleClose();
+            }
+          });
+        } else {
+          //大件设备
+          bindBigComponent({
+            workCode: this.workOrderInfo.id,
+            workOrderSceneType: this.sceneType,
+            procedureInfoList: this.getProcedureInfoList(2),
+            deviceInfoList: [],
+          }).then((res) => {
+            debugger;
+          });
+        }
         //请求保存接口
       });
     },

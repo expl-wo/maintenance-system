@@ -54,7 +54,30 @@ export function setWorkOrderStatus(data) {
         data
     })
 }
-
+//获取工序信息分页
+export function getWorkInfoPage(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/page-info',
+        method: 'post',
+        data
+    })
+}
+//保存工序节点信息
+export function saveTreeInfo(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/tree-save',
+        method: 'post',
+        data
+    })
+}
+//工单绑定模板 
+export function bindTreeTemplate(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/bind-template',
+        method: 'post',
+        data
+    })
+}
 //查询工序树
 export function getWorkTree(data) {
     return request({
@@ -71,10 +94,58 @@ export function getWorkList(data) {
         data
     })
 }
-//工序信息绑定
-export function bindWorkInfo(data) {
+//绑定视频
+export function bindDev(data) {
     return request({
-        url: '/evo-ims-overhaul/work-procedure/binding',
+        url: '/evo-ims-overhaul/work-procedure/binding-dev-channel',
+        method: 'post',
+        data
+    })
+}
+//工序复核人员
+export function bindReview(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/binding-review-info',
+        method: 'post',
+        data
+    })
+}
+//工序信息绑定
+export function bindDispatch(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/binding-dispatch',
+        method: 'post',
+        data
+    })
+}
+//绑定大件设备 
+export function bindBigComponent(data) {
+    return request({
+        url: '/evo-ims-overhaul/middle-big-equipment/report-use',
+        method: 'post',
+        data
+    })
+}
+//获取大件设备 
+export function getBigComponent(middleId) {
+    return request({
+        url: '/evo-ims-overhaul/middle-big-equipment/query',
+        method: 'get',
+        data: { middleId }
+    })
+}
+//获取大件设备清单
+export function getBigComponentList(data) {
+    return request({
+        url: '/evo-ims-overhaul/middle-big-equipment/query-use',
+        method: 'get',
+        data
+    })
+}
+//工序发起OA审核 
+export function oAExamine(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-procedure/oa-examine',
         method: 'post',
         data
     })
@@ -100,6 +171,7 @@ export function createPDF(data) {
     return request({
         url: '/evo-ims-overhaul/doc-info/loading',
         method: 'post',
+        config:{responseType:'blob'},
         data
     })
 }
@@ -159,6 +231,14 @@ export function getProcedureTemplate(data) {
 export function dispatchWorkOrder(data) {
     return request({
         url: '/evo-ims-overhaul/work-order/process-appoint',
+        method: 'post',
+        data
+    })
+}
+//获取派工(工序指派)信息
+export function getAppiontInfo(data) {
+    return request({
+        url: '/evo-ims-overhaul/work-order/query-appoint',
         method: 'post',
         data
     })

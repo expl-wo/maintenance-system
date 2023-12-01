@@ -4,18 +4,17 @@
       <div class="operate-wrapper">
         <el-form :inline="true">
           <el-form-item label="设备名称/编号/IP">
-            <el-input placeholder="设备名称/编号/IP" v-model="searchKey">
-            </el-input>
+            <el-input placeholder="设备名称/编号/IP" v-model="searchKey" @keyun.enter="onSearch" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSearch"
               ><el-icon class="el-icon--left"><Search /></el-icon
               >查询</el-button
             >
-            <el-button type="primary" @click="synchronize"
+            <!-- <el-button type="primary" @click="synchronize"
               ><el-icon class="el-icon--left"><Refresh /></el-icon
               >同步</el-button
-            >
+            > -->
           </el-form-item>
         </el-form>
       </div>
@@ -25,7 +24,6 @@
         ref="deviceTable"
         v-loading="loading"
         :data="tableData"
-        size="medium"
         border
         @sort-change="sortChange"
         @filter-change="filterChange"
@@ -59,12 +57,15 @@
             :column-key="item.columnKey"
           >
             <template  #default="scope">
-              <div v-if="scope.column.columnKey === 'status'">
+              <div v-if="scope.column.columnKey === 'deviceType'">
+                <span>{{ deviceType[scope.row.deviceType] }}</span>
+              </div>
+              <div v-if="scope.column.columnKey === 'isOnline'">
                 <span
                   class="status-dot"
-                  :class="[scope.row.status === 0 ? 'bg-offline' : 'bg-online']"
+                  :class="[scope.row.isOnline === 0 ? 'bg-offline' : 'bg-online']"
                 ></span>
-                <span>{{ scope.row.status === 0 ? "离线" : "在线" }}</span>
+                <span>{{ scope.row.isOnline === 0 ? "离线" : "在线" }}</span>
               </div>
             </template>
           </el-table-column>
@@ -87,7 +88,7 @@
   </div>
 </template>
 <script>
-import { Search, Refresh } from "@element-plus/icons-vue";
+
 import { getDeviceList } from "@/api/overhaul//deviceListApi";
 
 const devStatusOptions = [
@@ -100,9 +101,14 @@ const devStatusOptions = [
     value: 0,
   },
 ];
+// 目前只展示类型为2和9的设备
+const deviceType = {
+  2: 'IPC',
+  9: 'MPT'
+}
 export default {
   name: "DeviceTable",
-  components: { Search, Refresh },
+
   data() {
     return {
       searchKey: "",
@@ -118,57 +124,56 @@ export default {
           prop: "deviceName",
           key: "deviceName",
           label: "设备名称",
-          minWidth: "160px",
-          sortable: "custom",
+          minWidth: "160px"
         },
         {
-          prop: "deviceIP",
-          key: "deviceIP",
+          prop: "deviceIp",
+          key: "deviceIp",
           label: "IP地址",
           minWidth: "160px",
-          sortable: "custom",
+          sortable: "custom"
         },
         {
-          prop: "port",
-          key: "port",
+          prop: "devicePort",
+          key: "devicePort",
           label: "端口",
           minWidth: "160px",
           sortable: "custom",
         },
         {
-          prop: "deviceCategory",
-          key: "deviceCategory",
+          prop: "deviceType",
+          key: "deviceType",
+          columnKey: "deviceType",
           label: "设备类型",
           minWidth: "160px",
-          sortable: "custom",
+          sortable: "custom"
         },
         {
           prop: "ownerOrgName",
           key: "ownerOrgName",
           label: "所属组织",
-          minWidth: "160px",
-          sortable: "custom",
+          minWidth: "160px"
         },
         {
-          prop: "status",
-          key: "status",
+          prop: "isOnline",
+          key: "isOnline",
           label: "状态",
           minWidth: "100px",
-          columnKey: "status",
+          columnKey: "isOnline",
           filters: devStatusOptions,
           needSlot: true,
         },
       ],
       tableData: [],
-      tableLoading: false,
       total: 0,
-      pageNum: 0,
+      pageNum: 1,
       pageSize: 10,
       pageSizeOptions: ["10", "20", "40", "50"],
       selectedNode: { ownerCode: "001" },
       sortInfo: {},
       filterInfo: {},
       loading: false,
+      deviceType: Object.freeze(deviceType)
     };
   },
   mounted() {
@@ -177,25 +182,18 @@ export default {
   methods: {
     // 获取表格数据
     getData() {
-      this.tableLoading = true;
-      // let params = {
-      //   pageNum: this.pageNum,
-      //   pageSize: this.pageSize,
-      //   searchKey: this.searchKey,
-      //   ownerCode: this.selectedNode.ownerCode,
-      //   ...JSON.parse(JSON.stringify(this.sortInfo)),
-      //   ...JSON.parse(JSON.stringify(this.filterInfo)),
-      // };
+      this.loading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         searchKey: this.searchKey,
-        types: [],
+        types: ['1_2', '1_9'],
+        ...this.sortInfo,
+        ...this.filterInfo
       };
-      console.log("------------", params);
       getDeviceList(params)
         .then((res) => {
-          if (res.success && res.data.value) {
+          if (res.success && res.data) {
             this.tableData = res.data.pageData || [];
             this.total = res.data.totalRows || 0;
           }
@@ -205,7 +203,7 @@ export default {
           this.total = 0;
         })
         .finally(() => {
-          this.tableLoading = false;
+          this.loading = false;
         });
     },
     // 搜索
@@ -213,15 +211,15 @@ export default {
       this.pageNum = 1;
       this.getData();
     },
-    // 同步
-    synchronize() {
-      this.sortInfo = {};
-      this.filterInfo = {};
-      this.$refs.deviceTable.clearSort();
-      this.$refs.deviceTable.clearFilter();
-      this.pageNum = 1;
-      this.getData();
-    },
+    // // 同步
+    // synchronize() {
+    //   this.sortInfo = {};
+    //   this.filterInfo = {};
+    //   this.$refs.deviceTable.clearSort();
+    //   this.$refs.deviceTable.clearFilter();
+    //   this.pageNum = 1;
+    //   this.getData();
+    // },
     // 列表排序
     sortChange({ column, prop, order }) {
       this.sortInfo = null;
@@ -237,26 +235,9 @@ export default {
     // 列表筛选
     filterChange(filters) {
       let objKey = Object.keys(filters)[0];
-      this.filterInfo[objKey] = filters[objKey];
+      this.filterInfo[`${objKey}List`] = filters[objKey];
       this.pageNum = 1;
       this.getData();
-    },
-    // 页数变化
-    tableChange(pagination, filters, sorter) {
-      if (sorter && sorter.columnKey) {
-        this.sortInfo = {
-          sort: sorter.columnKey,
-          sortType: sort.order === "ascend" ? "ASC" : "DESC",
-        };
-      } else {
-        this.sortInfo = {};
-      }
-      let filterKeys = Object.keys(this.filterInfo);
-      if (Object.keys(filters).length) {
-        for (let i = 0; i < filterKeys.length; i++) {
-          this.filterInfo[filterKeys[i]] = filters[filterKeys[i]];
-        }
-      }
     },
     // 每页条数发生变化
     sizeChange(size) {

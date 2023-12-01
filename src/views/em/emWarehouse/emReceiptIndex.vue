@@ -1,7 +1,5 @@
 <template>
   <div class="app-container app-containerC">
-
-
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="物料简称"  size="small">
@@ -21,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="sendTask()">生成出库任务</el-button>
@@ -44,7 +42,7 @@
             <el-input v-model="listQueryDe.warehouseCode" placeholder="库位编码" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onRuleConfigQuery">{{ $t('button.query') }}
+            <el-button type="primary" icon="el-icon-search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
         </el-form>
@@ -81,7 +79,7 @@
   import QRCode from 'qrcodejs2'
   export default {
     name: 'emReceiptIndex',
-    components: { TableSimple,reactorCapacity,emWarehouse,TableCheckAll },
+    components: { TableSimple,TableCheckAll },
     data() {
       return {
         heightTable: '300px',

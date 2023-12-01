@@ -41,32 +41,24 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     [PROCESS_NODE_ENUM.ROOT]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
-            prop: "measureName",
+            prop: "workProcedureName",
             label: "标准工序名称",
         },
         {
-            prop: "measureCode",
+            prop: "workProcedureCode",
             label: "标准工序编号",
         },
+        // {
+        //     prop: "measure",
+        //     label: "标准要求",
+        // },
         {
-            prop: "measure",
-            label: "标准要求",
-        },
-        {
-            prop: "approvalStatus",
+            prop: "reviewStatus",
             label: "复核状态",
         },
         {
-            prop: "process",
+            prop: "progress",
             label: "工序进度",
-        },
-        {
-            prop: "startTime",
-            label: "开工时间",
-        },
-        {
-            prop: "endTime",
-            label: "完工时间",
         },
         {
             prop: "operation",
@@ -78,15 +70,15 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     [PROCESS_NODE_ENUM.NORM]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
-            prop: "subProcessName",
+            prop: "workProcedureName",
             label: "中工序名称",
         },
         {
-            prop: "process",
+            prop: "progress",
             label: "工步完成度",
         },
         {
-            prop: "approvalStatus",
+            prop: "reviewStatus",
             label: "复核状态",
         },
         {
@@ -99,32 +91,40 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     [PROCESS_NODE_ENUM.MIDDLE]: [
         { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
-            prop: "processRowName",
+            prop: "workProcedureName",
             label: "工步名称",
         },
         {
-            prop: "groupLeader",
+            prop: "leaderName",
             label: "组长",
         },
         {
-            prop: "assistantGroupLeader",
+            prop: "deputyLeaderName",
             label: "副组长",
         },
         {
-            prop: "members",
+            prop: "memberName",
             label: "成员",
         },
         {
-            prop: "frequency",
+            prop: "checkType",
             label: "频次",
         },
         {
-            prop: "finishStatus",
+            prop: "workStatus",
             label: "当前状态",
         },
         {
-            prop: "approvalStatus",
+            prop: "reviewStatus",
             label: "复核状态",
+        },
+        {
+            prop: "startTime",
+            label: "开工时间",
+        },
+        {
+            prop: "endTime",
+            label: "完工时间",
         },
         {
             prop: "operation",
@@ -154,6 +154,23 @@ const INPLAN_OR_OUT = {
     //场外
     OUT: 'transportationGroup',
 }
+//菜单编码
+const MENU_CODE = {
+    1: 2004, //勘查工单对应的权限code前缀
+    2: 2005 //检修工单
+}
+//工序状态
+const WORK_STATUS_ENUM = {
+    0: "未派工",
+    1: "未开工",
+    2: "已开工",
+    5: "已完工"
+}
+//复核状态
+const REVIEW_STATUS_ENUM ={
+    0: "未复核",
+    1: "已复核",
+}
 export {
     COMMON_FORMAT,
     PROCESS_NODE_ENUM,
@@ -164,5 +181,8 @@ export {
     COMMON_PROCESS_COLUMNS_MAP,
     REPORT_CHECK_STATUS,
     WORK_TREE_CHECK_STATUS,
-    INPLAN_OR_OUT
+    INPLAN_OR_OUT,
+    MENU_CODE,
+    WORK_STATUS_ENUM,
+    REVIEW_STATUS_ENUM
 }

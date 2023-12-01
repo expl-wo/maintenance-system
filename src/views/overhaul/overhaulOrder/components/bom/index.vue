@@ -1,7 +1,7 @@
 <template>
   <div class="bom-box">
     <template v-if="isShowTemplate">
-      <span class="mrl10">设备清单模板:</span>
+      <span class="mrl10">bom模板:</span>
       <select-page
         v-model="templateChoose"
         :defaultSelectVal="defaultSelectVal"
@@ -97,10 +97,17 @@ import SelectPage from "@/components/SelectPage/selectPage.vue";
 import AddBom from "./addBom.vue";
 import PrintModal from "./printModal.vue";
 import BomTree from "@/components/BomTree/index.vue";
-import { getBomTemplate, findBomTemplateById } from "@/api/overhaul/bomApi.js";
+import {
+  getBomTemplate,
+  findBomTemplateById,
+  getBomByWorkOrderId,
+} from "@/api/overhaul/bomApi.js";
 import { uploadFile } from "@/api/overhaul/fileUploadApi.js";
 import QRCode from "qrcodejs2";
-import { MAX_IMG_SIZE } from "@/views/overhaul/constants.js";
+import {
+  MAX_IMG_SIZE,
+  COMMOM_WORK_ORDER_MAP,
+} from "@/views/overhaul/constants.js";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 export default {
   name: "Bom",
@@ -126,6 +133,7 @@ export default {
   },
   data() {
     return {
+      COMMOM_WORK_ORDER_MAP,
       defaultSelectVal: {}, //默认选中的模板 用于回显
       MAX_IMG_NUM: 3,
       MAX_IMG_SIZE,
@@ -152,7 +160,13 @@ export default {
       value: this.workOrderInfo.bomTemplateId,
     };
     this.templateChoose = this.workOrderInfo.bomTemplateId;
-    this.getTreeData();
+    //获取当前工单绑定的bom
+    getBomByWorkOrderId({ id: this.workOrderInfo.id }).then((res) => {
+      debugger;
+      
+      this.getTreeData();
+      
+    });
   },
   computed: {
     //只有现场检修时会进行模板选择，后续流程均时同步
