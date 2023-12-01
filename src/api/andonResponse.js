@@ -5,7 +5,7 @@ export function getAndonList(data) {
   debugger
   return request({
     url: '/api/andon/LngList/query',
-    method: 'get',
+    method: 'POST',
     data: data
   })
 }
