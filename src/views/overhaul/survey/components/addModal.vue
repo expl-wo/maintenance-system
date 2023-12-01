@@ -150,15 +150,19 @@
               :fileUrl="fileUrl"
               :fileName="fileName"
               :isCanDelete="
-                ![
-                  COMMOM_WORK_ORDER_MAP['pause'].value,
-                  COMMOM_WORK_ORDER_MAP['finish'].value,
-                ].includes(operateRow.orderStatus)
+                operateRow
+                  ? ![
+                      COMMOM_WORK_ORDER_MAP['pause'].value,
+                      COMMOM_WORK_ORDER_MAP['finish'].value,
+                    ].includes(operateRow.orderStatus)
+                  : true
               "
               :disabled="
-                [COMMOM_WORK_ORDER_MAP['pause'].value].includes(
-                  operateRow.orderStatus
-                )
+                operateRow
+                  ? [COMMOM_WORK_ORDER_MAP['pause'].value].includes(
+                      operateRow.orderStatus
+                    )
+                  : false
               "
               @uploadSuccess="uploadSuccess"
             ></multi-upload-vue>

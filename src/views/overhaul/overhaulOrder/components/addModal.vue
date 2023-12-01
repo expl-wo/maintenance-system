@@ -18,9 +18,11 @@
         <el-col :span="12">
           <el-form-item label="商机订单" prop="businessOrderId">
             <select-page
+              ref="selectRef"
               v-model="form.businessOrderId"
+              :defaultSelectVal="defaultSelectVal"
               :getOptions="getBusinessOrderOptions"
-              disabled
+              @change="businessOrderChange"
             />
           </el-form-item>
         </el-col>
@@ -186,6 +188,7 @@ export default {
   data() {
     return {
       COMMOM_WORK_ORDER_MAP,
+      defaultSelectVal: {}, //用于下拉框回显
       fileList: [],
       fileUrl: "",
       fileName: "",
@@ -224,7 +227,6 @@ export default {
       businessOrderOptions: [],
     };
   },
-
   async mounted() {
     const { data } = await getProdCategory();
     this.prodCategoryOptions = Object.keys(data).map((item) => ({
@@ -236,9 +238,29 @@ export default {
       this.form = data;
       this.fileName = this.form.attachmentName || "";
       this.fileUrl = this.form.attachmentUrl || "";
+      //商机回显 的默认值
+      if (this.form.businessOrderId) {
+        this.defaultSelectVal = {
+          value: this.form.businessOrderId,
+          label: this.form.businessOrderName,
+        };
+      }
     }
   },
   methods: {
+    businessOrderChange(val) {
+      if (!val) {
+        this.form.businessOrderName = "";
+        return;
+      }
+      const options = this.$refs.selectRef.selectOptions;
+      const target = options.find((item) => item.value === val);
+      if (target) {
+        this.form.businessOrderName = target.label;
+      } else {
+        this.form.businessOrderName = "";
+      }
+    },
     uploadSuccess(fileName, fileList) {
       this.fileList = fileList;
       this.form.attachmentName = fileName;

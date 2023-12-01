@@ -83,6 +83,7 @@
               :is="item.components"
               :workOrderInfo="info"
               :onlyTabName="item.name"
+              :activeLabel="item.label"
               :appointInfo="appointInfo"
               :sceneType="sceneType"
               :workType="item.workType"

@@ -11,6 +11,7 @@
         <component
           :ref="item.name"
           :is="item.components"
+          :activeLabel="item.label"
           :onlyTabName="onlyTabName"
           :workType="item.workType"
           v-bind="$attrs"

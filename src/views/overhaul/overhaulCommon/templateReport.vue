@@ -10,7 +10,7 @@
       <el-col :span="4">
         模板选择
         <el-select
-          :disabled="isBtnDisabled"
+          :disabled="isBtnDisabled || isDisabledStauts"
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
@@ -28,7 +28,7 @@
         <el-button
           v-if="$isAuth(this.menuCodeEdit)"
           type="primary"
-          :disabled="isBtnDisabled"
+          :disabled="isBtnDisabled || !templateChoose || isDisabledStauts"
           @click="saveFile"
         >
           <el-icon class="el-icon--left"><Document /></el-icon>保存
@@ -36,7 +36,7 @@
         <el-button
           v-if="$isAuth(this.menuCodeEdit)"
           type="primary"
-          :disabled="isBtnDisabled"
+          :disabled="isBtnDisabled || isDisabledStauts"
           @click="checkFile"
         >
           <el-icon class="el-icon--left"><Stamp /></el-icon> 发起审核
@@ -52,15 +52,17 @@
           v-if="$isAuth(this.menuCodeEdit)"
           class="upload-demo upload-report"
           :limit="1"
-          :disabled="isBtnDisabled"
+          :disabled="isBtnDisabled || isDisabledStauts"
           v-model:file-list="fileList"
           :before-upload="beforeUpload"
           :http-request="uploadFile"
           :show-file-list="false"
           :auto-upload="true"
-          accept=".doc,.docx,.pdf"
+          accept=".doc,.docx"
         >
-          <el-button type="primary" :disabled="isBtnDisabled"
+          <el-button
+            type="primary"
+            :disabled="isBtnDisabled || isDisabledStauts"
             ><el-icon class="el-icon--left"><UploadFilled /></el-icon
             >上传</el-button
           >
@@ -110,7 +112,7 @@ import {
   COMMOM_WORK_ORDER_MAP,
   MENU_CODE,
 } from "@/views/overhaul/constants.js";
-import { downLoadBlob } from "../tools.js";
+import { downloadClick } from "@/utils";
 export default {
   props: {
     //报告模板类型类型
@@ -124,6 +126,11 @@ export default {
       default() {
         return {};
       },
+    },
+    //选中的label名字
+    activeLabel: {
+      type: String,
+      default: "",
     },
     //工单类型
     workOrderType: {
@@ -159,19 +166,19 @@ export default {
         1: "文档生成中,预计1分钟,请耐心等待。。。",
         2: "文档保存中。。。",
         3: "文档发起审批中。。。",
+        4: "文档上传中。。。",
       };
       return textMap[this.loadingType];
     },
     //按钮全禁用情况
     isBtnDisabled() {
-      // if (!this.workOrderInfo.workOrderCode) {
-      //   //工单没有workOrderCode 工序模板编号时禁用
-      //   return true;
-      // }
       return [
         COMMOM_WORK_ORDER_MAP["pause"].value,
         COMMOM_WORK_ORDER_MAP["finish"].value,
       ].includes(this.workOrderInfo.orderStatus);
+    },
+    isDisabledStauts() {
+      return [1, 2].includes(this.templateStatus);
     },
   },
   async mounted() {
@@ -186,17 +193,25 @@ export default {
     } catch (error) {
       this.templateOptions = [];
     }
+    this.getSaveFile();
   },
   methods: {
+    dealUrl(url) {
+      if (!url) return "";
+      if (url.indexOf("minioServer") < 0) {
+        url = "minioServer/" + url;
+      }
+      return url;
+    },
     getSaveFile() {
       getWorkDocmentInfo({
         workCode: this.workOrderInfo.id,
         workDocType: this.workType,
-      }).then(({ templateCode, reviewStatus, pdfUri }) => {
-        debugger;
-        this.templateStatus = reviewStatus;
-        this.templateChoose = templateCode;
-        this.pdfURL = pdfUri;
+      }).then(({ data }) => {
+        const { templateCode, reviewStatus, pdfUri } = data;
+        this.templateStatus = reviewStatus || 0;
+        this.templateChoose = templateCode || undefined;
+        this.pdfURL = this.dealUrl(pdfUri);
       });
     },
     /**
@@ -231,11 +246,20 @@ export default {
       const formData = new FormData();
       // 文件对象
       formData.append("docInfo", file.file);
-      formData.append("overHaulCode", 1111);
-      formData.append("workType", this.workType);
+      formData.append("workCode", this.workOrderInfo.id);
+      formData.append("workDocType", this.workType);
+      this.loading = true;
+      this.loadingType = 4;
       // 调用保存接口 将form的值全都传过去
       uploadWorkDocmentInfo(formData).then((res) => {
-        debugger;
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          this.$message.success("操作成功，上传文件已自动保存！");
+          this.pdfURL = this.dealUrl(res.data.docUri);
+          this.templateChoose = undefined;
+        }
+        this.loading = false;
       });
     },
     //下载文件
@@ -244,11 +268,11 @@ export default {
         workCode: this.workOrderInfo.id,
         workDocType: this.workType,
       }).then((res) => {
-        debugger; // 创建blob对象，解析流数据
-        const blob = new Blob([res], {
-          type: "application/msword;charset=UTF-8",
-        });
-        downLoadBlob("test.pdf", blob);
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          downloadClick(this.dealUrl(res.data.docUri), this.activeLabel);
+        }
       });
     },
     //提交审核
@@ -265,8 +289,12 @@ export default {
             workCode: this.workOrderInfo.id,
             workDocType: this.workType,
           }).then((res) => {
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+            } else {
+              this.$message.success("提交审核成功！");
+            }
             this.loading = false;
-            debugger;
           });
         })
         .catch(() => {});

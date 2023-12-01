@@ -171,7 +171,7 @@ export function createPDF(data) {
     return request({
         url: '/evo-ims-overhaul/doc-info/loading',
         method: 'post',
-        config:{responseType:'blob'},
+        config: { responseType: 'blob', timeout: 100000 },
         data
     })
 }
@@ -180,7 +180,10 @@ export function saveWorkDocmentInfo(data) {
     return request({
         url: '/evo-ims-overhaul/doc-info/save',
         method: 'post',
-        data
+        data,
+        config: {
+            timeout: 100000
+        }
     })
 }
 //下载工序文档
@@ -188,10 +191,7 @@ export function downloadWorkDocmentInfo(data) {
     return request({
         url: '/evo-ims-overhaul/doc-info/download',
         method: 'post',
-        data,
-        config: {
-            responseType: 'blob'
-        }
+        data
     })
 }
 //上传工序文档
@@ -199,7 +199,10 @@ export function uploadWorkDocmentInfo(data) {
     return request({
         url: '/evo-ims-overhaul/doc-info/upload',
         method: 'post',
-        data
+        data,
+        config: {
+            timeout: 100000
+        }
     })
 }
 //审核文档信息
