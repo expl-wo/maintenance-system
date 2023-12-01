@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询通知信息
 export function getNoticeList(data) {
   return request({
-    url: '/evo-ims-overhaul/person-center/notice/page',
+    url: '/api/evo-ims-overhaul/person-center/notice/page',
     method: 'post',
     data
   })
@@ -11,7 +11,7 @@ export function getNoticeList(data) {
 // 标记通知
 export function markNotice(data) {
   return request({
-    url: '/evo-ims-overhaul/person-center/notice/set-status',
+    url: '/api/evo-ims-overhaul/person-center/notice/set-status',
     method: 'post',
     data
   })
@@ -19,7 +19,7 @@ export function markNotice(data) {
 // 查询任务信息
 export function getTaskList(data) {
   return request({
-    url: '/evo-ims-overhaul/person-center/task/page',
+    url: '/api/evo-ims-overhaul/person-center/task/page',
     method: 'post',
     data
   })
