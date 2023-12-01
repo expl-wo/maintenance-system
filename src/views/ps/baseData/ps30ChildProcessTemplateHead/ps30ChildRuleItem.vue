@@ -4,7 +4,7 @@
       <el-button @click="handleAdd"  type="primary">新增</el-button>
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
-      <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" @row-click="handleClick">
                   style="font-size: 0.7rem">
         <el-table-column prop="craftsName" align="center" label="中工序名称" />
 
@@ -18,7 +18,7 @@
         <el-table-column header-align="center" align="center" width="120" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="small" title="删除" type="danger" icon="Delete"
+              <el-button size="mini" title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
             </el-button-group>
           </template>
@@ -28,7 +28,7 @@
                   @pagination="getList"
       />
     </div>
-      <el-dialog draggable  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
+      <el-dialog v-dialogDrag  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
@@ -64,9 +64,9 @@
           </el-col>
         </el-row>
       </el-form>
-      <div  >
-        <el-button size="small" @click="dialogVisible=false">取消</el-button>
-        <el-button size="small" type="primary" @click="saveItemData">保存</el-button>
+      <div slot="footer">
+        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
+        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -91,6 +91,7 @@ export default {
         gxUid: '', //PLM工序编码
         gxName: '', //PLM工序名称
         standardWorkingHour: '', //标准工时
+        plmProcessId: '',
         craftsCode: '', //子工艺模板头编码
         craftsName: '', //子工艺模板头名称
         isOntology: '0', //是否本体
@@ -131,6 +132,9 @@ export default {
           this.total = response.total_count
         })
 
+    },
+    handleClick(item) {
+      this.$emit('updateChild1', item)
     },
     getList(val) {
       this.listItemUpdate.pg_pagenum = val.page
@@ -179,21 +183,16 @@ export default {
         })
       })
     },
-    initData() {
+    initData(plmProcessId) {
+      let temp = plmProcessId ==null ?'':plmProcessId.id
       // this.timeLimitId = data.id;
      queryListCrafts({
-        craftsCode: '',
-        craftsName: '',
-        pageNum: 1,
-        pageSize: 10
+       plmProcessId:temp,
+       pg_pagenum: 1,
+       pg_pagesize: 10
       }).then(response => {
-        this.dataList = response.data.map(item => {
-          return {
-            k: item.craftsCode,
-            v: item.craftsName
-          }
-        })
-        this.getDataList()
+       this.tableData = response.data
+       this.total = response.total_count
       })
     },
   }

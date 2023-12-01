@@ -6,7 +6,7 @@
           <el-input v-model="listQuery.gxName" placeholder="输入标准工序名称" style="width: 180px;" class="filter-item"
                     clearable />
         </el-form-item>
-        <el-form-item size="small">
+        <el-form-item size="mini">
           <el-button type="primary" icon="search" @click="handleSearch">查询
           </el-button>
         </el-form-item>
@@ -14,7 +14,7 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
-        <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+        <el-table  ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
           <el-table-column header-align="center" align="center" label="序号" width="50">
             <template v-slot="scope"><span>{{ scope.$index + 1 }}</span></template></el-table-column>
           <el-table-column prop="gxUid" label="标准工序编码" align="center" min-width="250"/>
@@ -29,11 +29,12 @@
 </template>
 
 <script>
-import {PlmProcessNode} from '@/api/plan'
+import {queryProduces} from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
+import ps30ChildRuleItem from "@/views/ps/baseData/ps30ChildProcessTemplateHead/ps30ChildRuleItem";
 
 export default {
-  components: {Pagination},
+  components: {Pagination,ps30ChildRuleItem},
   name: 'ps30ChildRule',
 
 
@@ -42,8 +43,7 @@ export default {
       dataList: [],
       total: 0,
       listQuery: { // 查询条件
-        pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
-        pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+        id:'',
         name: '', //节点基础数据名称
         workshopId: '', //车间ID
         workshopName: '', //车间名称
@@ -65,8 +65,8 @@ export default {
   methods: {
 
     getDataList() {
-        this.tableData = []
-        PlmProcessNode(this.listQuery).then(response => {
+      this.tableData = []
+      queryProduces(this.listQuery).then(response => {
           this.tableData = response.data
           this.total = response.total_count
         })
@@ -85,24 +85,6 @@ export default {
       this.getDataList()
     },
 
-    checkboxChange(event, item) {
-      if (event) {
-        // const checked = { id: item.id, productionCode: item.productNo }
-        this.selectedRows.push(item)
-      } else if (item) {
-        const items = this.selectedRows
-        if (items && items.length > 0) {
-          this.selectedRows = []
-          items.forEach(oldi => {
-            if (item.id !== oldi.id) {
-              // const checked = { id: oldi.id, productionCode: oldi.productionCode }
-              this.selectedRows.push(oldi)
-            }
-          })
-        }
-      }
-      console.log(this.selectedRows)
-    },
   }
 }
 </script>

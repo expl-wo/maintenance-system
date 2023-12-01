@@ -138,11 +138,12 @@ export function getCrafsAndAuxiliary(params) {
   return request({
     url: '/api/gcplan/baseData/getCrafsAndAuxiliary',
     method: 'get',
-    params: {
-      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      auxiliaryTypeName: params.auxiliaryTypeName || '', // 模糊匹配，分类名称
-      crafsName:params.crafsName
+    data: {
+      crafsId:params.crafsId,
+      auxiliaryTypeName: params.auxiliaryTypeName , // 模糊匹配，分类名称
+      crafsName:params.crafsName,
+      pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum , // 查询第几页数据，默认第一页
     }
   })
 }

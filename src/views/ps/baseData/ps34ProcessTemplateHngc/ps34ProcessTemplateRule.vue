@@ -20,7 +20,7 @@
         </el-form-item>
       </el-form>
     </div>
-        <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
           <el-table-column prop="processPlanNumber" align="center" min-width="100" label="工艺模板编码" />
           <el-table-column prop="processPlanName" align="center" min-width="100"  label="工艺模板名称" />
           <el-table-column prop="isUse" align="center" label="是否可用" min-width="70">
@@ -45,7 +45,7 @@
       <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                   @pagination="getList" />
 
-    <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
+    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
       <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
@@ -72,13 +72,13 @@
           </el-col>
         </el-row>
       </el-form>
-      <div  >
+      <div slot="footer">
         <el-button  @click="dialogVisible=false"> 取消</el-button>
         <el-button  type="primary" @click="createOrUpdateProcess">保存</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
           <el-form-item label="工序编号" >
@@ -112,7 +112,7 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogConfigCaiGouFormVisible = false" size="small">取 消</el-button>
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
         </div>
       </template>
     </el-dialog>
@@ -129,10 +129,11 @@ import {
   saveProcess
 } from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
+import ps34ProcessTemplateRuleItem from "@/views/ps/baseData/ps34ProcessTemplateHngc/ps34ProcessTemplateRuleItem";
 
 export default {
   name: 'ps34ProcessTemplateRule',
-  components: {Pagination},
+  components: {Pagination,ps34ProcessTemplateRuleItem},
 
 
   data() {
@@ -140,6 +141,7 @@ export default {
       dataList: [],
       total: 0,
       listQuery: { // 查询条件
+        id:'',
         processPlanId: '',
         processPlanName: '', //
         processPlanNumber: '', //

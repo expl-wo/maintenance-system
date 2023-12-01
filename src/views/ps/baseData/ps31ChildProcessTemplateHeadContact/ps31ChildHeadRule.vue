@@ -5,7 +5,7 @@
         <el-form-item label="中工序名称" >
           <el-input v-model="listQuery.craftsName" placeholder="请输入中工序名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="small">
+        <el-form-item size="mini">
           <el-button type="primary" icon="Search" @click="handleSearch">查询
           </el-button>
         </el-form-item>
@@ -13,7 +13,7 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
-        <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700"  @row-click="handleClick">
           <el-table-column prop="craftsCode" align="center" width="150" label="中工序编码" />
           <el-table-column prop="craftsName" align="center" width="150" label="中工序名称"/>
           <el-table-column prop="isOntology" label="是否本体" align="center" width="100">
@@ -32,7 +32,7 @@
           <el-table-column header-align="center" align="center" width="160" label="操作">
             <template v-slot="scope">
               <el-button-group>
-                <el-button size="small" title="操作" type="primary" icon="Cellphone"
+                <el-button size="mini" title="操作" type="primary" icon="Cellphone"
                            @click="handleItemSave(scope.row)">
                   保存
                 </el-button>
@@ -41,20 +41,23 @@
           </el-table-column>
         </el-table>
       </div>
+
       <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                   @pagination="getList"
       />
     </div>
+<!--    <ps31-child-head-rule-item ref="ps31ChildHeadRuleItemRef" ></ps31-child-head-rule-item>-->
   </div>
 </template>
 
 <script>
 import {findAllCrafts,insertCraftsOrder} from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
+import ps31ChildHeadRuleItem from "@/views/ps/baseData/ps31ChildProcessTemplateHeadContact/ps31ChildHeadRuleItem";
 
 export default {
   name: 'ps31ChildHeadRule',
-  components: {Pagination},
+  components: {Pagination,ps31ChildHeadRuleItem},
 
 
   data() {
@@ -88,10 +91,14 @@ export default {
       this.getDataList() // 查询
     },
     getDataList() {
-        this.tableData = []
+      this.tableData = []
         findAllCrafts(this.listQuery).then(response => {
           this.tableData = response.data
           this.total = response.total_count
+          if(this.tableData && this.tableData.length > 0){
+            this.$refs.tableRef.setCurrentRow(this.tableData[0]);
+            this.handleClick(this.tableData[0])
+          }
         })
     },
     handleClick(item) {
@@ -122,25 +129,6 @@ export default {
           type: 'success'
         })
       })
-    },
-
-    checkboxChange(event, item) {
-      if (event) {
-        // const checked = { id: item.id, productionCode: item.productNo }
-        this.selectedRows.push(item)
-      } else if (item) {
-        const items = this.selectedRows
-        if (items && items.length > 0) {
-          this.selectedRows = []
-          items.forEach(oldi => {
-            if (item.id !== oldi.id) {
-              // const checked = { id: oldi.id, productionCode: oldi.productionCode }
-              this.selectedRows.push(oldi)
-            }
-          })
-        }
-      }
-      console.log(this.selectedRows)
     },
   }
 }

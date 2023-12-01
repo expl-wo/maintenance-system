@@ -17,7 +17,7 @@
         </el-form-item>
 
         <el-form-item >
-          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -41,19 +41,19 @@
       </el-table-column>
     </el-table>
 
-    <table-simple class="otherCon wp" :data="tableData"  :total="total"   layout="total, sizes, prev, pager, next, jumper"
-                  :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize"  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange" />
-
+    <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination"
+                class="searchCon wp"
+    />
   </div>
 </template>
 
 <script>
 import TableSimple from '@/components/Table/index'
 import { PlmProcessNode} from '@/api/plan'
+import Pagination from "@/components/Pagination/index";
 export default {
   name: 'Table',
-  components: { TableSimple },
+  components: { TableSimple,Pagination },
   data() {
     return {
       total: 0, // 角色列表表格总条数
@@ -97,13 +97,10 @@ export default {
       })
     },
     // 分页数据发生变化
-    handleSizeChange(val) {
-      this.listQuery.pg_pagesize = val;
-      this.onQuery(); // 查询
-    },
-    handleCurrentChange(val) {
-      this.listQuery.pg_pagenum = val;
-      this.onQuery(); // 查询
+    handlePagination({ page, limit }) {
+      this.listQuery.pg_pagenum = page
+      this.pg_pagesize = limit
+      this.onQuery()
     },
   }
 }

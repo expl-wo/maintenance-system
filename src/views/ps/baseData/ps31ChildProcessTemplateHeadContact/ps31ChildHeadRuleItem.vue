@@ -3,7 +3,7 @@
     <div class="panel-menu-search filter-container searchCon">
       <el-button @click="handleAdd"  type="primary">新增</el-button>
     </div>
-      <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
                   style="font-size: 0.7rem">
         <el-table-column prop="craftsDeCode" align="center"  width="120"   label="工步编码" />
         <el-table-column prop="craftsDeName" align="center" width="120" label="工步名称" />
@@ -31,7 +31,7 @@
       <pagination :total="total" :page ="listItemUpdate.pg_pagenum" :limit="listItemUpdate.pg_pagesize" class="searchCon"
                   @pagination="getList"/>
 
-      <el-dialog draggable  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
+      <el-dialog v-dialogDrag  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600"
     >
       <el-form :model="listItemUpdate" ref="formRef" :rules="rules" label-width="160px">
@@ -77,9 +77,9 @@
         </el-row>
 
       </el-form>
-      <div  >
-        <el-button size="small" @click="dialogVisible=false">取消</el-button>
-        <el-button size="small" type="primary" @click="saveItemData">保存</el-button>
+      <div slot="footer">
+        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
+        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -108,6 +108,7 @@ export default {
       dialogVisible: false,
       listItemUpdate: { // 子工艺模板行数据
         id:'',
+        craftsId:'',
         craftsDeName: '',
         craftsDeCode: '',
         // isVisible: '',
@@ -203,21 +204,26 @@ export default {
         })
       })
     },
-    initData() {
+    initData(craftsId) {
+
+      console.log('cr',craftsId)
+      let temp = craftsId ==null ?'':craftsId.id
+      console.log('cr2',temp)
       // this.timeLimitId = data.id;
      findAllCraftsDes({
+        craftsId: temp,
         craftsDeCode: '',
         craftsDeName: '',
-        pageNum: 1,
-        pageSize: 10
+       pg_pagenum: 1,
+       pg_pagesize: 10
       }).then(response => {
+
         this.dataList = response.data.map(item => {
           return {
-            k: item.craftsDeCode,
+            k: item.craftsId,
             v: item.craftsDeName
           }
         })
-        this.getDataList()
       })
     },
   }

@@ -1,7 +1,7 @@
 <template>
   <div  class="wp hp app-containerC">
     <div class="panel-menu-list app-container app-containerC otherCon wp">
-      <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
                   style="font-size: 0.7rem">
         <el-table-column prop="gxUid" align="center" width="60" label="标准工序编号" />
         <el-table-column prop="gxName" align="center" label="标准工序名称" />
@@ -63,6 +63,7 @@ export default {
           gxName:'',
         workShopName:'',
         workShopNumber:'',
+        processPlanId:'',
 
           pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
           pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
@@ -120,23 +121,26 @@ export default {
         })
       })
     },
-    initData() {
+    initData(processPlanId) {
+      let temp = processPlanId ==null ?'':processPlanId.id
       // this.timeLimitId = data.id;
      procedure({
+       processPlanId:temp,
         gxUId: '',
         gxName: '',
        workshopName:'',
        workshopNumber:'',
-        pageNum: 1,
-        pageSize: 10
+       pg_pagenum: 1,
+       pg_pagesize: 10
       }).then(response => {
+       this.tableData = response.data
+       this.total = response.total_count
         this.dataList = response.data.map(item => {
           return {
             k: item.gxUId,
             v: item.gxName
           }
         })
-        this.getDataList()
       })
     },
   }

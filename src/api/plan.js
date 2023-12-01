@@ -146,8 +146,8 @@ export function queryListCrafts(params) {
   return request({
     url: '/api/gcplan/nodeAndPlm/queryListPlmProcessCrafts',
     method: 'get',
-    params:{
-      plmProcessId:params.id,
+    data:{
+      plmProcessId:params.plmProcessId,
       pg_pagenum: params.pg_pagenum,
       pg_pagesize: params.pg_pagesize,
 
@@ -190,9 +190,9 @@ export function findAllCraftsDes(params) {
     url: '/api/gcplan/nodeAndPlm/findAllCraftsDes',
     method: 'get',
     data: {
+      craftsId: params.craftsId,
       craftsDeCode:params.craftsDeCode,
       craftsDeName:params.craftsDeName,
-      standardWorkingHour:params.standardWorkingHour,
       pg_pagenum: params.pg_pagenum,
       pg_pagesize: params.pg_pagesize,
     }
@@ -326,13 +326,13 @@ export function procedure(params) {
     url: '/api/gcplan/mesProcessPlan/procedure',
     method: 'get',
     data:{
+      processPlanId:params.processPlanId,
+      gxUid:params.gxUid,
+      gxName:params.gxName,
+      workshopName:params.workshopName,
+      workshopNumber:params.workShopNumber,
       pg_pagenum: params.pg_pagenum,
       pg_pagesize: params.pg_pagesize,
-      gxName:params.gxName,
-      gxUid:params.gxUid,
-      processPlanId:params.processPlanId,
-      workshopName:params.workshopName,
-      workShopNumber: params.workShopNumber
 
     }
   })
@@ -344,11 +344,11 @@ export function getWorkContent(params) {
     url: '/api/gcplan/nodeAndPlm/getWorkContent',
     method: 'get',
     data:{
-      pg_pagenum: params.pg_pagenum,
-      pg_pagesize: params.pg_pagesize,
       stepId:params.stepId,
       stepCode:params.stepCode,
       stepName:params.stepName,
+      pg_pagenum: params.pg_pagenum,
+      pg_pagesize: params.pg_pagesize,
 
     }
   })
