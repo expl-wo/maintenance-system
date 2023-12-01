@@ -114,7 +114,7 @@ export default {
   components: { Pagination },
   props: {
     eqpId: {
-      required: true,
+      required: false,
       type: String
     },
     needShow: {

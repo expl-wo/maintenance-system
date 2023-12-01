@@ -26,7 +26,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="异常名称:" prop="name"  size="small">
           <el-input v-model="listUpdate.name" placeholder="异常名称" style="width: 320px;" class="filter-item" />
@@ -51,7 +51,8 @@
 import TableSimple from '@/components/Table/index'
 
 // 故障分类查询、故障分类的新增与编辑,故障分类删除
-import { getFactorList, getFactorUpdate, deleteFactor } from '@/api/repairBase'
+import { getFactorList, getFactorUpdate, deleteFactor } from '@/api/em/repairBase'
+import { ElButton,ElButtonGroup} from "element-plus";
 
 export default {
   name: 'Table',
@@ -116,43 +117,39 @@ export default {
           label: '操作',
           width: 140,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
                 // style: { marginRight: '0px' },
-                on: {
-                  click: function() {
-                    self.dialogFormVisible = true
-                    self.dialogStatus = 'update'
-                    self.listUpdate = { // 弹窗
-                      id: params.row.id,
-                      description: params.row.description, // 模糊匹配，故障分类描述
-                      name: params.row.name // 模糊匹配，故障分类名称
-                    }
+                onClick: function() {
+                  self.dialogFormVisible = true
+                  self.dialogStatus = 'update'
+                  self.listUpdate = { // 弹窗
+                    id: params.row.id,
+                    description: params.row.description, // 模糊匹配，故障分类描述
+                    name: params.row.name // 模糊匹配，故障分类名称
                   }
                 }
-              }, ''),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
-                on: {
-                  click: function() {
-                    self.dataListUpdate = params.row
-                    self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    }).then(() => {
-                      const req = { ids: [params.row.id] }
-                      deleteFactor(req).then(response => {
-                        self.$message({ message: '删除成功', type: 'success' })
-                        self.onQuery() // 查询
-                      })
-                    }).catch(() => {
-                      self.$message({ type: 'info', message: '已取消删除' })
+              },() => ''),
+              h(ElButton, {
+                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                onClick: function() {
+                  self.dataListUpdate = params.row
+                  self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }).then(() => {
+                    const req = { ids: [params.row.id] }
+                    deleteFactor(req).then(response => {
+                      self.$message({ message: '删除成功', type: 'success' })
+                      self.onQuery() // 查询
                     })
-                  }
+                  }).catch(() => {
+                    self.$message({ type: 'info', message: '已取消删除' })
+                  })
                 }
-              }, '')
+              },() => '')
 
             ])
           }

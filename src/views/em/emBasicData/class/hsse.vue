@@ -25,7 +25,7 @@
       @pagination="getList"
     />
 
-    <!-- <el-dialog v-draggable  :close-on-click-modal="false" title="修改"  v-model="dialogFormEditVisible" class="roleDialog">
+    <!-- <el-dialog draggable :close-on-click-modal="false" title="修改"  v-model="dialogFormEditVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="160px" :model="listUpdate">
         <el-form-item label="分类名称:"  size="small">
           <el-input v-model="listUpdate.name" placeholder="分类名称" style="width: 180px;" disabled class="filter-item"  size="small" clearable />
@@ -108,12 +108,12 @@ export default {
         //   width: 80,
         //   label: '操作',
         //   render: (h, params) => {
-        //     return h('el-button-group', [
-        //       h('el-button', {
-        //         props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
+        //     return h(ElButtonGroup, ()=>[
+        //       h(ElButton, {
+        //         props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
 
         //         on: {
-        //           click: function() {
+        //          onClick: function() {
         //             self.dialogFormEditVisible = true
         //             self.listUpdate = { // 弹窗
         //               eqpClassId: params.row.id, // id

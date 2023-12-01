@@ -48,7 +48,7 @@
     />
 
     <!--派工-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="保养派工操作"  v-model="dialogDispatchFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="保养派工操作"  v-model="dialogDispatchFormVisible" class="roleDialog">
       <el-form ref="listDispatchUpdate" label-position="right" label-width="120px" :rules="submitDispatchRules" :model="listDispatchUpdate">
         <el-form-item label="保养派工单号:"  size="small">
           <el-input v-model="listDispatchUpdate.dspNumber" placeholder="保养派工单号" style="width: 330px;" class="filter-item" disabled />
@@ -80,7 +80,7 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择人员"  v-model="dialogPeopleFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="请选择人员"  v-model="dialogPeopleFormVisible" class="roleDialog800">
       <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
@@ -110,7 +110,7 @@
     </el-dialog>
 
     <!--选择人员(参与人)多选-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择人员"  v-model="dialogPeoplesFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="请选择人员"  v-model="dialogPeoplesFormVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
@@ -144,7 +144,7 @@
     </el-dialog>
 
     <!--验收-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="保养验收操作"  v-model="dialogAcceptFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="保养验收操作"  v-model="dialogAcceptFormVisible" class="roleDialog">
       <el-form ref="listAcceptUpdate" label-position="right" label-width="120px" :rules="submitAcceptRules" :model="listAcceptUpdate">
         <el-form-item label="保养派工单号:"  size="small">
           <el-input v-model="listAcceptUpdate.dspNumber" placeholder="保养派工单号" style="width: 330px;" class="filter-item" disabled />
@@ -437,12 +437,12 @@ export default {
           label: '操作',
           width: 160,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'primary', size: 'small'},
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.dialogDispatchFormVisible = true
                     self.listDispatchUpdate = { // 派工弹窗
                       id: params.row.id, // 保养单对应的主键id
@@ -458,10 +458,10 @@ export default {
                   }
                 }
               }, '派工'),
-              // h('el-button', {
-              //   props: { type: 'primary', size: 'mini' },
+              // h(ElButton, {
+              //   props: { type: 'primary', size: 'small' },
               //   on: {
-              //     click: function() {
+              //    onClick: function() {
               //       self.dialogAcceptFormVisible = true
               //       self.listAcceptUpdate = { // 验收弹窗
               //         id: params.row.id, // 保养单对应的主键id
@@ -477,10 +477,10 @@ export default {
               //     }
               //   }
               // }, '验收'),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini' },
+              h(ElButton, {
+                props: { type: 'danger', size: 'small' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     //self.dialogAcceptFormVisible = true
                     // self.listAcceptUpdate = { // 验收弹窗
                     //   id: params.row.id,
@@ -552,11 +552,11 @@ export default {
           width: 110,
           align: 'center',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'primary', size: 'small'},
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listDispatchUpdate.mterId = params.row.id // 被派工人id
                     self.listDispatchUpdate.mterName = params.row.name // 被派工人姓名
                     self.dialogPeopleFormVisible = false

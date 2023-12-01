@@ -126,7 +126,7 @@
     </el-dialog>
 
     <el-dialog
-    v-draggable title="设备备件请购"
+    draggabletitle="设备备件请购"
      v-model="dialogSparePartsApplyFormVisible"
     width="70%" append-to-body
     :close-on-click-modal="false"
@@ -139,7 +139,7 @@
     </el-dialog>
 
 
-    <el-dialog v-draggable title="备件请购修改"  v-model="dialogEditFormVisible" class="roleDialog700" append-to-body>
+    <el-dialog draggabletitle="备件请购修改"  v-model="dialogEditFormVisible" class="roleDialog700" append-to-body>
       <div style="height: 230px;">
         <el-form label-width="90px"  :inline="true" v-model="selectItem" class="centered-label demo-form-inline demo-form-zdy">
           <el-col :span="12">

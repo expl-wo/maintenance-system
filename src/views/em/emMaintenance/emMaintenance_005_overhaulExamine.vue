@@ -261,7 +261,7 @@
       </div>
       <pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon wp"/>
     </div>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="修改"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="修改"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listQuery" label-position="right" label-width="130px" :rules="submitRules" :model="listQuery">
         <el-form-item label="检修方案:" prop="maintenancePlan"  size="small">
           <el-input v-model="listQuery.maintenancePlan"  type="textarea" :rows="3"  style="width: 245px;" class="filter-item"   />
@@ -322,7 +322,7 @@
       mixins: [formatPlanMixins, enterSearchMixins, configColumnMixins],
       props: {
         eqpId: {
-          required: true,
+          required: false,
           type: String
         },
         needShow: {
@@ -335,9 +335,6 @@
           approvalOverhaulDialog,
           XuiDictionary,
           Pagination,
-          cellTransform,
-          submitApprovalDialog,
-          rejectDialog,
           selectNameDialog
         },
       data() {

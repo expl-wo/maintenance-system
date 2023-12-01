@@ -11,16 +11,20 @@
           :width="col.width"
           :align="col.align"
           :fixed="col.fixed"
-          :render-header="col.renderHead||checkHead"
+          scoped-slot
         >
+          <template #header>
+            {{col.label}}
+          </template>
           <template v-slot:default="scope">
+
             <ex-slot v-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index" :column="col" />
             <span v-else>
-              <span v-if="col.prop == 'index'">{{ scope.$index+1 }}</span>
-              <span v-else-if="col.prop == 'check'">
+              <span v-if="col.prop === 'index'">{{ scope.$index+1 }}</span>
+              <span v-else-if="col.prop === 'check'">
                 <el-checkbox @change="checkboxClick($event, scope.row, checkData)" v-show="showCheckFun(scope.row)" selected></el-checkbox>
               </span>
-              <span v-else-if="col.prop == 'upload'">
+              <span v-else-if="col.prop === 'upload'">
                 <el-button type="primary" class="el-icon-upload"></el-button>
                 <input name="file" type="file" class="fileCls" :accept="acceptFormat" @change="changeUploadFile($event, scope.row)"/>
               </span>
@@ -37,6 +41,7 @@
 
 <script>
 import Pagination from '../Pagination/index'
+import {h} from "vue";
 // 自定义内容的组件
 const exSlot = {
   functional: true,
@@ -54,14 +59,13 @@ const exSlot = {
     }
   },
 
-  render: (h, data) => {
+  render: (hs, data) => {
     const params = {
-      row: data.props.row,
-      index: data.props.index
+      row: hs.row,
+      index: hs.index
     }
-
-    if (data.props.column) params.column = data.props.column
-    return data.props.render(h, params)
+    if (data.column) params.column = data.column
+    return hs.render(h,params)
   }
 }
 

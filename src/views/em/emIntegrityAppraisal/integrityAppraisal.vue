@@ -76,7 +76,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!-- 新增/修改鉴定类别弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="mainForm" label-position="right" label-width="110px" :rules="rules" :model="mainForm">
         <el-form-item label="鉴定名称:" prop="name"  size="small">
           <el-input v-model="mainForm.name" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />
@@ -103,7 +103,7 @@
     </el-dialog>
 
     <!-- 新增/修改鉴定内容弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="deForm" label-position="right" label-width="110px" :rules="rules" :model="deForm">
         <el-form-item label="步骤:" prop="step"  size="small">
           <el-input v-model="deForm.step" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />

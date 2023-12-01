@@ -89,7 +89,7 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件请购"  v-model="dialogSparePartsApplyFormVisible"  width="70%" append-to-body
+    <el-dialog draggable title="设备备件请购"  v-model="dialogSparePartsApplyFormVisible"  width="70%" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <sparePartsApply ref="sparePartsApply" @closeApply="closeApply()"></sparePartsApply>
@@ -99,7 +99,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件添加"  v-model="dialogSparePartsAddFormVisible"  width="60%"   append-to-body
+    <el-dialog draggable title="设备备件添加"  v-model="dialogSparePartsAddFormVisible"  width="60%"   append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <el-form label-position="right" label-width="70px" :inline="true" class="demo-form-inline demo-form-zdy">
@@ -162,7 +162,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  title="设备备件修改"  v-model="dialogSparePartsEditFormVisible"  class="roleDialog" append-to-body
+    <el-dialog draggable title="设备备件修改"  v-model="dialogSparePartsEditFormVisible"  class="roleDialog" append-to-body
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <el-form v-model="editItem" label-width="80px">

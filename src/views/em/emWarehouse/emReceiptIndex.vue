@@ -35,7 +35,7 @@
                      :page="listQuery.pageNum" :limit="listQuery.pageSize" @pagination="getList" />
 
     <!-- 新增/修改节点弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryDe" class="demo-form-inline demo-form-zdy">
           <el-form-item label="库位编码"  size="small">
@@ -60,7 +60,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
@@ -221,11 +221,13 @@
             label: '查看',
             width: 140,
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'text', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props:function(){
+                  return { type: 'text', size: 'small' }
+                },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.dialogQRCodeFormVisible = true
                       self.$nextTick(function() {
                         document.getElementById('qrcode').innerHTML = ''
@@ -255,12 +257,12 @@
               if (params.row.status === 0) {
                 status = 'block'
               }
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props: { type: 'primary', size: 'small' },
                   style: { display: status },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.handleItemAddDict()
                       self.listQueryDe.receiptId = params.row.id;
                     }
@@ -297,11 +299,11 @@
             width: 80,
             align: 'center',
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini'},
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props: { type: 'primary', size: 'small'},
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.$confirm('此操作将转移库存到'+params.row.warehouseCode+', 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',

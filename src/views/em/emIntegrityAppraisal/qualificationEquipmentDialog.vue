@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog v-draggable  appendToBody title="鉴定设备" width="70%"  v-model="dialogVisible" @close="dialogClose" modal>
+    <el-dialog draggable appendToBody title="鉴定设备" width="70%"  v-model="dialogVisible" @close="dialogClose" modal>
       <div class="filter-container searchCon">
         <el-form :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item  size="small">
@@ -34,7 +34,7 @@
       </el-table>
     </el-dialog>
     <!--新增/修改鉴定设备弹窗-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="addOrUpdateForm" label-position="right" label-width="110px"  :rules="rules" :model="addOrUpdateForm" >
         <el-form-item  size="small" prop="name" label="设备名称">
           <el-input readonly v-model="addOrUpdateForm.name" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTableEquipmentVisible = true">选择设备</el-button></el-input>
@@ -59,7 +59,7 @@
     </el-dialog>
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="设备选择"  v-model="dialogTableEquipmentVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="设备选择"  v-model="dialogTableEquipmentVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTableEquipmentUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备名称:" prop="name"  size="small">
           <el-input v-model="listTableEquipmentUpdate.name" placeholder="设备名称" style="width: 180px;" class="filter-item" />
@@ -95,7 +95,7 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="员工姓名:" prop="name"  size="small">
           <el-input v-model="listTablePeopleUpdate.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />

@@ -42,7 +42,7 @@
     />
 
     <!--查看备件-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看备件"  v-model="dialogTablePcVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="查看备件"  v-model="dialogTablePcVisible" class="roleDialog800">
 <!--      <table-simple
         :heightTable="heightTable"
         :data="tablePcData"
@@ -58,7 +58,7 @@
       </div>
     </el-dialog>
     <!--查看等待原因-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="等待记录"  v-model="dialogTableWaiting" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="等待记录"  v-model="dialogTableWaiting" class="roleDialog800">
       <table-simple
         :heightTable="heightTable"
         :data="waitTableData"
@@ -72,7 +72,7 @@
         <el-button @click="dialogTableWaiting = false"  size="small">关 闭</el-button>
       </div>
     </el-dialog>
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="pictureTitle"  v-model="dialogPicturePcVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" :title="pictureTitle"  v-model="dialogPicturePcVisible" class="roleDialog800">
       <el-image v-for="(src, index) in pictureArray" :key="index" :src="src" style="width: 180px;height: 135px;"  fit="contain" :preview-src-list="pictureArray"></el-image>
       <div   class="dialog-footer">
         <el-button @click="dialogPicturePcVisible = false"  size="small">关 闭</el-button>
@@ -97,7 +97,7 @@ export default {
   components: { TableSimple,UseRecord },
   props: {
     eqpId: {
-      required: true,
+      required: false,
       type: String
     },
     needShow: {
@@ -178,7 +178,7 @@ export default {
         },
         {
           name: "全部",
-          id:null
+          id:-1
         }
       ],
     }
@@ -299,11 +299,11 @@ export default {
           align: 'center',
           label: '故障现象照片',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'text', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'text', size: 'small'},
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.pictureTitle='故障现象照片';
                     self.dialogPicturePcVisible = true
                     self.getPicArr({'id':params.row.id,'type':0})
@@ -318,11 +318,11 @@ export default {
           align: 'center',
           label: '等待记录',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'text', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'text', size: 'small'},
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.dialogTableWaiting = true;
                     self.listWaitQuery.id=params.row.id;
                     self.onWaitQuery();
@@ -343,49 +343,7 @@ export default {
           align: 'center',
           label: '维修总时长(分钟)'
         },
-        {
-          prop: 'evaluate',
-          align: 'center',
-          label: '维修评价'
-        },
-        {
-          prop: 'status',
-          align: 'center',
-          label: '设备维修后状态',
-          render: (h, params) => {
-            var statusHtml = ''
-            switch (params.row.status) {
-              case 0:
-                statusHtml = '没修复'
-                break
-              case 1:
-                statusHtml = '已修复'
-                 break
-            }
-            return h('div', [
-              statusHtml
-            ])
-          }
-        },
-        {
-          prop: 'isClear',
-          align: 'center',
-          label: '维修现场是否清理',
-          render: (h, params) => {
-            var statusHtml = ''
-            switch (params.row.isClear) {
-              case 0:
-                statusHtml = '否'
-                break
-              case 1:
-                statusHtml = '是'
-                 break
-            }
-            return h('div', [
-              statusHtml
-            ])
-          }
-        },
+        
         // {
         //   prop: 'allRepairMan',
         //   align: 'center',
@@ -421,11 +379,11 @@ export default {
           align: 'center',
           label: '维修完成照片',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'text', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'text', size: 'small'},
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.pictureTitle='维修完成照片';
                     self.dialogPicturePcVisible = true
                     self.getPicArr({'id':params.row.id,'type':1})
@@ -446,18 +404,61 @@ export default {
           align: 'center',
           label: '故障因素名称'
         },
+		{
+		  prop: 'evaluate',
+		  align: 'center',
+		  label: '维修评价'
+		},
+		{
+		  prop: 'status',
+		  align: 'center',
+		  label: '设备维修后状态',
+		  render: (h, params) => {
+		    var statusHtml = ''
+		    switch (params.row.status) {
+		      case 0:
+		        statusHtml = '没修复'
+		        break
+		      case 1:
+		        statusHtml = '已修复'
+		         break
+		    }
+		    return h('div', [
+		      statusHtml
+		    ])
+		  }
+		},
+		{
+		  prop: 'isClear',
+		  align: 'center',
+		  label: '维修现场是否清理',
+		  render: (h, params) => {
+		    var statusHtml = ''
+		    switch (params.row.isClear) {
+		      case 0:
+		        statusHtml = '否'
+		        break
+		      case 1:
+		        statusHtml = '是'
+		         break
+		    }
+		    return h('div', [
+		      statusHtml
+		    ])
+		  }
+		},
         {
           prop: 'name',
           align: 'center',
           label: '查看备件使用',
           fixed: 'right',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'text', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'text', size: 'small'},
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.dialogTablePcVisible = true
                     self.showUseRecord(params.row.orderNum)
                     // self.listSpQuery = { // 查询条件

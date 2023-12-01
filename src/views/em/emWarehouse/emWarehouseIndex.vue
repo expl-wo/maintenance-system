@@ -22,7 +22,7 @@
                   :page="listQuery.pageNum" :limit="listQuery.pageSize" @pagination="getList" />
 
     <!-- 新增/修改节点弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
       <el-form label-position="right" label-width="160px" :model="listQueryDe" :rules="deRules" ref="listQueryDe" >
         <el-form-item label="库位区:"  size="small" prop="locationArea">
           <el-input v-model="listQueryDe.locationArea" typt="number" placeholder="库位区" style="width: 180px;" class="filter-item"  size="small">
@@ -52,7 +52,7 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
@@ -141,11 +141,13 @@
             label: '查看',
             width: 170,
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'text', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props:function(){
+                  return { type: 'text', size: 'small' }
+                },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.dialogQRCodeFormVisible = true
                       self.$nextTick(function() {
                         document.getElementById('qrcode').innerHTML = ''
@@ -171,11 +173,11 @@
             width: 140,
             fixed: 'right',
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props: { type: 'primary', size: 'small' },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.addOrEdit(false)
                       self.listQueryDe.id = params.row.id;
                       self.listQueryDe.locationArea = params.row.locationArea;
@@ -186,10 +188,10 @@
                     }
                   }
                 }, '编辑'),
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini' },
+                h(ElButton, {
+                  props: { type: 'primary', size: 'small' },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.deleteReactor(params.row)
                     }
                   }

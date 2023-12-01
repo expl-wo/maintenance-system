@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  :close-on-click-modal="false" title="编辑设备"  v-model="dialogVisible" class="roleBigDialog">
+  <el-dialog draggable :close-on-click-modal="false" title="编辑设备"  v-model="dialogVisible" class="roleBigDialog">
     <div>
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="params" class="demo-form-inline demo-form-zdy">

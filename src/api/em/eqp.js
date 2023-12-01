@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询鉴定类别列表
 export function findIntegrityAppraisalList(params) {
   return request({
-    url: '/integrityAppraisal/findList',
+    url: '/api/equipment/integrityAppraisal/findList',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10,
@@ -16,7 +16,7 @@ export function findIntegrityAppraisalList(params) {
 // 新增或编辑鉴定类别
 export function addOrUpdateIntegrityAppraisal(data) {
     return request({
-        url: '/integrityAppraisal/addOrUpdate',
+        url: '/api/equipment/integrityAppraisal/addOrUpdate',
         method: 'POST',
         data
     })
@@ -25,7 +25,7 @@ export function addOrUpdateIntegrityAppraisal(data) {
 // 鉴定类别删除
 export function deleteIntegrityAppraisal(data) {
     return request({
-      url: '/integrityAppraisal/delete',
+      url: '/api/equipment/integrityAppraisal/delete',
       method: 'DELETE',
       data
     })
@@ -34,7 +34,7 @@ export function deleteIntegrityAppraisal(data) {
 // 新增/修改鉴定内容
 export function addOrUpdateIntegrityAppraisalDe(data) {
     return request({
-        url: '/integrityAppraisal/addOrUpdateDe',
+        url: '/api/equipment/integrityAppraisal/addOrUpdateDe',
         method: 'POST',
         data
     })
@@ -43,7 +43,7 @@ export function addOrUpdateIntegrityAppraisalDe(data) {
 // 鉴定内容删除
 export function deleteIntegrityAppraisalDe(data) {
     return request({
-      url: '/integrityAppraisal/deleteDe',
+      url: '/api/equipment/integrityAppraisal/deleteDe',
       method: 'DELETE',
       data
     })
@@ -52,7 +52,7 @@ export function deleteIntegrityAppraisalDe(data) {
 // 图片上传
 export function imageUpload(data) {
     return request({
-        url: '/integrityAppraisal/imageUpload',
+        url: '/api/equipment/integrityAppraisal/imageUpload',
         method: 'POST',
         data
     })
@@ -61,7 +61,7 @@ export function imageUpload(data) {
 // 查询鉴定设备列表
 export function findQualificationEquipmentList(params) {
   return request({
-    url: '/integrityAppraisal/queryEquipmentList',
+    url: '/api/equipment/integrityAppraisal/queryEquipmentList',
     method: 'get',
     params: {
       em31Id: params.em31Id || ''
@@ -72,7 +72,7 @@ export function findQualificationEquipmentList(params) {
 // 查询可选择设备
 export function equipList(params) {
   return request({
-    url: '/integrityAppraisal/equipList',
+    url: '/api/equipment/integrityAppraisal/equipList',
     method: 'get',
     params: params
   })
@@ -81,7 +81,7 @@ export function equipList(params) {
 // 新增或编辑鉴定类别
 export function addOrUpdateEquipment(data) {
     return request({
-        url: '/integrityAppraisal/addOrUpdateEquipment',
+        url: '/api/equipment/integrityAppraisal/addOrUpdateEquipment',
         method: 'POST',
         data
     })
@@ -90,7 +90,7 @@ export function addOrUpdateEquipment(data) {
 // 鉴定类别删除
 export function deleteEquipment(data) {
     return request({
-      url: '/integrityAppraisal/deleteEquipment',
+      url: '/api/equipment/integrityAppraisal/deleteEquipment',
       method: 'DELETE',
       data
     })
@@ -99,7 +99,7 @@ export function deleteEquipment(data) {
 // 查询鉴定任务列表
 export function findTaskList(params) {
   return request({
-    url: '/integrityAppraisal/queryTaskList',
+    url: '/api/equipment/integrityAppraisal/queryTaskList',
     method: 'get',
     params: {
       search: params.search || '',
@@ -115,7 +115,7 @@ export function findTaskList(params) {
 //删除鉴定任务
 export function deleteTask(data) {
   return request({
-    url: '/integrityAppraisal/deleteTask',
+    url: '/api/equipment/integrityAppraisal/deleteTask',
     method: 'post',
     data:{
       id:data

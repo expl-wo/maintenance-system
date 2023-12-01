@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 点检配置查询
 export function getMainConfList(params) {
   return request({
-    url: '/eqpCheck/mainConf',
+    url: '/api/equipment/eqpCheck/mainConf',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -20,16 +20,22 @@ export function getMainConfList(params) {
 // 点检配置新增与编辑
 export function getMainConfUpdate(data) {
     return request({
-        url: '/eqpCheck/mainConf',
+        url: '/api/equipment/eqpCheck/mainConf',
         method: 'POST',
-        data
+        data:{
+            cName:data.name,
+            cType:data.type,
+            cDesc:data.description,
+            cCycle:data.cycle,
+            cycleUnit:data.cycleUnit
+        }
     })
 }
 
 // 点检配置删除
 export function deleteMainConf(data) {
     return request({
-      url: '/eqpCheck/mainConf',
+      url: '/api/equipment/eqpCheck/mainConf',
       method: 'DELETE',
       data
     })
@@ -38,20 +44,16 @@ export function deleteMainConf(data) {
 // 点检项目配置查询
 export function getItemConf(params) {
     return request({
-      url: '/eqpCheck/itemConf',
+      url: '/api/equipment/eqpCheck/itemConf',
       method: 'get',
-      params: {
-        pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
-        pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-        mainId: params.mainId || ''
-      }
+      data:params
     })
 }
 
 // 点检项新增与编辑
 export function getItemConfUpdate(data) {
     return request({
-        url: '/eqpCheck/itemConf',
+        url: '/api/equipment/eqpCheck/itemConf',
         method: 'POST',
         data
     })
@@ -60,7 +62,7 @@ export function getItemConfUpdate(data) {
 // 点检配置删除
 export function deleteItemConf(data) {
     return request({
-      url: '/eqpCheck/itemConf',
+      url: '/api/equipment/eqpCheck/itemConf',
       method: 'DELETE',
       data
     })
@@ -69,7 +71,7 @@ export function deleteItemConf(data) {
 // 点检项目配置查询
 export function getEqpConf(params) {
   return request({
-    url: '/eqpCheck/eqpConf',
+    url: '/api/equipment/eqpCheck/eqpConf',
     method: 'get',
     params: params
   })
@@ -78,7 +80,7 @@ export function getEqpConf(params) {
 // 点检配置设备挂接
 export function getEqpConfUpdate(data) {
     return request({
-        url: '/eqpCheck/eqpConf',
+        url: '/api/equipment/eqpCheck/eqpConf',
         method: 'POST',
         data
     })
@@ -87,7 +89,7 @@ export function getEqpConfUpdate(data) {
 // 点检项图示上传
 export function getPicUpLoad(data) {
     return request({
-        url: '/eqpCheck/pic',
+        url: '/api/equipment/eqpCheck/pic',
         method: 'POST',
         data
     })
@@ -96,7 +98,7 @@ export function getPicUpLoad(data) {
 // 点检记录查询
 export function getMainRec(params) {
   return request({
-    url: '/eqpCheck/mainRec',
+    url: '/api/equipment/eqpCheck/mainRec',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -116,7 +118,7 @@ export function getMainRec(params) {
 // 点检记录查询
 export function getItemRec(params) {
   return request({
-    url: '/eqpCheck/itemRec',
+    url: '/api/equipment/eqpCheck/itemRec',
     method: 'get',
     params: {
       mainRecId: params.mainRecId || '' // 点检主记录表主键id
@@ -127,7 +129,7 @@ export function getItemRec(params) {
 // 点检记录查询
 export function genCheckTask() {
   return request({
-    url: '/eqpCheck/generateCheckTask',
+    url: '/api/equipment/eqpCheck/generateCheckTask',
     method: 'get'
   })
 }
@@ -144,7 +146,7 @@ export function importCheck(data) {
 //查询专业点检配置数据
 export function proEqpConf(params) {
   return request({
-    url: '/eqpCheck/proEqpConf',
+    url: '/api/equipment/eqpCheck/proCheckEqpConf',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -157,7 +159,7 @@ export function proEqpConf(params) {
 // 专业点检配置设备删除
 export function deleteProEqp(data) {
   return request({
-    url: '/eqpCheck/proEqpConf',
+    url: '/api/equipment/eqpCheck/delProEqpConf',
     method: 'DELETE',
     data
   })
@@ -166,7 +168,7 @@ export function deleteProEqp(data) {
 //新增或编辑专业点检的设备配置
 export function proCheckEqp(data) {
   return request({
-    url: '/eqpCheck/proEqpConf',
+    url: '/api/equipment/eqpCheck/proCheckEqpConf',
     method: 'POST',
     data
   })

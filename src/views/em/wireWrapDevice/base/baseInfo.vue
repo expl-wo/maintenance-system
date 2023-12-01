@@ -45,7 +45,7 @@
                      @current-change="handlePgChange"
       ></el-pagination>
     </div>
-    <el-dialog v-draggable  appendToBody :title="model.id ? '修改': '新增'"  v-model="dialogVisible" modal>
+    <el-dialog draggable appendToBody :title="model.id ? '修改': '新增'"  v-model="dialogVisible" modal>
       <el-form :model="model" class="element-list" ref="form"
                :rules="rules"
                style="overflow-y: auto;" label-width="100px"

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 设备维修记录查询
 export function getEqpRepairRecList(params) {
   return request({
-    url: '/eqpRepair/rec',
+    url: '/api/equipment/eqpRepair/repairRecord',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -21,7 +21,7 @@ export function getEqpRepairRecList(params) {
 // 设备维修使用备件记录查询
 export function getRepSpList(params) {
   return request({
-    url: '/eqpRepair/repSp',
+    url: '/api/equipment/eqpRepair/repSp',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -33,7 +33,7 @@ export function getRepSpList(params) {
 // 设备维修照片查询查询
 export function getRepPicture(params) {
   return request({
-    url: '/eqpRepair/repairPic',
+    url: '/api/equipment/eqpRepair/repairPic',
     method: 'get',
     params: {
       id: params.id,
@@ -44,7 +44,7 @@ export function getRepPicture(params) {
 // 维修等待记录查询
 export function getRepWaitRec(params) {
   return request({
-    url: '/eqpRepair/waitRec',
+    url: '/api/equipment/eqpRepair/waitRec',
     method: 'get',
     params: params
   })

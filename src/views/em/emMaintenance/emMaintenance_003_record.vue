@@ -132,7 +132,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!--查看备件-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看备件"  v-model="dialogTablePcVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="查看备件"  v-model="dialogTablePcVisible" class="roleDialog800">
       <table-simple
         :height-table="heightTable"
         :data="tablePcData"
@@ -162,7 +162,7 @@ export default {
   name: 'Table',
   props: {
     eqpId: {
-      required: true,
+      required: false,
       type: String
     },
     needShow: {
@@ -211,7 +211,7 @@ export default {
         },
         {
           name: "全部",
-          id:null
+          id: -1
         }
       ],
       tableData: [], // 点检配置查询（第一层）

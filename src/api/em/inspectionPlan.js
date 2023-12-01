@@ -32,7 +32,7 @@ export function deleteData(params) {
 
 export function eqpInfo(params) {
   return request({
-    url: '/eqpCommon/eqpInfo',
+    url: '/api/equipment/eqpCommon/eqpInfo',
     method: 'get',
     params:params
   })

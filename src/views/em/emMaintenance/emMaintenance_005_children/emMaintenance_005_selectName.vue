@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  :close-on-click-modal="false" title="请选择检修人员"  v-model="dialogVisible" class="roleDialog800">
+  <el-dialog draggable :close-on-click-modal="false" title="请选择检修人员"  v-model="dialogVisible" class="roleDialog800">
     <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
       <el-form-item label="" prop="name"  size="small">
         <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />

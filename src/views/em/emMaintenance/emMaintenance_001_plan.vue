@@ -108,7 +108,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="getList" class="searchCon" />
 
     <!--查看日常保养绑定设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="编辑保养设备"  v-model="dialogEqpFormVisible" class="roleBigDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="编辑保养设备"  v-model="dialogEqpFormVisible" class="roleBigDialog">
       <div>
         <div class="filter-container searchCon">
           <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
@@ -174,7 +174,7 @@
     </el-dialog>
 
     <!--弹窗新增或修改保养计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="150px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="保养计划名称:" prop="name"  size="small">
           <el-input v-model="listUpdate.name" placeholder="保养计划名称" style="width: 290px;" class="filter-item"  size="small" />
@@ -218,7 +218,7 @@
     </el-dialog>
 
     <!--弹窗新增或修改点检计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]+'(保养项)'"  v-model="dialogItemFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]+'(保养项)'"  v-model="dialogItemFormVisible" class="roleDialog">
       <el-form ref="listItemUpdate" :inline="true" label-position="right" label-width="100px" :rules="submitItemRules" :model="listItemUpdate">
         <el-form-item label="步骤:" prop="step"  size="small">
           <el-input v-model="listItemUpdate.step" placeholder="步骤" style="width: 350px;" class="filter-item"  size="small" />
@@ -251,7 +251,7 @@
     </el-dialog>
 
     <!--选择保养设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择保养设备"  v-model="dialogCheckFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择保养设备"  v-model="dialogCheckFormVisible" class="roleDialog800">
       <chooseEquip ref="equipAction" :equipRowSelected="equipRowSelected"></chooseEquip>
       <div   class="dialog-footer">
         <el-button @click="dialogCheckFormVisible = false"  size="small">关 闭</el-button>
@@ -614,12 +614,13 @@ export default {
         this.vItemloading = false
         const index = this.tableData.findIndex(data => data.id === row.id) // 首先pageData.results绑定的是父表格的数据，那么我们要把子表格数据塞到对应的父分组，那我们要知道是哪一个分组，这里的findIndex就是通过id去查找对应的父分组在数据数组里的下标
         if (!identifier) {
-          this.$set(this.tableData[index], 'dicts', response.data) // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
+          this.tableData[index].dicts = response.data
+           // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
         }
       })
     },
     // 新增保养规则
-    handleItemAddDict(item, tableKey) {
+    handleItemAddDict(item) {
       this.listItemUpdate = { // 点检项
         id: '',
         mtcId: item.id,

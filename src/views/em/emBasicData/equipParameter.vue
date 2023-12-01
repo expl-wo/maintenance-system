@@ -63,7 +63,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="异常名称:" prop="name" size="small">
           <el-input v-model="listUpdate.name" placeholder="异常名称" style="width: 320px;" class="filter-item" size="small" />
@@ -81,7 +81,7 @@
     </el-dialog>
 
     <!--查看二维码-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
@@ -91,7 +91,7 @@
     </el-dialog>
 
     <!--查看文件或图片-->
-   <el-dialog v-draggable  :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
+   <el-dialog draggable :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
      <span style = "width: 150px">
        <el-button style="margin-left: -20px;"  size="small" type="primary" class="el-icon-upload" ></el-button>
        <input name="file" type="file" class="fileCls"  @change="changeUploadFile($event, scope.row)"/>
@@ -110,7 +110,7 @@
     </el-dialog>
 
     <!--设备备件信息-->
-    <el-dialog v-draggable  title="设备备件查看"  v-model="dialogSparePartsFormVisible"  width="70%"
+    <el-dialog draggable title="设备备件查看"  v-model="dialogSparePartsFormVisible"  width="70%"
     :close-on-click-modal="false"
     :close-on-press-escape="false">
       <spareParts ref="child"></spareParts>
@@ -120,7 +120,7 @@
     </el-dialog>
 
     <!--工作时间确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogWorkTimeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogWorkTimeFormVisible" class="roleDialog">
       <el-form ref="workRef" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
         <el-form-item label="工作时间"  size="small">
           <el-input-number v-model="listResponse.workTime"  :min="0" :max="24"></el-input-number>
@@ -136,7 +136,7 @@
 
 
     <!--责任人确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible" class="roleDialog">
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
         <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
@@ -151,7 +151,7 @@
       </div>
     </el-dialog>
     <!--责任人确定-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible2" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :before-close="onCancelDialog" title="查看"  v-model="dialogResponserFormVisible2" class="roleDialog">
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
         <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
@@ -165,7 +165,7 @@
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择责任人"  v-model="dialogTablePeopleVisible" class="" append-to-body>
+    <el-dialog draggable :close-on-click-modal="false" title="请选择责任人"  v-model="dialogTablePeopleVisible" class="" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
         <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
@@ -269,7 +269,7 @@ import { $rooturl, $confirm } from '@/utils/common.js'
 import TableCheckAll from '@/components/Table/tableCheckAll'
 import { getUser } from '@/api/user'
 import { getAndonAbnormalList } from '@/api/andonConfig'
-
+import { ElButton,ElButtonGroup,ElImage,ElCheckbox } from "element-plus";
 export default {
   name: 'Table',
   components: { TableSimple, TableCheckAll,spareParts },
@@ -453,65 +453,65 @@ export default {
           label: '查看',
           width: 180,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'text', size: 'mini' },
-                on: {
-                  click: function() {
-                    self.dialogQRCodeFormVisible = true
-                    self.$nextTick(function() {
-                      document.getElementById('qrcode').innerHTML = ''
-                      const qrcode = new QRCode('qrcode', {
-                        width: 300,
-                        height: 300,
-                        text: params.row.id,
-                        colorDark: '#000000', // 前景色
-                        colorLight: '#ffffff', // 背景色
-                        correctLevel: QRCode.CorrectLevel.H// 降低容错级别
-                      })
+            return h(ElButtonGroup, () => [
+              h(ElButton, {
+                props:{ type:  ()=>'text', size: ()=>'small' },
+                onClick: function() {
+                  self.dialogQRCodeFormVisible = true
+                  self.$nextTick(function() {
+                    document.getElementById('qrcode').innerHTML = ''
+                    const qrcode = new QRCode('qrcode', {
+                      width: 300,
+                      height: 300,
+                      text: params.row.id,
+                      colorDark: '#000000', // 前景色
+                      colorLight: '#ffffff', // 背景色
+                      correctLevel: QRCode.CorrectLevel.H// 降低容错级别
                     })
-                  }
+                  })
                 }
-              }, '二维码'),
-              h('el-button', {
-                props: { type: 'text', size: 'mini' },
-                on: {
-                  click: function() {
+              }, () => '二维码'),
+              h(ElButton, {
+                 props:function(){
+                  return { type: 'text', size: 'small' }
+                },
+                 onClick: function() {
                     self.onFileload()
                     self.onFileQuery(params.row)
                     self.dialogFileFormVisible = true
-                  }
-                }
-              }, '技术文件'),
+                 }
 
-              h('el-button', {
-                props: { type: 'text', size: 'mini' },
-                on: {
-                  click: function() {
+              },() => '技术文件'),
+              h(ElButton, {
+                 props:function(){
+                  return { type: 'text', size: 'small' }
+                },
+                 onClick: function() {
                     self.onPictureload()
                     self.onPictureQuery(params.row)
                     self.dialogFileFormVisible = true
-                  }
+                 }
+              },() => '图片'),
+              h(ElButton, {
+                props:function(){
+                  return { type: 'text', size: 'small' }
+                },
+                onClick: function() {
+                  self.onDetailQuery(params.row)
                 }
-              }, '图片'),
-              h('el-button', {
-                props: { type: 'text', size: 'mini' },
-                on: {
-                  click: function() {
-                    self.onDetailQuery(params.row)
-                  }
-                }
-              }, '运维记录'),
-              h('el-button', {
-                props: { type: 'text', size: 'mini' },
-                on: {
-                  click: function() {
+              },() => '运维记录'),
+              h(ElButton, {
+                props:function(){
+                  return { type: 'text', size: 'small' }
+                },
+
+                 onClick: function() {
                     self.dialogSparePartsFormVisible = true
                     self.onSparePart(params.row)
                   }
-                }
-              }, '备件')
-            ])
+
+              },() => '备件')]
+            )
           }
         },
         {
@@ -550,7 +550,7 @@ export default {
                 statusHtml = '报废'
                 break
             }
-            return h('div', [
+            return h('div' , [
               statusHtml
             ])
           }
@@ -610,19 +610,19 @@ export default {
           label: '操作',
           width: 120,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini' },
-                on: {
-                  click: function() {
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'primary', size: 'small' },
+
+                 onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
                   }
-                }
-              }, '查看'),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
-                on: {
-                  click: function() {
+
+              },()=> '查看'),
+              h(ElButton,  {
+                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+
+                 onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
                       deleteFile({ id: params.row.id }).then(response => {
                         self.$message({ message: '删除成功', type: 'success' })
@@ -630,8 +630,8 @@ export default {
                       })
                     })
                   }
-                }
-              }, '')
+
+              }, ()=> '')
 
             ])
           }
@@ -654,7 +654,7 @@ export default {
           align: 'center',
           label: '图片',
           render: (h, params) => {
-            return h('el-image', {
+            return h(ElImage, {
               style: 'width: 100%; height: 50px',
               props: { src: params.row.picPath, 'preview-src-list': [params.row.picPath] }
             })
@@ -671,11 +671,11 @@ export default {
           label: '操作',
           width: 80,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
-                on: {
-                  click: function() {
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+
+                 onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
                       deletePic({ id: params.row.id }).then(response => {
                         self.$message({ message: '删除成功', type: 'success' })
@@ -683,8 +683,8 @@ export default {
                       })
                     })
                   }
-                }
-              }, '')
+
+              },()=> '')
 
             ])
           }
@@ -706,10 +706,11 @@ export default {
       this.checkboxData = []
     },
     onDetailQuery(row){
-      this.$router.push({
-        name: "baseData30001_equipDetail",
-        query: {row: JSON.stringify(row)},
-      });
+      console.log(row)
+      // this.$router.push({
+      //   name: "baseData30001_equipDetail",
+      //   query: {row: JSON.stringify(row)},
+      // });
     },
     onFileQuery(row) {
       this.currentRow = row
@@ -1064,24 +1065,23 @@ export default {
               ownerIdChecked = true
             }
             return h('div', [
-              h('el-checkbox', {
+              h(ElCheckbox, {
                 props: { type: 'primary', size: 'small', checked: ownerIdChecked },
-                on: {
-                  change: function(event) {
-                    // 选中
-                    if (event) {
-                      self.owner.ownerIdArray.push(params.row.id)
-                      self.owner.ownerNameArray.push(params.row.name)
-                    } else {
-                      for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
-                        if (self.owner.ownerIdArray[i] === params.row.id) {
-                          self.owner.ownerIdArray.splice(i, 1)
-                          self.owner.ownerNameArray.splice(i, 1)
-                        }
+                change: function(event) {
+                  // 选中
+                  if (event) {
+                    self.owner.ownerIdArray.push(params.row.id)
+                    self.owner.ownerNameArray.push(params.row.name)
+                  } else {
+                    for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
+                      if (self.owner.ownerIdArray[i] === params.row.id) {
+                        self.owner.ownerIdArray.splice(i, 1)
+                        self.owner.ownerNameArray.splice(i, 1)
                       }
                     }
                   }
                 }
+
               }, '')
             ])
           }

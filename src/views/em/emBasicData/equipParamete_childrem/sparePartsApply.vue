@@ -86,7 +86,7 @@
     </el-table>
 
     <!--选择设备-->
-    <el-dialog v-draggable :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible"
+    <el-dialog draggable:close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible"
       :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
