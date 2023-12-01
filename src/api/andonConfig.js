@@ -1,9 +1,10 @@
 import request from '@/utils/request'
+const baseurl = "/api/andon"
 
 // Andon异常分类分页查询
 export function getAndonConfigCateList() {
   return request({
-    url: '/andonConfig/cate',
+    url: baseurl + '/cate/query',
     method: 'get'
   })
 }
@@ -11,7 +12,7 @@ export function getAndonConfigCateList() {
 // Andon异常分类修改
 export function getAndonConfigCateUpdate(data) {
     return request({
-        url: '/andonConfig/cate',
+        url: baseurl + '/cate/save',
         method: 'POST',
         data
     })
@@ -20,8 +21,8 @@ export function getAndonConfigCateUpdate(data) {
 // Andon异常分类删除
 export function deleteAndonConfigCate(data) {
   return request({
-    url: '/andonConfig/cate',
-    method: 'DELETE',
+    url: baseurl + '/cate/delete',
+    method: 'POST',
     data
   })
 }
@@ -29,7 +30,7 @@ export function deleteAndonConfigCate(data) {
 // Andon异常项分页查询
 export function getAndonAbnormalList(params) {
   return request({
-    url: '/andonConfig/abnormal',
+    url: baseurl + '/abnormal/query',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
@@ -42,7 +43,7 @@ export function getAndonAbnormalList(params) {
 // Andon异常项修改
 export function getAndonAbnormalUpdate(data) {
   return request({
-      url: '/andonConfig/abnormal',
+      url: baseurl + '/abnormal/save',
       method: 'POST',
       data
   })
@@ -51,7 +52,7 @@ export function getAndonAbnormalUpdate(data) {
 // Andon异常项删除
 export function deleteAndonAbnormal(data) {
   return request({
-    url: '/andonConfig/abnormal',
+    url: baseurl + '/abnormal/delete',
     method: 'DELETE',
     data
   })
@@ -60,7 +61,7 @@ export function deleteAndonAbnormal(data) {
 // 升级提醒分页查询
 export function getUpgradeConfigList(params) {
   return request({
-    url: '/andonConfig/upgradeConfig',
+    url: baseurl+'/andonConfig/upgradeConfig',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
@@ -73,7 +74,7 @@ export function getUpgradeConfigList(params) {
 // 升级提醒添加修改
 export function getUpgradeConfigUpdate(data) {
   return request({
-      url: '/andonConfig/upgradeConfig',
+      url: baseurl+'/upgradeConfig/save',
       method: 'POST',
       data
   })
@@ -82,8 +83,8 @@ export function getUpgradeConfigUpdate(data) {
 // 升级提醒删除
 export function deleteUpgradeConfig(data) {
   return request({
-    url: '/andonConfig/upgradeConfig',
-    method: 'DELETE',
+    url: baseurl+'/upgradeConfig/delete',
+    method: 'POST',
     data
   })
 }
@@ -121,7 +122,7 @@ export function deleteAndonConfigTag(data) {
 // 升级模板分页查询
 export function getUpgradeTempList(params) {
   return request({
-    url: '/andonConfig/upgradeTemp',
+    url: '/api/andon/upgradeTemp/query',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
@@ -133,7 +134,7 @@ export function getUpgradeTempList(params) {
 // 升级模板添加修改
 export function getUpgradeTempUpdate(data) {
   return request({
-    url: '/andonConfig/upgradeTemp',
+    url: '/api/andon/upgradeTemp/save',
     method: 'POST',
     data
   })
@@ -142,8 +143,8 @@ export function getUpgradeTempUpdate(data) {
 // 升级模板删除
 export function deleteUpgradeTemp(data) {
   return request({
-    url: '/andonConfig/upgradeTemp',
-    method: 'DELETE',
+    url: '/api/andon/upgradeTemp/delete',
+    method: 'POST',
     data
   })
 }
@@ -151,7 +152,7 @@ export function deleteUpgradeTemp(data) {
 // Andon分类顶级节点的类型列表
 export function getAndonCateList() {
   return request({
-    url: '/andonConfig/beanCate',
+    url: '/api/andon/cate/queryBeanCate',
     method: 'get'
   })
 }

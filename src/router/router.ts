@@ -660,7 +660,17 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					icon: 'qx_001',
 					keepAlive: true
 				},
-				children: []
+				children: [
+					{
+						path: 'AndonBasisConfig',
+						name: 'AndonBasisConfig',
+						component: () => import('@/views/andon/pm_001_andonBasisConfig.vue'),
+						meta:{
+							title: 'Andon基础配置',
+							icon: 'ps_011'
+						}
+					},
+				]
 			},
 			{
 				path: 'production_baseData',
@@ -671,7 +681,37 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					icon: 'qx_001',
 					keepAlive: true
 				},
-				children: []
+				children: [
+					{
+						path: 'factoryCalendar',
+						name: 'factoryCalendar',
+						meta:{
+							title: '工厂日历',
+							icon: 'ps_011'
+						},
+						children: [{
+							path: 'factoryCalendarTime',
+							name: 'factoryCalendarTime',
+							component: () => import('@/views/production/calendar/pm_001_calendarTime.vue'),
+							meta: {
+								title: '日工作时间模板',
+								icon: 'pm_002_001',
+								keepAlive: true
+							}
+						},
+							{
+								path: 'factoryCalendarConfig',
+								name: 'factoryCalendarConfig',
+								component: () => import('@/views/production/calendar/pm_002_calendarConfig.vue'),
+								meta: {
+									title: '日历设置',
+									icon: 'pm_002_002',
+									keepAlive: true
+								}
+							},
+						]
+					},
+				]
 			},
 		],
 	},
@@ -732,6 +772,26 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					}
 				}]
 			}
+		]
+	},
+	{
+		path: '/andon',
+		component: Layout,
+		name: '08_andonGL',
+		meta: {
+			title: 'Andon管理',
+			icon: 'qx_003'
+		},
+		children: [
+			{
+				path: 'andonEventList',
+				name: 'andonEventList',
+				component: () => import('@/views/ps/baseData/index.vue'),
+				meta:{
+					title: 'Andon事件列表',
+					icon: 'ps_011'
+				}
+			},
 		]
 	},
 ]
