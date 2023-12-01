@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  appendToBody title="大修计划申请"  v-model="dialogVisible" modal>
+  <el-dialog draggable appendToBody title="大修计划申请"  v-model="dialogVisible" modal>
     <el-form :model="model" class="element-list" ref="formRef" :rules="rules" label-width="120px">
       <div class="col-md-12">
         <el-form-item label="项目分类:">

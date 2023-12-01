@@ -6,10 +6,10 @@
           <el-input v-model="listQuery.name" placeholder="鉴定名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="addOrUpdate()">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="addOrUpdate()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="excelDialogVisible = true">导入</el-button>
@@ -40,8 +40,8 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdateDe(scope.row,false)" />
-                  <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteDe(scope.row)" />
+                  <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdateDe(scope.row,false)" />
+                  <el-button  size="small" title="删除" type="danger" icon="Delete" @click="deleteDe(scope.row)" />
                 </el-button-group>
               </template>
             </el-table-column>
@@ -64,10 +64,10 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row)"></el-button>
-            <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteMain(scope.row)" />
-            <el-button  size="small" title="添加鉴定项" type="primary" icon="el-icon-plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
-            <el-button  size="small" title="选择设备" type="primary" icon="el-icon-plus" @click="selectEquipment(scope.row)">选择设备</el-button>
+            <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdate(scope.row)"></el-button>
+            <el-button  size="small" title="删除" type="danger" icon="Delete" @click="deleteMain(scope.row)" />
+            <el-button  size="small" title="添加鉴定项" type="primary" icon="Plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
+            <el-button  size="small" title="选择设备" type="primary" icon="Plus" @click="selectEquipment(scope.row)">选择设备</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -76,7 +76,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!-- 新增/修改鉴定类别弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogMainFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="mainForm" label-position="right" label-width="110px" :rules="rules" :model="mainForm">
         <el-form-item label="鉴定名称:" prop="name"  size="small">
           <el-input v-model="mainForm.name" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />
@@ -103,7 +103,7 @@
     </el-dialog>
 
     <!-- 新增/修改鉴定内容弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogDeFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="deForm" label-position="right" label-width="110px" :rules="rules" :model="deForm">
         <el-form-item label="步骤:" prop="step"  size="small">
           <el-input v-model="deForm.step" placeholder="鉴定名称" style="width: 320px;" class="filter-item"  size="small" />

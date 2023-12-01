@@ -14,10 +14,10 @@
         <el-button type="primary" icon="el-icon-close" @click="clearEqp()">清除设备</el-button>
       </el-form-item>
       <el-form-item  size="small">
-        <el-button type="primary" icon="el-icon-plus" @click="selectEquip()">选择使用设备</el-button>
+        <el-button type="primary" icon="Plus" @click="selectEquip()">选择使用设备</el-button>
       </el-form-item>
       <el-form-item  size="small">
-        <el-button type="primary" icon="el-icon-plus" @click="addColumn()">添加请购项</el-button>
+        <el-button type="primary" icon="Plus" @click="addColumn()">添加请购项</el-button>
       </el-form-item>
     </el-form>
     <el-table stripe  highlight-current-row  :data="tableData" :header-cell-style="{'text-align':'center'}" :cell-style="{'text-align':'center'}"
@@ -79,14 +79,14 @@
 
       <el-table-column :width="50" label="操作" fixed="right">
         <template  #default="scope">
-          <el-button type="danger"  size="small" icon="el-icon-delete" @click.prevent="deleteRow(scope.$index, tableData)">
+          <el-button type="danger"  size="small" icon="Delete" @click.prevent="deleteRow(scope.$index, tableData)">
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <!--选择设备-->
-    <el-dialog v-draggable :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible"
+    <el-dialog draggable:close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible"
       :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
@@ -99,7 +99,7 @@
               clearable />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onEquipQuery()">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onEquipQuery()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>

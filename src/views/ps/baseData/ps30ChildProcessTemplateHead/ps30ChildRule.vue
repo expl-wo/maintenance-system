@@ -6,7 +6,7 @@
           <el-input v-model="listQuery.gxName" placeholder="输入标准工序名称" style="width: 180px;" class="filter-item"
                     clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="search" @click="handleSearch">查询
           </el-button>
         </el-form-item>

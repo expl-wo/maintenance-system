@@ -590,7 +590,6 @@ export default {
     },
     // 树形点击
     handleNodeClick(data) {
-      debugger
       this.listQuery.cateId = data.id
       this.listQuery.cateName = data.cateName
       this.onQuery() // 查询异常项
@@ -720,7 +719,6 @@ export default {
     onSelectDept() {
       this.dialogPeopleFormVisible = true
       this.onPeopleQuery()
-      this.setTableSelected();
     },
     checkboxClick(item) {
       this.checkboxItem = item

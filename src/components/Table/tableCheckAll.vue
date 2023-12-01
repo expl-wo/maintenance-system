@@ -26,27 +26,30 @@
           :type="col.type || ''"
           :selectable="selectable"
         >
-          <template  #default="scope">
-            <ex-slot v-if="col.render" :render="col.render" :row="scope.row" :index="scope.$index" :column="col" />
+          <template  #default="params">
+            <div v-if="col.render !=null">
+<!--              {{params.row}}-->
+              <ex-slot  :render="col.render" :row="params.row" :index="params.$index" :column="col" />
+            </div>
+
             <span v-else>
-              <span v-if="col.prop == 'index'">{{ scope.$index+1 }}</span>
-              <span v-else-if="col.prop == 'check'">
-                <span v-if="showCheckFun(scope.row)">
+              <span v-if="col.prop === 'index'">{{ params.$index+1 }}</span>
+              <span v-else-if="col.prop === 'check'">
+                <span v-if="showCheckFun(params.row)">
                   <el-checkbox
-                    v-model="checkIds"
-                    :value="scope.row.id"
-                    :label="scope.row.id"
-                    :disabled="scope.row.selectable == 0 ? true :false"
+                    :value="params.row.id"
+                    :label="params.row.id"
+                    :disabled="params.row.selectable === 0"
                     style="margin-left: 8px;"
-                    @change="checkboxClick($event, scope.row)"
+                    @change="checkboxClick($event, params.row)"
                   >&nbsp;</el-checkbox>
                 </span>
               </span>
-              <span v-else-if="col.prop == 'upload'">
-                <el-button  size="small" type="primary" class="el-icon-upload" />
-                <input name="file" type="file" class="fileCls" :accept="acceptFormat" @change="changeUploadFile($event, scope.row)">
+              <span v-else-if="col.prop === 'upload'">
+<!--                <el-button  size="small" type="primary" class="el-icon-upload" />-->
+                <input name="file" type="file"  :accept="acceptFormat" @change="changeUploadFile($event, params.row)">
               </span>
-              <span v-else> {{ scope.row[col.prop] }}</span>
+              <span v-else> {{ params.row[col.prop] }}</span>
             </span>
           </template>
         </el-table-column>
@@ -58,6 +61,7 @@
 </template>
 
 <script>
+import { h } from 'vue'
 import Pagination from '../Pagination/index'
 // 自定义内容的组件
 const exSlot = {
@@ -74,16 +78,15 @@ const exSlot = {
       type: String,
       default: ''
     }
-  },
-
-  render: (h, data) => {
+  }
+  ,
+  render: (hs, data) => {
     const params = {
-      row: data.props.row,
-      index: data.props.index
+      row: hs.row,
+      index: hs.index
     }
-
-    if (data.props.column) params.column = data.props.column
-    return data.props.render(h, params)
+    if (data.column) params.column = data.column
+    return hs.render(h,params)
   }
 }
 

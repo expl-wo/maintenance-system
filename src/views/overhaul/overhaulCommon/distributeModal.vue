@@ -6,7 +6,7 @@
     :model-value="true"
     :close-on-click-modal="false"
     :destroy-on-close="true"
-    width="500px"
+    :width="operateRow === 4 ? '800px' : '500px'"
     @close="handleClose"
   >
     <el-form
@@ -25,10 +25,11 @@
         <el-col :span="24">
           <el-form-item label="视频通道选择" prop="channelCodes">
             <select-page
+              ref="selectRef"
               v-model="form.channelCodes"
               :getOptions="getChannelOptions"
               multiple
-              disabled
+              @change="channelChange"
             />
           </el-form-item>
         </el-col>
@@ -112,48 +113,30 @@
           </el-form-item>
         </el-col> -->
       </el-row>
-      <el-row
-        type="flex"
-        align="middle"
-        justify="space-between"
+      <el-cascader-panel
         v-if="operateRow === 4"
+        v-model="form.taskTeamPerson"
+        :options="devOptions"
+        :props="{ multiple: true }"
       >
-        <el-col :span="24">
-          <el-form-item label="大件设备" prop="taskTeamPerson">
-            <el-cascader
-              v-model="form.taskTeamPerson"
-              :options="devOptions"
-              :show-all-levels="false"
-              max-collapse-tags="3"
-              filterable
-              :props="{ multiple: true }"
-              collapse-tags
-              collapse-tags-tooltip
-              clearable
-            >
-              <template #default="{ node, data }">
-                <span>{{ data.label }}</span>
+        <template #default="{ node, data }">
+          <span>{{ data.label }}</span>
 
-                <el-popover
-                  v-if="node.isLeaf"
-                  placement="bottom"
-                  :width="200"
-                  trigger="click"
-                >
-                  <template #reference>
-                    <el-icon
-                      class="position-icon"
-                      @click.stop="showLocation(data)"
-                      ><QuestionFilled
-                    /></el-icon>
-                  </template>
-                  <span>{{ devUserInfo }}</span>
-                </el-popover>
-              </template>
-            </el-cascader>
-          </el-form-item>
-        </el-col>
-      </el-row>
+          <el-popover
+            v-if="node.isLeaf"
+            placement="bottom"
+            :width="200"
+            trigger="click"
+          >
+            <template #reference>
+              <el-icon class="position-icon" @click.stop="showLocation(data)"
+                ><QuestionFilled
+              /></el-icon>
+            </template>
+            <span>{{ devUserInfo }}</span>
+          </el-popover>
+        </template>
+      </el-cascader-panel>
     </el-form>
     <template #footer>
       <div class="dialog-footer">
@@ -177,6 +160,7 @@ import {
   bindBigComponent,
   getBigComponent,
 } from "@/api/overhaul/workOrderApi.js";
+import { getChannelList } from "@/api/overhaul/deviceListApi.js";
 import { getPersonByWorkClazz } from "@/api/overhaul/workClazzApi.js";
 const OPERATE_MAP = {
   1: { title: "视频绑定配置" },
@@ -235,28 +219,18 @@ export default {
   data() {
     return {
       //大件设备
-      devOptions: [
-        {
-          value: "BUSY",
-          label: "占用",
-          children: [],
-        },
-        {
-          value: "FREE",
-          label: "空闲",
-          children: [],
-        },
-      ],
+      devOptions: [],
       personArea: "",
       saveLoading: false,
       form: {
         channelCodes: [],
         approvalPerson: undefined, //复核人员
-        checkType: 'NOW', //复核及时性
+        checkType: "NOW", //复核及时性
         members: [],
         assistantGroupLeader: undefined,
         groupLeader: undefined,
         date: dayjs(),
+        channelList: [],
       },
       rules: {
         channelCodes: requiredVerify(),
@@ -290,19 +264,62 @@ export default {
   mounted() {
     if (this.operateRow === 4) {
       getBigComponent().then(({ data }) => {
-        this.devOptions.forEach((element) => {
-          element.children = data[element.value].map((item) => ({
-            ...item,
-            label: item.equipmentModel,
-            value: item.equipmentTypeId,
-          }));
-        });
+        this.getDevOptions(data);
+        // this.devOptions.forEach((element) => {
+        //   element.children = data[element.value].map((item) => ({
+        //     ...item,
+        //     label: item.equipmentModel,
+        //     value: item.equipmentTypeId,
+        //   }));
+        // });
       });
     }
+
     this.getPersonOptions(this.appointInfo.taskGroupId || "120");
-    debugger;
   },
   methods: {
+    /**获取大件设备选项 */
+    getDevOptions() {
+      const workList = this.currentNode
+        .filter((el) => +el.procedureType === 2)
+        .map((item) => ({
+          value: item.procedureCode,
+          label: item.procedureName,
+          children: [
+            {
+              value: "BUSY",
+              label: "占用",
+              children: [
+                {
+                  value: "1",
+                  label: "设备1",
+                },
+              ],
+            },
+            {
+              value: "FREE",
+              label: "空闲",
+              children: [
+                {
+                  value: "2",
+                  label: "设备2",
+                },
+              ],
+            },
+          ],
+        }));
+      this.devOptions = workList;
+    },
+    channelChange(val) {
+      if (!val.length) {
+        this.form.channelList = [];
+        return;
+      }
+      const options = this.$refs.selectRef.selectOptions;
+      this.form.channelList = options.filter((item) => {
+        return val.includes(item.value);
+      });
+    },
     /**
      * 获取通道list
      */
@@ -312,9 +329,10 @@ export default {
         pageNum,
         pageSize,
         searchKey,
+        types: [],
       };
       return new Promise((resolve, reject) => {
-        getBusinessOrderList(queryParms).then((res) => {
+        getChannelList(queryParms).then((res) => {
           resolve({
             options: res.data.pageList.map((item) => ({
               label: item.projName,
@@ -370,8 +388,8 @@ export default {
           bindDev({
             workCode: this.workOrderInfo.id,
             workOrderSceneType: this.sceneType,
-            procedureInfoList: this.getProcedureInfoList(2),
-            deviceInfoList: [],
+            procedureInfoList: this.getProcedureInfoList(3),
+            deviceInfoList: this.form.channelList,
           }).then((res) => {
             debugger;
           });
@@ -380,7 +398,7 @@ export default {
           bindReview({
             workCode: this.workOrderInfo.id,
             workOrderSceneType: this.sceneType,
-            procedureInfoList: this.getProcedureInfoList(2),
+            procedureInfoList: this.getProcedureInfoList(3),
             reviewInfo: {
               personCode: this.form.approvalPerson,
               checkType: this.form.checkType,
@@ -397,7 +415,7 @@ export default {
           bindDispatch({
             workCode: this.workOrderInfo.id,
             workOrderSceneType: this.sceneType,
-            procedureInfoList: this.getProcedureInfoList(2),
+            procedureInfoList: this.getProcedureInfoList(3),
             dispatchInfo: {
               leaderPersonCodes: [this.form.groupLeader],
               deputyLeaderPersonCodes: this.form.assistantGroupLeader

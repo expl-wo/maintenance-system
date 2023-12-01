@@ -32,7 +32,7 @@ export function deleteData(params) {
 
 export function eqpInfo(params) {
   return request({
-    url: '/eqpCommon/eqpInfo',
+    url: '/api/equipment/eqpCommon/eqpInfo',
     method: 'get',
     params:params
   })
@@ -66,7 +66,7 @@ export function getInspectionUpdate(data) {
 export function deleteInspectionFile(data) {
   return request({
     url: '/inspectionPlan/file',
-    method: 'DELETE',
+    method: 'POST',
     data
   })
 }

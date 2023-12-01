@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  appendToBody :title="this.productNo+'当前工单各阶段状态'"
+  <el-dialog draggable appendToBody :title="this.productNo+'当前工单各阶段状态'"
              v-model="dialogVisible" v-if="dialogVisible" @close="handleClose" modal width="80vw"  top="2vh">
    <!-- <div class="btn-wrapper">
       <div @click="reload" style="color: #000;cursor:pointer;">初始化</div>

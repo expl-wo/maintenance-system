@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  :close-on-click-modal="false" title="请选择检修人员"  v-model="dialogVisible" class="roleDialog800">
+  <el-dialog draggable :close-on-click-modal="false" title="请选择检修人员"  v-model="dialogVisible" class="roleDialog800">
     <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
       <el-form-item label="" prop="name"  size="small">
         <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
@@ -11,7 +11,7 @@
         <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item  size="small">
-        <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+        <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="tag-container">

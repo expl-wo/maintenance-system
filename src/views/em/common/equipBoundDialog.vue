@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-draggable  :close-on-click-modal="false" title="编辑设备"  v-model="dialogVisible" class="roleBigDialog">
+  <el-dialog draggable :close-on-click-modal="false" title="编辑设备"  v-model="dialogVisible" class="roleBigDialog">
     <div>
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="params" class="demo-form-inline demo-form-zdy">
@@ -17,7 +17,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery()">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onBtnEqpQuery()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>

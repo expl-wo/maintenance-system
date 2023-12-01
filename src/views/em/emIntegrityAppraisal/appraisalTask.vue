@@ -24,7 +24,7 @@
             </el-select>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
           </el-form-item>
           <el-form-item  size="small">
             <el-button type="primary"  @click="onExport()"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -95,7 +95,7 @@ export default {
   name: 'appraiaslTask',
   props: {
     eqpId: {
-      required: true,
+      required: false,
       type: String
     },
     needShow: {
@@ -139,7 +139,7 @@ export default {
         },
         {
           name:'全部',
-          id:null
+          id: -1
         },
 
       ],

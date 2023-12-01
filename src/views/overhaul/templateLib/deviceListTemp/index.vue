@@ -16,7 +16,7 @@
           >
             <el-icon class="el-icon--left"><Plus /></el-icon>新增</el-button
           >
-          <!-- <el-button icon="el-icon-delete" type="danger"  :disabled="disabled" @click="batchDelete">删除</el-button> -->
+          <!-- <el-button icon="Delete" type="danger"  :disabled="disabled" @click="batchDelete">删除</el-button> -->
         </el-form-item>
       </el-form>
     </div>

@@ -57,7 +57,7 @@
     </el-table>
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" class="roleDialog" :append-to-body="true">
+    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="异常项名称:" size="mini">
           <el-input v-model="listUpdate.abnormaName" placeholder="异常项名称" style="width: 320px;" class="filter-item" disabled />
@@ -90,7 +90,6 @@ import { getAndonConfigTagList, getAndonConfigTagUpdate, deleteAndonConfigTag } 
 
 export default {
   name: 'Table',
-  components: { TableSimple },
   props: ['abnormalIdChild'],
   data() {
     return {

@@ -10,7 +10,7 @@
     </div>
     <div class="app-container app-containerC">
       <div class="otherCon wp">
-        <el-table stripe   :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id">
+        <el-table stripe   :data="tableData" class="otherCon wp"    style="width: 100%;font-size:0.7rem;" row-key="id">
           <el-table-column align="center" width="110" label="操作项名称" property="operationName"></el-table-column>
           <el-table-column  align="center" label="标准工时"  property="standardWorkingHour"></el-table-column>
           <el-table-column align="center" label="设备名称" property="equipmentTypeName"></el-table-column>

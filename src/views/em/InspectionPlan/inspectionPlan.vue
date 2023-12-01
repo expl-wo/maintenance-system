@@ -11,10 +11,10 @@
                     clearable />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="loadData()">查询</el-button>
+          <el-button type="primary" icon="Search" @click="loadData()">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -191,7 +191,7 @@
       </div>
     </el-dialog>
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible"  class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible"  class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item label="" prop="name"  size="small">
@@ -204,7 +204,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -226,7 +226,7 @@
       </div>
     </el-dialog>
     <!--查看文件或图片-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
       <span style = "width: 150px">
         <el-button style="margin-left: -20px;"  size="small" type="primary" class="el-icon-upload" ></el-button>
         <input name="file" type="file" class="fileCls"  @change="changeUploadFile($event, currentRow)"/>
@@ -244,7 +244,7 @@
        </div>
      </el-dialog>
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listEquipQuery" class="demo-form-inline demo-form-zdy">
           <el-form-item label="设备编号"  size="small">
@@ -254,7 +254,7 @@
             <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -292,7 +292,9 @@ import { finEqpDep } from '@/api/em/eqpLedger'
 import { $rooturl, $confirm } from '@/utils/common.js'
 import TableSimple from '@/components/Table/index'
 import { getSingleUpload } from '@/api/endpoint'
-export default {
+  import { ElButton,ElButtonGroup} from "element-plus";
+
+  export default {
   props: {
     eqpId: {
       required: true,
@@ -446,19 +448,19 @@ export default {
           label: '操作',
           width: 120,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'danger', size: 'small',
                 on: {
-                  click: function() {
+                 onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
                   }
                 }
               }, '查看'),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
-                  click: function() {
+                 onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
                       deleteInspectionFile({ id: params.row.id }).then(response => {
                         self.$message({ message: '删除成功', type: 'success' })
@@ -495,19 +497,19 @@ export default {
           label: '操作',
           width: 120,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'danger', size: 'small',
                 on: {
-                  click: function() {
+                 onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
                   }
                 }
               }, '查看'),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
-                  click: function() {
+                 onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
                       deleteFile({ id: params.row.id }).then(response => {
                         self.$message({ message: '删除成功', type: 'success' })
@@ -556,11 +558,11 @@ export default {
           label: '操作',
           width: 80,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
-                  click: function() {
+                 onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
                       deletePic({ id: params.row.id }).then(response => {
                         self.$message({ message: '删除成功', type: 'success' })

@@ -4,7 +4,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="工器具类型名称" >
-          <el-input v-model="listQuery.toolsTypeName" placeholder="工器具类型名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+          <el-input v-model="listQuery.toolsTypeName" placeholder="工器具类型名称" style="width: 180px;" class="filter-item" size="small" clearable/>
         </el-form-item>
         <el-form-item >
           <el-button type="primary" icon="search" @click="onBtnQuery">查询</el-button>
@@ -23,7 +23,7 @@
       <el-table-column label="操作" align="center" width="200">
         <template v-slot="scope">
           <el-button-group>
-            <el-button  type="primary"  icon="Edit"
+            <el-button  type="primary" icon="Edit"
                         @click="handleEdit(scope.row)">
             </el-button>
             <el-button type="danger"  icon="Delete"

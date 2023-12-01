@@ -21,10 +21,10 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -51,29 +51,28 @@
     >
       <el-table-column type="expand" prop="name" width="60" align="center" label="详细">
         <template #default="props">
-
           <!--第二层表格-->
           <el-table stripe  highlight-current-row  :data="props.row.dicts"  style="font-size:0.7rem;">
-            <el-table-column prop="step" width="60" align="center" label="步骤" />
+            <el-table-column prop="itemStep" width="60" align="center" label="步骤" />
             <el-table-column prop="name" align="center" width="250" label="点检项名称" />
             <el-table-column prop="description" align="center" label="点检内容" />
             <el-table-column prop="itemCategory" align="center" width="100" label="点检项类型">
               <template  #default="scope">
-                <div v-if="scope.row.itemCategory == 0">安全部位类</div>
-                <div v-if="scope.row.itemCategory == 1">核心部件类</div>
-                <div v-if="scope.row.itemCategory == 2">其他</div>
+                <div v-if="scope.row.itemCategory === 0">安全部位类</div>
+                <div v-if="scope.row.itemCategory === 1">核心部件类</div>
+                <div v-if="scope.row.itemCategory === 2">其他</div>
               </template>
             </el-table-column>
             <el-table-column prop="sort" width="200" align="center" label="要求值上限 | 要求值下限">
-              <template v-if="scope.row.type==1"  #default="scope">
-                {{ scope.row.upperLimit }} | {{ scope.row.lowerLimit }} 【{{ scope.row.unit }}】
+              <template  #default="scope">
+                <span v-if="scope.row.type===1">{{ scope.row.upperLimit }} | {{ scope.row.lowerLimit }} 【{{ scope.row.unit }}】</span>
               </template>
             </el-table-column>
             <!-- 子表格操作列 -->
             <el-table-column header-align="center" align="center" width="120" label="点检项二维码">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button  size="small" title="编辑" type="text" @click="handleQRCode(scope.row)">
+                  <el-button  size="small" title="编辑" type="primary" text @click="handleQRCode(scope.row)">
                     查看二维码
                   </el-button>
                 </el-button-group>
@@ -82,25 +81,25 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleItemUpdateDict(props.row,scope.row)" />
-                  <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleItemDeleteDict(scope.row)" />
+                  <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="handleItemUpdateDict(props.row,scope.row)" />
+                  <el-button  size="small" title="删除" type="danger" icon="Delete" @click="handleItemDeleteDict(scope.row)" />
                 </el-button-group>
               </template>
             </el-table-column>
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column prop="name" align="center" width="250" label="点检名称" />
-      <el-table-column prop="description" align="center" label="点检描述" />
-      <el-table-column prop="type" align="center" width="200" label="点检类型">
+      <el-table-column prop="cName" align="center" width="250" label="点检名称" />
+      <el-table-column prop="cDesc" align="center" label="点检描述" />
+      <el-table-column prop="cType" align="center" width="200" label="点检类型">
         <template  #default="scope">
-          <div v-if="scope.row.type == 0">日常点检</div>
-          <div v-if="scope.row.type == 1">专业点检</div>
+          <div v-if="scope.row.cType === 0">日常点检</div>
+          <div v-if="scope.row.cType === 1">专业点检</div>
         </template>
       </el-table-column>
       <el-table-column prop="address" align="center" width="80" label="点检设备">
         <template  #default="scope">
-          <el-button  size="small" title="查看" type="text" @click="checkEqp(scope.row)">
+          <el-button  size="small" title="查看" type="primary" text @click="checkEqp(scope.row)">
             查看
           </el-button>
         </template>
@@ -108,11 +107,11 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleEditDict(scope.row)">
-              <i icon="el-icon-edit" />
+            <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="handleEditDict(scope.row)">
+              <i icon="Edit" />
             </el-button>
-            <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleDeleteDict(scope.row)" />
-            <el-button  size="small" title="添加点检规则" type="primary" icon="el-icon-plus" @click="handleItemAddDict(scope.row)">
+            <el-button  size="small" title="删除" type="danger" icon="Delete" @click="handleDeleteDict(scope.row)" />
+            <el-button  size="small" title="添加点检规则" type="primary" icon="Plus" @click="handleItemAddDict(scope.row)">
               添加点检规则
             </el-button>
           </el-button-group>
@@ -123,7 +122,7 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
 
     <!--弹窗新增或修改点检计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="110px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="点检名称:" prop="name"  size="small">
           <el-input v-model="listUpdate.name" placeholder="点检名称" style="width: 320px;" class="filter-item"  size="small" />
@@ -157,7 +156,7 @@
     </el-dialog>
 
     <!--弹窗新增或修改点检计划-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]+'(点检规则)'"  v-model="dialogItemFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]+'(点检规则)'"  v-model="dialogItemFormVisible" class="roleDialog">
       <el-form ref="listItemUpdate" label-position="right" label-width="100px" :rules="submitItemRules" :model="listItemUpdate">
         <el-form-item label="步骤:" prop="step"  size="small">
           <el-input-number v-model="listItemUpdate.step" label="步骤" :min="1" style="width: 180px;" class="filter-item" />
@@ -193,15 +192,17 @@
             <el-option label="数据检查" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据上限:"  size="small">
-          <el-input-number v-model="listItemUpdate.upperLimit" label="数据上限" style="width: 180px;" class="filter-item" />
-        </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据下限:"  size="small">
-          <el-input-number v-model="listItemUpdate.lowerLimit" label="数据下限" style="width: 180px;" class="filter-item" />
-        </el-form-item>
-        <el-form-item v-show="listItemUpdate && listItemUpdate.type == 1" label="数据单位:"  size="small">
-          <el-input v-model="listItemUpdate.unit" label="数据单位" style="width: 180px;" class="filter-item" />
-        </el-form-item>
+        <div  v-show="listItemUpdate.type === '1'">
+          <el-form-item  label="数据上限:" size="small">
+            <el-input-number v-model="listItemUpdate.upperLimit" label="数据上限" style="width: 180px;" class="filter-item" />
+          </el-form-item>
+          <el-form-item  label="数据下限:" size="small">
+            <el-input-number v-model="listItemUpdate.lowerLimit" label="数据下限" style="width: 180px;" class="filter-item" />
+          </el-form-item>
+          <el-form-item  label="数据单位:" size="small">
+            <el-input v-model="listItemUpdate.unit" label="数据单位" style="width: 180px;" class="filter-item" />
+          </el-form-item>
+        </div>
         <!-- <el-form-item label="点检图标:" size="small">
         </el-form-item> -->
       </el-form>
@@ -214,7 +215,7 @@
     </el-dialog>
 
     <!--查看点检设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="编辑点检设备"  v-model="dialogCheckFormVisible" class="roleBigDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="编辑点检设备"  v-model="dialogCheckFormVisible" class="roleBigDialog">
       <div>
         <div class="filter-container searchCon">
           <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
@@ -225,7 +226,7 @@
               <el-input v-model="listQueryEqp.name" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
             </el-form-item>
             <el-form-item  size="small">
-              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+              <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -283,7 +284,7 @@
     </el-dialog>
 
     <!--查看二维码-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
@@ -327,7 +328,7 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择点检设备"  v-model="dialogProCheckFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择点检设备"  v-model="dialogProCheckFormVisible" class="roleDialog800">
       <proCheckEquip ref="equipAction" :checkDataSelected="checkDataSelected"></proCheckEquip>
       <div   class="dialog-footer">
         <el-button @click="dialogProCheckFormVisible = false"  size="small">关 闭</el-button>
@@ -415,8 +416,8 @@ export default {
         type: '0',
         name: '',
         description: '',
-        lowerLimit: '',
-        upperLimit: '',
+        lowerLimit: null,
+        upperLimit: null,
         unit: '',
         needPhoto:'1',
         itemCategory: '2',
@@ -593,12 +594,13 @@ export default {
       getItemConf({ mainId: row.id }).then(response => {
         const index = this.tableData.findIndex(data => data.id === row.id) // 首先pageData.results绑定的是父表格的数据，那么我们要把子表格数据塞到对应的父分组，那我们要知道是哪一个分组，这里的findIndex就是通过id去查找对应的父分组在数据数组里的下标
         if (!identifier) {
-          this.$set(this.tableData[index], 'dicts', response.data) // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
+          this.tableData[index].dicts = response.data
+           // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
         }
       })
     },
     // 新增点检规则
-    handleItemAddDict(item, tableKey) {
+    handleItemAddDict(item) {
       this.listItemUpdate = { // 点检项
         id: '',
         checkId: item.id,
@@ -606,32 +608,35 @@ export default {
         type: '0',
         name: '',
         description: '',
-        lowerLimit: '',
-        upperLimit: '',
+        lowerLimit: null,
+        upperLimit: null,
         needPhoto: '1',
         itemCategory: '2',
         needText:'0',
-        checkType: item.type.toString()
+        checkType: item.type+''
       }
       this.dialogItemFormVisible = true
       this.dialogStatus = 'create'
     },
     handleItemUpdateDict(item, row) {
-      this.listItemUpdate = JSON.parse(JSON.stringify(row))
-      this.listItemUpdate.type = this.listItemUpdate.type.toString()
-      this.listItemUpdate.needPhoto = this.listItemUpdate.needPhoto.toString()
-      this.listItemUpdate.itemCategory = this.listItemUpdate.itemCategory.toString()
-      this.listItemUpdate.needText = this.listItemUpdate.needText.toString()
-      this.listItemUpdate.checkType = item.type.toString()
+      // this.listItemUpdate = JSON.parse(JSON.stringify(row))
+      this.listItemUpdate.checkId = item.id
+      this.listItemUpdate.id = row.id
+      this.listItemUpdate.unit = row.unit
+      this.listItemUpdate.upperLimit = row.upperLimit
+      this.listItemUpdate.lowerLimit = row.lowerLimit
+
+      this.listItemUpdate.type = row.type+''
+      this.listItemUpdate.needPhoto = row.needPhoto+''
+      this.listItemUpdate.itemCategory = row.itemCategory+''
+      this.listItemUpdate.needText = row.needText+''
+      this.listItemUpdate.checkType = row.type+''
+      this.listItemUpdate.name = row.name
+      this.listItemUpdate.description = row.description
       this.dialogItemFormVisible = true
       this.dialogStatus = 'update'
     },
-    // 点检计划第一层 点检类型 切换
-    typeChange(val) {
-      // if(val == 1) {
 
-      // }
-    },
     // 点击添加点检规则
     createItemData(listItemUpdate, message) {
       this.saveItemData(listItemUpdate, message)
@@ -647,6 +652,7 @@ export default {
           this.dialogItemFormVisible = false
           const req = { ...this.listItemUpdate }
           req.type = parseInt(this.listItemUpdate.type)
+
           getItemConfUpdate(req).then(response => {
             this.$message({ message: message, type: 'success' })
             this.isDropItem() // 判断有没有展开的下拉项，有的话重新查找
@@ -673,7 +679,7 @@ export default {
       })
     },
     checkEqp(row){
-      if(row.type === 1){
+      if(row.cType === 1){
         this.dialogProCheckFormVisible = true
         this.checkDataSelected = row
         this.$nextTick(() => {

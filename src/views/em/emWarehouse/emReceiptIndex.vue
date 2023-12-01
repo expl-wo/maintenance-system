@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="sendTask()">生成出库任务</el-button>
@@ -35,14 +35,14 @@
                      :page="listQuery.pageNum" :limit="listQuery.pageSize" @pagination="getList" />
 
     <!-- 新增/修改节点弹窗 -->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title=title  v-model="addDialogVisible" class="roleDialog">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryDe" class="demo-form-inline demo-form-zdy">
           <el-form-item label="库位编码"  size="small">
             <el-input v-model="listQueryDe.warehouseCode" placeholder="库位编码" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onRuleConfigQuery">查询
+            <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
         </el-form>
@@ -60,7 +60,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="查看二维码"  v-model="dialogQRCodeFormVisible" class="roleDialog">
       <el-card shadow="hover" class="wp qrcode app-containerC cc">
         <div id="qrcode" class="wp hp" />
       </el-card>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { ElButton,ElButtonGroup} from "element-plus";
+
   import TableSimple from '@/components/Table/index'
   import TableCheckAll from '@/components/Table/tableCheckAll'
   import reactorCapacity from '@/api/reactorCapacity'
@@ -221,11 +223,13 @@
             label: '查看',
             width: 140,
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'text', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  props:function(){
+                  return { type: 'text', size: 'small' }
+                },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.dialogQRCodeFormVisible = true
                       self.$nextTick(function() {
                         document.getElementById('qrcode').innerHTML = ''
@@ -255,12 +259,12 @@
               if (params.row.status === 0) {
                 status = 'block'
               }
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini' },
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  type: 'danger', size: 'small',
                   style: { display: status },
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.handleItemAddDict()
                       self.listQueryDe.receiptId = params.row.id;
                     }
@@ -297,11 +301,11 @@
             width: 80,
             align: 'center',
             render: (h, params) => {
-              return h('el-button-group', [
-                h('el-button', {
-                  props: { type: 'primary', size: 'mini'},
+              return h(ElButtonGroup, ()=>[
+                h(ElButton, {
+                  type: 'primary', size: 'small',
                   on: {
-                    click: function() {
+                   onClick: function() {
                       self.$confirm('此操作将转移库存到'+params.row.warehouseCode+', 是否继续?', '提示', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',

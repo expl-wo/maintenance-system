@@ -34,73 +34,75 @@
         </div>
       </div>
       <div class="process-content-right" v-loading="tableListLoading">
-        <div class="operate-wrap" v-if="workTreeStatus === 2">
-          <el-button
-            v-if="$isAuth(roleBtnEnum['videoBind'])"
-            type="primary"
-            :disabled="isPauseOrFinish"
-            @click="openModal(1, 'distributeModalFlag')"
-          >
-            <el-icon class="el-icon--left"><Setting /></el-icon>
-            视频绑定
-          </el-button>
-          <el-button
-            v-if="$isAuth(roleBtnEnum['orderCheck'])"
-            type="primary"
-            :disabled="isPauseOrFinish"
-            @click="openModal(2, 'distributeModalFlag')"
-          >
-            <el-icon class="el-icon--left"><UserFilled /></el-icon>
-            复核人员
-          </el-button>
-          <el-button
-            v-if="$isAuth(roleBtnEnum['infoAppoint'])"
-            type="primary"
-            :disabled="isPauseOrFinish"
-            @click="openModal(3, 'distributeModalFlag')"
-          >
-            <el-icon class="el-icon--left"><Pointer /></el-icon>
-            派工
-          </el-button>
-          <el-button
-            v-if="$isAuth(roleBtnEnum['bigComponent'])"
-            type="primary"
-            :disabled="isPauseOrFinish"
-            @click="openModal(4, 'distributeModalFlag')"
-          >
-            <el-icon class="el-icon--left"><Tools /></el-icon>
-            大件设备
-          </el-button>
-        </div>
-        <div class="operate-wrap" v-else>
-          <el-button
-            v-if="$isAuth(roleBtnEnum['workInfo_check'])"
-            type="primary"
-            :disabled="isPauseOrFinish && [1, 2].includes(workTreeStatus)"
-            title="保存"
-            @click="workTreeSave"
-          >
-            <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
-          </el-button>
-          <el-button
-            v-if="$isAuth(roleBtnEnum['workInfo_check'])"
-            type="primary"
-            :disabled="isPauseOrFinish && [1, 2].includes(workTreeStatus)"
-            title="发起审核"
-            @click="workTreeCheck"
-          >
-            <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
-          </el-button>
-          <el-tag
-            :key="WORK_TREE_CHECK_STATUS[workTreeStatus].label"
-            :type="WORK_TREE_CHECK_STATUS[workTreeStatus].type"
-            effect="plain"
-            class="mgl12"
-            round
-          >
-            {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
-          </el-tag>
-        </div>
+        <template v-if="columns">
+          <div class="operate-wrap" v-if="workTreeStatus === 2">
+            <el-button
+              v-if="$isAuth(roleBtnEnum['videoBind'])"
+              type="primary"
+              :disabled="isPauseOrFinish"
+              @click="openModal(1, 'distributeModalFlag')"
+            >
+              <el-icon class="el-icon--left"><Setting /></el-icon>
+              视频绑定
+            </el-button>
+            <el-button
+              v-if="$isAuth(roleBtnEnum['orderCheck'])"
+              type="primary"
+              :disabled="isPauseOrFinish"
+              @click="openModal(2, 'distributeModalFlag')"
+            >
+              <el-icon class="el-icon--left"><UserFilled /></el-icon>
+              复核人员
+            </el-button>
+            <el-button
+              v-if="$isAuth(roleBtnEnum['infoAppoint'])"
+              type="primary"
+              :disabled="isPauseOrFinish"
+              @click="openModal(3, 'distributeModalFlag')"
+            >
+              <el-icon class="el-icon--left"><Pointer /></el-icon>
+              派工
+            </el-button>
+            <el-button
+              v-if="$isAuth(roleBtnEnum['bigComponent'])"
+              type="primary"
+              :disabled="isPauseOrFinish"
+              @click="openModal(4, 'distributeModalFlag')"
+            >
+              <el-icon class="el-icon--left"><Tools /></el-icon>
+              大件设备
+            </el-button>
+          </div>
+          <div class="operate-wrap" v-else>
+            <el-button
+              v-if="$isAuth(roleBtnEnum['workInfo_check'])"
+              type="primary"
+              :disabled="isPauseOrFinish || [1, 2].includes(workTreeStatus)"
+              title="保存"
+              @click="workTreeSave"
+            >
+              <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
+            </el-button>
+            <el-button
+              v-if="$isAuth(roleBtnEnum['workInfo_check'])"
+              type="primary"
+              :disabled="isPauseOrFinish || [1, 2].includes(workTreeStatus)"
+              title="发起审核"
+              @click="workTreeCheck"
+            >
+              <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
+            </el-button>
+            <el-tag
+              :key="WORK_TREE_CHECK_STATUS[workTreeStatus].label"
+              :type="WORK_TREE_CHECK_STATUS[workTreeStatus].type"
+              effect="plain"
+              class="mgl12"
+              round
+            >
+              {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
+            </el-tag>
+          </div>
+        </template>
         <template v-if="workTreeStatus === 2">
           <template v-if="columns">
             <el-table
@@ -175,6 +177,7 @@
           <work-step-content
             :workOrderInfo="workOrderInfo"
             :onlyTabName="onlyTabName"
+            :currentNode="currentNode"
             v-else
           />
         </template>
@@ -470,7 +473,7 @@ export default {
           .then((res) => {
             const { pageList, total } = res.data;
             this.pageOptions.total = total;
-            this.tableData = pageList.map((item) => ({
+            this.tableData = (pageList || []).map((item) => ({
               ...item,
               reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
               workStatus: WORK_STATUS_ENUM[item.workStatus || 0],

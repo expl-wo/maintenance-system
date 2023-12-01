@@ -252,7 +252,7 @@
           <el-table-column label="操作" width="80" align="center">
             <template  #default="scope">
               <el-button-group>
-                <el-button  type="primary"  size="small" icon="el-icon-edit" @click="handleEdit(scope.row)">修改
+                <el-button  type="primary"  size="small" icon="Edit" @click="handleEdit(scope.row)">修改
                 </el-button>
               </el-button-group>
             </template>
@@ -261,7 +261,7 @@
       </div>
       <pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon wp"/>
     </div>
-    <el-dialog v-draggable  :close-on-click-modal="false" title="修改"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" title="修改"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listQuery" label-position="right" label-width="130px" :rules="submitRules" :model="listQuery">
         <el-form-item label="检修方案:" prop="maintenancePlan"  size="small">
           <el-input v-model="listQuery.maintenancePlan"  type="textarea" :rows="3"  style="width: 245px;" class="filter-item"   />
@@ -322,7 +322,7 @@
       mixins: [formatPlanMixins, enterSearchMixins, configColumnMixins],
       props: {
         eqpId: {
-          required: true,
+          required: false,
           type: String
         },
         needShow: {
@@ -335,9 +335,6 @@
           approvalOverhaulDialog,
           XuiDictionary,
           Pagination,
-          cellTransform,
-          submitApprovalDialog,
-          rejectDialog,
           selectNameDialog
         },
       data() {

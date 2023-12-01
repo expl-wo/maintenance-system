@@ -11,10 +11,10 @@
                            style="width:200px;" class="filter-item" :clearable="false"></xui-dict-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="turnToOA()">转OA审批</el-button>
@@ -36,7 +36,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="设备名称:" prop="eqpName"  size="small">
           <el-input v-model="listUpdate.eqpName" placeholder="请选择设备名称" style="width: 245px;" class="filter-item" disabled />
@@ -87,14 +87,14 @@
     </el-dialog>
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择设备"  v-model="dialogEquipFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="请选择设备"  v-model="dialogEquipFormVisible" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listEquipQuery" class="demo-form-inline demo-form-zdy">
           <el-form-item label="设备名称"  size="small">
             <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="getEquipList">查询</el-button>
+            <el-button type="primary" icon="Search" @click="getEquipList">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -112,14 +112,14 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择组织"  v-model="dialogOrgFormVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="请选择组织"  v-model="dialogOrgFormVisible" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listOrgQuery" class="demo-form-inline demo-form-zdy">
           <el-form-item label="组织名称"  size="small">
             <el-input v-model="listOrgQuery.orgName" placeholder="组织名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="getOrgList">查询</el-button>
+            <el-button type="primary" icon="Search" @click="getOrgList">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -382,10 +382,10 @@ export default {
         //   render: (h, params) => {
         //     let self=this;
         //     if (params.row.filePath){
-        //       return h('el-button', {
-        //         props: { type: 'primary', size: 'mini'},
+        //       return h(ElButton, {
+        //         type: 'primary', size: 'small',
         //         on: {
-        //           click: function() {
+        //          onClick: function() {
         //             window.location.href = self.rooturl + params.row.filePath
         //           }
         //         }
@@ -409,12 +409,12 @@ export default {
           label: '操作',
           width: 140,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.dialogFormVisible = true
                     self.dialogStatus = 'update'
                     self.listUpdate = { // 弹窗
@@ -436,10 +436,10 @@ export default {
                   }
                 }
               }, ''),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
                       confirmButtonText: '确定',
                       cancelButtonText: '取消',
@@ -455,10 +455,10 @@ export default {
                   }
                 }
               }, ''),
-              // h('el-button', {
-              //   props: { type: 'primary', size: 'mini', icon: 'el-icon-upload2' },
+              // h(ElButton, {
+              //   props: { type: 'primary', size: 'small', icon: 'el-icon-upload2' },
               //   on: {
-              //     click: function() {
+              //    onClick: function() {
               //       self.applyOverhaul(params.row)
               //     }
               //   }
@@ -504,12 +504,12 @@ export default {
           width: 110,
           align: 'center',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listUpdate.eqpId = params.row.id // 大修计划设备id
                     self.listUpdate.eqpName = params.row.name // 大修计划设备名称
                     self.listUpdate.eqpNumber = params.row.number // 大修计划设备编号
@@ -546,12 +546,12 @@ export default {
           width: 110,
           align: 'center',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listUpdate.subDepId = params.row.k // 大修计划设备id
                     self.listUpdate.subDepName = params.row.v // 大修计划设备名称
                     self.dialogOrgFormVisible = false

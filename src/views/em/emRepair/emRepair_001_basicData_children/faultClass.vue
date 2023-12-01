@@ -7,10 +7,10 @@
           <el-input v-model="listQuery.name" placeholder="故障类别名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -26,7 +26,7 @@
     />
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="故障类别名称:" prop="name"  size="small">
           <el-input v-model="listUpdate.name" placeholder="故障类别名称" style="width: 320px;" class="filter-item" />
@@ -49,9 +49,9 @@
 <script>
 // import treeTransfer from 'el-tree-transfer' // 引入
 import TableSimple from '@/components/Table/index'
-
+import { ElButton,ElButtonGroup} from "element-plus";
 // 故障分类查询、故障分类的新增与编辑,故障分类删除
-import { getCateList, getCateUpdate, deleteCate } from '@/api/repairBase'
+import { getCateList, getCateUpdate, deleteCate } from '@/api/em/repairBase'
 
 export default {
   name: 'Table',
@@ -116,43 +116,38 @@ export default {
           label: '操作',
           width: 140,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
-                // style: { marginRight: '0px' },
-                on: {
-                  click: function() {
-                    self.dialogFormVisible = true
-                    self.dialogStatus = 'update'
-                    self.listUpdate = { // 弹窗
-                      id: params.row.id,
-                      description: params.row.description, // 模糊匹配，故障分类描述
-                      name: params.row.name // 模糊匹配，故障分类名称
-                    }
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small', icon: 'Edit',
+                onClick: function() {
+                  self.dialogFormVisible = true
+                  self.dialogStatus = 'update'
+                  self.listUpdate = { // 弹窗
+                    id: params.row.id,
+                    description: params.row.description, // 模糊匹配，故障分类描述
+                    name: params.row.name // 模糊匹配，故障分类名称
                   }
                 }
-              }, ''),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
-                on: {
-                  click: function() {
-                    self.dataListUpdate = params.row
-                    self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    }).then(() => {
-                      const req = { ids: [params.row.id] }
-                      deleteCate(req).then(response => {
-                        self.$message({ message: '删除成功', type: 'success' })
-                        self.onQuery() // 查询
-                      })
-                    }).catch(() => {
-                      self.$message({ type: 'info', message: '已取消删除' })
+              },()=> ''),
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: 'Delete',
+                onClick: function() {
+                  self.dataListUpdate = params.row
+                  self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }).then(() => {
+                    const req = { ids: [params.row.id] }
+                    deleteCate(req).then(response => {
+                      self.$message({ message: '删除成功', type: 'success' })
+                      self.onQuery() // 查询
                     })
-                  }
+                  }).catch(() => {
+                    self.$message({ type: 'info', message: '已取消删除' })
+                  })
                 }
-              }, '')
+              }, ()=>'')
 
             ])
           }

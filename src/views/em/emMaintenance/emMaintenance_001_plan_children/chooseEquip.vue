@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd"></el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd"></el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-input v-model="listQuery.eqpId" placeholder="设备编号"></el-input>
@@ -24,7 +24,7 @@
     />
 
     <!--弹窗新增或修改保养设备定义-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
+    <el-dialog draggable :close-on-click-modal="false" :title="textMap[dialogStatus]"  v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
       <el-form ref="listUpdate" label-position="right" label-width="125px" :rules="submitRules" :model="listUpdate">
         <el-form-item label="保养计划名称:"  size="small">
           <el-input v-model="listUpdate.mtcName" placeholder="保养计划名称" style="width: 250px;" class="filter-item" disabled />
@@ -62,7 +62,7 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择负责人"  v-model="dialogPeopleFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item label="" prop="name"  size="small">
@@ -75,7 +75,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -94,7 +94,7 @@
     </el-dialog>
 
     <!--选择人员(参与人)多选-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="请选择参与人"  v-model="dialogPeoplesFormVisible" class="roleDialog800" append-to-body>
+    <el-dialog draggable :close-on-click-modal="false" title="请选择参与人"  v-model="dialogPeoplesFormVisible" class="roleDialog800" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
         <el-form-item label="" prop="name"  size="small">
           <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
@@ -106,7 +106,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -128,7 +128,7 @@
     </el-dialog>
 
     <!--选择检查人-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择检查人"  v-model="dialogCheckFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择检查人"  v-model="dialogCheckFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item label="" prop="name"  size="small">
@@ -141,7 +141,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -164,7 +164,7 @@
 
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="选择设备"  v-model="dialogEquipFormVisible" :append-to-body="true" class="roleDialog800">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryEqp" class="demo-form-inline demo-form-zdy">
           <el-form-item label="设备编号"  size="small">
@@ -181,7 +181,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -409,12 +409,12 @@ export default {
           width: 110,
           fixed: 'right',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini', icon: 'el-icon-edit' },
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listUpdate = {
                       id: params.row.id, // 保养计划id
                       mtcId: self.equipRowSelected.id, // 保养计划id
@@ -438,10 +438,10 @@ export default {
                   }
                 }
               }, ''),
-              h('el-button', {
-                props: { type: 'danger', size: 'mini', icon: 'el-icon-delete' },
+              h(ElButton, {
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.dataListUpdate = params.row
                     self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
                       confirmButtonText: '确定',
@@ -500,12 +500,12 @@ export default {
           label: '操作',
           width: 110,
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listUpdate.maintenanceHeadId = params.row.id // 提醒人id
                     self.listUpdate.maintenanceHeadName = params.row.name // 提醒人姓名
                     self.dialogPeopleFormVisible = false
@@ -557,7 +557,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中
@@ -619,7 +619,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中
@@ -693,12 +693,12 @@ export default {
           width: 110,
           align: 'center',
           render: (h, params) => {
-            return h('el-button-group', [
-              h('el-button', {
-                props: { type: 'primary', size: 'mini'},
+            return h(ElButtonGroup, ()=>[
+              h(ElButton, {
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
-                  click: function() {
+                 onClick: function() {
                     self.listUpdate.eqpId = params.row.k // 大修计划设备id
                     self.listUpdate.eqpName = params.row.v // 大修计划设备名称
                     self.dialogEquipFormVisible = false

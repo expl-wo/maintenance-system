@@ -4,25 +4,25 @@
       <div class="searchCon wp p-10">
         <!--快速设定-->
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div   class="clearfix">
             <span>快速设定</span>
           </div>
           <div class="filter-container">
             <el-form ref="listQuery" :model="listQuery" class="demo-form-inline demo-form-zdy" :rules="submitRules">
-              <el-form-item label="选择部门" size="mini" prop="date">
+              <el-form-item label="选择部门" size="small" prop="date">
                 <el-select v-model="type"  placeholder="请选择部门" style="width: 170px;" default-first-option @change="onCalendarTempQuery()">
                   <el-option v-for="x in typeList" :key="x.id" :label="x.orgName" :value="x.id" />
                 </el-select>
               </el-form-item>
-              <el-form-item label="选择月份" size="mini" prop="date">
+              <el-form-item label="选择月份" size="small" prop="date">
                 <el-date-picker v-model="dateCalendar" type="month" style="width: 170px" placeholder="选择月份" @change="onCalendarTempQuery()" />
               </el-form-item>
-              <el-form-item label="日历模板" prop="tempId" size="mini">
+              <el-form-item label="日历模板" prop="tempId" size="small">
                 <el-select v-model="listQuery.tempId"  placeholder="请选择日历模板" style="width: 170px;">
                   <el-option v-for="item in tableTimeData" :key="item.id" :label="item.tempName" :value="item.id" />
                 </el-select>
               </el-form-item>
-              <el-form-item size="mini">
+              <el-form-item size="small">
                 <el-button type="primary" class="wp" @click="onSet('listQuery')">设定</el-button>
               </el-form-item>
             </el-form>
@@ -33,7 +33,7 @@
       <div class="otherCon wp p-10">
         <!--工作时间-->
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div   class="clearfix">
             <span>工作时间</span>
           </div>
           <Elslidermin
@@ -53,8 +53,8 @@
     </div>
     <div class="otherRCon hp p-10">
       <el-card shadow="hover" class="hp">
-        <el-calendar v-model="dateCalendar" size="mini" min="0" max="0" class="wp hp">
-          <template slot="dateCell" slot-scope="{ date, data }">
+        <el-calendar v-model="dateCalendar" size="small" min="0" max="0" class="wp hp">
+          <template #default="data" >
             <div class="date-cell hp" :class="data.isSelected ? 'is-selected' : ''" @click="calendarOnClick(data)" @dblclick="calendarOndbClick(data)">
               <div class="calendar-day">
                 {{ data.day.split('-').slice(2).join('-') }}
@@ -73,20 +73,20 @@
     </div>
 
     <!--弹窗月工作模板修改-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="修改工作模板" v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" title="修改工作模板" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="150px" :rules="submitRules2" :model="listUpdate">
-        <el-form-item label="日期范围:" prop="date" size="mini">
+        <el-form-item label="日期范围:" prop="date" size="small">
           <el-date-picker v-model="listUpdate.date" type="daterange" placeholder="时间" style="width: 220px;" class="filter-item" @change="changefilter" />
         </el-form-item>
-        <el-form-item label="工作模板" prop="tempId" size="mini">
+        <el-form-item label="工作模板" prop="tempId" size="small">
           <el-select v-model="listUpdate.tempId" placeholder="请选择工作模板" style="width: 220px;">
             <el-option v-for="item in tableTimeData" :key="item.id" :label="item.tempName" :value="item.id" />
           </el-select>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="mini" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="saveData('listUpdate')">
+      <div   class="dialog-footer">
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" size="small" @click="saveData('listUpdate')">
           保存
         </el-button>
       </div>

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 设备列表初始化（查询所有设备）
 export function getEqpInitList(params) {
   return request({
-    url: '/eqpCommon/eqpInit',
+    url: '/api/equipment/eqpCommon/eqpInit',
     method: 'get',
     params: {
       id: params.id || '', // 设备分类id（在按分类检索的情况下必填，不填写将检索所有设备的id和名称）
@@ -16,7 +16,7 @@ export function getEqpInitList(params) {
 // 设备列表初始化（查询所有设备）
 export function getOrgInitList(params) {
   return request({
-    url: '/eqpCommon/orgInit',
+    url: '/api/equipment/eqpCommon/orgInit',
     method: 'get',
     params: {
       orgName: params.orgName || '', // 设备名称

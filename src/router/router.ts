@@ -297,9 +297,9 @@ export const sysRouter : Array<RouteRecordRaw> = [
       ],
   },
   {
-    path: '/overhaul',
+    path: '/api/equipment/overHaul',
     component: Layout,
-    redirect: '/overhaul/survey',
+    redirect: '/api/equipment/overHaul/survey',
     name: 'overhaul',
     meta: {
       title: '检修管理',
@@ -319,7 +319,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
       {
         path: 'templateLib',
         component: Layout,
-        redirect: '/overhaul/templateLib/safetyInstruction',
+        redirect: '/api/equipment/overHaul/templateLib/safetyInstruction',
         name: '模板库管理',
         meta: {
           title: '模板库管理',
@@ -398,7 +398,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
       {
         path: 'log',
         name: 'log',
-        redirect: '/overhaul/log/operation',
+        redirect: '/api/equipment/overHaul/log/operation',
         meta: {
           title: '日志管理',
           icon: 'el-icon-notebook-2'
@@ -428,7 +428,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
        {
         path: 'profile',
         name: 'profile',
-        redirect: '/overhaul/profile/myNotice',
+        redirect: '/api/equipment/overHaul/profile/myNotice',
         meta: {
           title: '个人中心',
           icon: 'el-icon-notebook-2'
@@ -842,6 +842,62 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					meta: {
 						title: '保养记录',
 						icon: 'em_002_002',
+						keepAlive: true
+					},
+				}]
+			},{
+				path: 'repair',
+				component: Layout,
+				name: '0304_repair',
+				meta: {
+					title: '设备维修',
+					icon: 'em_004',
+					keepAlive: true
+				},
+				children : [{
+					path: 'basicData',
+					component: () => import('@/views/em/emRepair/emRepair_001_basicData.vue'),
+					name: '030401_basicData',
+					meta: {
+						title: '设备维修基础数据管理',
+						icon: 'em_004_001',
+						keepAlive: true
+					},
+				},{
+					path: 'record',
+					component: () => import('@/views/em/emRepair/emRepair_002_record.vue'),
+					name: '030402_repairRecord',
+					meta: {
+						title: '维修记录',
+						icon: 'em_004_002',
+						keepAlive: true
+					},
+				}]
+			},{
+				path: 'integrityAppraisal',
+				component: Layout,
+				name: '0305_integrityAppraisal',
+				meta: {
+					title: '设备鉴定',
+					icon: 'em_005',
+					keepAlive: true
+				},
+				children : [{
+					path: 'plan',
+					component: () => import('@/views/em/emIntegrityAppraisal/integrityAppraisal.vue'),
+					name: '030501_plan',
+					meta: {
+						title: '鉴定配置',
+						icon: 'em_005_001',
+						keepAlive: true
+					},
+				},{
+					path: 'record',
+					component: () => import('@/views/em/emIntegrityAppraisal/appraisalTask.vue'),
+					name: '030502_record',
+					meta: {
+						title: '鉴定记录',
+						icon: 'em_005_002',
 						keepAlive: true
 					},
 				}]

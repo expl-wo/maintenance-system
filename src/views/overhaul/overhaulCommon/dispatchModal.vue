@@ -12,7 +12,6 @@
       :rules="rules"
       :model="form"
       label-position="right"
-      
       label-width="100px"
     >
       <el-form-item label="项目经理" prop="projectManager">
@@ -49,10 +48,10 @@
           collapse-tags-tooltip
           clearable
         >
-          <template #default="{ node, data }">
+          <template #default="{ data }">
             <span>{{ data.label }}</span>
             <el-popover
-              v-if="node.isLeaf"
+              v-if="data.userId"
               placement="bottom"
               effect="dark"
               :width="200"
@@ -69,7 +68,11 @@
         </el-cascader>
       </el-form-item>
       <el-form-item label="任务班组" v-else prop="taskTempClazzName">
-        <el-input v-model="form.taskTempClazzName" disabled style="width:220px" />
+        <el-input
+          v-model="form.taskTempClazzName"
+          disabled
+          style="width: 220px"
+        />
       </el-form-item>
       <!-- <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
@@ -97,9 +100,10 @@
 import { requiredVerify, safeLimit } from "@/common/js/validator";
 import {
   getConfiguredWorkClazz,
-  getWorkClazzList,
+  getPersonStatusByBusId,
   getPersonByWorkClazz,
 } from "@/api/overhaul/workClazzApi.js";
+import { dispatchWorkOrder } from "@/api/overhaul/workOrderApi.js";
 import { INPLAN_OR_OUT } from "@/views/overhaul/constants.js";
 export default {
   props: {
@@ -135,7 +139,24 @@ export default {
   },
   data() {
     return {
-      options,
+      options: [
+        {
+          value: 1,
+          label: "空闲人员",
+          children: [],
+        },
+        {
+          value: 2,
+          label: "繁忙人员",
+          children: [],
+        },
+        {
+          value: 3,
+          label: "请假人员",
+          children: [],
+        },
+      ],
+      personArea: "",
       form: {
         projectManager: undefined,
         phuocManager: undefined,
@@ -155,7 +176,6 @@ export default {
   },
   mounted() {
     this.initData();
-    this.getTaskTeamOptions();
   },
   methods: {
     /**
@@ -171,10 +191,10 @@ export default {
       const {
         data: { value },
       } = await getConfiguredWorkClazz();
-      let targetWorkBusId, taskTempClazzBusId;
+      let targetWorkId, taskTempClazzId;
       value.forEach((item) => {
         if (item.workClazzType === this.workClazzType) {
-          targetWorkBusId = item.busId;
+          targetWorkId = item.workClazzId;
         }
         if (item.workClazzType === this.taskTempClazzType) {
           taskTempClazzId = item.workClazzId;
@@ -205,18 +225,17 @@ export default {
       if (workClazzId) {
         let {
           data: { value },
-        } = await getPersonByWorkClazz(targetWorkBusId);
+        } = await getPersonByWorkClazz(workClazzId);
         this.phuocManagerOptions = (value || []).map((item) => ({
-          value: item.id,
-          name: item.name,
+          value: item.userId,
+          label: item.userName,
         }));
         this.projectManagerOptions = this.phuocManagerOptions;
-        return;
+      } else {
+        this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
       }
-      this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
     },
     handleOk() {
-        this.$emit("onSave", this.modalName);
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) return;
         let params = {
@@ -231,9 +250,13 @@ export default {
             : 2,
         };
         dispatchWorkOrder(params).then((res) => {
-          this.$emit("onSave", this.modalName);
-          this.$emit("closeModal", this.modalName);
-          this.$message.success("操作成功!");
+          if (res.code !== "0") {
+            this.$message.error(res.errMsg);
+          } else {
+            this.$emit("onSave", this.modalName);
+            this.$emit("closeModal", this.modalName);
+            this.$message.success("操作成功!");
+          }
         });
       });
     },

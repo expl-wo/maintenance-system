@@ -5,7 +5,7 @@
         <el-form-item label="中工序名称" >
           <el-input v-model="listQuery.craftsName" placeholder="请输入中工序名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="Search" @click="handleSearch">查询
           </el-button>
         </el-form-item>
@@ -32,7 +32,7 @@
           <el-table-column header-align="center" align="center" width="160" label="操作">
             <template v-slot="scope">
               <el-button-group>
-                <el-button size="mini" title="操作" type="primary" icon="Cellphone"
+                <el-button size="small" title="操作" type="primary" icon="Cellphone"
                            @click="handleItemSave(scope.row)">
                   保存
                 </el-button>

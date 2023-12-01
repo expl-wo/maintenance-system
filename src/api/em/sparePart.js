@@ -2,7 +2,7 @@ import request from '@/utils/request'
 import timeTranslate from '@/utils/common.js'
 export function getSparePartsList(params) {
   return request({
-    url: '/spareParts/sparePart',
+    url: '/api/equipment/spareParts/sparePart',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
@@ -14,21 +14,21 @@ export function getSparePartsList(params) {
 }
 export function getSparePartsRecords(params) {
   return request({
-    url: '/spareParts/getSparePartsRecord',
+    url: '/api/equipment/spareParts/getSparePartsRecord',
     method: 'get',
     params: params
   })
 }
 export function getSparePartsBom(params){
   return request({
-    url: '/spareParts/getSparePartsBom',
+    url: '/api/equipment/spareParts/getSparePartsBom',
     method: 'get',
     params: params
   })
 }
 export function addSparePartsBom(data){
   return request({
-    url: '/spareParts/addSparePartsBom',
+    url: '/api/equipment/spareParts/addSparePartsBom',
     method: 'post',
     data
   })
@@ -36,14 +36,14 @@ export function addSparePartsBom(data){
 
 export function editSparePartsBom(data){
   return request({
-    url: '/spareParts/editSparePartsBom',
+    url: '/api/equipment/spareParts/editSparePartsBom',
     method: 'post',
     data
   })
 }
 export function deleteSparePartsBom(params){
   return request({
-    url: '/spareParts/deleteSparePartsBom',
+    url: '/api/equipment/spareParts/deleteSparePartsBom',
     method: 'post',
     params: {
       id: params, //设备编号
@@ -52,7 +52,7 @@ export function deleteSparePartsBom(params){
 }
 export function applySpareParts(data){
   return request({
-    url: '/spareParts/applySpareParts',
+    url: '/api/equipment/spareParts/applySpareParts',
     method: 'post',
     data
   })
@@ -60,28 +60,28 @@ export function applySpareParts(data){
 
 export function getSparePartsApplyRecord(params){
   return request({
-    url: '/spareParts/getSparePartsApplyRecord',
+    url: '/api/equipment/spareParts/getSparePartsApplyRecord',
     method: 'get',
     params
   })
 }
 export function editApply(data){
   return request({
-    url: '/spareParts/editApply',
+    url: '/api/equipment/spareParts/editApply',
     method: 'post',
     data
   })
 }
 export function applyToOA(data){
   return request({
-    url: '/spareParts/applyToOA',
+    url: '/api/equipment/spareParts/applyToOA',
     method: 'post',
     data
   })
 }
 export function deleteApply(params){
   return request({
-    url: '/spareParts/deleteApply',
+    url: '/api/equipment/spareParts/deleteApply',
     method: 'post',
     params:{
       id:params
@@ -99,7 +99,7 @@ export function importApplyRecord(data) {
 
 export function applyEnsure(data) {
     return request({
-        url: '/spareParts/applyEnsure',
+        url: '/api/equipment/spareParts/applyEnsure',
         method: 'POST',
         data
     })

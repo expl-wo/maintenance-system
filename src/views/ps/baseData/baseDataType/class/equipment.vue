@@ -5,7 +5,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备类型名称" >
-          <el-input v-model="listQuery.equipmentTypeName" placeholder="设备类型名称" style="width: 180px;" class="filter-item" size="mini" clearable/>
+          <el-input v-model="listQuery.equipmentTypeName" placeholder="设备类型名称" style="width: 180px;" class="filter-item" size="small" clearable/>
         </el-form-item>
         <el-form-item >
           <el-button type="primary" icon="search" @click="onBtnQuery">查询</el-button>

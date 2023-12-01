@@ -1,10 +1,10 @@
 <template>
   <div>
-    <el-dialog v-draggable  appendToBody title="鉴定设备" width="70%"  v-model="dialogVisible" @close="dialogClose" modal>
+    <el-dialog draggable appendToBody title="鉴定设备" width="70%"  v-model="dialogVisible" @close="dialogClose" modal>
       <div class="filter-container searchCon">
         <el-form :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-plus" @click="addOrUpdate()">新增</el-button>
+            <el-button type="primary" icon="Plus" @click="addOrUpdate()">新增</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -26,15 +26,15 @@
         <el-table-column header-align="center" align="center" width="120" label="操作">
           <template  #default="scope">
             <el-button-group>
-              <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="addOrUpdate(scope.row,false)" />
-              <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="deleteEquipment(scope.row)" />
+              <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdate(scope.row,false)" />
+              <el-button  size="small" title="删除" type="danger" icon="Delete" @click="deleteEquipment(scope.row)" />
             </el-button-group>
           </template>
         </el-table-column>
       </el-table>
     </el-dialog>
     <!--新增/修改鉴定设备弹窗-->
-    <el-dialog v-draggable  :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
+    <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="addOrUpdateForm" label-position="right" label-width="110px"  :rules="rules" :model="addOrUpdateForm" >
         <el-form-item  size="small" prop="name" label="设备名称">
           <el-input readonly v-model="addOrUpdateForm.name" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTableEquipmentVisible = true">选择设备</el-button></el-input>
@@ -59,7 +59,7 @@
     </el-dialog>
 
     <!--选择设备-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="设备选择"  v-model="dialogTableEquipmentVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="设备选择"  v-model="dialogTableEquipmentVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTableEquipmentUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备名称:" prop="name"  size="small">
           <el-input v-model="listTableEquipmentUpdate.name" placeholder="设备名称" style="width: 180px;" class="filter-item" />
@@ -75,7 +75,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onEquipmenQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onEquipmenQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="equipmenData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
@@ -84,7 +84,7 @@
         <el-table-column prop="name" align="center" label="设备名称" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
-            <el-button type="primary"  size="small" icon="el-icon-edit" @click="selectEquipment(scope.row)">选择</el-button>
+            <el-button type="primary"  size="small" icon="Edit" @click="selectEquipment(scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,13 +95,13 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-draggable  :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
+    <el-dialog draggable :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="员工姓名:" prop="name"  size="small">
           <el-input v-model="listTablePeopleUpdate.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="userData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
@@ -111,7 +111,7 @@
         <el-table-column prop="gsbmName" align="center" label="归属部门" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
-            <el-button type="primary"  size="small" icon="el-icon-edit" @click="selectUser(scope.row)">选择</el-button>
+            <el-button type="primary"  size="small" icon="Edit" @click="selectUser(scope.row)">选择</el-button>
           </template>
         </el-table-column>
       </el-table>

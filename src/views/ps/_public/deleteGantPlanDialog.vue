@@ -37,7 +37,7 @@
     <template #footer>
       <div class="dialog-footer">
       <el-button @click="dialogVisible=false">取消</el-button>
-      <el-button @click="handleDelete" icon="el-icon-delete" type="danger">删除</el-button>
+      <el-button @click="handleDelete" icon="Delete" type="danger">删除</el-button>
     </div>
     </template>
   </el-dialog>

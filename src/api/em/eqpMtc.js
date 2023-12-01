@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 保养设备配置查询
 export function getEqpConfList(params) {
   return request({
-    url: '/eqpMtc/eqpConf',
+    url: '/api/equipment/eqpMtc/eqpConf',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -17,7 +17,7 @@ export function getEqpConfList(params) {
 // 保养配置查询
 export function getMainConfList(params) {
   return request({
-    url: '/eqpMtc/mainConf',
+    url: '/api/equipment/eqpMtc/mainConf',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -31,21 +31,21 @@ export function getMainConfList(params) {
 }
 export function eqpConfDaily(params) {
   return request({
-    url: '/eqpMtc/eqpConfDaily',
+    url: '/api/equipment/eqpMtc/eqpConfDaily',
     method: 'get',
     params: params
   })
 }
 export function genMaintainTask() {
   return request({
-    url: '/eqpMtc/genMaintainTask',
+    url: '/api/equipment/eqpMtc/genMaintainTask',
     method: 'get'
   })
 }
 // 点检配置设备挂接
 export function eqpConfDailyUpdate(data) {
     return request({
-        url: '/eqpMtc/eqpConfDaily',
+        url: '/api/equipment/eqpMtc/eqpConfDaily',
         method: 'post',
         data
     })
@@ -54,7 +54,7 @@ export function eqpConfDailyUpdate(data) {
 // 保养配置新增与编辑
 export function getMainConfUpdate(data) {
   return request({
-      url: '/eqpMtc/mainConf',
+      url: '/api/equipment/eqpMtc/mainConf',
       method: 'POST',
       data
   })
@@ -63,8 +63,8 @@ export function getMainConfUpdate(data) {
 // 保养配置删除
 export function deleteMainConf(data) {
   return request({
-    url: '/eqpMtc/mainConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/del/mainConf',
+    method: 'POST',
     data
   })
 }
@@ -72,20 +72,16 @@ export function deleteMainConf(data) {
 // 保养项配置查询
 export function getItemConfList(params) {
   return request({
-    url: '/eqpMtc/itemConf',
+    url: '/api/equipment/eqpMtc/itemConf',
     method: 'get',
-    params: {
-      pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      mainId: params.mainId || '' // 保养主配置id
-    }
+    data:params
   })
 }
 
 // 保养项新增与编辑
 export function getItemConfUpdate(data) {
   return request({
-      url: '/eqpMtc/itemConf',
+      url: '/api/equipment/eqpMtc/itemConf',
       method: 'POST',
       data
   })
@@ -94,8 +90,8 @@ export function getItemConfUpdate(data) {
 // 保养项删除
 export function deleteItemConf(data) {
   return request({
-    url: '/eqpMtc/itemConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/delItemConf',
+    method: 'POST',
     data
   })
 }
@@ -103,7 +99,7 @@ export function deleteItemConf(data) {
 // 保养设备挂接新增与编辑
 export function getEqpConfUpdate(data) {
   return request({
-      url: '/eqpMtc/eqpConf',
+      url: '/api/equipment/eqpMtc/eqpConf',
       method: 'POST',
       data
   })
@@ -112,8 +108,8 @@ export function getEqpConfUpdate(data) {
 // 保养设备删除
 export function deleteEqpConf(data) {
   return request({
-    url: '/eqpMtc/eqpConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/del/eqpConf',
+    method: 'POST',
     data
   })
 }
@@ -121,7 +117,7 @@ export function deleteEqpConf(data) {
 // 保养单查询
 export function getDspList(params) {
   return request({
-    url: '/eqpMtc/dsp',
+    url: '/api/equipment/eqpMtc/dsp',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -139,7 +135,7 @@ export function getDspList(params) {
 // 保养派工
 export function getDspUpdate(data) {
   return request({
-      url: '/eqpMtc/dsp',
+      url: '/api/equipment/eqpMtc/dsp',
       method: 'POST',
       data
   })
@@ -148,7 +144,7 @@ export function getDspUpdate(data) {
 // 保养验收
 export function getAcpUpdate(data) {
   return request({
-      url: '/eqpMtc/acp',
+      url: '/api/equipment/eqpMtc/acp',
       method: 'POST',
       data
   })
@@ -157,8 +153,8 @@ export function getAcpUpdate(data) {
 // 保养派工单删除
 export function deleteAcpConf(data) {
   return request({
-    url: '/eqpMtc/acpConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/acpConf',
+    method: 'POST',
     data
   })
 }
@@ -166,7 +162,7 @@ export function deleteAcpConf(data) {
 // 保养主记录查询
 export function getMainRecList(params) {
   return request({
-    url: '/eqpMtc/mainRec',
+    url: '/api/equipment/eqpMtc/mainRec',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -186,7 +182,7 @@ export function getMainRecList(params) {
 // 保养主记录项查询
 export function getItemRecList(params) {
   return request({
-    url: '/eqpMtc/itemRec',
+    url: '/api/equipment/eqpMtc/itemRec',
     method: 'get',
     params: {
       id: params.id || '' // 每页显示多少条数据，默认为10条
@@ -197,7 +193,7 @@ export function getItemRecList(params) {
 // 保养项图示保存
 export function getPicUpdate(data) {
   return request({
-      url: '/eqpMtc/pic',
+      url: '/api/equipment/eqpMtc/pic',
       method: 'POST',
       data
   })
@@ -206,7 +202,7 @@ export function getPicUpdate(data) {
 // 设备保养使用备件记录查询
 export function getMtcSpList(params) {
   return request({
-    url: '/eqpMtc/mtcSp',
+    url: '/api/equipment/eqpMtc/mtcSp',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
@@ -219,7 +215,7 @@ export function getMtcSpList(params) {
 // 保养设备配置选择设备查询
 export function getMtcEqpInitList(params) {
   return request({
-    url: '/eqpMtc/mtcEqpInit',
+    url: '/api/equipment/eqpMtc/mtcEqpInit',
     method: 'get',
     params: {
       id: params.id || '', // 保养主配置id
@@ -251,7 +247,7 @@ export function integrityImport(data) {
 // 保养设备配置选择设备查询
 export function queryTreeEqp(params) {
   return request({
-    url: '/eqpMtc/queryTreeEqp',
+    url: '/api/equipment/eqpMtc/queryTreeEqp',
     method: 'get',
     params: {
       eqpId: params.eqpId || '',

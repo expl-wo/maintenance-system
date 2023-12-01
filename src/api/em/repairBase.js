@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 故障分类查询
 export function getCateList(params) {
   return request({
-    url: '/repairBase/cate',
+    url: '/api/equipment/repairBase/cate',
     method: 'get',
     params: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -16,7 +16,7 @@ export function getCateList(params) {
 // 故障分类的新增与编辑
 export function getCateUpdate(data) {
     return request({
-        url: '/repairBase/cate',
+        url: '/api/equipment/repairBase/cate',
         method: 'POST',
         data
     })
@@ -25,8 +25,8 @@ export function getCateUpdate(data) {
 // 故障分类删除
 export function deleteCate(data) {
     return request({
-      url: '/repairBase/cate',
-      method: 'DELETE',
+      url: '/api/equipment/repairBase/del/cate',
+      method: 'POST',
       data
     })
 }
@@ -34,7 +34,7 @@ export function deleteCate(data) {
 // 故障因素查询
 export function getFactorList(params) {
     return request({
-      url: '/repairBase/factor',
+      url: '/api/equipment/repairBase/factor',
       method: 'get',
       params: {
         pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
@@ -47,7 +47,7 @@ export function getFactorList(params) {
 // 故障因素的新增与编辑
 export function getFactorUpdate(data) {
   return request({
-        url: '/repairBase/factor',
+        url: '/api/equipment/repairBase/factor',
         method: 'POST',
         data
     })
@@ -56,8 +56,8 @@ export function getFactorUpdate(data) {
 // 故障因素删除
 export function deleteFactor(data) {
     return request({
-      url: '/repairBase/factor',
-      method: 'DELETE',
+      url: '/api/equipment/repairBase/del/factors',
+      method: 'POST',
       data
     })
 }
