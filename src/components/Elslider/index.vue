@@ -4,7 +4,7 @@
       v-model="s"
       range 
       @change="handleChange($event)" 
-      size="mini" 
+      size="small"
       :min="min" 
       :max="max" 
       :show-stops="true" 

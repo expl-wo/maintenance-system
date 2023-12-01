@@ -26,10 +26,10 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onQuery()">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onQuery()">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -81,8 +81,8 @@
         <el-table-column label="协议序号" prop="orderNumber"></el-table-column>
         <el-table-column label="操作" :width="100" fixed="right">
           <template  #default="scope">
-            <el-button type="primary" icon="el-icon-edit" @click="edit(scope.row)"  size="small"></el-button>
-            <el-button type="danger" icon="el-icon-delete" @click="deleteApply(scope.row)"  size="small"></el-button>
+            <el-button type="primary" icon="Edit" @click="edit(scope.row)"  size="small"></el-button>
+            <el-button type="danger" icon="Delete" @click="deleteApply(scope.row)"  size="small"></el-button>
           </template>
         </el-table-column>
       </el-table>

@@ -23,7 +23,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-download" @click="onExport()">结果导出</el-button>
@@ -92,6 +92,8 @@ import UseRecord from "@/views/em/emRepair/emRepair_001_basicData_children/spart
 import { getEqpRepairRecList, getRepSpList ,getRepPicture,getRepWaitRec} from '@/api/em/eqpRepair'
 import { $rooturl ,$deepCopy,timeTranslate} from '@/utils/common.js'
 import { finEqpDep } from '@/api/em/eqpLedger'
+import { ElButton,ElButtonGroup} from "element-plus";
+
 export default {
   name: 'Table',
   components: { TableSimple,UseRecord },
@@ -301,7 +303,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'text', size: 'small'},
+                type: 'text', size: 'small',
                 on: {
                  onClick: function() {
                     self.pictureTitle='故障现象照片';
@@ -320,7 +322,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'text', size: 'small'},
+                type: 'text', size: 'small',
                 on: {
                  onClick: function() {
                     self.dialogTableWaiting = true;
@@ -381,7 +383,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'text', size: 'small'},
+                type: 'text', size: 'small',
                 on: {
                  onClick: function() {
                     self.pictureTitle='维修完成照片';
@@ -455,7 +457,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'text', size: 'small'},
+                type: 'text', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {

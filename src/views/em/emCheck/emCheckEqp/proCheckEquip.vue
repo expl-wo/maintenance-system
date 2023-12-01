@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd"></el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd"></el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -61,7 +61,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -92,7 +92,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -132,7 +132,7 @@
               </el-radio-group>
             </el-form-item>
             <el-form-item  size="small">
-              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+              <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -177,6 +177,7 @@ import { proEqpConf, deleteProEqp, proCheckEqp, getEqpConf } from '@/api/em/eqpC
 import { getUser, getUserAll } from '@/api/user'
 // 保养设备配置选择设备查询
 import { getMtcEqpInitList } from '@/api/em/eqpMtc'
+import { ElButton,ElButtonGroup} from "element-plus";
 
 export default {
   name: 'Table',
@@ -338,7 +339,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
+                type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -361,7 +362,7 @@ export default {
                 }
               }, ''),
               h(ElButton, {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
                  onClick: function() {
                     self.dataListUpdate = params.row
@@ -423,7 +424,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -478,7 +479,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中
@@ -552,7 +553,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {

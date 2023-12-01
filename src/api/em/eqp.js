@@ -26,7 +26,7 @@ export function addOrUpdateIntegrityAppraisal(data) {
 export function deleteIntegrityAppraisal(data) {
     return request({
       url: '/api/equipment/integrityAppraisal/delete',
-      method: 'DELETE',
+      method: 'POST',
       data
     })
 }
@@ -44,7 +44,7 @@ export function addOrUpdateIntegrityAppraisalDe(data) {
 export function deleteIntegrityAppraisalDe(data) {
     return request({
       url: '/api/equipment/integrityAppraisal/deleteDe',
-      method: 'DELETE',
+      method: 'POST',
       data
     })
 }
@@ -91,7 +91,7 @@ export function addOrUpdateEquipment(data) {
 export function deleteEquipment(data) {
     return request({
       url: '/api/equipment/integrityAppraisal/deleteEquipment',
-      method: 'DELETE',
+      method: 'POST',
       data
     })
 }

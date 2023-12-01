@@ -11,10 +11,10 @@
                            style="width:200px;" class="filter-item" :clearable="false"></xui-dict-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="turnToOA()">转OA审批</el-button>
@@ -94,7 +94,7 @@
             <el-input v-model="listEquipQuery.eqpName" placeholder="设备名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="getEquipList">查询</el-button>
+            <el-button type="primary" icon="Search" @click="getEquipList">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -119,7 +119,7 @@
             <el-input v-model="listOrgQuery.orgName" placeholder="组织名称" style="width: 180px;" class="filter-item"  size="small" clearable/>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="getOrgList">查询</el-button>
+            <el-button type="primary" icon="Search" @click="getOrgList">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -383,7 +383,7 @@ export default {
         //     let self=this;
         //     if (params.row.filePath){
         //       return h(ElButton, {
-        //         props: { type: 'primary', size: 'small'},
+        //         type: 'primary', size: 'small',
         //         on: {
         //          onClick: function() {
         //             window.location.href = self.rooturl + params.row.filePath
@@ -411,7 +411,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
+                type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -437,7 +437,7 @@ export default {
                 }
               }, ''),
               h(ElButton, {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
                  onClick: function() {
                     self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
@@ -506,7 +506,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -548,7 +548,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {

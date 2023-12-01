@@ -11,7 +11,7 @@
         <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" @keyup.enter="onPeopleQuery" clearable style="width: 180px;" class="filter-item" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+        <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
       </el-form-item>
     </el-form>
     <div class="tag-container">

@@ -3,7 +3,7 @@
     <div class="filter-container searchCon">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd()">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="showAdd()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = false">导入</el-button>
@@ -38,8 +38,8 @@
               <el-input v-model="search1"  size="small" placeholder="输入关键字搜索" />
             </template>
             <template  #default="scope">
-              <el-button type="primary"  size="small"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
-              <el-button type="danger"  size="small"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
+              <el-button type="primary"  size="small"  icon="Edit" @click="editOne(scope.row)"></el-button>
+              <el-button type="danger"  size="small"  icon="Delete" @click="deleteOne(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -64,8 +64,8 @@
               <el-input v-model="search2"  size="small" placeholder="输入关键字搜索" />
             </template>
             <template  #default="scope"  >
-              <el-button type="primary"  size="small"  icon="el-icon-edit" @click="editOne(scope.row)"></el-button>
-              <el-button type="danger"  size="small"  icon="el-icon-delete" @click="deleteOne(scope.row)"></el-button>
+              <el-button type="primary"  size="small"  icon="Edit" @click="editOne(scope.row)"></el-button>
+              <el-button type="danger"  size="small"  icon="Delete" @click="deleteOne(scope.row)"></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -104,7 +104,7 @@
     :close-on-press-escape="false">
       <el-form label-position="right" label-width="70px" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item  size="small" >
-          <el-button type="primary" icon="el-icon-plus" @click="addColumn()">添加</el-button>
+          <el-button type="primary" icon="Plus" @click="addColumn()">添加</el-button>
         </el-form-item>
       </el-form>
       <el-table stripe  highlight-current-row  :data="addTableData" border>
@@ -152,7 +152,7 @@
         </el-table-column>
         <el-table-column label="操作" >
           <template  #default="scope">
-            <el-button type="danger" icon="el-icon-delete" @click.prevent="deleteRow(scope.$index, addTableData)"></el-button>
+            <el-button type="danger" icon="Delete" @click.prevent="deleteRow(scope.$index, addTableData)"></el-button>
           </template>
         </el-table-column>
       </el-table>

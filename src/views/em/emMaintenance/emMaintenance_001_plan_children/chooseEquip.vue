@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd"></el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd"></el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-input v-model="listQuery.eqpId" placeholder="设备编号"></el-input>
@@ -75,7 +75,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -106,7 +106,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -141,7 +141,7 @@
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -181,7 +181,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+            <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -411,7 +411,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
+                type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -439,7 +439,7 @@ export default {
                 }
               }, ''),
               h(ElButton, {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: "Delete",
                 on: {
                  onClick: function() {
                     self.dataListUpdate = params.row
@@ -502,7 +502,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -557,7 +557,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中
@@ -619,7 +619,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中
@@ -695,7 +695,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {

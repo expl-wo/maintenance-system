@@ -66,7 +66,7 @@ export function getInspectionUpdate(data) {
 export function deleteInspectionFile(data) {
   return request({
     url: '/inspectionPlan/file',
-    method: 'DELETE',
+    method: 'POST',
     data
   })
 }

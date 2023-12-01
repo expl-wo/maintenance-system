@@ -24,7 +24,7 @@
       <el-table-column prop="unit" label="单位" align="center" min-width="200"/>
       <el-table-column prop="" align="center" label="操作" width:="150">
         <template v-slot="scope">
-            <el-button  type="primary"  icon="edit"
+            <el-button  type="primary" icon="Edit"
                         @click="click(scope.row)">
 
             </el-button>
@@ -35,21 +35,21 @@
     <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                 @pagination="getList"></pagination>
     <!--弹窗查看-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="查看物料信息" :visible.sync="dialogFormVisible" class="roleDialog800">
+    <el-dialog draggable  :close-on-click-modal="false" title="查看物料信息"   v-model="dialogFormVisible" class="roleDialog800">
       <material ref="materialChild" :fatherData="clickData"></material>
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button @click="dialogFormVisible = false" >关 闭</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-dialogDrag  appendToBody title="查看物料信息" v-model="dialogFormVisible" modal width="600" style="height: 300px;">
+    <el-dialog draggable  appendToBody title="查看物料信息" v-model="dialogFormVisible" modal width="600" style="height: 300px;">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="工序编号" size="mini">
+          <el-form-item label="工序编号" size="small">
             <el-input v-model="listQueryProduces.gxUid" placeholder="工序编号" style="width: 110px;" class="filter-item"
                       clearable />
           </el-form-item>
-          <el-form-item label="工序名称" size="mini">
+          <el-form-item label="工序名称" size="small">
             <el-input v-model="listQueryProduces.gxName" placeholder="工序名称" style="width: 110px;" class="filter-item"
                       clearable />
           </el-form-item>
@@ -59,11 +59,11 @@
           </el-form-item>
         </el-form>
       </div>
-      <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray"
+      <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i"
               @close="tagClose(i)">{{ item }}</el-tag>
       <table-simple :isPagination="false" :height="500" :data="tableRuleConfigData" :row-header="rowRuleConfigHeader" />
 
-      <div slot="footer" class="dialog-footer">
+      <div   class="dialog-footer">
         <el-button  @click="dialogConfigCaiGouFormVisible=false, owner.ownerIdArray = [];owner.ownerNameArray = [];owner.ownerItemArray = []" >取消</el-button>
         <el-button type="primary" @click="createProcedures">保存</el-button>
       </div>

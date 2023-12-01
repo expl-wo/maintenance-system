@@ -45,7 +45,7 @@
       <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                   @pagination="getList" />
 
-    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
+    <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
       <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
@@ -72,13 +72,13 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <div  >
         <el-button  @click="dialogVisible=false"> 取消</el-button>
         <el-button  type="primary" @click="createOrUpdateProcess">保存</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
           <el-form-item label="工序编号" >
@@ -112,7 +112,7 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="small">取 消</el-button>
         </div>
       </template>
     </el-dialog>

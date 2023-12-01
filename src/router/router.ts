@@ -873,6 +873,34 @@ export const sysRouter : Array<RouteRecordRaw> = [
 						keepAlive: true
 					},
 				}]
+			},{
+				path: 'integrityAppraisal',
+				component: Layout,
+				name: '0305_integrityAppraisal',
+				meta: {
+					title: '设备鉴定',
+					icon: 'em_005',
+					keepAlive: true
+				},
+				children : [{
+					path: 'plan',
+					component: () => import('@/views/em/emIntegrityAppraisal/integrityAppraisal.vue'),
+					name: '030501_plan',
+					meta: {
+						title: '鉴定配置',
+						icon: 'em_005_001',
+						keepAlive: true
+					},
+				},{
+					path: 'record',
+					component: () => import('@/views/em/emIntegrityAppraisal/appraisalTask.vue'),
+					name: '030502_record',
+					meta: {
+						title: '鉴定记录',
+						icon: 'em_005_002',
+						keepAlive: true
+					},
+				}]
 			}
 		]
 	},

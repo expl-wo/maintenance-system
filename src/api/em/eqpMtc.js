@@ -63,8 +63,8 @@ export function getMainConfUpdate(data) {
 // 保养配置删除
 export function deleteMainConf(data) {
   return request({
-    url: '/api/equipment/eqpMtc/mainConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/del/mainConf',
+    method: 'POST',
     data
   })
 }
@@ -108,8 +108,8 @@ export function getEqpConfUpdate(data) {
 // 保养设备删除
 export function deleteEqpConf(data) {
   return request({
-    url: '/api/equipment/eqpMtc/eqpConf',
-    method: 'DELETE',
+    url: '/api/equipment/eqpMtc/del/eqpConf',
+    method: 'POST',
     data
   })
 }
@@ -154,7 +154,7 @@ export function getAcpUpdate(data) {
 export function deleteAcpConf(data) {
   return request({
     url: '/api/equipment/eqpMtc/acpConf',
-    method: 'DELETE',
+    method: 'POST',
     data
   })
 }

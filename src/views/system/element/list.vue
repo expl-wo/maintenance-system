@@ -27,7 +27,7 @@
           <el-table-column label="操作" align="center" width="200">
             <template v-slot="scope">
               <el-button-group>
-                <el-button  type="primary"  icon="Edit"
+                <el-button  type="primary" icon="Edit"
                             @click="handleEdit(scope.row)">
                 </el-button>
                 <el-button type="danger"  icon="Delete"

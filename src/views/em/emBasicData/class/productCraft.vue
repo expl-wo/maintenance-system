@@ -10,7 +10,7 @@
           <el-input v-model="listQuery.description" placeholder="分类描述" style="width: 180px;" class="filter-item"  size="small" clearable/>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -48,6 +48,7 @@
 <script>
 // import treeTransfer from 'el-tree-transfer' // 引入
 import TableSimple from '@/components/Table/index'
+import { ElButton,ElButtonGroup} from "element-plus";
 
 // 设备分类查询
 import { getCateList, timetoandon } from '@/api/em/eqpLedger'
@@ -116,7 +117,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
+                type: 'primary', size: 'small', icon:"Edit",
 
                 on: {
                  onClick: function() {

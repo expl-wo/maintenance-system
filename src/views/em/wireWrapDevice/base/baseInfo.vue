@@ -7,8 +7,8 @@
           <el-input placeholder="编号、名称搜索" v-model="searchParams.keywords" @keyup.enter="searchHandle"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="searchHandle" icon="el-icon-search"   size="small">查询</el-button>
-          <el-button type="primary" icon="el-icon-plus"  @click="addHandle"  size="small">新增</el-button>
+          <el-button @click="searchHandle" icon="Search"   size="small">查询</el-button>
+          <el-button type="primary" icon="Plus"  @click="addHandle"  size="small">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -28,10 +28,10 @@
           <el-table-column label="操作" align="center">
             <template  #default="scope">
               <el-button-group>
-                <el-button  type="primary"  size="small" icon="el-icon-edit"
+                <el-button  type="primary"  size="small" icon="Edit"
                             @click="handleEdit(scope.row)">
                 </el-button>
-                <el-button type="danger"  size="small" icon="el-icon-delete"
+                <el-button type="danger"  size="small" icon="Delete"
                            @click="deleteHandle(scope.row)">
                 </el-button>
               </el-button-group>

@@ -25,7 +25,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -177,7 +177,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -455,7 +455,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, () => [
               h(ElButton, {
-                props:{ type:  ()=>'text', size: ()=>'small' },
+                type:  'text', size: 'small',
                 onClick: function() {
                   self.dialogQRCodeFormVisible = true
                   self.$nextTick(function() {
@@ -472,9 +472,7 @@ export default {
                 }
               }, () => '二维码'),
               h(ElButton, {
-                 props:function(){
-                  return { type: 'text', size: 'small' }
-                },
+                 type: 'text', size: 'small',
                  onClick: function() {
                     self.onFileload()
                     self.onFileQuery(params.row)
@@ -483,9 +481,7 @@ export default {
 
               },() => '技术文件'),
               h(ElButton, {
-                 props:function(){
-                  return { type: 'text', size: 'small' }
-                },
+                 type: 'text', size: 'small',
                  onClick: function() {
                     self.onPictureload()
                     self.onPictureQuery(params.row)
@@ -493,18 +489,13 @@ export default {
                  }
               },() => '图片'),
               h(ElButton, {
-                props:function(){
-                  return { type: 'text', size: 'small' }
-                },
+                type: 'text', size: 'small',
                 onClick: function() {
                   self.onDetailQuery(params.row)
                 }
               },() => '运维记录'),
               h(ElButton, {
-                props:function(){
-                  return { type: 'text', size: 'small' }
-                },
-
+                type: 'text', size: 'small',
                  onClick: function() {
                     self.dialogSparePartsFormVisible = true
                     self.onSparePart(params.row)
@@ -612,7 +603,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small' },
+                type: 'danger', size: 'small',
 
                  onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
@@ -620,7 +611,7 @@ export default {
 
               },()=> '查看'),
               h(ElButton,  {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: "Delete",
 
                  onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
@@ -673,7 +664,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: "Delete",
 
                  onClick: function() {
                     $confirm('确定删除, 是否继续?', '取消').then(response => {
@@ -1066,7 +1057,7 @@ export default {
             }
             return h('div', [
               h(ElCheckbox, {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 change: function(event) {
                   // 选中
                   if (event) {

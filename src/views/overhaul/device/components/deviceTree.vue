@@ -4,7 +4,7 @@
     <el-input
       
       placeholder="搜索"
-      suffix-icon="el-icon-search"
+      suffix-icon="Search"
       v-model="filterText"
       @keyup.enter="onSearch">
     </el-input>

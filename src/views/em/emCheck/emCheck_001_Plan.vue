@@ -21,10 +21,10 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
@@ -81,8 +81,8 @@
             <el-table-column header-align="center" align="center" width="120" label="操作">
               <template  #default="scope">
                 <el-button-group>
-                  <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleItemUpdateDict(props.row,scope.row)" />
-                  <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleItemDeleteDict(scope.row)" />
+                  <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="handleItemUpdateDict(props.row,scope.row)" />
+                  <el-button  size="small" title="删除" type="danger" icon="Delete" @click="handleItemDeleteDict(scope.row)" />
                 </el-button-group>
               </template>
             </el-table-column>
@@ -107,11 +107,11 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button  size="small" title="编辑" type="primary" icon="el-icon-edit" @click="handleEditDict(scope.row)">
-              <i icon="el-icon-edit" />
+            <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="handleEditDict(scope.row)">
+              <i icon="Edit" />
             </el-button>
-            <el-button  size="small" title="删除" type="danger" icon="el-icon-delete" @click="handleDeleteDict(scope.row)" />
-            <el-button  size="small" title="添加点检规则" type="primary" icon="el-icon-plus" @click="handleItemAddDict(scope.row)">
+            <el-button  size="small" title="删除" type="danger" icon="Delete" @click="handleDeleteDict(scope.row)" />
+            <el-button  size="small" title="添加点检规则" type="primary" icon="Plus" @click="handleItemAddDict(scope.row)">
               添加点检规则
             </el-button>
           </el-button-group>
@@ -226,7 +226,7 @@
               <el-input v-model="listQueryEqp.name" placeholder="设备名称" style="width: 180px;" class="filter-item" clearable />
             </el-form-item>
             <el-form-item  size="small">
-              <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery">查询</el-button>
+              <el-button type="primary" icon="Search" @click="onBtnEqpQuery">查询</el-button>
             </el-form-item>
           </el-form>
         </div>

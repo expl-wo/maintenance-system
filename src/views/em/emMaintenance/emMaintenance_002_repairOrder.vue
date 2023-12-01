@@ -32,7 +32,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -92,7 +92,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <table-simple
@@ -122,7 +122,7 @@
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onPeopleQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
       <el-tag v-show="owner.ownerNameArray.length > 0" v-for="(item,i) in owner.ownerNameArray" :key="i" closable @close="tagClose(i)">{{ item }}</el-tag>
@@ -439,7 +439,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 on: {
                  onClick: function() {
@@ -459,7 +459,7 @@ export default {
                 }
               }, '派工'),
               // h(ElButton, {
-              //   props: { type: 'primary', size: 'small' },
+              //   type: 'danger', size: 'small',
               //   on: {
               //    onClick: function() {
               //       self.dialogAcceptFormVisible = true
@@ -478,7 +478,7 @@ export default {
               //   }
               // }, '验收'),
               h(ElButton, {
-                props: { type: 'danger', size: 'small' },
+                type: 'danger', size: 'small',
                 on: {
                  onClick: function() {
                     //self.dialogAcceptFormVisible = true
@@ -554,7 +554,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small'},
+                type: 'primary', size: 'small',
                 on: {
                  onClick: function() {
                     self.listDispatchUpdate.mterId = params.row.id // 被派工人id
@@ -686,7 +686,7 @@ export default {
             }
             return h('div', [
               h('el-checkbox', {
-                props: { type: 'primary', size: 'small', checked: ownerIdChecked },
+                type: 'primary', size: 'small', checked: ownerIdChecked,
                 on: {
                   change: function(event) {
                     // 选中

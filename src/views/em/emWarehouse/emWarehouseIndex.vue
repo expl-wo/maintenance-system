@@ -6,10 +6,10 @@
           <el-input v-model="listQuery.warehouseCode" placeholder="输入库存编码" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="addOrEdit(true)">{{ $t('button.add') }}</el-button>
+          <el-button type="primary" icon="Search" @click="addOrEdit(true)">{{ $t('button.add') }}</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { ElButton,ElButtonGroup} from "element-plus";
+
   import TableSimple from '@/components/Table/index'
   import TableCheckAll from '@/components/Table/tableCheckAll'
   import reactorCapacity from '@/api/reactorCapacity'
@@ -175,7 +177,7 @@
             render: (h, params) => {
               return h(ElButtonGroup, ()=>[
                 h(ElButton, {
-                  props: { type: 'primary', size: 'small' },
+                  type: 'danger', size: 'small',
                   on: {
                    onClick: function() {
                       self.addOrEdit(false)
@@ -189,7 +191,7 @@
                   }
                 }, '编辑'),
                 h(ElButton, {
-                  props: { type: 'primary', size: 'small' },
+                  type: 'danger', size: 'small',
                   on: {
                    onClick: function() {
                       self.deleteReactor(params.row)

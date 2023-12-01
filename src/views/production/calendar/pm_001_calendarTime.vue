@@ -4,9 +4,9 @@
     <el-row :gutter="12" class="hp">
       <el-col :span="11" class="hp">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div   class="clearfix">
             <span>日工作模板名称定义</span>
-            <el-button style="float: right;" size="mini" type="primary" icon="Plus" @click="onAdd"></el-button>
+            <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onAdd"></el-button>
           </div>
           <table-simple
             :data="tableData"
@@ -21,9 +21,9 @@
       </el-col>
       <el-col :span="13" class="hp">
         <el-card shadow="hover" class="hp">
-          <div slot="header" class="clearfix">
+          <div   class="clearfix">
             <span>模板时间设定</span>
-            <el-button style="float: right;" size="mini" type="primary" icon="Plus" @click="onNapeAdd"></el-button>
+            <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onNapeAdd"></el-button>
           </div>
           <table-simple
             :data="tableTimeData"
@@ -36,19 +36,19 @@
     </el-row>
 
     <!--日工作模板新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog">
       <el-form ref="listUpdate" label-position="right" label-width="90px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="模板名称:" prop="tempName" size="mini">
+        <el-form-item label="模板名称:" prop="tempName" size="small">
           <el-input v-model="listUpdate.tempName" placeholder="模板名称" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="模板描述:" size="mini">
+        <el-form-item label="模板描述:" size="small">
           <el-input v-model="listUpdate.tempDesc" placeholder="模板描述" style="width: 360px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('listUpdate')" size="mini">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="saveData('listUpdate')" size="small">
           保存
         </el-button>
       </div>
@@ -56,19 +56,19 @@
     </el-dialog>
 
     <!--日工作模板时间新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogTimeFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogTimeFormVisible" class="roleDialog">
       <el-form ref="listTimeUpdate" label-position="right" label-width="90px" :rules="submitTimeRules" :model="listTimeUpdate">
-        <el-form-item label="开始时间:" prop="startDate" size="mini">
+        <el-form-item label="开始时间:" prop="startDate" size="small">
           <el-time-select v-model="listTimeUpdate.startDate" :picker-options="pickerOptions" placeholder="开始时间" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="结束时间:" prop="endDate" size="mini">
+        <el-form-item label="结束时间:" prop="endDate" size="small">
           <el-time-select v-model="listTimeUpdate.endDate" :picker-options="pickerOptions" placeholder="结束时间" style="width: 360px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogTimeFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveTimeData('listTimeUpdate')" size="mini">
+        <el-button @click="dialogTimeFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="saveTimeData('listTimeUpdate')" size="small">
           保存
         </el-button>
       </div>
@@ -148,7 +148,7 @@ export default {
         { prop: 'reapt', width: 100, align: 'center', label: '操作',
           render: (h, params) => {
             return h('el-button-group', [
-              h('el-button', { props: { type: 'primary', size: 'mini', icon: 'el-icon-edit'},
+              h('el-button', { type: 'primary', size: 'small', icon:"Edit",
                 on: {
                   click: function() {
                     self.listUpdate = {
@@ -161,7 +161,7 @@ export default {
                   }
                 }
               }, ''), // 修改
-              h('el-button', { props: { type: 'danger', size: 'mini', icon: 'el-icon-delete'},
+              h('el-button', { type: 'danger', size: 'small', icon: "Delete",
                 on: {
                   click: function() {
                     $confirm('此操作将永久删除该条信息, 是否继续?','取消').then(response =>{
@@ -190,7 +190,7 @@ export default {
         { prop: 'reapt', width: 100, align: 'center', label: '操作',
           render: (h, params) => {
             return h('el-button-group', [
-              h('el-button', { props: { type: 'primary', size: 'mini', icon: 'el-icon-edit'},
+              h('el-button', { type: 'primary', size: 'small', icon:"Edit",
                 on: {
                   click: function() {
                     self.rowTimeUpdata = params.row
@@ -203,7 +203,7 @@ export default {
                   }
                 }
               }, ''), // 修改
-              h('el-button', { props: { type: 'danger', size: 'mini', icon: 'el-icon-delete'},
+              h('el-button', { type: 'danger', size: 'small', icon: "Delete",
                 on: {
                   click: function() {
                     $confirm('此操作将永久删除该条信息, 是否继续?','取消').then(response =>{

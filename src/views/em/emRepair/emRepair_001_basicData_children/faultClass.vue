@@ -7,10 +7,10 @@
           <el-input v-model="listQuery.name" placeholder="故障类别名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+          <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -118,8 +118,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                props: { type: 'primary', size: 'small', icon: 'el-icon-edit' },
-                // style: { marginRight: '0px' },
+                type: 'primary', size: 'small', icon: 'Edit',
                 onClick: function() {
                   self.dialogFormVisible = true
                   self.dialogStatus = 'update'
@@ -131,7 +130,7 @@ export default {
                 }
               },()=> ''),
               h(ElButton, {
-                props: { type: 'danger', size: 'small', icon: 'el-icon-delete' },
+                type: 'danger', size: 'small', icon: 'Delete',
                 onClick: function() {
                   self.dataListUpdate = params.row
                   self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {

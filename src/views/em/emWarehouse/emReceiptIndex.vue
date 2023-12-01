@@ -19,7 +19,7 @@
           </el-select>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-search" @click="onBtnQuery">查询</el-button>
+          <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="el-icon-upload2" @click="sendTask()">生成出库任务</el-button>
@@ -42,7 +42,7 @@
             <el-input v-model="listQueryDe.warehouseCode" placeholder="库位编码" style="width: 110px;" class="filter-item" clearable />
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onRuleConfigQuery">查询
+            <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
             </el-button>
           </el-form-item>
         </el-form>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { ElButton,ElButtonGroup} from "element-plus";
+
   import TableSimple from '@/components/Table/index'
   import TableCheckAll from '@/components/Table/tableCheckAll'
   import reactorCapacity from '@/api/reactorCapacity'
@@ -259,7 +261,7 @@
               }
               return h(ElButtonGroup, ()=>[
                 h(ElButton, {
-                  props: { type: 'primary', size: 'small' },
+                  type: 'danger', size: 'small',
                   style: { display: status },
                   on: {
                    onClick: function() {
@@ -301,7 +303,7 @@
             render: (h, params) => {
               return h(ElButtonGroup, ()=>[
                 h(ElButton, {
-                  props: { type: 'primary', size: 'small'},
+                  type: 'primary', size: 'small',
                   on: {
                    onClick: function() {
                       self.$confirm('此操作将转移库存到'+params.row.warehouseCode+', 是否继续?', '提示', {

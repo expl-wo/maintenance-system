@@ -9,8 +9,8 @@
         class="demo-form-inline demo-form-zdy"
       >
         <el-form-item label="生产号:" size="small" prop="model">
-          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.native="queryTableDataParam"
-                    style="width: 180px;" class="filter-item" size="mini">
+          <el-input v-model="searchQuery.productNo" placeholder="生产号" @keyup.enter="queryTableDataParam"
+                    style="width: 180px;" class="filter-item" size="small">
           </el-input>
         </el-form-item>
         <el-button icon="Search"  size="small" @click="queryTableDataParam">查询</el-button>
