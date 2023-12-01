@@ -75,7 +75,11 @@ const url = {
   //删除试验计划  POST
   delPlan: '/api/gcplan/plan/proplan/delPlan',
   //计划审批
-  approvalPlanZ: '/api/gcplan/productPlan/compilation/approvePlan'
+  approvalPlanZ: '/api/gcplan/productPlan/compilation/approvePlan',
+  //修改生产号期量表 Get
+  updateProductLimit: '/api/gcplan/productPlan/updateProductLimit',
+  //期量表配置-查询期量列表 get
+  queryMainList: '/api/gcplan/timelimitMain/query',
 }
 
 export default {
@@ -335,6 +339,23 @@ export default {
   approvalPlanZ(params) {
     return request({
       url: url.approvalPlanZ,
+      method: 'post',
+      data: params
+    })
+  },
+  queryMainList(params) {
+    return request({
+      url: url.queryMainList,
+      method: 'get',
+      data:{
+        pageSize: params.pageSize,
+        pageNum: params.pageNum,
+      }
+    })
+  },
+  updateProductLimit(params) {
+    return request({
+      url: url.updateProductLimit,
       method: 'post',
       data: params
     })

@@ -77,9 +77,10 @@ export default {
         if (!valid) {
           return
         }
-        planWeekHttp.updateLimitForPlan({
+        planWeekHttp.updateProductLimit({
           id: this.selectedData.id,
-          timeLimitId: this.model.timeLimitId
+          timeLimitId: this.model.timeLimitId,
+          timeLimitName: this.model.timeLimitName
         }).then(response=>{
           if(response.err_code === this.$constants.statusCode.success){
             this.$message.success('产品期量成功');
