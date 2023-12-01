@@ -860,7 +860,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 			{
 				path: 'andonEventList',
 				name: 'andonEventList',
-				component: () => import('@/views/ps/baseData/index.vue'),
+				component: () => import('@/views/andon/pm_002_andonEventList.vue'),
 				meta:{
 					title: 'Andon事件列表',
 					icon: 'ps_011'

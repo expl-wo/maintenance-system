@@ -32,7 +32,7 @@ export function getAndonAbnormalList(params) {
   return request({
     url: baseurl + '/abnormal/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       cateId: params.cateId || ''
@@ -53,7 +53,7 @@ export function getAndonAbnormalUpdate(data) {
 export function deleteAndonAbnormal(data) {
   return request({
     url: baseurl + '/abnormal/delete',
-    method: 'DELETE',
+    method: 'POST',
     data
   })
 }
@@ -61,9 +61,9 @@ export function deleteAndonAbnormal(data) {
 // 升级提醒分页查询
 export function getUpgradeConfigList(params) {
   return request({
-    url: baseurl+'/andonConfig/upgradeConfig',
+    url: baseurl+'/upgradeConfig/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       abnormalId: params.abnormalId || ''
@@ -95,7 +95,7 @@ export function getAndonConfigTagList(params) {
   return request({
     url: '/andonConfig/tag',
     method: 'get',
-    params: {
+    data: {
       abnormalId: params.abnormalId || ''
     }
   })
@@ -124,7 +124,7 @@ export function getUpgradeTempList(params) {
   return request({
     url: '/api/andon/upgradeTemp/query',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 100, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1 // 查询第几页数据，默认第一页
     }

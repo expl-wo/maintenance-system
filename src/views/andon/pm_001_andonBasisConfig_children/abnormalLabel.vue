@@ -69,12 +69,14 @@
           <el-input v-model="listUpdate.tagDesc" placeholder="标签描述" style="width: 320px;" class="filter-item" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="saveData('listUpdate')" size="mini">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
   </div>

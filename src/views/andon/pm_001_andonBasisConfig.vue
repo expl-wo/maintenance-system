@@ -14,9 +14,20 @@
             default-expand-all
             highlight-current
             :expand-on-click-node="false"
-            :render-content="renderContent"
             @node-click="handleNodeClick"
-          />
+          >
+            <template #default="{node,data}">
+              <span class="custom-tree-node" style="width: 100%;display: flex;justify-content: space-between;">
+                <span>{{ node.label }}</span>
+                <span>
+                  <el-button-group>
+                    <el-button size='mini' type='primary' icon='Edit' @click = this.onUpdate(data)></el-button>
+                    <el-button size='mini' type='danger' icon='Delete' @click = this.onRemove(node,data) ></el-button>
+                  </el-button-group>
+                </span>
+              </span>
+            </template>
+          </el-tree>
         </el-card>
       </el-col>
       <el-col :span="9" class="hp">
@@ -51,10 +62,10 @@
               prop="responders"
               align="center"
               label="通知人"
-              min-width="5%"
-            />
-            <el-table-column
               min-width="20%"
+            ><template v-slot="scope">{{renderResponders(scope.row.responders)}}</template></el-table-column>
+            <el-table-column
+              min-width="10%"
               align="center"
               label="操作"
             >
@@ -62,7 +73,7 @@
                 <el-button-group>
                   <el-button
                     plain
-                    icon="Edit"
+                    icon="edit"
                     type="primary"
                     @click="editAbnormal(scope.row)"
                   >
@@ -123,10 +134,11 @@
               prop="responders"
               align="center"
               label="升级响应人"
-              min-width="5%"
-            />
+              min-width="10%"
+            ><template v-slot="scope">{{renderResponders(scope.row.responders)}}</template>
+            </el-table-column>
             <el-table-column
-              min-width="20%"
+              min-width="8%"
               align="center"
               label="操作"
             >
@@ -361,7 +373,6 @@
 </template>
 
 <script lang="jsx">
-import TableSimple from '@/components/Table/index'
 // 查询人员信息
 import { getUser } from '@/api/user'
 // 异常分类查询,异常分类添加修改，异常分类删除，异常项查询，异常项添加修改,异常项删除，异常升级提醒查询，异常升级提醒修改添加，异常升级提醒删除
@@ -382,7 +393,7 @@ import upgradeTemplate from './pm_001_andonBasisConfig_children/upgradeTemplate.
 
 export default {
   name: 'Table',
-  components: { TableSimple, abnormalLabel, upgradeTemplate },
+  components: { abnormalLabel, upgradeTemplate },
   data() {
     return {
       heightTable: '300px',
@@ -447,11 +458,9 @@ export default {
         isUpByPersonCount: '',
         abnormalWeight: '' // 权重
       },
-      owner: {
-        ownerIdArray: [], // 要分配的用户ID数组
-        ownerNameArray: [], // 要分配的用户名称数组
-        ownerNumberArray: []// 要分配的用户电话数组
-      },
+      ownerIdArray: [], // 要分配的用户ID数组
+      ownerNameArray: [], // 要分配的用户名称数组
+      ownerNumberArray: [],// 要分配的用户电话数组
       submitNapeRules: {
         abnormalName: [
           { required: true, trigger: 'change', message: '该项为必填项' }
@@ -528,7 +537,6 @@ export default {
     },
     onload() {
       this.onTreeQuery() // 查树形
-      this.onQueryPeople() // 人员表格头
       this.onAndonCate() // andon顶级类型
     },
     onUpload() {
@@ -582,6 +590,7 @@ export default {
     },
     // 树形点击
     handleNodeClick(data) {
+      debugger
       this.listQuery.cateId = data.id
       this.listQuery.cateName = data.cateName
       this.onQuery() // 查询异常项
@@ -597,8 +606,8 @@ export default {
       this.tableUpData = []
     },
     handleClick(row, event, column) {
-      this.listUpQuery.abnormalId = row.item.id
-      this.listUpQuery.abnormalNameLeft = row.item.abnormalName
+      this.listUpQuery.abnormalId = row.id
+      this.listUpQuery.abnormalNameLeft = row.abnormalName
       this.onUpQuery() // 升级提醒分页查询
     },
     renderContent(h, { node, data, store }) {
@@ -607,8 +616,8 @@ export default {
           <span>{node.label}</span>
           <span class='fr'>
             <el-button-group>
-              <el-button size='mini' type='primary' class='Edit' on-click={ () => this.onUpdate(data) }></el-button>
-              <el-button size='mini' type='danger' class='Delete' on-click={ () => this.onRemove(node, data) }></el-button>
+              <el-button size='mini' type='primary' icon='Edit' on-click={ () => this.onUpdate(data) }></el-button>
+              <el-button size='mini' type='danger' icon='Delete' on-click={ () => this.onRemove(node, data) }></el-button>
             </el-button-group>
           </span>
         </span>
@@ -711,37 +720,41 @@ export default {
     onSelectDept() {
       this.dialogPeopleFormVisible = true
       this.onPeopleQuery()
+      this.setTableSelected();
     },
     checkboxClick(item) {
       this.checkboxItem = item
     },
     // 确认选择异常通知人
     savePeopleData() {
-      console.log(this.owner.ownerIdArray)
-      console.log(this.owner.ownerNameArray)
-      console.log(this.owner.ownerNumberArray)
-      if (this.owner.ownerIdArray.length > 0) {
+      debugger
+      if (this.multipleSelection === 0) {
+        this.$message({ message: '请选择异常通知人', type: 'warning' })
+      } else {
+        this.multipleSelection.forEach(item => {
+          this.ownerIdArray.push(item.id);
+          this.ownerNameArray.push(item.uName);
+          this.ownerNumberArray.push(item.mobileNo);
+        });
         if (this.dialogNapeFormVisible) { // 异常项
           this.listNapeUpdate.responders = []
           this.listNapeUpdate.respondersName = ''
-          this.owner.ownerIdArray.forEach((item, i) => {
-            this.listNapeUpdate.responders.push({ id: item, name: this.owner.ownerNameArray[i], number: this.owner.ownerNumberArray[i] })
-            this.listNapeUpdate.respondersName += this.owner.ownerNameArray[i] + '(' + (this.owner.ownerNumberArray[i] || '') + ')' + ','
+          this.ownerIdArray.forEach((item, i) => {
+            this.listNapeUpdate.responders.push({ id: item, name: this.ownerNameArray[i], number: this.ownerNumberArray[i] })
+            this.listNapeUpdate.respondersName += this.ownerNameArray[i] + '(' + (this.ownerNumberArray[i] || '') + ')' + ','
           })
           this.listNapeUpdate.respondersName = this.listNapeUpdate.respondersName.substring(0, this.listNapeUpdate.respondersName.length - 1)
           this.dialogPeopleFormVisible = false
         } else if (this.dialogUpFormVisible) {
           this.listUpUpdate.responders = []
           this.listUpUpdate.respondersName = ''
-          this.owner.ownerIdArray.forEach((item, i) => {
-            this.listUpUpdate.responders.push({ id: item, name: this.owner.ownerNameArray[i], number: this.owner.ownerNumberArray[i] })
-            this.listUpUpdate.respondersName += this.owner.ownerNameArray[i] + '(' + (this.owner.ownerNumberArray[i] || '') + ')' + ','
+          this.ownerIdArray.forEach((item, i) => {
+            this.listUpUpdate.responders.push({ id: item, name: this.ownerNameArray[i], number: this.ownerNumberArray[i] })
+            this.listUpUpdate.respondersName += this.ownerNameArray[i] + '(' + (this.ownerNumberArray[i] || '') + ')' + ','
           })
           this.listUpUpdate.respondersName = this.listUpUpdate.respondersName.substring(0, this.listUpUpdate.respondersName.length - 1)
           this.dialogPeopleFormVisible = false
         }
-      } else {
-        this.$message({ message: '请选择异常通知人', type: 'warning' })
       }
     },
     // 添加角色分配保存
@@ -854,16 +867,15 @@ export default {
       this.onPeopleQuery() // 查询
     },
     clearOwner() {
-      this.owner.ownerIdArray.length = 0
-      this.owner.ownerNameArray.length = 0
-      this.owner.ownerNumberArray.length = 0
+      this.ownerIdArray.length = 0
+      this.ownerNameArray.length = 0
+      this.ownerNumberArray.length = 0
     },
     pushOwner(arrData) {
-      const self = this
       arrData.forEach(d => {
-        self.owner.ownerIdArray.push(d.id)
-        self.owner.ownerNameArray.push(d.name)
-        self.owner.ownerNumberArray.push(d.number)
+        this.ownerIdArray.push(d.id)
+        this.ownerNameArray.push(d.name)
+        this.ownerNumberArray.push(d.number)
       })
     },
     editAbnormal(row){
@@ -949,6 +961,25 @@ export default {
     handleSelectAll(selection) {
       this.tablePeopleData.forEach(row => {
         this.handleSelect(selection, row);
+      });
+    },
+    renderResponders(responders){
+      var htmlText = ''
+      responders.forEach(i => {
+        htmlText += (i.name + '(' + (i.number || '') + ')' + ',')
+      })
+      return htmlText.substring(0, htmlText.length - 1)
+    },
+    setTableSelected() {
+      this.tablePeopleData.forEach(item => {
+        this.multipleSelection.some(subItem => {
+          if (item.id === subItem.id) {
+            this.$refs.tableRef.toggleRowSelection(item, true);
+            return true;
+          } else {
+            return false;
+          }
+        });
       });
     },
   }

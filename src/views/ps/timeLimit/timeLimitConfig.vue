@@ -66,7 +66,7 @@
       </el-table-column>
       <el-table-column
         prop="longestPath"
-        label="总时长"
+        label="总时长(小时)"
         align="center"
         min-width="5%"
       />

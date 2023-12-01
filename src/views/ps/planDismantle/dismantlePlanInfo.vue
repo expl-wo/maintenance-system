@@ -239,7 +239,7 @@ export default {
       }
       let delId = []
       this.selectList.forEach(item=>{
-        delId.push(item.pl14Id)
+        delId.push(item.pl15Id)
       })
       planWeek.delPlan({planType:this.planType,ids:delId}).then(res=>{
         if(res.err_code===10000){

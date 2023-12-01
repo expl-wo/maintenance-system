@@ -27,7 +27,6 @@ export default {
     async initData() {
       await this.initColumnList();
       await this.getHeaderParams()
-      await this.getDataList()
       this.showTable = false;
       this.$nextTick(()=>{
         this.setIntervalClass();

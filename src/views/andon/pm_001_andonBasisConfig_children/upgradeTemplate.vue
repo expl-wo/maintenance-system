@@ -78,12 +78,14 @@
           <el-input-number v-model="listUpdate.upgradeTime" :min="0" label="升级时间" style="width: 150px;" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <template #footer>
+        <div class="dialog-footer">
         <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="saveData('listUpdate')" size="mini">
           保存
         </el-button>
       </div>
+      </template>
     </el-dialog>
 
   </div>
@@ -91,14 +93,12 @@
 
 <script>
 // import treeTransfer from 'el-tree-transfer' // 引入
-import TableSimple from '@/components/Table/index'
 
 // 模板升级查询、模板升级的新增与编辑,模板升级删除
 import { getUpgradeTempList, getUpgradeTempUpdate, deleteUpgradeTemp } from '@/api/andonConfig'
 
 export default {
   name: 'Table',
-  components: { TableSimple },
   props: {
     confirmBtn: { // 控制确认按钮显示隐藏
       type: String,
