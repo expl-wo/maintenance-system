@@ -74,7 +74,6 @@
 
 <script>
 import DHPlayer from "@/components/DHPlayer/index";
-import { Search, RefreshLeft } from "@element-plus/icons-vue";
 import dayjs from "dayjs";
 const testTreeData = [
   {
@@ -213,9 +212,7 @@ const testTreeData = [
 export default {
   name: "VideoMark",
   components: {
-    DHPlayer,
-    Search,
-    RefreshLeft,
+    DHPlayer
   },
   data() {
     return {

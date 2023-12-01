@@ -4,11 +4,11 @@
       <div
         :class="['circle', isActive ? '' : 'default-border']"
         :style="{
-          backgroundColor: isActive ? activeColor : defaultColor,
-          borderColor: activeColor,
+          backgroundColor: defaultColor,
+          borderColor: isActive ? activeColor : defaultColor,
         }"
       >
-        <el-icon v-if="isActive"><Check /></el-icon>
+        <!-- <el-icon v-if="isActive"><Check /></el-icon> -->
       </div>
       <div class="content" :style="contentStyle">{{ content }}</div>
       <div
@@ -37,11 +37,7 @@
 </template>
   
 <script>
-import { Check } from "@element-plus/icons-vue";
 export default {
-  components: {
-    Check,
-  },
   data() {
     return {};
   },
@@ -83,7 +79,7 @@ export default {
     // 未激活状态文字颜色
     defaultColor: {
       type: String,
-      default: "#dbe8f9",
+      default: "#e4e7ed",
     },
   },
   mounted() {},
@@ -91,7 +87,7 @@ export default {
 </script>
   
 <style scoped lang="scss">
-$circle-width: 40px;
+$circle-width: 20px;
 .item {
   flex: 1;
   display: flex;
@@ -115,6 +111,7 @@ $circle-width: 40px;
     line-height: $circle-width;
     text-align: center;
     border-radius: 50%;
+    border: 2px solid;
     color: #fff;
     flex-shrink: 0;
     font-size: 16px;

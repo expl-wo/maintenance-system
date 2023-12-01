@@ -62,14 +62,10 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { RETURN_COLUMNS, BOM_STATUS } from "../config.js";
-import { Download, Refresh, Stamp } from "@element-plus/icons-vue";
 export default {
   name: "ReturnList",
   components: {
-    Pagination,
-    Download,
-    Refresh,
-    Stamp,
+    Pagination
   },
   filters: {
     statusFilter(status) {

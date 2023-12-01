@@ -31,7 +31,11 @@
         </div>
       </template>
     </el-upload>
-    <file-list :fileList="fileList" @onDelete="handleDelete"></file-list>
+    <file-list
+      :fileList="fileList"
+      :isCanDelete="isCanDelete"
+      @onDelete="handleDelete"
+    ></file-list>
     <el-progress v-if="!simple && progressFlag" :percentage="percentage" />
   </div>
 </template>
@@ -42,7 +46,6 @@ import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
 import { completeMultipart, initMultipart, upload } from "@/api/file";
 import { getFileType } from "@/utils";
 import Constants from "@/utils/constants";
-import { UploadFilled } from "@element-plus/icons-vue";
 import { ElMessageBox, useFormItem, ElMessage } from "element-plus";
 import { addFilePrev } from "@/utils/index";
 import { genFileId } from "element-plus";
@@ -73,6 +76,10 @@ export default {
       type: String,
       default: "选择文件",
     },
+    isCanDelete: {
+      type: Boolean,
+      default: true,
+    },
     //默认100M
     fileMaxSize: {
       type: Number,
@@ -100,7 +107,6 @@ export default {
     },
   },
   components: {
-    UploadFilled,
     FileList,
   },
   emits: ["update:modelValue", "uploadSuccess"],
@@ -326,7 +332,7 @@ export default {
       handleDelete,
       httpUpload,
       emitData,
-      isLargeFile
+      isLargeFile,
     };
   },
 };

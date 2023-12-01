@@ -15,6 +15,14 @@ export function getBomTemplate(data) {
         data
     })
 }
+//通过工单id查询改工单绑定的bom
+export function getBomByWorkOrderId(data) {
+    return request({
+        url: '/evo-ims-overhaul/bom/bind',
+        method: 'post',
+        data
+    })
+}
 //根据id查bom详情
 export function findBomTemplateById(id) {
     return request({

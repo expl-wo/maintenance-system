@@ -259,37 +259,49 @@ const TAB_LIST_OUT = [
         label: "现场勘查",
         name: "surveyItem",
         workClazzType: "survey", //班组字段
+        sceneType: "SURVEY_SCENE",//场景值对应后端参数
         hiddenAssign: true,
+        menuCode: "2005_tab_surveyItem"
     },
     {
         label: "现场检修",
         name: "siteOverhaul",
         hiddenAssign: false,
+        sceneType: "OVER_HAUL_ON_THE_SPOT_SCENE",
         workClazzType: "overhaulGroup",
+        menuCode: "2005_tab_siteOverhaul"
     },
     {
         label: "返厂检修-现场拆解",
         name: "siteDismantle",
         hiddenAssign: false,
+        sceneType: "OVER_HAUL_BACK_CHAI_JIE_SCENE",
         workClazzType: "overhaulGroup",
+        menuCode: "2005_tab_siteDismantle"
     },
     {
         label: "返厂检修-厂内拆解",
         name: "factoryDismantle",
         workClazzType: "assembleGroup",
+        sceneType: "OVER_HAUL_BACK_INNER_CHAI_JIE_SCENE",
         hiddenAssign: false,
+        menuCode: "2005_tab_factoryDismantle"
     },
     {
         label: "返厂检修-厂内生产",
         name: "factoryCreate",
         workClazzType: "prodDeptGroup",
+        sceneType: "OVER_HAUL_BACK_INNER_PRODUCTION_SCENE",
         hiddenAssign: false,
+        menuCode: "2005_tab_factoryCreate"
     },
     {
         label: "返厂检修-试验",
         name: "experiment",
         workClazzType: "experimentalGroup",
+        sceneType: "OVER_HAUL_BACK_EXPERIMENT_SCENE",
         hiddenAssign: false,
+        menuCode: "2005_experiment_appoint"
     },
     // {
     //     label: "返厂检修-检修报告",
@@ -301,37 +313,41 @@ const TAB_LIST_OUT = [
 const TAB_LIST_MAP = {
     //试验
     experiment:
-        [{ label: "工序信息", name: "processInfo", components: "ProcessInfo" },
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        [{ label: "工序信息", name: "processInfo", components: "ProcessInfo", menuCode: "2005_experiment_processInfo" },
+        { label: "工序问题查看", name: "issueTable", components: "IssueTable", menuCode: "2005_experiment_issue" },
         {
             label: "试验作业指导书",
             name: "experimentInstruction",
             components: "TemplateReport",
             workType: 12,
+            menuCode: "2005_report_view_12"
         },
         {
             label: "试验报告 ",
             name: "experimentReport",
             components: "TemplateReport",
             workType: 13,
+            menuCode: "2005_report_view_13"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
+        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_experiment_videoMarker" },
+        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_experiment_markerList_view" }
         ],
     //厂内生产
     factoryCreate: [
-        { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        { label: "工序信息", name: "processInfo", components: "ProcessInfo", menuCode: "2005_factoryCreate_processInfo" },
+        { label: "工序问题查看", name: "issueTable", components: "IssueTable", menuCode: "2005_factoryCreate_issue" },
         {
             label: "厂内作业BOM",
             name: "BomVue",
             components: "BomVue",
+            menuCode: "2005_factoryCreate_bom_view"
         },
         {
             label: "生产作业指导书",
             name: "createInstruction",
             components: "TemplateReport",
             workType: 10,
+            menuCode: "2005_report_view_10"
         },
 
         {
@@ -339,14 +355,18 @@ const TAB_LIST_MAP = {
             name: "createReport",
             components: "TemplateReport",
             workType: 11,
+            menuCode: "2005_report_view_11"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
+        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryCreate_videoMarker" },
+        {
+            label: "标记记录", name: "markRecord", components: "MarkerRecord",
+            menuCode: "2005_factoryCreate_markerList_view"
+        }
     ],
     //厂内拆解
     factoryDismantle: [
-        { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        { label: "工序信息", name: "processInfo", components: "ProcessInfo", menuCode: "2005_factoryDismantle_processInfo" },
+        { label: "工序问题查看", name: "issueTable", components: "IssueTable", menuCode: "2005_factoryDismantle_issue" },
         // {
         //     label: "施工方案",
         //     name: "constructionScheme",
@@ -357,117 +377,135 @@ const TAB_LIST_MAP = {
             name: "returnInstruction",
             components: "TemplateReport",
             workType: 8,
+            menuCode: "2005_report_view_8"
         },
         {
             label: "厂内拆解BOM",
             name: "BomVue",
             components: "BomVue",
+            menuCode: "2005_factoryDismantle_bom_view"
         },
         {
             label: "解体分析报告",
             name: "BreakdownReport",
             components: "TemplateReport",
             workType: 9,
+            menuCode: "2005_report_view_9"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
+        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryDismantle_videoMarker" },
+        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_factoryDismantle_markerList_view" }
     ],
     //现场拆解
     siteDismantle: [
-        { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        { label: "工序信息", name: "processInfo", components: "ProcessInfo", menuCode: "2005_siteDismantle_processInfo" },
+        { label: "工序问题查看", name: "issueTable", components: "IssueTable", menuCode: "2005_siteDismantle_issue" },
         {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
             workType: 6,
+            menuCode: "2005_report_view_6"
         },
         {
             label: "装运拆解作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
             workType: 7,
+            menuCode: "2005_report_view_7"
         },
         {
             label: "大件设备清单",
             name: "bigComponents",
             components: "BigComponents",
+            menuCode: "2005_siteDismantle_big_view"
         },
         {
             label: "材料清单",
             name: "materials",
             components: "materials",
+            menuCode: "2005_siteDismantle_materials_view"
         },
         {
             label: "工器具清单",
             name: "instrument",
             components: "instrument",
+            menuCode: "2005_siteDismantle_instrument_view"
         },
 
         {
             label: "拆解BOM",
             name: "BomVue",
             components: "BomVue",
+            menuCode: "2005_siteDismantle_bom_view"
         },
         {
             label: "返厂清单",
             name: "returnList",
             components: "ReturnList",
+            menuCode: "2005_siteDismantle_returnList_view"
         },
         {
             label: "现场拆解报告",
             name: "siteDisassemblyReport",
             components: "TemplateReport",
             workType: 15,
+            menuCode: "2005_report_view_15"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
+        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_siteDismantle_videoMarker" },
+        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_siteDismantle_markerList_view" }
     ],
     //现场检修，
     siteOverhaul: [
-        { label: "工序信息", name: "processInfo", components: "ProcessInfo" },
-        { label: "工序问题查看", name: "issueTable", components: "IssueTable" },
+        { label: "工序信息", name: "processInfo", components: "ProcessInfo",menuCode: "2005_siteOverhaul_processInfo" },
+        { label: "工序问题查看", name: "issueTable", components: "IssueTable",menuCode: "2005_siteOverhaul_issue" },
         {
             label: "施工方案",
             name: "constructionScheme",
             components: "TemplateReport",
             workType: 2,
+            menuCode: "2005_report_view_2"
         },
         {
             label: "现场检修作业指导书",
             name: "operationInstruction",
             components: "TemplateReport",
             workType: 3,
+            menuCode: "2005_report_view_3"
         },
         {
             label: "大件设备清单",
             name: "bigComponents",
             components: "BigComponents",
+            menuCode: "2005_siteOverhaul_big_view"
         },
         {
             label: "材料清单",
             name: "materials",
             components: "materials",
+            menuCode: "2005_siteOverhaul_materials_view"
         },
         {
             label: "工器具清单",
             name: "instrument",
             components: "instrument",
+            menuCode: "2005_siteOverhaul_instrument_edit"
         },
         {
             label: "现场检修试验报告",
             name: "testInstruction",
             components: "TemplateReport",
             workType: 4,
+            menuCode: "2005_report_view_4"
         },
         {
             label: "现场检修竣工报告",
             name: "finishReport",
             components: "TemplateReport",
             workType: 5,
+            menuCode: "2005_report_view_5"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord" }
+        { label: "录像标记", name: "videoAndImg", components: "videoMark",menuCode: "2005_siteOverhaul_videoMarker" },
+        { label: "标记记录", name: "markRecord", components: "MarkerRecord",menuCode: "2005_siteOverhaul_markerList_view" }
     ],
     //现场勘探
     surveyItem: [

@@ -124,15 +124,6 @@
 
 <script>
 import Pagination from "@/components/Pagination"; // 分页
-import {
-  Delete,
-  Edit,
-  Search,
-  Plus,
-  SetUp,
-  Download,
-  Stamp,
-} from "@element-plus/icons-vue";
 import { DEVICE_COLUMNS } from "../../config.js";
 import EditModal from "./editModal.vue";
 import AddModal from "./addModal";
@@ -143,14 +134,7 @@ export default {
     Pagination,
     EditModal,
     TemplateModal,
-    AddModal,
-    Delete,
-    Plus,
-    SetUp,
-    Edit,
-    Search,
-    Download,
-    Stamp,
+    AddModal
   },
   data() {
     return {

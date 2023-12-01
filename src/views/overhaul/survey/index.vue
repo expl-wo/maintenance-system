@@ -20,14 +20,14 @@
           <el-icon class="el-icon--left"><Search /></el-icon> 查询
         </el-button>
         <el-button
-          v-if="menuList.includes('2004_survey_btn_add')"
+          v-if="$isAuth('2004_btn_add')"
           type="primary"
           @click="handleCreate(null, 'add')"
         >
           <el-icon class="el-icon--left"><Plus /></el-icon>新增
         </el-button>
         <el-button
-          v-if="menuList.includes('2004_survey_btn_del')"
+          v-if="$isAuth('2004_btn_del')"
           :disabled="!selectRowList.length"
           title="删除"
           type="danger"
@@ -63,7 +63,7 @@
                 <el-button
                   title="编辑"
                   type="primary"
-                  v-if="menuList.includes('2004_survey_btn_edit')"
+                  v-if="$isAuth('2004_btn_edit')"
                   :disabled="
                     [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
                   "
@@ -81,7 +81,7 @@
                 <!-- 暂停或者说非创建工单均不能操作 -->
                 <el-button
                   title="发起审核"
-                  v-if="menuList.includes('2004_survey_btn_add')"
+                  v-if="$isAuth('2004_btn_check')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
@@ -94,7 +94,7 @@
                 </el-button>
                 <!-- 工单结束之后不能再操作 -->
                 <el-button
-                  v-if="menuList.includes('2004_survey_btn_pause')"
+                  v-if="$isAuth('2004_btn_pause')"
                   :title="
                     row.orderStatus === WORK_ORDER_MAP['pause'].value
                       ? '激活'
@@ -114,7 +114,7 @@
                 </el-button>
                 <!-- 工单审批之后就不能删除了 -->
                 <el-button
-                  v-if="menuList.includes('2004_survey_btn_del')"
+                  v-if="$isAuth('2004_btn_del')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
@@ -128,7 +128,7 @@
                 <!-- 工单结束和暂停之后不能再操作 -->
                 <el-button
                   title="结束"
-                  v-if="menuList.includes('2004_survey_btn_close')"
+                  v-if="$isAuth('2004_btn_close')"
                   :disabled="
                     [
                       WORK_ORDER_MAP['pause'].value,
@@ -207,32 +207,12 @@ import {
   batchDelWorkOrder,
   setWorkOrderStatus,
 } from "@/api/overhaul/workOrderApi.js";
-import {
-  Delete,
-  Edit,
-  Search,
-  View,
-  Plus,
-  VideoPlay,
-  VideoPause,
-  CircleClose,
-  DocumentChecked,
-} from "@element-plus/icons-vue";
 export default {
   name: "survey",
   components: {
     Pagination,
     AddModal,
     DetailModal,
-    Delete,
-    Edit,
-    VideoPlay,
-    Search,
-    View,
-    Plus,
-    VideoPause,
-    CircleClose,
-    DocumentChecked,
   },
   data() {
     return {
@@ -262,12 +242,10 @@ export default {
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
       //状态下拉筛选
       satusFilterList: Object.values(WORK_ORDER_MAP),
-      WORK_ORDER_MAP,
-      menuList: [],
+      WORK_ORDER_MAP
     };
   },
   created() {
-    this.menuList = JSON.parse(sessionStorage.getItem("btnList")) || [];
     this.getList();
   },
   methods: {

@@ -20,7 +20,7 @@ export function getTempData(params) {
 // 根据id查询模板详情
 export function getTemplateById(params) {
   return request({
-    url: `/evo-ims-overhaul/template-manage/query-by-type?${qs.stringify(params)}`,
+    url: `/evo-ims-overhaul/template-manage/query-by-id?${qs.stringify(params)}`,
     method: 'get'
   })
 }
@@ -31,7 +31,6 @@ export function getTemplateTypeList(params) {
     method: 'get'
   })
 }
-
 // 修改模板
 export function addOrEditTemplate(data) {
   return request({
@@ -102,7 +101,7 @@ export function delDeviceTemp(params) {
 }
 
 // ----------------拆解BOM模板
-// 获取图号
+// 
 export function getDrawingNoList(data) {
   return request({
     url: `/evo-ims-overhaul/device-list-template/save`,
@@ -110,20 +109,35 @@ export function getDrawingNoList(data) {
     data
   })
 }
-// TODO 根据图号查询大部件列表
-export function getBigParts(data) {
+// 查询型号列表
+export function getModelList(data) {
   return request({
-    url: `/evo-ims-overhaul/`,
-    method: 'post',
-    data
+      url: '/evo-ims-overhaul/work-order/time-limit-model',
+      method: 'post',
+      data: data
   })
 }
-// TODO 查询物料列表
+// 查询已绑定的型号列表
+export function getUsedModelList(params) {
+  return request({
+      url: `/evo-ims-overhaul/bom-template/used-model?${qs.stringify(params)}`,
+      method: 'get'
+  })
+}
+//获取大部件
+export function getBigComponent(data) {
+  return request({
+      url: '/evo-ims-overhaul/work-order/plm-big-component',
+      method: 'post',
+      data: data
+  })
+}
+//获取物料类别 
 export function getMaterial(data) {
   return request({
-    url: `/evo-ims-overhaul/`,
-    method: 'post',
-    data
+      url: '/evo-ims-overhaul/work-order/wms-material-class',
+      method: 'post',
+      data: data
   })
 }
 // 获取BOM模板分页数据

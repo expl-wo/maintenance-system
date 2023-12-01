@@ -19,13 +19,13 @@
               ><el-icon class="el-icon--left"><Search /></el-icon>搜
               索</el-button
             >
-            <el-button
+            <!-- <el-button
               type="primary"
               
               @click="synchronize"
               ><el-icon class="el-icon--left"><Refresh /></el-icon>同
               步</el-button
-            >
+            > -->
           </el-form-item>
         </el-form>
       </div>
@@ -33,9 +33,8 @@
     <div class="table-wrapper">
       <el-table
         ref="channelTable"
-        v-loading="loading"
+        v-loading="tableLoading"
         :data="tableData"
-        size="medium"
         border
         @sort-change="sortChange"
         @filter-change="filterChange"
@@ -98,7 +97,6 @@
 </template>
   <script>
 import { getChannelList } from "@/api/overhaul/deviceListApi";
-import { Search, Refresh } from "@element-plus/icons-vue";
 const devStatusOptions = [
   {
     text: "在线",
@@ -111,9 +109,6 @@ const devStatusOptions = [
 ];
 export default {
   name: "ChannelTable",
-  components:{
-    Search, Refresh
-  },
   data() {
     return {
       searchKey: "",
@@ -129,8 +124,7 @@ export default {
           prop: "channelName",
           key: "channelName",
           label: "通道名称",
-          minWidth: "160px",
-          sortable: "custom",
+          minWidth: "160px"
         },
         {
           prop: "unitType",
@@ -150,8 +144,7 @@ export default {
           prop: "deviceName",
           key: "deviceName",
           label: "设备名称",
-          minWidth: "160px",
-          sortable: "custom",
+          minWidth: "160px"
         },
         {
           prop: "ownerOrgName",
@@ -161,11 +154,11 @@ export default {
           sortable: "custom",
         },
         {
-          prop: "status",
-          key: "status",
+          prop: "isOnline",
+          key: "isOnline",
           label: "状态",
           minWidth: "100px",
-          columnKey: "status",
+          columnKey: "isOnline",
           filters: devStatusOptions,
           needSlot: true,
         },
@@ -182,26 +175,21 @@ export default {
       loading: false,
     };
   },
-  mounted() {},
+  mounted() {
+    this.getData();
+  },
   methods: {
     // 获取表格数据
     getData() {
       this.tableLoading = true;
-      // let params = {
-      //   pageNum: this.pageNum,
-      //   pageSize: this.pageSize,
-      //   searchKey: this.searchKey,
-      //   ownerCode: this.selectedNode.ownerCode,
-      //   ...JSON.parse(JSON.stringify(this.sortInfo)),
-      //   ...JSON.parse(JSON.stringify(this.filterInfo)),
-      // };
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         searchKey: this.searchKey,
         types: [],
+        ...this.sortInfo,
+        ...this.filterInfo
       };
-      console.log("------------", params);
       getChannelList(params)
         .then((res) => {
           if (res.success && res.data.value) {
@@ -246,26 +234,9 @@ export default {
     // 列表筛选
     filterChange(filters) {
       let objKey = Object.keys(filters)[0];
-      this.filterInfo[objKey] = filters[objKey];
+      this.filterInfo[`${objKey}List`] = filters[objKey];
       this.pageNum = 1;
       this.getData();
-    },
-    // 页数变化
-    tableChange(pagination, filters, sorter) {
-      if (sorter && sorter.columnKey) {
-        this.sortInfo = {
-          sort: sorter.columnKey,
-          sortType: sort.order === "ascend" ? "ASC" : "DESC",
-        };
-      } else {
-        this.sortInfo = {};
-      }
-      let filterKeys = Object.keys(this.filterInfo);
-      if (Object.keys(filters).length) {
-        for (let i = 0; i < filterKeys.length; i++) {
-          this.filterInfo[filterKeys[i]] = filters[filterKeys[i]];
-        }
-      }
     },
     // 每页条数发生变化
     sizeChange(size) {

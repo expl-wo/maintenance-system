@@ -6,7 +6,7 @@
     :close-on-click-modal="false"
     @close="handleClose"
   >
-    <div class="preview-wrapper" v-html="html"></div>
+    <div class="preview-wrapper" v-html="info.content"></div>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="handleClose">确 定</el-button>
@@ -21,9 +21,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    html: {
-      type: String,
-      default: "",
+    info: {
+      type: Object,
+      default: null,
     },
   },
   methods: {

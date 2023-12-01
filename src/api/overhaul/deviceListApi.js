@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // ICC设备树
 export function getDeviceTree(data) {
   return request({
-    url: '/link/icc/dev-tree',
+    url: '/icc/dev-tree',
     method: 'post',
     data
   })
@@ -12,7 +12,7 @@ export function getDeviceTree(data) {
 // 获取设备列表
 export function getDeviceList(data) {
   return request({
-    url: '/link/icc/dev-page-list',
+    url: '/icc/dev-page-list',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function getDeviceList(data) {
 // 获取通道列表
 export function getChannelList(data) {
   return request({
-    url: '/link/icc/dev-channel-page-list',
+    url: '/icc/dev-channel-page-list',
     method: 'post',
     data
   })

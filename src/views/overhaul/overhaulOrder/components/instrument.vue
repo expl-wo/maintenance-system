@@ -89,13 +89,10 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { INSTRUMENT_COLUMNS } from "../config.js";
-import { Edit, Search } from "@element-plus/icons-vue";
 export default {
   name: "ReturnList",
   components: {
     Pagination,
-    Search,
-    Edit,
   },
   data() {
     return {

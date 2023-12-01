@@ -1,16 +1,29 @@
 <template>
   <div class="full-content">
-    <!-- <div class="search-wrapper">
+    <div class="search-wrapper">
         <el-form :inline="true">
-          <el-form-item label="模板名称">
-            <el-input  v-model="searchKey"> </el-input>
+          <el-form-item label="工单名">
+            <el-input  v-model="searchKey" @keyup.enter="onSearch" />
+          </el-form-item>
+          <el-form-item label="创建时间">
+            <el-date-picker
+              v-model="recordTime"
+              :clearable="false"
+              type="daterange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+            >
+            </el-date-picker>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary"  icon="el-icon-search" @click="onSearch">查询</el-button>
-            <el-button icon="el-icon-plus" type="primary"  @click="openModal(null, null, 'add')">新增</el-button>
+            <el-button type="primary" @click="onSearch"><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button>
+            <el-button type="primary" @click="onReset"><el-icon class="el-icon--left"><RefreshLeft /></el-icon>重置</el-button>
+            <el-button type="danger" :disabled="disabled" @click="batchDelete"><el-icon class="el-icon--left"><Delete /></el-icon
+              >删除</el-button>
           </el-form-item>
         </el-form>
-      </div> -->
+      </div>
     <div class="table-wrapper">
       <el-table
         v-loading="loading"
@@ -18,6 +31,7 @@
         size="medium"
         border
         @sort-change="sortChange"
+        @selection-change="selectionChange"
       >
         <el-table-column
           v-for="item in columns"
@@ -55,6 +69,7 @@
     </div>
     <div class="pagination-wrapper">
       <el-pagination
+        v-if="total"
         layout="total, sizes, prev, pager, next, jumper"
         background
         :current-page="pageNum"
@@ -75,41 +90,42 @@
 </template>
 <script>
 import PreviewModal from "./components/previewModal";
-
-// import { getTemplateList, editTemplate, deleteTemplate } from '@/api/templateLib';
-import { Delete, View } from "@element-plus/icons-vue";
+import moment from 'moment';
+import { getProblemList, delProblem } from '@/api/overhaul/problemLabApi';
 const columns = [
-  { prop: "", label: "序号", width: "80", type: "index" },
-  { prop: "orderName", label: "工单名称" },
-  { prop: "ownership", label: "工序所属" },
-  { prop: "submitTime", label: "提交时间", sortable: "custom" },
-  { prop: "submitter", label: "复核提交人" },
+  { type: 'selection', width: '55' },
+  { prop: "createTime", label: "创建时间", sortable: "custom" },
+  { prop: "reviewer", label: "复核提交人" },
+  { prop: "workOrderName", label: "工单名称" },
+  { prop: "processOwnerShip", label: "工序所属" }
 ];
 export default {
   components: {
-    PreviewModal,
-    Delete,
-    View,
+    PreviewModal
   },
   data() {
     return {
       searchKey: "",
-      columns: Object.freeze(columns),
-      tableData: [
-        {
-          orderName: "测试工单",
-          ownership: "A->B",
-          submitTime: "2023-11-13 12:00:00",
-          submitter: "测试人员",
-        },
+      recordTime: [
+        moment().startOf("day").valueOf(),
+        moment().endOf("day").valueOf(),
       ],
+      columns: Object.freeze(columns),
+      tableData: [],
       loading: false,
       pageNum: 1,
       pageSize: 10,
-      total: 1,
+      total: 0,
       recordInfo: null,
       previewModalFlag: false,
+      sortInfo: {},
+      selectList: []
     };
+  },
+  computed: {
+    disabled() {
+      return !this.selectList.length;
+    }
   },
   mounted() {
     this.getData();
@@ -117,27 +133,61 @@ export default {
   methods: {
     // 获取列表数据
     getData() {
-      // this.loading = true;
+      this.selectList = [];
+      this.loading = true;
       let params = {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
-        docName: this.searchKey,
+        searchKey: this.searchKey,
+        startTime: moment(this.recordTime[0]).format("YYYY-MM-DD HH:mm:ss"),
+        endTime: moment(this.recordTime[1]).format("YYYY-MM-DD HH:mm:ss"),
+        ...this.sortInfo
       };
-      // getTemplateList(params)
-      // .then(res => {
-      //   if (res && res.success) {
-      //     this.tableData = res.data.value || [];
-      //     this.total = res.data.totalRows || 0;
-      //   }
-      // })
-      // .finally(() => {
-      //   this.loading = false;
-      // })
+      getProblemList(params)
+      .then(res => {
+        if (res && res.success) {
+          this.tableData = res.data.pageList || [];
+          this.total = res.data.total || 0;
+        }
+      })
+      .finally(() => {
+        this.loading = false;
+      })
     },
     // 搜索
     onSearch() {
       this.pageNum = 1;
       this.getData();
+    },
+    // 重置
+    onReset() {
+      this.searchKey = "";
+      this.recordTime = [
+        moment().startOf("day").valueOf(),
+        moment().endOf("day").valueOf(),
+      ];
+      this.onSearch();
+    },
+    // 批量删除
+    batchDelete() {
+      this.delProblem(this.selectList.map(item => item.id));
+    },
+    // 删除
+    delProblem(list) {
+      let params = {id: list};
+      delProblem(params)
+      .then(res => {
+        if (res.success) {
+            this.$message.success('操作成功');
+            this.getData();
+          } else {
+            this.$message.error(res.errMsg);
+          }
+      })
+    },
+    // 表格选中
+    selectionChange(val) {
+      this.selectList = val;
     },
     sizeChange(size) {
       this.pageSize = size;
@@ -148,8 +198,18 @@ export default {
       this.pageNum = page;
       this.getData();
     },
-    // 排序
-    sortChange() {},
+    // 列表排序
+    sortChange({ column, prop, order }) {
+      this.sortInfo = null;
+      if (order && prop) {
+        this.sortInfo = {
+          sort: prop,
+          sortType: order === "ascending" ? "ASC" : "DESC",
+        };
+      }
+      this.pageNum = 1;
+      this.getData();
+    },
     // 打开弹框
     openModal(index, record, type) {
       this.recordInfo = record;
@@ -161,24 +221,16 @@ export default {
       flag && this.getData();
     },
     // 删除
-    onDelete() {
+    onDelete(index, row) {
       this.$confirm("此操作将永久删除该问题记录, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+      .then(() => {
+        this.delProblem([row.id]);
+      })
+      .catch(() => {});
     },
   },
 };
@@ -192,7 +244,8 @@ export default {
 .table-wrapper {
   position: relative;
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 84px);
+  margin-top: 12px;
 }
 .search-wrapper :deep(.el-form-item) {
   margin-bottom: 0;

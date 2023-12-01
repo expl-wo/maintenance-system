@@ -17,7 +17,7 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item  size="small">
-            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery()">{{ $t('button.query') }}</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="onBtnEqpQuery()">查询</el-button>
           </el-form-item>
         </el-form>
       </div>

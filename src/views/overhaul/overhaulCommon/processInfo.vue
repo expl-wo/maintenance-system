@@ -4,7 +4,9 @@
     <select-page
       v-model="templateChoose"
       :clearable="false"
+      ref="selectRef"
       :disabled="isRoleContorl.isDisabled"
+      :defaultSelectVal="defaultSelectVal"
       :getOptions="getProcedureTemplateOptions"
       @change="handleTemplateChange"
     />
@@ -34,36 +36,36 @@
       <div class="process-content-right" v-loading="tableListLoading">
         <div class="operate-wrap" v-if="workTreeStatus === 2">
           <el-button
-            v-if="btnRoleList.includes('setBtn')"
+            v-if="$isAuth(roleBtnEnum['videoBind'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish"
             @click="openModal(1, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Setting /></el-icon>
             视频绑定
           </el-button>
           <el-button
-            v-if="btnRoleList.includes('setBtn')"
+            v-if="$isAuth(roleBtnEnum['orderCheck'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish"
             @click="openModal(2, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><UserFilled /></el-icon>
             复核人员
           </el-button>
           <el-button
-            v-if="btnRoleList.includes('setBtn')"
+            v-if="$isAuth(roleBtnEnum['infoAppoint'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish"
             @click="openModal(3, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Pointer /></el-icon>
             派工
           </el-button>
           <el-button
-            v-if="btnRoleList.includes('setBtn')"
+            v-if="$isAuth(roleBtnEnum['bigComponent'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish"
             @click="openModal(4, 'distributeModalFlag')"
           >
             <el-icon class="el-icon--left"><Tools /></el-icon>
@@ -72,16 +74,18 @@
         </div>
         <div class="operate-wrap" v-else>
           <el-button
+            v-if="$isAuth(roleBtnEnum['workInfo_check'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish && [1, 2].includes(workTreeStatus)"
             title="保存"
             @click="workTreeSave"
           >
             <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
           </el-button>
           <el-button
+            v-if="$isAuth(roleBtnEnum['workInfo_check'])"
             type="primary"
-            :disabled="isPause"
+            :disabled="isPauseOrFinish && [1, 2].includes(workTreeStatus)"
             title="发起审核"
             @click="workTreeCheck"
           >
@@ -97,74 +101,91 @@
             {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
           </el-tag>
         </div>
-        <el-table
-          :data="tableData"
-          stripe
-          style="width: 100%"
-          show-overflow-tooltip
-          v-if="columns"
-        >
-          <template v-for="item in columns">
-            <el-table-column
-              :key="item.prop"
-              v-bind="item"
-              v-if="item.prop === 'operation'"
+        <template v-if="workTreeStatus === 2">
+          <template v-if="columns">
+            <el-table
+              :data="tableData"
+              stripe
+              style="width: 100%"
+              show-overflow-tooltip
+              height="500px"
             >
-              <template #default="{ row }">
-                <el-button
-                  v-if="btnRoleList.includes('addBtn')"
-                  type="primary"
-                  title="添加问题"
-                  :disabled="isPause"
-                  @click="openModal(row, 'issueModal')"
+              <template v-for="item in columns">
+                <el-table-column
+                  :key="item.prop"
+                  v-bind="item"
+                  v-if="item.prop === 'operation'"
                 >
-                  <el-icon><DocumentAdd /></el-icon>
-                </el-button>
-                <!-- 只有叶子节点有复核 -->
-                <el-button
-                  type="primary"
-                  :disabled="isPause"
-                  v-if="
-                    btnRoleList.includes('checkBtn') &&
-                    currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE
-                  "
-                  title="复核"
-                  @click="check"
+                  <template #default="{ row }">
+                    <el-button
+                      v-if="$isAuth(roleBtnEnum['addIssue'])"
+                      type="primary"
+                      title="添加问题"
+                      :disabled="isPauseOrFinish"
+                      @click="openModal(row, 'issueModal')"
+                    >
+                      <el-icon><DocumentAdd /></el-icon>
+                    </el-button>
+                    <!-- 只有叶子节点有复核 -->
+                    <el-button
+                      type="primary"
+                      :disabled="isPauseOrFinish"
+                      v-if="
+                        currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
+                        $isAuth(roleBtnEnum['review'])
+                      "
+                      title="复核"
+                      @click="check"
+                    >
+                      <el-icon><Stamp /></el-icon>
+                    </el-button>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :key="item.prop"
+                  v-bind="item"
+                  v-else-if="item.prop === 'progress'"
                 >
-                  <el-icon><Stamp /></el-icon>
-                </el-button>
+                  <template #default="{ row }">
+                    <el-progress
+                      :text-inside="true"
+                      :stroke-width="20"
+                      striped
+                      striped-flow
+                      :percentage="row.progress || 0"
+                    ></el-progress>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  :key="item.prop"
+                  v-bind="item"
+                  v-else
+                ></el-table-column>
               </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
-              v-bind="item"
-              v-else-if="item.prop === 'process'"
-            >
-              <template #default="{ row }">
-                <el-progress
-                  :text-inside="true"
-                  :stroke-width="20"
-                  :percentage="70"
-                ></el-progress>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :key="item.prop"
-              v-bind="item"
-              v-else
-            ></el-table-column>
+            </el-table>
+            <pagination
+              v-if="pageOptions.total"
+              :total="pageOptions.total"
+              :page="pageOptions.pageNum"
+              :limit="pageOptions.pageSize"
+              @pagination="pageChange"
+            />
           </template>
-        </el-table>
-        <!-- 执行项操作 -->
-        <work-step-content
-          :workOrderInfo="workOrderInfo"
-          :onlyTabName="onlyTabName"
-          v-else
-        />
+          <!-- 执行项操作 -->
+          <work-step-content
+            :workOrderInfo="workOrderInfo"
+            :onlyTabName="onlyTabName"
+            v-else
+          />
+        </template>
+        <el-empty v-else description="请先配置工序，并审核通过！" />
         <!-- 派工配置 -->
         <distribute-modal
           v-if="distributeModalFlag"
           :operateRow="operateRow"
+          :sceneType="sceneType"
+          :appointInfo="appointInfo"
+          :currentNode="currentNode"
           :workOrderInfo="workOrderInfo"
           :onlyTabName="onlyTabName"
           modalName="distributeModalFlag"
@@ -187,130 +208,25 @@ import AddIssue from "@/views/overhaul/workIssueCommon/addIssue.vue";
 import DistributeModal from "./distributeModal.vue"; //派工配置弹窗
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import WorkStepContent from "./workStepContent/index.vue"; //执行项
+import Pagination from "@/components/Pagination"; // 分页
 import {
   COMMON_PROCESS_COLUMNS_MAP,
   COMMOM_WORK_ORDER_MAP,
   WORK_TREE_CHECK_STATUS,
   PROCESS_NODE_ENUM,
+  MENU_CODE,
+  WORK_STATUS_ENUM,
+  REVIEW_STATUS_ENUM,
 } from "@/views/overhaul/constants.js";
-import {
-  Setting,
-  Stamp,
-  DocumentAdd,
-  Pointer,
-  UserFilled,
-  SuccessFilled,
-  Tools,
-} from "@element-plus/icons-vue";
 import { ElMessageBox } from "element-plus";
 import {
   getProcedureTemplate,
   getWorkTree,
+  saveTreeInfo,
+  bindTreeTemplate,
+  getWorkInfoPage,
+  oAExamine,
 } from "@/api/overhaul/workOrderApi.js";
-const testTreeData = [
-  {
-    procedureCode: "",
-    procedureName: "根节点",
-    procedureType: "0",
-    disabled: true,
-    uniqueCode: "0",
-    childNodeList: [
-      {
-        procedureCode: "4",
-        procedureName: "测试_标准工序_1",
-        procedureType: "1",
-        uniqueCode: "1_4",
-        ifChoice: true,
-        childNodeList: [
-          {
-            procedureCode: "4",
-            procedureName: "中工序_4",
-            procedureType: "2",
-            uniqueCode: "2_4",
-            childNodeList: [
-              {
-                procedureCode: "4",
-                procedureName: "工步_4",
-                procedureType: "3",
-                uniqueCode: "3_4",
-                childNodeList: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "5",
-        procedureName: "测试_标准工序_2",
-        procedureType: "1",
-        uniqueCode: "1_5",
-        childNodeList: [
-          {
-            procedureCode: "5",
-            procedureName: "中工序_5",
-            procedureType: "2",
-            uniqueCode: "2_5",
-            childNodeList: [
-              {
-                procedureCode: "5",
-                procedureName: "工步_5",
-                procedureType: "3",
-                uniqueCode: "3_5",
-                childNodeList: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "6",
-        procedureName: "测试_标准工序_3",
-        procedureType: "1",
-        uniqueCode: "1_6",
-        childNodeList: [
-          {
-            procedureCode: "6",
-            procedureName: "中工序_6",
-            procedureType: "2",
-            uniqueCode: "2_6",
-            childNodeList: [
-              {
-                procedureCode: "6",
-                procedureName: "工步_6",
-                procedureType: "3",
-                uniqueCode: "3_6",
-                childNodeList: [],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "7",
-        procedureName: "测试_标准工序_4",
-        procedureType: "1",
-        uniqueCode: "1_7",
-        childNodeList: [
-          {
-            procedureCode: "7",
-            procedureName: "中工序_7",
-            procedureType: "2",
-            uniqueCode: "2_7",
-            childNodeList: [
-              {
-                procedureCode: "7",
-                procedureName: "工步_7",
-                procedureType: "3",
-                uniqueCode: "3_7",
-                childNodeList: [],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
 const testTableData = [
   {
     measureName: "2016-05-02",
@@ -325,6 +241,14 @@ const testTableData = [
     endTime: "2016-05-02",
   },
 ];
+const sceneType_map = {
+  SURVEY_SCENE: 10,
+  OVER_HAUL_ON_THE_SPOT_SCENE: 5,
+  OVER_HAUL_BACK_CHAI_JIE_SCENE: 23,
+  OVER_HAUL_BACK_INNER_CHAI_JIE_SCENE: 33,
+  OVER_HAUL_BACK_INNER_PRODUCTION_SCENE: 42,
+  OVER_HAUL_BACK_EXPERIMENT_SCENE: 51,
+};
 export default {
   name: "ProcessInfo",
   props: {
@@ -335,7 +259,18 @@ export default {
         return {};
       },
     },
+    //指派人员信息
+    appointInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
     onlyTabName: {
+      type: String,
+      default: "",
+    },
+    sceneType: {
       type: String,
       default: "",
     },
@@ -343,15 +278,9 @@ export default {
   components: {
     DistributeModal,
     WorkStepContent,
-    Pointer,
-    UserFilled,
     AddIssue,
-    SuccessFilled,
     SelectPage,
-    Setting,
-    Stamp,
-    DocumentAdd,
-    Tools,
+    Pagination,
   },
   data() {
     return {
@@ -365,11 +294,8 @@ export default {
       //tree的loading效果
       treeLoading: false,
       templateChoose: undefined,
-      oldTemplateChoose: undefined,
-      templateOptions: [
-        { label: "模板1", value: 1 },
-        { label: "模板2", value: 2 },
-      ],
+      defaultSelectVal: {}, //用于回显
+      templateName: "", //模板name
       treeData: [],
       defaultProps: {
         children: "childNodeList",
@@ -381,29 +307,61 @@ export default {
       filterText: "",
       //派工配置属性
       distributeModalFlag: false,
+      currentNode: [], //选中的节点
       issueModal: false,
       operateRow: null,
+      isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是勘查工单
+      //分页相关数据
+      pageOptions: {
+        total: 0,
+        pageNum: 1,
+        pageSize: 20,
+      },
     };
   },
   watch: {
     filterText(val) {
       this.$refs["treeRef"].filter(val);
     },
-  },
-  mounted() {
-    // this.getTreeData();
+    workOrderInfo(val) {
+      const { procedureTemplateName, procedureTemplateCode } =
+        this.workOrderInfo;
+      this.templateChoose = procedureTemplateCode || undefined;
+      this.templateName = procedureTemplateName || "";
+      if (this.templateChoose && this.templateName) {
+        this.defaultSelectVal = {
+          label: this.templateName,
+          value: this.templateChoose,
+        };
+        this.getTreeData();
+      }
+    },
   },
   computed: {
-    isPause() {
-      return (
-        this.workOrderInfo.orderStatus === COMMOM_WORK_ORDER_MAP["pause"].value
-      );
+    //按钮权限枚举对应菜单code
+    roleBtnEnum() {
+      const prefix = MENU_CODE[this.workOrderInfo.workOrderType];
+      let middle;
+      if (this.workOrderInfo.workOrderType === 1) {
+        middle = "survey";
+      } else {
+        middle = this.onlyTabName.split("-")[0];
+      }
+      return {
+        workInfo_check: `${prefix}_${middle}_workInfo_check`, //工序树的审核保存
+        review: `${prefix}_${middle}_review`, //工序复核
+        addIssue: `${prefix}_${middle}_addIssue`, //工序问题添加
+        infoAppoint: `${prefix}_${middle}_infoAppoint`, //工序派工
+        videoBind: `${prefix}_${middle}_videoBind`, //视频绑定
+        orderCheck: `${prefix}_${middle}_orderCheck`, //复核人员配置按钮
+        bigComponent: `${prefix}_${middle}_bigComponent`,
+      };
     },
-    //有权限的按钮
-    btnRoleList() {
-      //再检修工单中带出勘查工单的内容
-      if (this.onlyTabName === "surveyItem-processInfo") return [];
-      return ["setBtn", "addBtn", "checkBtn"];
+    isPauseOrFinish() {
+      return [
+        COMMOM_WORK_ORDER_MAP["pause"].value,
+        COMMOM_WORK_ORDER_MAP["finish"].value,
+      ].includes(this.workOrderInfo.orderStatus);
     },
     //来控制下拉框和工序的显影
     isRoleContorl() {
@@ -416,18 +374,14 @@ export default {
           ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
             this.workOrderInfo.orderStatus
           ) || this.templateChoose;
-      } else if (this.onlyTabName === "surveyItem-processInfo") {
+      } else if (this.isSurvey) {
         //在检修中查看勘查
         isDisabled = true;
         isCanShowTree = true;
       } else {
-        isDisabled = false; //目前暂时置为显示状态 保存成功之后为false
+        isDisabled = [1, 2].includes(this.workTreeStatus); //待审核和审核之后均为置灰
         isCanShowTree = true;
       }
-      //审核之后均为置灰
-      // if (this.workTreeStatus === 2) {
-      //   isDisabled = true;
-      // }
       return {
         isDisabled,
         isCanShowTree,
@@ -454,7 +408,7 @@ export default {
           resolve({
             options: res.data.pageList.map((item) => ({
               label: item.procedureTempName,
-              value: item.procedureTempCode,
+              value: item.procedureTempId,
             })),
             totalPage: res.data.allPageNum,
           });
@@ -471,30 +425,21 @@ export default {
         .then(() => {})
         .catch(() => {});
     },
-    //切换时二次确认
-    changeConfirm() {
-      this.$confirm(`切换模板会替换当前已有数据, 是否继续?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        closeOnClickModal: false,
-        type: "error",
-      })
-        .then(() => {
-          this.getTreeData();
-        })
-        .catch(() => {
-          this.$message.info("操作已取消!");
-          this.templateChoose = this.oldTemplateChoose;
-        });
-    },
     /**
      * 模板选择发生改变时
      */
     handleTemplateChange(val) {
       //如果已经选中了则需要进行二次确认
-      if (this.oldTemplateChoose) {
-        this.changeConfirm();
+      if (!val) {
+        this.templateName = "";
         return;
+      }
+      const options = this.$refs.selectRef.selectOptions;
+      const target = options.find((item) => item.value === val);
+      if (target) {
+        this.templateName = target.label;
+      } else {
+        this.templateName = "";
       }
       this.getTreeData(); //获取工序树
     },
@@ -509,11 +454,32 @@ export default {
      * 得到所有
      */
     getList() {
-      this.tableListLoading = true;
-      this.tableData = testTableData;
-      setTimeout(() => {
-        this.tableListLoading = false;
-      }, 1000);
+      if (this.workTreeStatus !== 2) return; //只有审核通过之后才可以查
+      if (+this.currentSelectNode.type !== 3) {
+        this.tableListLoading = true;
+        this.tableData = testTableData;
+        let parmas = {
+          pageNum: this.pageOptions.pageNum,
+          pageSize: this.pageOptions.pageSize,
+          workCode: this.workOrderInfo.id,
+          templateCode: this.templateChoose,
+          workProcedureType: +this.currentSelectNode.type,
+          workProcedureCode: +this.currentSelectNode.procedureCode,
+        };
+        getWorkInfoPage(parmas)
+          .then((res) => {
+            const { pageList, total } = res.data;
+            this.pageOptions.total = total;
+            this.tableData = pageList.map((item) => ({
+              ...item,
+              reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
+              workStatus: WORK_STATUS_ENUM[item.workStatus || 0],
+            }));
+          })
+          .finally(() => {
+            this.tableListLoading = false;
+          });
+      }
     },
     /**
      * 关闭弹窗
@@ -523,15 +489,32 @@ export default {
       isSearch && this.getList();
     },
     //工序树保存
-    workTreeSave() {
+    async workTreeSave() {
       const currentNodeKey = this.$refs["treeRef"].getCheckedKeys();
+      const halfCheckedList = this.$refs["treeRef"].getHalfCheckedKeys();
       if (currentNodeKey && currentNodeKey.length) {
-        console.log("@!@!2");
+        console.log(currentNodeKey, halfCheckedList);
         //回填check的节点
-        const tempTree = this.setChoiceTree(currentNodeKey, this.treeData);
+        const tempTree = this.setChoiceTree(
+          [...currentNodeKey, ...halfCheckedList],
+          this.treeData
+        );
         let parmas = tempTree[0];
-
-        debugger;
+        if (+this.workOrderInfo.workOrderType === 1) {
+          await bindTreeTemplate({
+            workCode: this.workOrderInfo.id,
+            workOrderSceneType: this.sceneType,
+            templateCode: this.templateChoose,
+            templateName: this.templateName,
+          });
+        }
+        saveTreeInfo({
+          workCode: this.workOrderInfo.id,
+          workOrderSceneType: this.sceneType,
+          treeNode: parmas,
+        }).then((res) => {
+          this.$message.success("保存成功");
+        });
       } else {
         this.$message({
           message: "请先选择工序节点再进行保存操作！",
@@ -542,12 +525,20 @@ export default {
     //工序树审核
     workTreeCheck() {
       //发起审核接口
+      oAExamine({
+        workCode: this.workOrderInfo.id,
+        docType: sceneType_map[this.sceneType],
+      }).then((res) => {
+        this.$message.success("操作成功");
+        this.getTreeData();
+      });
     },
     /**
      *  打开弹窗
      */
     openModal(row = "", modalName) {
       const currentNodeKey = this.$refs["treeRef"].getCheckedKeys();
+      this.currentNode = this.$refs["treeRef"].getCheckedNodes();
       if (!currentNodeKey.length && modalName === "distributeModalFlag") {
         this.$message({
           message: "请先选择工序再进行派发操作！",
@@ -562,8 +553,17 @@ export default {
      * 树节点选中时操作
      */
     handleNodeClick(data) {
+      if (+data.procedureType !== this.currentSelectNode.type) {
+        //重置分页
+        this.pageOptions = {
+          total: 0,
+          pageNum: 1,
+          pageSize: 20,
+        };
+      }
       if (data.procedureType) {
         this.currentSelectNode = { ...data, type: +data.procedureType };
+        this.getList();
       }
     },
     //获取后端返回的树结构的ifchoice为true的节点key
@@ -571,13 +571,15 @@ export default {
       let chioceKeys = [];
       if (!treeData || !treeData.length) return [];
       for (const item of treeData) {
-        if (item.ifChoice) {
-          chioceKeys.push(item.uniqueCode);
-        }
         if (item.childNodeList && item.childNodeList.length) {
           chioceKeys = chioceKeys.concat(
             this.getChoiceKeys(item.childNodeList)
           );
+        } else {
+          //仅叶子节点进行选中，然后通过树的级联勾选
+          if (item.ifChoice) {
+            chioceKeys.push(item.uniqueCode);
+          }
         }
       }
       return chioceKeys;
@@ -595,21 +597,22 @@ export default {
      * 获取树的 数据
      */
     getTreeData() {
-      this.oldTemplateChoose = this.templateChoose;
-      this.treeData = testTreeData;
       if (!this.templateChoose) return;
       this.treeLoading = true;
       getWorkTree({
+        workCode: this.workOrderInfo.id,
         templateCode: this.templateChoose,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,
           PROCESS_NODE_ENUM.STEP,
         ],
+        workOrderSceneType: this.sceneType,
       })
         .then(({ data: { oaExamineStatus, treeNode } }) => {
-          this.treeData = testTreeData;
-          this.workTreeStatus = oaExamineStatus || 0;
+          if (!treeNode) return;
+          this.treeData = [treeNode];
+          this.workTreeStatus = +oaExamineStatus || 0;
           const currentKeysList = this.getChoiceKeys(this.treeData);
           this.$nextTick(() => {
             if (this.$refs["treeRef"]) {
@@ -618,6 +621,7 @@ export default {
               );
               this.$refs["treeRef"].setCheckedKeys(currentKeysList);
             }
+            this.currentSelectNode = { type: +this.treeData[0].procedureType };
             this.getList();
           });
         })

@@ -8,9 +8,9 @@
   >
     <el-row type="flex" justify="start">
       <el-col :span="4">
-        模板选择 <el-select
+        模板选择
+        <el-select
           :disabled="isBtnDisabled"
-          
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
@@ -26,18 +26,16 @@
       </el-col>
       <el-col :span="10">
         <el-button
-          v-if="isHiddenHeader"
+          v-if="$isAuth(this.menuCodeEdit)"
           type="primary"
-          
           :disabled="isBtnDisabled"
           @click="saveFile"
         >
           <el-icon class="el-icon--left"><Document /></el-icon>保存
         </el-button>
         <el-button
-          v-if="isHiddenHeader"
+          v-if="$isAuth(this.menuCodeEdit)"
           type="primary"
-          
           :disabled="isBtnDisabled"
           @click="checkFile"
         >
@@ -45,14 +43,13 @@
         </el-button>
         <el-button
           type="primary"
-          
           :disabled="isBtnDisabled"
           @click="downLoadFile"
         >
           <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
-          v-if="isHiddenHeader"
+          v-if="$isAuth(this.menuCodeEdit)"
           class="upload-demo upload-report"
           :limit="1"
           :disabled="isBtnDisabled"
@@ -63,19 +60,19 @@
           :auto-upload="true"
           accept=".doc,.docx,.pdf"
         >
-          <el-button  type="primary" :disabled="isBtnDisabled"
+          <el-button type="primary" :disabled="isBtnDisabled"
             ><el-icon class="el-icon--left"><UploadFilled /></el-icon
             >上传</el-button
           >
         </el-upload>
         <el-tag
-          :key="REPORT_CHECK_STATUS[1].label"
-          :type="REPORT_CHECK_STATUS[1].type"
+          :key="REPORT_CHECK_STATUS[templateStatus].label"
+          :type="REPORT_CHECK_STATUS[templateStatus].type"
           class="mrl12"
           effect="plain"
           round
         >
-          {{ REPORT_CHECK_STATUS[1].label }}
+          {{ REPORT_CHECK_STATUS[templateStatus].label }}
         </el-tag>
       </el-col>
     </el-row>
@@ -99,12 +96,6 @@
 
 <script>
 import {
-  UploadFilled,
-  Download,
-  Stamp,
-  Document,
-} from "@element-plus/icons-vue";
-import {
   getWorkDocmentTemplate,
   getWorkDocmentInfo,
   createPDF,
@@ -116,15 +107,11 @@ import {
 import {
   MAX_FILE_SIZE,
   REPORT_CHECK_STATUS,
+  COMMOM_WORK_ORDER_MAP,
+  MENU_CODE,
 } from "@/views/overhaul/constants.js";
 import { downLoadBlob } from "../tools.js";
 export default {
-  components: {
-    UploadFilled,
-    Download,
-    Stamp,
-    Document,
-  },
   props: {
     //报告模板类型类型
     workType: {
@@ -148,6 +135,7 @@ export default {
   data() {
     return {
       REPORT_CHECK_STATUS,
+      templateStatus: 0,
       //pdf的回显URL
       pdfURL: "",
       loading: false,
@@ -162,31 +150,28 @@ export default {
     };
   },
   computed: {
+    //编辑权限
+    menuCodeEdit() {
+      return `${MENU_CODE[this.workOrderType]}_report_view_${this.workType}`;
+    },
     loadingText() {
       const textMap = {
-        1: "文档生成中。。。",
+        1: "文档生成中,预计1分钟,请耐心等待。。。",
         2: "文档保存中。。。",
         3: "文档发起审批中。。。",
       };
       return textMap[this.loadingType];
     },
-    //隐藏header
-    isHiddenHeader() {
-      if (this.workOrderType === 2 && this.workType === 1) {
-        return false;
-      }
-      return true;
-    },
     //按钮全禁用情况
     isBtnDisabled() {
-      if (this.workOrderInfo.orderStatus === 17) {
-        //暂停
-        return true;
-      } else if (!this.workOrderInfo.workOrderCode) {
-        //工单没有workOrderCode 工序模板编号时禁用
-        return true;
-      }
-      return false;
+      // if (!this.workOrderInfo.workOrderCode) {
+      //   //工单没有workOrderCode 工序模板编号时禁用
+      //   return true;
+      // }
+      return [
+        COMMOM_WORK_ORDER_MAP["pause"].value,
+        COMMOM_WORK_ORDER_MAP["finish"].value,
+      ].includes(this.workOrderInfo.orderStatus);
     },
   },
   async mounted() {
@@ -205,10 +190,13 @@ export default {
   methods: {
     getSaveFile() {
       getWorkDocmentInfo({
-        overHaulCode: 1,
-        workType: this.workType,
-      }).then((res) => {
+        workCode: this.workOrderInfo.id,
+        workDocType: this.workType,
+      }).then(({ templateCode, reviewStatus, pdfUri }) => {
         debugger;
+        this.templateStatus = reviewStatus;
+        this.templateChoose = templateCode;
+        this.pdfURL = pdfUri;
       });
     },
     /**
@@ -226,12 +214,16 @@ export default {
       this.loading = true;
       this.loadingType = 2;
       saveWorkDocmentInfo({
-        overHaulCode: 1,
-        workType: this.workType,
-        templateCode: "21212",
+        workCode: this.workOrderInfo.id,
+        templateCode: this.templateChoose,
+        workDocType: this.workType,
       }).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          this.$message.success("保存成功");
+        }
         this.loading = false;
-        debugger;
       });
     },
     // 上传图片
@@ -249,14 +241,12 @@ export default {
     //下载文件
     downLoadFile() {
       downloadWorkDocmentInfo({
-        overHaulCode: 1,
-        workType: this.workType,
+        workCode: this.workOrderInfo.id,
+        workDocType: this.workType,
       }).then((res) => {
         debugger; // 创建blob对象，解析流数据
         const blob = new Blob([res], {
-          // 设置返回的文件类型
-          // type: 'application/pdf;charset=UTF-8' 表示下载文档为pdf，如果是word则设置为msword，excel为excel
-          type: type,
+          type: "application/msword;charset=UTF-8",
         });
         downLoadBlob("test.pdf", blob);
       });
@@ -272,8 +262,8 @@ export default {
       })
         .then(() => {
           checkWorkDocmentInfo({
-            overHaulCode: 1,
-            workType: this.workType,
+            workCode: this.workOrderInfo.id,
+            workDocType: this.workType,
           }).then((res) => {
             this.loading = false;
             debugger;
@@ -285,15 +275,24 @@ export default {
      * 模板改变操作
      */
     handleTemplateChange(val) {
+      if (!val) return;
       this.loading = true;
       this.loadingType = 1;
-      createPDF(val).then((res) => {
-        debugger;
-      });
-      setTimeout(() => {
-        this.pdfURL = "http://ashuai.work/api/pdf.pdf";
+      createPDF({
+        workCode: this.workOrderInfo.id,
+        templateCode: val,
+        workDocType: this.workType,
+      }).then((res) => {
+        if (Reflect.has(res, "code")) {
+          if (res.code !== "0") {
+            this.$message.error(res.errMsg);
+          }
+        } else {
+          const blob = new Blob([res], { type: "application/pdf" });
+          this.pdfURL = window.URL.createObjectURL(blob);
+        }
         this.loading = false;
-      }, 3000);
+      });
     },
   },
 };

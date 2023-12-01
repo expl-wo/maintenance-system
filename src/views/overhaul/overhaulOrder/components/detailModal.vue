@@ -52,7 +52,7 @@
         </el-descriptions>
       </div>
       <div class="detail-box-survey" id="overhaulProcessInfo">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName">
           <el-tab-pane
             v-for="item in tabList"
             :key="item.name"
@@ -63,17 +63,30 @@
             <el-button
               v-if="!item.hiddenAssign"
               title="工序指派"
+              :disabled="
+                [
+                  COMMOM_WORK_ORDER_MAP['pause'].value,
+                  COMMOM_WORK_ORDER_MAP['finish'].value,
+                ].includes(operateRow.orderStatus)
+              "
               type="primary"
               @click="openModal(item, 'showAppoint')"
             >
               <el-icon class="el-icon--left"><Pointer /></el-icon> 工序指派
             </el-button>
+            <!-- 如果检修工单未关联勘查工单就不显示 -->
+            <el-empty
+              v-else-if="isNotSurvey"
+              description="暂无关联的勘查工单数据"
+            />
             <!-- 中间件 -->
             <middle-ware
               v-else
               v-bind="item"
               :workOrderType="2"
               :workOrderInfo="info"
+              :sceneType="sceneType"
+              :appointInfo="appointInfo"
               :tabList="TAB_LIST_MAP[item.name]"
             ></middle-ware>
           </el-tab-pane>
@@ -84,9 +97,10 @@
       v-if="showAppoint"
       :operateRow="operateRow"
       :workClazzType="workClazzType"
+      :sceneType="sceneType"
       modalName="showAppoint"
       @closeModal="closeModal"
-      @onSave="dispatchOnsave"
+      @onSave="init"
     ></dispatch-modal>
   </div>
 </template>
@@ -97,10 +111,12 @@ import TimeLine from "@/components/TimeLine/index.vue";
 import DispatchModal from "@/views/overhaul/overhaulCommon/dispatchModal"; //指派
 import MiddleWare from "../modules/middleWare.vue";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
-import { findWorkOrder } from "@/api/overhaul/workOrderApi.js";
+import { findWorkOrder, getAppiontInfo } from "@/api/overhaul/workOrderApi.js";
 import { TAB_LIST_MAP, TAB_LIST_OUT } from "../config";
-import { Pointer } from "@element-plus/icons-vue";
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import {
+  COMMON_FORMAT,
+  COMMOM_WORK_ORDER_MAP,
+} from "@/views/overhaul/constants.js";
 import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor.vue";
 import dayjs from "dayjs";
 export default {
@@ -109,7 +125,6 @@ export default {
     MiddleWare,
     TimeLine,
     DispatchModal,
-    Pointer,
     FileList,
   },
   props: {
@@ -127,7 +142,7 @@ export default {
   },
   data() {
     return {
-      isOpen: true, //是否展开
+      COMMOM_WORK_ORDER_MAP,
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
       TAB_LIST_MAP: Object.freeze(TAB_LIST_MAP),
       baseInfo: [],
@@ -138,14 +153,23 @@ export default {
       //时间轴详情
       timeLineData: [],
       workClazzType: "", //工序指派字段
+      sceneType: "", //场景值
       overhaulType: 0, //检修类型 0时现场 1 是返厂
       info: {},
+      appointInfo: {},
     };
   },
   async mounted() {
     this.init();
   },
   computed: {
+    //检修工单未关联勘查工单
+    isNotSurvey() {
+      // this.info && this.info.surveyID;
+      return (
+        this.activeName === "surveyItem" && this.info && !this.info.overHaulId
+      );
+    },
     affixTreeData() {
       let surveyChildren = this.tabList.map((item) => {
         return {
@@ -167,6 +191,13 @@ export default {
       ];
     },
   },
+  watch: {
+    activeName: {
+      handler(val) {
+        this.getAppointSetting();
+      },
+    },
+  },
   methods: {
     //初始化详情
     async init() {
@@ -183,6 +214,23 @@ export default {
         // this.handleClose(true);
       }
       this.dealTabList(); //获取当前用户的工序权限
+      this.getAppointSetting();
+    },
+    //获取配置信息
+    getAppointSetting() {
+      const targetTabIndex = this.tabList.findIndex(
+        (item) => item.name === this.activeName
+      );
+      if (targetTabIndex === -1) return;
+      getAppiontInfo({
+        sceneType: this.tabList[targetTabIndex].sceneType,
+        orderId: this.operateRow.id,
+      }).then(({ data }) => {
+        this.appointInfo = data;
+        if (data.projManagerId) {
+          this.tabList[targetTabIndex].hiddenAssign = true;
+        }
+      });
     },
     /**
      * 获取当前用户的工序权限
@@ -190,12 +238,14 @@ export default {
     dealTabList() {
       //现场检修
       if (this.overhaulType === 0) {
-        this.tabList = TAB_LIST_OUT.slice(0, 2);
+        this.tabList = TAB_LIST_OUT.slice(0, 2).filter((item) => {
+          return this.$isAuth(item.menuCode);
+        });
       } else {
         //返厂检修
-        this.tabList = TAB_LIST_OUT.filter(
-          (item) => item.name !== "siteOverhaul"
-        );
+        this.tabList = TAB_LIST_OUT.filter((item) => {
+          return item.name !== "siteOverhaul" && this.$isAuth(item.menuCode);
+        });
       }
     },
     /**
@@ -302,29 +352,15 @@ export default {
         });
       }
     },
-
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     handleClose(isSearch = false) {
       this.$emit("closeModal", this.modalName, isSearch);
     },
     openModal(row, modalName) {
       this.workClazzType = row.workClazzType; //班组字段
+      this.sceneType = row.sceneType;
       this.activeName = row.name;
       this.$nextTick(() => {
         this[modalName] = true;
-      });
-    },
-    /**
-     * 指派弹窗指派完成时的回调
-     */
-    dispatchOnsave() {
-      this.tabList = this.tabList.map((item) => {
-        if (item.name === this.activeName) {
-          item.hiddenAssign = true;
-        }
-        return item;
       });
     },
     /**
@@ -339,10 +375,7 @@ export default {
 
 <style lang="scss" scoped>
 $conent-padding: 15px;
-// :deep(.el-input--small .el-input__inner) {
-//   width: 220px;
-// }
-:deep(.el-descriptions__body) {
+::v-deep(.el-descriptions__body) {
   margin-left: 20px;
 }
 :deep(.el-tabs__content) {
