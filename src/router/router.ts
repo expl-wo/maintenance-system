@@ -297,9 +297,9 @@ export const sysRouter : Array<RouteRecordRaw> = [
       ],
   },
   {
-    path: '/api/equipment/overHaul',
+    path: '/overHaul',
     component: Layout,
-    redirect: '/api/equipment/overHaul/survey',
+    redirect: '/overHaul/survey',
     name: 'overhaul',
     meta: {
       title: '检修管理',
@@ -319,7 +319,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
       {
         path: 'templateLib',
         component: Layout,
-        redirect: '/api/equipment/overHaul/templateLib/safetyInstruction',
+        redirect: '/overHaul/templateLib/safetyInstruction',
         name: '模板库管理',
         meta: {
           title: '模板库管理',
@@ -398,7 +398,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
       {
         path: 'log',
         name: 'log',
-        redirect: '/api/equipment/overHaul/log/operation',
+        redirect: '/overHaul/log/operation',
         meta: {
           title: '日志管理',
           icon: 'el-icon-notebook-2'
@@ -428,7 +428,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
        {
         path: 'profile',
         name: 'profile',
-        redirect: '/api/equipment/overHaul/profile/myNotice',
+        redirect: '/overHaul/profile/myNotice',
         meta: {
           title: '个人中心',
           icon: 'el-icon-notebook-2'
