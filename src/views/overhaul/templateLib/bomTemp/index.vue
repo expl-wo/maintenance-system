@@ -39,7 +39,7 @@
           <el-table-column label="操作" width="240">
             <template  #default="scope">
               <el-button-group>
-                <!-- <el-button type="primary"  icon="el-icon-view" title="查看" @click="openModal(scope.$index, scope.row, 'preview')"></el-button> -->
+                <!-- <el-button type="primary"  icon="View" title="查看" @click="openModal(scope.$index, scope.row, 'preview')"></el-button> -->
                 <el-button type="primary"  title="编辑" @click="openModal(scope.$index, scope.row, 'add')"><el-icon><Edit /></el-icon
               ></el-button>
                 <el-button type="primary"  title="复制" @click="openModal(scope.$index, scope.row, 'copy')"><el-icon><DocumentCopy /></el-icon

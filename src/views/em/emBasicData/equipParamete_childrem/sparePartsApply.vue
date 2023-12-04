@@ -11,7 +11,7 @@
         使用部门:{{usingDep}}
       </el-form-item>
       <el-form-item  size="small">
-        <el-button type="primary" icon="el-icon-close" @click="clearEqp()">清除设备</el-button>
+        <el-button type="primary" icon="Close" @click="clearEqp()">清除设备</el-button>
       </el-form-item>
       <el-form-item  size="small">
         <el-button type="primary" icon="Plus" @click="selectEquip()">选择使用设备</el-button>
@@ -72,7 +72,7 @@
       <el-table-column label="期望到货时间" :width="200">
         <template  #default="scope">
           <el-date-picker v-model="scope.row.expectedArrivalTime" style=" width: 130px;"  size="small" align="right" type="date"
-            placeholder="选择日期" :picker-options="pickerOptions" value-format="yyyy-MM-dd">
+            placeholder="选择日期" :picker-options="pickerOptions" value-format="YYYY-MM-DD">
           </el-date-picker>
         </template>
       </el-table-column>

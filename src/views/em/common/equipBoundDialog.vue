@@ -42,8 +42,8 @@
           </el-card>
         </div>
         <div class="hp leftSmallRCon app-containerC cc">
-          <el-button type="primary" size="small" plain icon="el-icon-arrow-left" @click="rightClick()" />
-          <el-button type="primary" size="small" plain icon="el-icon-arrow-right" style="margin: 10px 0 0;" @click="leftClick()" />
+          <el-button type="primary" size="small" plain icon="ArrowLeft"  @click="rightClick()" />
+          <el-button type="primary" size="small" plain icon="ArrowRight"  style="margin: 10px 0 0;" @click="leftClick()" />
         </div>
         <div class="hp otherCon">
           <el-card shadow="hover" class="hp">
@@ -109,6 +109,7 @@ export default {
   },
   methods: {
     initData(initData){
+      console.log(initData)
       this.params.mainId = initData.mainId
       this.typeOfDialog = initData.typeOfDialog
       this.dialogVisible = true;

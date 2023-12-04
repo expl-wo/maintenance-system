@@ -35,7 +35,7 @@
     <el-dialog v-dialogDrag :close-on-click-modal="false" title="提报安灯" v-model="andonDialogVisible"
                v-if="andonDialogVisible" width="40%">
       <andonDialog @close="triggerClose()" :product-info="productInfo"></andonDialog>
-      <div slot="footer" class="dialog-footer">
+      <div  class="dialog-footer">
         <el-button size="mini" @click="andonDialogVisible =false">关闭</el-button>
       </div>
     </el-dialog>
@@ -126,7 +126,7 @@
               :key="item.id"
               :label="item.name "
               :value="item.id"
-              @click.native="changeResponder(item)" >
+              @click="changeResponder(item)" >
               <span style="float: left">{{ item.name }}</span>
             </el-option>
           </el-select>
@@ -207,7 +207,6 @@
               highlight-current-row
               border
               :data="tableData"
-              :stripe="true"
               style="font-size: 0.7rem"
               :cell-style="cellStyle"
     >
@@ -286,7 +285,7 @@
         property="responseName"
         width="80"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button v-if="scope.row.picCnt > 0"  type="primary" size="mini" @click="getPic(scope.row)"> 查看 </el-button>
           <span v-if="scope.row.picCnt <= 0"> 无图片 </span>
         </template>
@@ -354,7 +353,7 @@
         property="status"
         width="70"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <span v-if="scope.row.status === 0">待响应</span>
           <span v-else-if="scope.row.status === 1">待解决</span>
           <span v-else-if="scope.row.status === 3">待关闭</span>
@@ -363,7 +362,7 @@
       </el-table-column>
       <el-table-column label="操作"
                        align="center" width="110">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button-group>
             <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="mini"
                        @click="response(scope.row)">响应
@@ -402,7 +401,7 @@
         :total="totalFile"
         :hide-page="true"
       />
-      <div slot="footer" class="dialog-footer">
+      <div  class="dialog-footer">
         <el-button size="mini" @click="dialogFileFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
@@ -422,7 +421,6 @@
                 highlight-current-row
                 border
                 :data="peopleData"
-                :stripe="true"
                 style="font-size: 0.7rem"
                 :cell-style="cellStyle"
       >
@@ -451,7 +449,7 @@
           label="操作"
           width="70"
         >
-          <template slot-scope="scope">
+          <template #default="scope">
             <el-button-group>
               <el-button type="primary" size="mini"
                          @click="assignCommit(scope.row)">确认
@@ -461,7 +459,7 @@
         </el-table-column>
       </el-table>
       <pagination :total="peopleTotal" :page="listPeopleQuery.pg_pagenum" :limit="listPeopleQuery.pg_pagesize" :page-sizes="[10, 20, 30, 50,100,200]" @pagination="getPeopleList" class="searchCon wp"/>
-      <div slot="footer" class="dialog-footer">
+      <div class="dialog-footer">
         <el-button size="mini" @click="dialogPeopleFormVisible = false">取 消</el-button>
       </div>
     </el-dialog>
@@ -552,15 +550,27 @@ export default {
       return index + 1 + (page - 1) * pagesize
     },
     init(){
-      debugger
       // let status = this.listQuery.andonStatus;
       // let intStatus = [];
       // status.forEach(item => {
       //   intStatus.push(parseInt(item));
       // });
       // this.listQuery.andonStatus = intStatus
+
       console.log('参数列表',this.listQuery)
-      getAndonList(this.listQuery).then(res=>{
+      let params = {
+            pg_pagenum: this.listQuery.pg_pagenum,
+            pg_pagesize: this.listQuery.pg_pagesize,
+            keyWord:this.listQuery.keyWord,
+            andonStatus: ['1','2','3'],
+            startDate: this.listQuery.startDate,
+            endDate: this.listQuery.endDate,
+      }
+
+      // this.listQuery.andonStatus.forEach( item =>{
+      //   params.andonStatus.push(item)
+      // })
+      getAndonList(params).then(res=>{
         this.tableData = res.data
         this.total = res.total_count
       })

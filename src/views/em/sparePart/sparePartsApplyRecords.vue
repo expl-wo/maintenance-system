@@ -35,7 +35,7 @@
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
+          <el-button type="primary" icon="Upload" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" @click="onGotoOA()"  size="small">转OA审批</el-button>
@@ -194,7 +194,7 @@
           <el-col :span="12">
             <el-form-item label="期望到货时间">
               <el-date-picker v-model="selectItem.expectedArrivalTime" style=" width: 165px;"  size="small" align="right"
-                type="date" placeholder="选择日期" :picker-options="pickerOptions2" value-format="yyyy-MM-dd">
+                type="date" placeholder="选择日期" :picker-options="pickerOptions2" value-format="YYYY-MM-DD">
               </el-date-picker>
             </el-form-item>
           </el-col>

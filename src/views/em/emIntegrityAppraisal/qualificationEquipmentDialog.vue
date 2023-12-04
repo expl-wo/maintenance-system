@@ -43,10 +43,10 @@
           <el-input readonly v-model="addOrUpdateForm.number" style="width: 300px;"></el-input>
         </el-form-item>
         <el-form-item  size="small" prop="nextTime" label="下次鉴定时间">
-          <el-date-picker v-model="addOrUpdateForm.nextTime" style="width: 300px;" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker v-model="addOrUpdateForm.nextTime" style="width: 300px;" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item>
 <!--        <el-form-item  size="small" prop="remindTime" label="派工提醒时间">
-          <el-date-picker v-model="addOrUpdateForm.remindTime" style="width: 300px;" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
+          <el-date-picker v-model="addOrUpdateForm.remindTime" style="width: 300px;" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item> -->
         <el-form-item  size="small" prop="personLiable" label="鉴定责任人">
           <el-input readonly v-model="addOrUpdateForm.personName" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTablePeopleVisible = true">选择责任人</el-button></el-input>

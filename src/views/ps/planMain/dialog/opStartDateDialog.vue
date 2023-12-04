@@ -11,7 +11,7 @@
         <el-form-item prop="startDate" required label="新计划开始时间" label-width="110px">
           <el-date-picker
             v-model="model.startDate"
-            value-format="yyyy-MM-dd"
+            value-format="YYYY-MM-DD"
             style="width: 100%;"
             type="date"
             placeholder="选择日期"

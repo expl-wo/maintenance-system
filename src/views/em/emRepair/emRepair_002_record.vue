@@ -26,7 +26,7 @@
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-download" @click="onExport()">结果导出</el-button>
+          <el-button type="primary" icon="Download" @click="onExport()">结果导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -157,7 +157,11 @@ export default {
         {
           name:'响应检测中',
           id:1
-        },
+        },		
+		{
+		  name:'已响应',
+		  id:7
+		},
         {
           name:'待二次维修',
           id:2
@@ -265,6 +269,9 @@ export default {
               case 6:
                 statusHtml = '维修已确认'
                 break
+			  case 7:
+			    statusHtml = '已响应'
+			    break
             }
             return h('div', [
               statusHtml

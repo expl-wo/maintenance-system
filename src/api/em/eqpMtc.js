@@ -5,7 +5,7 @@ export function getEqpConfList(params) {
   return request({
     url: '/api/equipment/eqpMtc/eqpConf',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       mainId: params.mainId || '' ,// 需查询的点检配置表主键id
@@ -19,7 +19,7 @@ export function getMainConfList(params) {
   return request({
     url: '/api/equipment/eqpMtc/mainConf',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       name: params.name || '', // 保养主数据名称
@@ -33,7 +33,7 @@ export function eqpConfDaily(params) {
   return request({
     url: '/api/equipment/eqpMtc/eqpConfDaily',
     method: 'get',
-    params: params
+    data: params
   })
 }
 export function genMaintainTask() {
@@ -119,7 +119,7 @@ export function getDspList(params) {
   return request({
     url: '/api/equipment/eqpMtc/dsp',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       eqpName: params.eqpName || '', // 模糊查询，保养的设备名称
@@ -164,7 +164,7 @@ export function getMainRecList(params) {
   return request({
     url: '/api/equipment/eqpMtc/mainRec',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       eqpName: params.eqpName || '', // 模糊查询，保养的设备名称
@@ -184,7 +184,7 @@ export function getItemRecList(params) {
   return request({
     url: '/api/equipment/eqpMtc/itemRec',
     method: 'get',
-    params: {
+      data: {
       id: params.id || '' // 每页显示多少条数据，默认为10条
     }
   })
@@ -204,7 +204,7 @@ export function getMtcSpList(params) {
   return request({
     url: '/api/equipment/eqpMtc/mtcSp',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       dspNumber: params.dspNumber || '' // 查询的保养记录保养单号
@@ -217,7 +217,7 @@ export function getMtcEqpInitList(params) {
   return request({
     url: '/api/equipment/eqpMtc/mtcEqpInit',
     method: 'get',
-    params: {
+      data: {
       id: params.id || '', // 保养主配置id
       eqpName: params.eqpName || '', // 设备名称
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
@@ -249,7 +249,7 @@ export function queryTreeEqp(params) {
   return request({
     url: '/api/equipment/eqpMtc/queryTreeEqp',
     method: 'get',
-    params: {
+      data: {
       eqpId: params.eqpId || '',
       eqpName: params.eqpName || '',
     }

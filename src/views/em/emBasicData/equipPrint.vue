@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import vueQr from "vue-qr";
+import vueQr from "vue-qr/src/packages/vue-qr.vue";
 
 export default {
   name: "equipPrint",

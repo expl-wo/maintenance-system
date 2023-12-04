@@ -12,7 +12,7 @@
           <el-button type="primary" icon="Search" @click="addOrEdit(true)">{{ $t('button.add') }}</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
+          <el-button type="primary" icon="Printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
       </el-form>
     </div>

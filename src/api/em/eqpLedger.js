@@ -120,6 +120,18 @@ export function responseConfirm(data) {
   })
 }
 
+// 设备台账查询
+export function equipExport(params) {
+  return request({
+    url: '/api/equipment/eqpLedger/export',
+    config: {
+      responseType: 'blob' // 表明返回服务器返回的数据类型'
+    },
+    method: 'post',
+    data:params
+  })
+}
+
 //导入设备责任人
 export function importManager(data) {
     return request({

@@ -185,11 +185,11 @@
                 effect="dark"
                 content="请选择word格式文档"
                 placement="top">
-                <el-button @click="upload('assignment')" icon="el-icon-upload" type="primary"  size="small"></el-button>
+                <el-button @click="upload('assignment')" icon="Upload" type="primary"  size="small"></el-button>
               </el-tooltip>
               <input  ref="fileA" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('assignment',$event, scope.row)">
               <el-button-group>
-                <el-button  size="small" title="" type="primary" icon="el-icon-folder"
+                <el-button  size="small" title="" type="primary" icon="Folder"
                            @click="viewFile('assignment',scope.row)">
                   查看任务书
                 </el-button>
@@ -208,11 +208,11 @@
                 effect="dark"
                 content="请选择word格式文档"
                 placement="top">
-                <el-button @click="upload('reform')" icon="el-icon-upload" type="primary"  size="small"></el-button>
+                <el-button @click="upload('reform')" icon="Upload" type="primary"  size="small"></el-button>
               </el-tooltip>
               <input ref="fileR" type="file" style="display:none" accept=".doc, .docx" @change="updateAssignment('reform',$event, scope.row)">
               <el-button-group>
-                <el-button  size="small" title="" type="primary" icon="el-icon-folder"
+                <el-button  size="small" title="" type="primary" icon="Folder"
                            @click="viewFile('reform',scope.row)">
                   查看改造验收
                 </el-button>
@@ -227,7 +227,7 @@
           >
             <template  #default="scope">
               <el-button-group>
-                <el-button  size="small" title="转OA审批" type="primary" icon="el-icon-upload2"
+                <el-button  size="small" title="转OA审批" type="primary" icon="Upload"
                            @click="oaApproval(scope.row)">
                  转OA审批
                 </el-button>
@@ -242,7 +242,7 @@
           >
             <template  #default="scope">
               <el-button-group>
-                <el-button  size="small" title="转OA审批" type="primary" icon="el-icon-upload2"
+                <el-button  size="small" title="转OA审批" type="primary" icon="Upload"
                            @click="secondApproval(scope.row)">
                   转OA审批
                 </el-button>

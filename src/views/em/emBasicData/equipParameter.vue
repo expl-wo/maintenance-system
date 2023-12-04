@@ -40,10 +40,10 @@
           <el-button type="primary" @click="onConfirmResponser2">确定保养责任人</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
+          <el-button type="primary" icon="Printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">责任人导入</el-button>
+          <el-button type="primary" icon="Upload" @click="uploadDialogVisible = true">责任人导入</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -93,7 +93,7 @@
     <!--查看文件或图片-->
    <el-dialog draggable :close-on-click-modal="false" title="查看"  v-model="dialogFileFormVisible" class="roleDialog">
      <span style = "width: 150px">
-       <el-button style="margin-left: -20px;"  size="small" type="primary" class="el-icon-upload" ></el-button>
+       <el-button style="margin-left: -20px;"  size="small" type="primary" icon="Plus" class="el-icon-upload" ></el-button>
        <input name="file" type="file" class="fileCls"  @change="changeUploadFile($event, scope.row)"/>
      </span>
 
@@ -140,7 +140,7 @@
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
         <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
-          <el-button type="primary" icon="el-icon-add" @click="choosePeople">请选择人员</el-button>
+          <el-button type="primary" icon="Plus" @click="choosePeople">请选择人员</el-button>
         </el-form-item>
       </el-form>
       <div   class="dialog-footer">
@@ -155,7 +155,7 @@
       <el-form ref="listResponse" label-position="right" label-width="130px" :rules="submitRules" :model="listResponse">
         <el-form-item label="责任人:" prop="userName"  size="small">
           <el-input v-model="listResponse.userName" placeholder="" :disabled="true" style="width: 130px;" />
-          <el-button type="primary" icon="el-icon-add" @click="choosePeople">请选择人员</el-button>
+          <el-button type="primary" icon="Plus" @click="choosePeople">请选择人员</el-button>
         </el-form-item>
       </el-form>
       <div   class="dialog-footer">
@@ -168,10 +168,10 @@
     <el-dialog draggable :close-on-click-modal="false" title="请选择责任人"  v-model="dialogTablePeopleVisible" class="" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
         <el-form-item label="" prop="name"  size="small">
-          <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.uName" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
-          <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.userId" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
@@ -259,7 +259,8 @@ import {
   deletePic,
   importManager,
   finEqpDep,
-  setWorkTime
+  setWorkTime,
+  equipExport
 } from '@/api/em/eqpLedger'
 import spareParts from "./equipParamete_childrem/spareParts.vue"
 // 单文件上传操作
@@ -269,6 +270,9 @@ import { $rooturl, $confirm } from '@/utils/common.js'
 import TableCheckAll from '@/components/Table/tableCheckAll'
 import { getUser } from '@/api/user'
 import { getAndonAbnormalList } from '@/api/andonConfig'
+import {
+  exportData
+} from '@/utils'
 import { ElButton,ElButtonGroup,ElImage,ElCheckbox } from "element-plus";
 export default {
   name: 'Table',
@@ -356,8 +360,8 @@ export default {
       listPeopleQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条
         pg_pagesize: 10, // 查询第几页数据，默认第一页
-        name: '', // 模糊匹配，用户姓名
-        userid: '', // 模糊匹配，员工编号
+        uName: '', // 模糊匹配，用户姓名
+        userId: '', // 模糊匹配，员工编号
         gsbmName: '', // 模糊匹配，归属部门名称
       },
       rowPeoplesHeader:[],
@@ -372,8 +376,7 @@ export default {
       this.rooturl = response.data
     })
     this.onload()
-    // this.returnHtml = '<input name="file" type="file" class="fileCls" accept="image/png,image/gif,image/jpeg" @change="changeFile" />'
-  },
+ },
   methods: {
     onload() {
       const self = this
@@ -698,10 +701,10 @@ export default {
     },
     onDetailQuery(row){
       console.log(row)
-      // this.$router.push({
-      //   name: "baseData30001_equipDetail",
-      //   query: {row: JSON.stringify(row)},
-      // });
+      this.$router.push({
+        name: "030102_equipDetail",
+        query: {row: JSON.stringify(row)},
+      });
     },
     onFileQuery(row) {
       this.currentRow = row
@@ -804,7 +807,10 @@ export default {
       })
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/eqpqr'
+      equipExport(this.listQuery).then(res => {
+        debugger
+        exportData(res, `设备台账数据.xls`)
+      })
     },
     checkAllFun(checkAllVal) {
       if (checkAllVal && checkAllVal.length > 0) {
@@ -980,7 +986,7 @@ export default {
         this.$message.error("请选择要打印的数据");
       } else {
         this.$router.push({
-          name: "equipPrint",
+          name: "030103_equipPrint",
           query: { row: JSON.stringify(this.checkboxData) },
         });
       }
@@ -1029,12 +1035,12 @@ export default {
           label: '序号'
         },
         {
-          prop: 'name',
+          prop: 'uName',
           align: 'center',
           label: '员工姓名'
         },
         {
-          prop: 'userid',
+          prop: 'userId',
           align: 'center',
           label: '员工编号'
         },
@@ -1058,11 +1064,11 @@ export default {
             return h('div', [
               h(ElCheckbox, {
                 type: 'primary', size: 'small', checked: ownerIdChecked,
-                change: function(event) {
+                onChange: function(event) {
                   // 选中
                   if (event) {
                     self.owner.ownerIdArray.push(params.row.id)
-                    self.owner.ownerNameArray.push(params.row.name)
+                    self.owner.ownerNameArray.push(params.row.uName)
                   } else {
                     for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
                       if (self.owner.ownerIdArray[i] === params.row.id) {
@@ -1073,7 +1079,7 @@ export default {
                   }
                 }
 
-              }, '')
+              },()=> '')
             ])
           }
         }

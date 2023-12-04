@@ -3,7 +3,7 @@
     <div class="detail-wrapper el-radius">
       <div class="detail-title">
         <div class="ml-5 mr-5">{{ name }}当前状态</div>
-        <el-button type="primary" icon="el-icon-refresh"  size="small">刷新</el-button>
+        <el-button type="primary" icon="Refresh"   size="small">刷新</el-button>
       </div>
       <el-form ref="form"  size="small" label-position="right" label-width="180px">
         <el-row>
