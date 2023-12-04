@@ -17,8 +17,8 @@
         border
       >
         <el-table-column type="index" width="50" label="序号" />
-        <el-table-column prop="name" align="center" label="设备名称" />
-        <el-table-column prop="number" align="center" label="设备编号" />
+        <el-table-column prop="eName" align="center" label="设备名称" />
+        <el-table-column prop="eNumber" align="center" label="设备编号" />
         <el-table-column prop="lastTime" align="center" label="上次鉴定时间" />
         <el-table-column prop="nextTime" align="center" label="下次鉴定时间" />
         <el-table-column prop="remindTime" align="center" label="派工提醒时间" />
@@ -36,11 +36,11 @@
     <!--新增/修改鉴定设备弹窗-->
     <el-dialog draggable :close-on-click-modal="false" :title="title"  v-model="dialogFormVisible" @close="resetForm()" class="roleDialog">
       <el-form ref="addOrUpdateForm" label-position="right" label-width="110px"  :rules="rules" :model="addOrUpdateForm" >
-        <el-form-item  size="small" prop="name" label="设备名称">
-          <el-input readonly v-model="addOrUpdateForm.name" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTableEquipmentVisible = true">选择设备</el-button></el-input>
+        <el-form-item  size="small" prop="eName" label="设备名称">
+          <el-input readonly v-model="addOrUpdateForm.eName" style="width: 300px;" disabled> </el-input><el-button type="primary"  size="small"  @click="dialogTableEquipmentVisible = true">选择设备</el-button>
         </el-form-item>
         <el-form-item  size="small" prop="number" label="设备编码">
-          <el-input readonly v-model="addOrUpdateForm.number" style="width: 300px;"></el-input>
+          <el-input readonly v-model="addOrUpdateForm.eNumber" style="width: 300px;" disabled ></el-input>
         </el-form-item>
         <el-form-item  size="small" prop="nextTime" label="下次鉴定时间">
           <el-date-picker v-model="addOrUpdateForm.nextTime" style="width: 300px;" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker>
@@ -49,7 +49,7 @@
           <el-date-picker v-model="addOrUpdateForm.remindTime" style="width: 300px;" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker>
         </el-form-item> -->
         <el-form-item  size="small" prop="personLiable" label="鉴定责任人">
-          <el-input readonly v-model="addOrUpdateForm.personName" style="width: 300px;"><el-button type="primary"  size="small"  @click="dialogTablePeopleVisible = true">选择责任人</el-button></el-input>
+          <el-input readonly v-model="addOrUpdateForm.personName" style=" width: 300px;" disabled></el-input><el-button type="primary"  size="small"  @click="dialogTablePeopleVisible = true">选择责任人</el-button>
         </el-form-item>
       </el-form>
       <div   class="dialog-footer" style="margin-top: 0;">
@@ -80,8 +80,8 @@
       </el-form>
       <el-table stripe  highlight-current-row  :data="equipmenData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
         <el-table-column type="index" align="center" width="50" />
-        <el-table-column prop="number" align="center" label="设备编号" />
-        <el-table-column prop="name" align="center" label="设备名称" />
+        <el-table-column prop="ename" align="center" label="设备编号" />
+        <el-table-column prop="enumber" align="center" label="设备名称" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
             <el-button type="primary"  size="small" icon="Edit" @click="selectEquipment(scope.row)">选择</el-button>
@@ -98,7 +98,7 @@
     <el-dialog draggable :close-on-click-modal="false" title="人员选择"  v-model="dialogTablePeopleVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listTablePeopleUpdate" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="员工姓名:" prop="name"  size="small">
-          <el-input v-model="listTablePeopleUpdate.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listTablePeopleUpdate.uName" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
@@ -106,8 +106,8 @@
       </el-form>
       <el-table stripe  highlight-current-row  :data="userData" border class="otherCon wp"  style="width: 100%;font-size:0.7rem;" row-key="id">
         <el-table-column type="index" align="center" width="50" />
-        <el-table-column prop="userid" align="center" label="工号" />
-        <el-table-column prop="name" align="center" label="用户姓名" />
+        <el-table-column prop="userId" align="center" label="工号" />
+        <el-table-column prop="uName" align="center" label="用户姓名" />
         <el-table-column prop="gsbmName" align="center" label="归属部门" />
         <el-table-column prop="" align="center" label="操作">
           <template  #default="scope">
@@ -140,8 +140,8 @@ export default {
       addOrUpdateForm: {
         id: null,
         em31id: null,
-        name: null,
-        number: null,
+        eName: null,
+        eNumber: null,
         lastTime: null,
         nextTime: null,
         remindTime: null,
@@ -153,12 +153,11 @@ export default {
       listTablePeopleUpdate: {
         pg_pagesize: 10,
         pg_pagenum: 1,
-        name: ''
+        uName: ''
       },
       totalPeople: 0,
       rules: {
-        name: [{required: true, message: '请输入鉴定名称', trigger: 'blur'}],
-        number: [{required: true, message: '请输入鉴定周期', trigger: 'blur'}],
+        eName: [{required: true, message: '请选择设备', trigger: ['blur','change']}],
         nextTime: [{required: true, message: '请选择日期', trigger: 'change' }],
         // remindTime: [{required: true, message: '请选择日期', trigger: 'change' }],
         personLiable: [{required: true, message: '请选择责任人', trigger: 'blur'}],
@@ -202,8 +201,8 @@ export default {
         this.title = '修改';
         this.addOrUpdateForm.id = row.id;
         this.addOrUpdateForm.em31Id = row.em31id;
-        this.addOrUpdateForm.name = row.name;
-        this.addOrUpdateForm.number = row.number;
+        this.addOrUpdateForm.eNumber = row.eName;
+        this.addOrUpdateForm.eNumber = row.eNumber;
         this.addOrUpdateForm.lastTime = row.lastTime;
         this.addOrUpdateForm.nextTime = row.nextTime;
         this.addOrUpdateForm.remindTime = row.remindTime;
@@ -233,8 +232,8 @@ export default {
     resetForm(){
       this.addOrUpdateForm.id = null;
       this.addOrUpdateForm.em31Id = null;
-      this.addOrUpdateForm.name = null;
-      this.addOrUpdateForm.number = null;
+      this.addOrUpdateForm.eName = null;
+      this.addOrUpdateForm.eNumber = null;
       this.addOrUpdateForm.lastTime = null;
       this.addOrUpdateForm.nextTime = null;
       this.addOrUpdateForm.remindTime = null;
@@ -270,7 +269,7 @@ export default {
     selectUser(row){
       this.dialogTablePeopleVisible = false;
       this.addOrUpdateForm.personLiable = row.id;
-      this.addOrUpdateForm.personName = row.name;
+      this.addOrUpdateForm.personName = row.uName;
     },
     getList(val) {
       this.listTablePeopleUpdate.pg_pagenum = val.page
@@ -295,9 +294,10 @@ export default {
       this.onEquipmenQuery() // 查询
     },
     selectEquipment(row){
+      console.log(row)
       this.dialogTableEquipmentVisible = false;
-      this.addOrUpdateForm.name = row.name;
-      this.addOrUpdateForm.number = row.number;
+      this.addOrUpdateForm.eName = row.ename;
+      this.addOrUpdateForm.eNumber = row.enumber;
     }
   }
 }
