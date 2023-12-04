@@ -246,3 +246,11 @@ export function getAppiontInfo(data) {
         data
     })
 }
+//添加问题
+export function addIssueInfo(data){
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure-problem/add',
+        method: 'post',
+        data
+    })
+}

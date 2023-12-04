@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="process-content-right" v-loading="tableListLoading">
-        <template v-if="columns">
+        <template v-if="columns && treeData.length">
           <div class="operate-wrap" v-if="workTreeStatus === 2">
             <el-button
               v-if="$isAuth(roleBtnEnum['videoBind'])"
@@ -177,7 +177,8 @@
           <work-step-content
             :workOrderInfo="workOrderInfo"
             :onlyTabName="onlyTabName"
-            :currentNode="currentNode"
+            :currentSelectNode="currentSelectNode"
+            :templateChoose="templateChoose"
             v-else
           />
         </template>
@@ -197,6 +198,7 @@
         <!-- 问题添加 -->
         <add-issue
           v-if="issueModal"
+          :workCode="workOrderInfo.id"
           :operateRow="operateRow"
           modalName="issueModal"
           @closeModal="closeModal"
@@ -230,20 +232,6 @@ import {
   getWorkInfoPage,
   oAExamine,
 } from "@/api/overhaul/workOrderApi.js";
-const testTableData = [
-  {
-    measureName: "2016-05-02",
-    measureCode: "王小虎",
-    measure: "上海市普陀区金沙江路 1518 弄",
-    groupLeader: "张学友",
-    assistantGroupLeader: "陈奕迅",
-    members: "刘德华",
-    finishStatus: "已完成",
-    approvalStatus: "已复核",
-    startTime: "2016-05-02",
-    endTime: "2016-05-02",
-  },
-];
 const sceneType_map = {
   SURVEY_SCENE: 10,
   OVER_HAUL_ON_THE_SPOT_SCENE: 5,
@@ -460,14 +448,13 @@ export default {
       if (this.workTreeStatus !== 2) return; //只有审核通过之后才可以查
       if (+this.currentSelectNode.type !== 3) {
         this.tableListLoading = true;
-        this.tableData = testTableData;
         let parmas = {
           pageNum: this.pageOptions.pageNum,
           pageSize: this.pageOptions.pageSize,
           workCode: this.workOrderInfo.id,
           templateCode: this.templateChoose,
           workProcedureType: +this.currentSelectNode.type,
-          workProcedureCode: +this.currentSelectNode.procedureCode,
+          workProcedureCode: this.currentSelectNode.procedureCode,
         };
         getWorkInfoPage(parmas)
           .then((res) => {
@@ -624,7 +611,7 @@ export default {
               );
               this.$refs["treeRef"].setCheckedKeys(currentKeysList);
             }
-            this.currentSelectNode = { type: +this.treeData[0].procedureType };
+            this.currentSelectNode = { type: +this.treeData[0].procedureType,...this.treeData[0] };
             this.getList();
           });
         })
