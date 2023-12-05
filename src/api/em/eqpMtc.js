@@ -229,21 +229,32 @@ export function getMtcEqpInitList(params) {
 //导入
 export function importMtc(data) {
     return request({
-        url: '/endpoint/qrcodeexcel/importMtc',
+        url: '/api/equipment/eqpMtc/importExcel',
         method: 'POST',
         data
     })
 }
 
-//导入设备点检数据
-export function integrityImport(data) {
+export function exportMtc(data) {
     return request({
-        url: '/endpoint/qrcodeexcel/integrityImport',
+        url: '/api/equipment/eqpMtc/exportExcel',
         method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
         data
     })
 }
-
+export function exportMtcRecord(data) {
+    return request({
+        url: '/api/equipment/eqpMtc/exportRecord',
+        method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
+        data
+    })
+}
 // 保养设备配置选择设备查询
 export function queryTreeEqp(params) {
   return request({

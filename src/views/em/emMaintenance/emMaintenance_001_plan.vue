@@ -277,9 +277,11 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button  size="medium" type="primary">
-              选取文件
-            </el-button>
+            <template #trigger>
+              <el-button  size="medium" type="primary">
+                选取文件
+              </el-button>
+            </template>
             <el-button
               size="medium"
               type="success"
@@ -299,13 +301,15 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 保养配置查询,保养配置新增与编辑,保养配置删除,保养项配置查询,保养项新增与编辑,保养项删除,保养项图示保存
-import { eqpConfDaily,genMaintainTask,eqpConfDailyUpdate,getMainConfList,getMainConfUpdate, deleteMainConf, getItemConfList, getItemConfUpdate, deleteItemConf, getPicUpdate, importMtc } from '@/api/em/eqpMtc'
+import { eqpConfDaily,genMaintainTask,eqpConfDailyUpdate,getMainConfList,getMainConfUpdate,
+  deleteMainConf, getItemConfList, getItemConfUpdate, deleteItemConf, getPicUpdate, importMtc,exportMtc } from '@/api/em/eqpMtc'
 import chooseEquip from './emMaintenance_001_plan_children/chooseEquip'
 import EquipBoundDialog from "@/views/em/common/equipBoundDialog.vue";
 // 单文件上传操作
 import { getSingleUpload } from '@/api/endpoint'
 // 浏览器获取访问文件的根路径
 import { getRooturl } from '@/api/endpoint'
+import {exportData} from "@/utils";
 export default {
   name: 'Table',
   components: { Pagination, chooseEquip,EquipBoundDialog },
@@ -712,7 +716,9 @@ export default {
       })
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/mtcqr'
+      exportMtc().then(res =>{
+        exportData(res, `设备保养配置数据.xls`)
+      })
     },
     handleChange(file, fileList) {
       this.fileList = [fileList[fileList.length - 1]]

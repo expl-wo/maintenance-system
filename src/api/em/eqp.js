@@ -163,11 +163,34 @@ export function confirm2(data) {
   })
 }
 
-//导入设备点检数据
+//导入设备鉴定配置
 export function integrityImport(data) {
     return request({
-        url: '/endpoint/qrcodeexcel/integrityImport',
+        url: '/api/equipment/integrityAppraisal/import',
         method: 'POST',
         data
     })
 }
+//导出设备鉴定配置
+export function integrityExport(data) {
+    return request({
+        url: '/api/equipment/integrityAppraisal/export',
+        method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
+        data
+    })
+}
+//导出设备鉴定记录
+export function integrityRecordExport(data) {
+    return request({
+        url: '/api/equipment/integrityAppraisal/exportRecord',
+        method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
+        data
+    })
+}
+

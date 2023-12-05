@@ -155,9 +155,10 @@
 import TableSimple from '@/components/Table/index'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 点检记录查询,点检记录查询,设备保养使用备件记录查询
-import { getMainRecList, getItemRecList, getMtcSpList } from '@/api/em/eqpMtc'
+import { getMainRecList, getItemRecList, getMtcSpList,exportMtcRecord } from '@/api/em/eqpMtc'
 import { $exportExcel, timeTranslate } from '@/utils/common.js'
 import { finEqpDep, getEqCateList } from '@/api/em/eqpLedger'
+import {exportData} from "@/utils";
 export default {
   name: 'Table',
   props: {
@@ -369,9 +370,9 @@ export default {
       })
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/maintenancerc?eqpName='+this.listQuery.eqpName+'&name='+this.listQuery.name+
-        '&eqpClazz='+this.listQuery.eqpClazz+'&status='+this.listQuery.status+'&strDate='+this.listQuery.strDate+'&endDate='+this.listQuery.endDate+
-        '&cycleType='+this.listQuery.cycleType+'&usingDepId='+this.listQuery.usingDepId
+      exportMtcRecord().then(res =>{
+        exportData(res, `设备保养记录.xls`)
+      })
     },
   }
 }

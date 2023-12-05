@@ -106,9 +106,10 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 点检记录查询,点检记录查询
-import { getMainRec, getItemRec } from '@/api/em/eqpCheck'
+import { getMainRec, getItemRec,exportCheckRecord } from '@/api/em/eqpCheck'
 import { $exportExcel, timeTranslate } from '@/utils/common'
-import { getEqCateList, finEqpDep } from '@/api/em/eqpLedger'
+import {getEqCateList, finEqpDep, equipExport} from '@/api/em/eqpLedger'
+import {exportData} from "@/utils";
 export default {
   name: 'Table',
   components: { Pagination },
@@ -229,9 +230,10 @@ export default {
       $exportExcel(id, name)
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/checkrc?creatorName='+this.listQuery.creatorName+'&eqpName='+this.listQuery.eqpName+
-        '&type='+this.listQuery.checkType+'&eqpClazz='+this.listQuery.eqpClazz+'&strDate='+this.listQuery.strDate+'&endDate='+this.listQuery.endDate+
-        '&usingDepId='+this.listQuery.usingDepId+'&status='+this.listQuery.status
+      exportCheckRecord(this.listQuery).then(res => {
+        exportData(res, `设备点检记录.xls`)
+      })
+
     },
     dateChange(event) {
       this.listQuery.pg_pagenum = 1

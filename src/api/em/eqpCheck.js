@@ -35,8 +35,8 @@ export function getMainConfUpdate(data) {
 // 点检配置删除
 export function deleteMainConf(data) {
     return request({
-      url: '/api/equipment/eqpCheck/mainConf',
-      method: 'DELETE',
+      url: '/api/equipment/eqpCheck/delConf',
+      method: 'post',
       data
     })
 }
@@ -62,8 +62,8 @@ export function getItemConfUpdate(data) {
 // 点检配置删除
 export function deleteItemConf(data) {
     return request({
-      url: '/api/equipment/eqpCheck/itemConf',
-      method: 'DELETE',
+      url: '/api/equipment/eqpCheck/delItemConf',
+      method: 'post',
       data
     })
 }
@@ -134,15 +134,36 @@ export function genCheckTask() {
   })
 }
 
-//导入
+//导出点检配置
+export function exportCheck(data) {
+    return request({
+        url: '/api/equipment/eqpCheck/exportCheckPlan',
+        method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
+        data
+    })
+}
+//导入点检配置
 export function importCheck(data) {
     return request({
-        url: '/endpoint/qrcodeexcel/import',
+        url: '/api/equipment/eqpCheck/importCheckPlan',
         method: 'POST',
         data
     })
 }
-
+//导出点检记录
+export function exportCheckRecord(data) {
+    return request({
+        url: '/api/equipment/eqpCheck/exportCheckRecord',
+        method: 'POST',
+        config: {
+            responseType: 'blob' // 表明返回服务器返回的数据类型'
+        },
+        data
+    })
+}
 //查询专业点检配置数据
 export function proEqpConf(params) {
   return request({
@@ -160,7 +181,7 @@ export function proEqpConf(params) {
 export function deleteProEqp(data) {
   return request({
     url: '/api/equipment/eqpCheck/delProEqpConf',
-    method: 'DELETE',
+    method: 'POST',
     data
   })
 }

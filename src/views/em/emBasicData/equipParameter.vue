@@ -606,7 +606,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'danger', size: 'small',
+                type: 'primary', size: 'small',
 
                  onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
@@ -649,8 +649,9 @@ export default {
           label: '图片',
           render: (h, params) => {
             return h(ElImage, {
-              style: 'width: 100%; height: 50px',
-              props: { src: params.row.picPath, 'preview-src-list': [params.row.picPath] }
+              style: 'width: auto; height: 50px',
+              src: params.row.picPath, previewSrcList: [params.row.picPath],
+              previewTeleported:true
             })
           }
         },
@@ -783,17 +784,17 @@ export default {
         closeOnClickModal: false,
         type: 'info' }).then(value => {
         getSingleUpload(param).then(response => {
-          const path = response.path
+          const path = response.data.filePath
           const index = path.lastIndexOf('.')
           const pathNew = path.substring(index + 1, path.length).toLowerCase()
           const picname = 'jpeg|jpg|png|bmp|gif|'
           if (picname.indexOf(pathNew) > -1) {
-            getPicUpdate({ eqpId: row.id, picPath: response.path, picDesc: value.value }).then(responseUp => {
+            getPicUpdate({ eqpId: row.id, picPath: path, picDesc: value.value }).then(responseUp => {
               this.$message({ message: '更新成功', type: 'success' })
               this.onQuery()
             })
           } else {
-            getFileUpdate({ eqpId: row.id, filePath: response.path, fileName: value.value }).then(responseUp => {
+            getFileUpdate({ eqpId: row.id, filePath: path, fileName: value.value }).then(responseUp => {
               this.$message({ message: '更新成功', type: 'success' })
               this.onQuery()
             })
@@ -808,7 +809,6 @@ export default {
     },
     onExport() {
       equipExport(this.listQuery).then(res => {
-        debugger
         exportData(res, `设备台账数据.xls`)
       })
     },

@@ -60,13 +60,13 @@
         <el-table-column prop="usingDepName" align="center" label="设备使用部门" />
         <el-table-column prop="createDt" align="center" width="160" label="任务生成时间" />
         <el-table-column prop="appraisalDate" align="center" label="鉴定日期" />
-        <el-table-column prop="equipmentPerson" align="center" label="设备部验收人" />
-        <el-table-column prop="userDepartment" align="center" label="使用部门验收人" />
-        <el-table-column prop="technologyPerson" align="center" label="工艺部验收人" />
-        <el-table-column prop="personLiable" align="center" label="责任人" />
+        <el-table-column prop="equipmentPersonName" align="center" label="设备部验收人" />
+        <el-table-column prop="userDepartmentName" align="center" label="使用部门验收人" />
+        <el-table-column prop="technologyPersonName" align="center" label="工艺部验收人" />
+        <el-table-column prop="personLiableName" align="center" label="责任人" />
         <el-table-column prop="conclusion" align="center" label="鉴定结论">
           <template  #default="scope">
-            {{scope.row.conclusion==null&&scope.row.status==3? '经检测设备参数符合标准，确认完好' : scope.row.conclusion}}
+            {{(scope.row.conclusion !=null && scope.row.status===3) ? '经检测设备参数符合标准，确认完好' : scope.row.conclusion}}
           </template>
         </el-table-column>
         <el-table-column prop="startDate" align="center" label="实际开始时间" />
@@ -85,12 +85,13 @@
 
 <script>
 import QRCode from 'qrcodejs2'
-import { findTaskList,deleteTask } from '@/api/em/eqp'
+import {findTaskList, deleteTask, integrityRecordExport, integrityExport} from '@/api/em/eqp'
 import file from '@/api/file/file'
 import { $exportExcel} from '@/utils/common'
 import Pagination from '@/components/Pagination'
 import { getEqCateList, finEqpDep } from '@/api/em/eqpLedger'
 import qualificationEquipmentDialog from '@/views/em/emIntegrityAppraisal/qualificationEquipmentDialog'
+import {exportData} from "@/utils";
 export default {
   name: 'appraiaslTask',
   props: {
@@ -207,7 +208,10 @@ export default {
       $exportExcel(id, name)
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/appraisalrc'
+      integrityRecordExport([]).then(res=>{
+        exportData(res, `设备鉴定记录.xls`)
+      })
+      // window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/appraisalrc'
     },
   }
 }

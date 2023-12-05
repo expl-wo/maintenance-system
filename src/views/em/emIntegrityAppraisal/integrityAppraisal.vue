@@ -15,7 +15,7 @@
           <el-button type="primary" icon="Upload" @click="excelDialogVisible = true">导入</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="Upload" @click="exportExcel('forExportExcelFile','鉴定配置')">导出</el-button>
+          <el-button type="primary" icon="Upload" @click="onExport">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -164,16 +164,11 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button  size="medium" type="primary">
-              选取文件
-            </el-button>
-            <el-button
-              size="medium"
-              type="success"
-              @click="download"
-              style="margin-left: 20px;"
-              >模板下载
-            </el-button>
+            <template #trigger>
+              <el-button  size="medium" type="primary">
+                选取文件
+              </el-button>
+            </template>
             <el-button
               size="medium"
               type="success"
@@ -192,12 +187,14 @@
 </template>
 
 <script>
-import QRCode from 'qrcodejs2'
-import { findIntegrityAppraisalList,addOrUpdateIntegrityAppraisal,deleteIntegrityAppraisal,addOrUpdateIntegrityAppraisalDe,deleteIntegrityAppraisalDe,imageUpload,integrityImport } from '@/api/em/eqp'
+
+import { findIntegrityAppraisalList,addOrUpdateIntegrityAppraisal,deleteIntegrityAppraisal,addOrUpdateIntegrityAppraisalDe,deleteIntegrityAppraisalDe,imageUpload,integrityImport,integrityExport } from '@/api/em/eqp'
 import file from '@/api/file/file'
 import { $exportExcel} from '@/utils/common'
 import Pagination from '@/components/Pagination'
 import qualificationEquipmentDialog from '@/views/em/emIntegrityAppraisal/qualificationEquipmentDialog'
+import {exportCheck} from "@/api/em/eqpCheck";
+import {exportData} from "@/utils";
 export default {
   name: 'integrityAppraiasl',
   components: { qualificationEquipmentDialog,Pagination },
@@ -444,6 +441,11 @@ export default {
     },
     download(){
       window.location.href = "http://10.16.9.107/reso_mes/设备鉴定.xlsx"
+    },
+    onExport(){
+      integrityExport([]).then(res=>{
+        exportData(res, `设备鉴定配置数据.xls`)
+      })
     },
     exportExcel(id, name) {
       $exportExcel(id, name)
