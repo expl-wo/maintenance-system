@@ -31,7 +31,7 @@
           <el-date-picker v-model="listQuery.dateGroup" type="daterange" style="width: 230px;" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" />
         </el-form-item>
         <el-form-item label="使用部门"  size="small" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" clearable filterable default-first-option>
             <el-option v-for="(items,index) in usingDepData" :key="index" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>

@@ -142,7 +142,7 @@
               </el-date-picker>
         </el-form-item>
         <el-form-item prop="departmentName" label="使用部门:"  size="small">
-          <el-select v-model="form.departmentName"  @change="departmentChange($event)" filterable placeholder="使用部门" style="width: 250px;" class="filter-item">
+          <el-select v-model="form.departmentName"  @change="departmentChange($event)" filterable placeholder="使用部门" clearable style="width: 250px;" class="filter-item">
             <el-option v-for="item in departments" :value="item" :key="item.k" :label="item.v"></el-option>
           </el-select>
         </el-form-item>

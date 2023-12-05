@@ -29,7 +29,7 @@
           <el-date-picker v-model="listQuery.dateGroup" style="width: 240px;" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" />
         </el-form-item>
         <el-form-item label="使用部门"  size="small" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" clearable style="width: 120px;" filterable default-first-option>
             <el-option v-for="items in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -142,7 +142,7 @@
         :limit="listSpQuery.pg_pagesize"
         @pagination="getPcList"
       />
-      <div   class="dialog-footer">
+      <div  class="dialog-footer">
         <el-button  size="small" @click="dialogTablePcVisible = false">关 闭</el-button>
       </div>
     </el-dialog>
@@ -331,25 +331,28 @@ export default {
     },
     queryDictData(row, labelType) {
       getItemRecList({ id: row.id }).then(response => {
-        const index = this.tableData.findIndex(data => data.id === row.id) // 首先pageData.results绑定的是父表格的数据，那么我们要把子表格数据塞到对应的父分组，那我们要知道是哪一个分组，这里的findIndex就是通过id去查找对应的父分组在数据数组里的下标
-        this.$set(this.tableData[index], 'dicts', response.data) // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
+        const index = this.tableData.findIndex(data => data.id === row.id)
+        this.tableData[index].dicts = response.data
       })
     },
     // 查看备件使用情况
     handleSelect(row) {
       this.dialogTablePcVisible = true
       this.listSpQuery.dspNumber = row.dspNumber // 查询的保养记录保养单号
-      getMtcSpList(this.listSpQuery).then(response => {
-        this.tablePcData = response.data
-        this.totalPc = response.total_count
-      })
+      // getMtcSpList(this.listSpQuery).then(response => {
+      //   this.tablePcData = response.data
+      //   this.totalPc = response.total_count
+      // })
     },
     getPcList(val) {
-      this.listPcQuery.pg_pagenum = val.page
+      this.listSpQuery.pg_pagenum = val.page
       if (val.limit) {
-        this.listPcQuery.pg_pagesize = val.limit
+        this.listSpQuery.pg_pagesize = val.limit
       }
-      this.onPcQuery() // 查询
+      this.onSpQuery() // 查询
+    },
+    onSpQuery(){
+
     },
     exportExcel(id, name) {
       $exportExcel(id, name)

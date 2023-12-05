@@ -13,7 +13,7 @@
           <el-date-picker v-model="listQuery.dateGroup" @change="dateChange" style="width: 240px;" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" />
         </el-form-item>
         <el-form-item label="设备使用部门"  size="small" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  clearable size="small" placeholder="使用部门" style="width: 120px;"  filterable default-first-option>
             <el-option v-for="items in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -311,14 +311,12 @@ export default {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
                 type: 'text', size: 'small',
-                on: {
-                 onClick: function() {
-                    self.pictureTitle='故障现象照片';
-                    self.dialogPicturePcVisible = true
-                    self.getPicArr({'id':params.row.id,'type':0})
-                  }
+                onClick: function() {
+                  self.pictureTitle='故障现象照片';
+                  self.dialogPicturePcVisible = true
+                  self.getPicArr({'id':params.row.id,'type':0})
                 }
-              }, '查看')
+              }, ()=> '查看')
 
             ])
           }
@@ -330,14 +328,12 @@ export default {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
                 type: 'text', size: 'small',
-                on: {
-                 onClick: function() {
-                    self.dialogTableWaiting = true;
-                    self.listWaitQuery.id=params.row.id;
-                    self.onWaitQuery();
-                  }
+                onClick: function() {
+                  self.dialogTableWaiting = true;
+                  self.listWaitQuery.id=params.row.id;
+                  self.onWaitQuery();
                 }
-              }, '查看')
+              },()=> '查看')
 
             ])
           }
@@ -391,14 +387,12 @@ export default {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
                 type: 'text', size: 'small',
-                on: {
-                 onClick: function() {
-                    self.pictureTitle='维修完成照片';
-                    self.dialogPicturePcVisible = true
-                    self.getPicArr({'id':params.row.id,'type':1})
-                  }
+                onClick: function() {
+                  self.pictureTitle='维修完成照片';
+                  self.dialogPicturePcVisible = true
+                  self.getPicArr({'id':params.row.id,'type':1})
                 }
-              }, '查看')
+              }, ()=> '查看')
 
             ])
           }
@@ -466,23 +460,21 @@ export default {
               h(ElButton, {
                 type: 'text', size: 'small',
                 // style: { marginRight: '0px' },
-                on: {
-                 onClick: function() {
-                    self.dialogTablePcVisible = true
-                    self.showUseRecord(params.row.orderNum)
-                    // self.listSpQuery = { // 查询条件
-                    //   pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
-                    //   pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
-                    //   orderNum: =() // 查询的维修记录维修单号
-                    // }
-                    // getRepSpList(self.listSpQuery).then(res =>{
-                    //   // console.log("409:",res)
-                    //   self.tablePcData = res.data
-                    //   self.totalPc = res.total_count
-                    // })
-                  }
+                onClick: function() {
+                  self.dialogTablePcVisible = true
+                  self.showUseRecord(params.row.orderNum)
+                  // self.listSpQuery = { // 查询条件
+                  //   pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
+                  //   pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+                  //   orderNum: =() // 查询的维修记录维修单号
+                  // }
+                  // getRepSpList(self.listSpQuery).then(res =>{
+                  //   // console.log("409:",res)
+                  //   self.tablePcData = res.data
+                  //   self.totalPc = res.total_count
+                  // })
                 }
-              }, '查看')
+              },()=> '查看')
 
             ])
           }

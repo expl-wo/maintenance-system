@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备分类"  size="small">
           <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.name" :value="items.id" />
+            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.ecName" :value="items.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="设备名称"  size="small">
@@ -15,7 +15,7 @@
           <el-input v-model="listQuery.number" placeholder="设备编号" style="width: 180px;" class="filter-item"  size="small" clearable />
         </el-form-item>
         <el-form-item label="使用部门"  size="small">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" clearable style="width: 120px;" filterable default-first-option>
             <el-option v-for="(items) in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -575,12 +575,12 @@ export default {
     },
     // 按时间倒序分页查询工序计划列表的简单信息，主用于在下拉列表中显示
     onEqCateQuery() {
-      this.eqCateData = [{ 'id': '', 'name': '全部' }]
+      this.eqCateData = [{ 'id': '', 'ecName': '全部' }]
       getEqCateList().then(response => {
         response.data.forEach((dd) => {
           this.eqCateData.push(dd)
         })
-        this.eqCateData.push({ 'id': '-1', 'name': '未分类' })
+        this.eqCateData.push({ 'id': '-1', 'ecName': '未分类' })
       })
     },
     onFileload() {
