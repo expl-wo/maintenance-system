@@ -6,7 +6,7 @@
           <el-row>
             <el-button
               type="primary"
-               size="small"
+              size="small"
               v-print="'#printTest'"
               style="margin: 10px 0"
             >打印

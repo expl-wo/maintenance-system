@@ -312,9 +312,12 @@
             :auto-upload="false"
             accept=".xls,.xlsx"
           >
-            <el-button  size="medium" type="primary">
-              选取文件
-            </el-button>
+            <template #trigger>
+              <el-button  size="medium" type="primary">
+                选取文件
+              </el-button>
+            </template>
+
             <el-button
               size="medium"
               type="success"
@@ -343,7 +346,7 @@
 import QRCode from 'qrcodejs2'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 点检配置查询,点检配置新增与编辑,点检配置删除,点检项目配置查询,点检配置新增与编辑, 点检项删除,点检配置设备挂接,点检项图示上传,点检项目配置查询
-import { getMainConfList, getMainConfUpdate, deleteMainConf, getItemConf, getItemConfUpdate, deleteItemConf, getEqpConfUpdate, getPicUpLoad, getEqpConf, genCheckTask, importCheck } from '@/api/em/eqpCheck'
+import { getMainConfList, getMainConfUpdate, deleteMainConf, getItemConf, getItemConfUpdate, deleteItemConf, getEqpConfUpdate, getPicUpLoad, getEqpConf, genCheckTask, importCheck,exportCheck } from '@/api/em/eqpCheck'
 // 点检设备配置查询(已绑定)
 import { getEqpConfList } from '@/api/em/eqpMtc'
 // 点检设备配置查询(所有)
@@ -356,6 +359,7 @@ import { getEqCateList } from '@/api/em/eqpLedger'
 import proCheckEquip from '@/views/em/emCheck/emCheckEqp/proCheckEquip.vue'
 import EquipBoundDialog from "@/views/em/common/equipBoundDialog.vue";
 import frozenDialog from "@/views/ps/planMain/dialog/frozenDialog.vue";
+import {exportData} from "@/utils";
 export default {
   name: 'Table',
   components: { Pagination,proCheckEquip,EquipBoundDialog },
@@ -792,7 +796,10 @@ export default {
       })
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/checkqr'
+      exportCheck([]).then(res=>{
+        exportData(res, `设备点检配置数据.xls`)
+      })
+      // window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/checkqr'
     },
     generateCheckTask(){
       genCheckTask().then(response => {

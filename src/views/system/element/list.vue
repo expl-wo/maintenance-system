@@ -37,10 +37,10 @@
             </template>
           </el-table-column>
         </el-table>
+
       </div>
-      <pagination :total="total" :page ="pageNum" :limit="pageSize" class="searchCon"
-                  @pagination="getList"
-      />
+      <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
+                  @pagination="getList" />
     </div>
     <add-or-update-dialog @refresh="handleSearch" ref="addOrUpdateDialogRef"></add-or-update-dialog>
   </div>
@@ -50,11 +50,14 @@
 import { deleteElement, pageList} from '@/api/sys/element'
 import addOrUpdateDialog from '@/views/system/element/addOrUpdateDialog'
 import Pagination from "@/components/Pagination/index";
+import {deleteWorkContent} from "@/api/plan";
+import Constants from "@/utils/constants";
+import {deleteAuxiliaryType} from "@/api/eqpLedger";
 
 
 
 export default {
-  name: 'list',
+  name: 'table',
   components: {
     addOrUpdateDialog,Pagination
   },
@@ -62,13 +65,13 @@ export default {
     return {
       dataList: [],
       total: 0,
-      pageNum: 1,
-      pageSize: 10,
       listQuery: {
         code: '',
         name:'',
         remark:'',
         value:'',
+        pg_pagenum:'1',
+        pg_pagesize:'10'
       },
       tableData :[]
     }
@@ -94,7 +97,6 @@ export default {
       this.$refs.addOrUpdateDialogRef.init(rowData);
     },
     handleDelete(rowData) {
-      let Constants;
       this.$confirm(Constants.deleteTip).then(() => {
         deleteElement({
           id: rowData.id
@@ -119,9 +121,9 @@ export default {
       this.getDataList()
     },
     getList(val) {
-      this.pageNum = val.page
+      this.listQuery.pg_pagenum = val.page
       if (val.limit) {
-        this.pageSize = val.limit
+        this.listQuery.pg_pagesize = val.limit
       }
       this.getDataList() // 查询
     },

@@ -4,7 +4,7 @@ import request from '@/utils/request'
 // 单文件上传操作
 export function getSingleUpload(data) {
   return request({
-    url: '/endpoint/upload/single',
+    url: '/api/file/upload',
     method: 'POST',
     data
   })
@@ -13,7 +13,7 @@ export function getSingleUpload(data) {
 // 浏览器获取访问文件的根路径
 export function getRooturl() {
   return request({
-    url: '/endpoint/comm/reso/rooturl',
+    url: '/api/file/rooturl',
     method: 'get'
   })
 }

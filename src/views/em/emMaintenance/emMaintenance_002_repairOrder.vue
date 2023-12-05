@@ -27,7 +27,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="使用部门"  size="small">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" clearable filterable default-first-option>
             <el-option v-for="items in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -113,10 +113,10 @@
     <el-dialog draggable :close-on-click-modal="false" title="请选择人员"  v-model="dialogPeoplesFormVisible" class="roleDialog800">
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="" prop="name"  size="small">
-          <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.uName" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
-          <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.userId" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
@@ -195,6 +195,7 @@ import {getDspList, getDspUpdate, getAcpUpdate, deleteAcpConf} from '@/api/em/eq
 // 查询人员信息
 import { getUser } from '@/api/user'
 import { finEqpDep, getEqCateList } from '@/api/em/eqpLedger'
+import { ElButton,ElButtonGroup,ElCheckbox } from "element-plus";
 
 export default {
   name: 'Table',
@@ -249,8 +250,8 @@ export default {
       listPeopleQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条
         pg_pagesize: 10, // 查询第几页数据，默认第一页
-        name: '', // 模糊匹配，用户姓名
-        userid: '', // 模糊匹配，员工编号
+        uName: '', // 模糊匹配，用户姓名
+        userId: '', // 模糊匹配，员工编号
         gsbmName: '', // 模糊匹配，归属部门名称
       },
       dialogAcceptFormVisible: false, // 验收弹窗
@@ -441,8 +442,8 @@ export default {
               h(ElButton, {
                 type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
-                on: {
-                 onClick: function() {
+                onClick: function() {
+                  if (params.row.status === 0 ){
                     self.dialogDispatchFormVisible = true
                     self.listDispatchUpdate = { // 派工弹窗
                       id: params.row.id, // 保养单对应的主键id
@@ -455,9 +456,12 @@ export default {
                       secondaryMaintainersName:''
                     }
                     self.dataListUpdate = params.row
+                  }else {
+                    self.$message.error("该保养任务已进行派工")
                   }
+
                 }
-              }, '派工'),
+              },() => '派工'),
               // h(ElButton, {
               //   type: 'danger', size: 'small',
               //   on: {
@@ -479,25 +483,23 @@ export default {
               // }, '验收'),
               h(ElButton, {
                 type: 'danger', size: 'small',
-                on: {
-                 onClick: function() {
-                    //self.dialogAcceptFormVisible = true
-                    // self.listAcceptUpdate = { // 验收弹窗
-                    //   id: params.row.id,
-                    // }
-                    deleteAcpConf({ids:[params.row.id]}).then(response => {
-                      if(response.err_code == 10000)
-                      {
-                        $message('删除成功', 'success')
-                        self.onQuery() // 查询
-                      }
-                      else {
+                onClick: function() {
+                  //self.dialogAcceptFormVisible = true
+                  // self.listAcceptUpdate = { // 验收弹窗
+                  //   id: params.row.id,
+                  // }
+                  deleteAcpConf({ids:[params.row.id]}).then(response => {
+                    if(response.err_code == 10000)
+                    {
+                      $message('删除成功', 'success')
+                      self.onQuery() // 查询
+                    }
+                    else {
                       $message('err_msg', 'erro')
-                      }
-                    })
-                  }
+                    }
+                  })
                 }
-              }, '删除')
+              }, () => '删除')
 
             ])
           }
@@ -531,12 +533,12 @@ export default {
           label: '序号'
         },
         {
-          prop: 'name',
+          prop: 'uName',
           align: 'center',
           label: '员工姓名'
         },
         {
-          prop: 'userid',
+          prop: 'userId',
           align: 'center',
           label: '员工编号'
         },
@@ -555,12 +557,10 @@ export default {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
                 type: 'primary', size: 'small',
-                on: {
-                 onClick: function() {
-                    self.listDispatchUpdate.mterId = params.row.id // 被派工人id
-                    self.listDispatchUpdate.mterName = params.row.name // 被派工人姓名
-                    self.dialogPeopleFormVisible = false
-                  }
+                onClick: function() {
+                  self.listDispatchUpdate.mterId = params.row.id // 被派工人id
+                  self.listDispatchUpdate.mterName = params.row.uName // 被派工人姓名
+                  self.dialogPeopleFormVisible = false
                 }
               }, '确认选择')
             ])
@@ -593,8 +593,14 @@ export default {
         if (valid) {
           this.dialogDispatchFormVisible = false
           getDspUpdate(this.listDispatchUpdate).then(response => {
-            this.$message({ message: '派工成功！', type: 'success' })
-            this.onQuery() // 查询
+            if (response.err_code === 10000){
+              this.$message({ message: '派工成功！', type: 'success' })
+              this.onQuery() // 查询
+            }else {
+              this.$message({ message: '派工失败！', type: 'error' })
+
+            }
+
           })
         } else {
           this.$message({ message: '请填写必填项', type: 'warning' })
@@ -658,12 +664,12 @@ export default {
           label: '序号'
         },
         {
-          prop: 'name',
+          prop: 'uName',
           align: 'center',
           label: '员工姓名'
         },
         {
-          prop: 'userid',
+          prop: 'userId',
           align: 'center',
           label: '员工编号'
         },
@@ -685,20 +691,18 @@ export default {
               ownerIdChecked = true
             }
             return h('div', [
-              h('el-checkbox', {
+              h(ElCheckbox, {
                 type: 'primary', size: 'small', checked: ownerIdChecked,
-                on: {
-                  change: function(event) {
-                    // 选中
-                    if (event) {
-                      self.owner.ownerIdArray.push(params.row.id)
-                      self.owner.ownerNameArray.push(params.row.name)
-                    } else {
-                      for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
-                        if (self.owner.ownerIdArray[i] === params.row.id) {
-                          self.owner.ownerIdArray.splice(i, 1)
-                          self.owner.ownerNameArray.splice(i, 1)
-                        }
+                onChange: function(event) {
+                  // 选中
+                  if (event) {
+                    self.owner.ownerIdArray.push(params.row.id)
+                    self.owner.ownerNameArray.push(params.row.uName)
+                  } else {
+                    for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
+                      if (self.owner.ownerIdArray[i] === params.row.id) {
+                        self.owner.ownerIdArray.splice(i, 1)
+                        self.owner.ownerNameArray.splice(i, 1)
                       }
                     }
                   }

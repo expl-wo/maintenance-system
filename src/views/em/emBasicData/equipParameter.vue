@@ -5,7 +5,7 @@
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
         <el-form-item label="设备分类"  size="small">
           <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.name" :value="items.id" />
+            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.ecName" :value="items.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="设备名称"  size="small">
@@ -15,7 +15,7 @@
           <el-input v-model="listQuery.number" placeholder="设备编号" style="width: 180px;" class="filter-item"  size="small" clearable />
         </el-form-item>
         <el-form-item label="使用部门"  size="small">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" clearable style="width: 120px;" filterable default-first-option>
             <el-option v-for="(items) in usingDepData" :key="items.k" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -575,12 +575,12 @@ export default {
     },
     // 按时间倒序分页查询工序计划列表的简单信息，主用于在下拉列表中显示
     onEqCateQuery() {
-      this.eqCateData = [{ 'id': '', 'name': '全部' }]
+      this.eqCateData = [{ 'id': '', 'ecName': '全部' }]
       getEqCateList().then(response => {
         response.data.forEach((dd) => {
           this.eqCateData.push(dd)
         })
-        this.eqCateData.push({ 'id': '-1', 'name': '未分类' })
+        this.eqCateData.push({ 'id': '-1', 'ecName': '未分类' })
       })
     },
     onFileload() {
@@ -606,7 +606,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'danger', size: 'small',
+                type: 'primary', size: 'small',
 
                  onClick: function() {
                     window.location.href = self.rooturl + params.row.filePath
@@ -649,8 +649,9 @@ export default {
           label: '图片',
           render: (h, params) => {
             return h(ElImage, {
-              style: 'width: 100%; height: 50px',
-              props: { src: params.row.picPath, 'preview-src-list': [params.row.picPath] }
+              style: 'width: auto; height: 50px',
+              src: params.row.picPath, previewSrcList: [params.row.picPath],
+              previewTeleported:true
             })
           }
         },
@@ -783,17 +784,17 @@ export default {
         closeOnClickModal: false,
         type: 'info' }).then(value => {
         getSingleUpload(param).then(response => {
-          const path = response.path
+          const path = response.data.filePath
           const index = path.lastIndexOf('.')
           const pathNew = path.substring(index + 1, path.length).toLowerCase()
           const picname = 'jpeg|jpg|png|bmp|gif|'
           if (picname.indexOf(pathNew) > -1) {
-            getPicUpdate({ eqpId: row.id, picPath: response.path, picDesc: value.value }).then(responseUp => {
+            getPicUpdate({ eqpId: row.id, picPath: path, picDesc: value.value }).then(responseUp => {
               this.$message({ message: '更新成功', type: 'success' })
               this.onQuery()
             })
           } else {
-            getFileUpdate({ eqpId: row.id, filePath: response.path, fileName: value.value }).then(responseUp => {
+            getFileUpdate({ eqpId: row.id, filePath: path, fileName: value.value }).then(responseUp => {
               this.$message({ message: '更新成功', type: 'success' })
               this.onQuery()
             })
@@ -808,7 +809,6 @@ export default {
     },
     onExport() {
       equipExport(this.listQuery).then(res => {
-        debugger
         exportData(res, `设备台账数据.xls`)
       })
     },

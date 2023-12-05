@@ -24,14 +24,14 @@
         </el-form-item>
         <el-form-item label="设备分类"  size="small" v-if="needShow">
           <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.name" :value="items.id" />
+            <el-option v-for="(items,index) in eqCateData" :key="index" :label="items.ecName" :value="items.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="时间:"  size="small" prop="dateCount">
           <el-date-picker v-model="listQuery.dateGroup" type="daterange" style="width: 230px;" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" @change="dateChange" />
         </el-form-item>
         <el-form-item label="使用部门"  size="small" v-if="needShow">
-          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" filterable default-first-option>
+          <el-select v-model="listQuery.usingDepId"  size="small" placeholder="使用部门" style="width: 120px;" clearable filterable default-first-option>
             <el-option v-for="(items,index) in usingDepData" :key="index" :label="items.v" :value="items.k" />
           </el-select>
         </el-form-item>
@@ -106,9 +106,10 @@
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 点检记录查询,点检记录查询
-import { getMainRec, getItemRec } from '@/api/em/eqpCheck'
+import { getMainRec, getItemRec,exportCheckRecord } from '@/api/em/eqpCheck'
 import { $exportExcel, timeTranslate } from '@/utils/common'
-import { getEqCateList, finEqpDep } from '@/api/em/eqpLedger'
+import {getEqCateList, finEqpDep, equipExport} from '@/api/em/eqpLedger'
+import {exportData} from "@/utils";
 export default {
   name: 'Table',
   components: { Pagination },
@@ -159,12 +160,12 @@ export default {
     },
     // 按时间倒序分页查询工序计划列表的简单信息，主用于在下拉列表中显示
     onEqCateQuery() {
-      this.eqCateData = [{ 'id': '', 'name': '全部' }]
+      this.eqCateData = [{ 'id': '', 'ecName': '全部' }]
       getEqCateList().then(response => {
         response.data.forEach((dd) => {
           this.eqCateData.push(dd)
         })
-        this.eqCateData.push({ 'id': '-1', 'name': '未分类' })
+        this.eqCateData.push({ 'id': '-1', 'ecName': '未分类' })
       })
     },
     getEqpDpt() {
@@ -229,9 +230,10 @@ export default {
       $exportExcel(id, name)
     },
     onExport() {
-      window.location.href = `${process.env.VUE_APP_BASE_API}` + '/endpoint/qrcodeexcel/checkrc?creatorName='+this.listQuery.creatorName+'&eqpName='+this.listQuery.eqpName+
-        '&type='+this.listQuery.checkType+'&eqpClazz='+this.listQuery.eqpClazz+'&strDate='+this.listQuery.strDate+'&endDate='+this.listQuery.endDate+
-        '&usingDepId='+this.listQuery.usingDepId+'&status='+this.listQuery.status
+      exportCheckRecord(this.listQuery).then(res => {
+        exportData(res, `设备点检记录.xls`)
+      })
+
     },
     dateChange(event) {
       this.listQuery.pg_pagenum = 1
