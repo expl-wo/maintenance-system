@@ -41,6 +41,7 @@
     "vue": "^3.3.9",
     "vue-class-component": "^8.0.0-0",
     "vue-i18n": "next",
+    "vue-print-nb": "^1.7.5",
     "vue-qr": "^2.5.0",
     "vue-router": "^4.0.0-0",
     "xlsx": "^0.17.0"

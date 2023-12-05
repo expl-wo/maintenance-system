@@ -5,7 +5,7 @@ export function getMainConfList(params) {
   return request({
     url: '/api/equipment/eqpCheck/mainConf',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       name: params.name || '', // 模糊匹配，点检计划名称
@@ -73,7 +73,7 @@ export function getEqpConf(params) {
   return request({
     url: '/api/equipment/eqpCheck/eqpConf',
     method: 'get',
-    params: params
+    data: params
   })
 }
 
@@ -100,7 +100,7 @@ export function getMainRec(params) {
   return request({
     url: '/api/equipment/eqpCheck/mainRec',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       creatorName: params.creatorName || '', // 模糊匹配，点检人
@@ -120,7 +120,7 @@ export function getItemRec(params) {
   return request({
     url: '/api/equipment/eqpCheck/itemRec',
     method: 'get',
-    params: {
+      data: {
       mainRecId: params.mainRecId || '' // 点检主记录表主键id
     }
   })
@@ -148,7 +148,7 @@ export function proEqpConf(params) {
   return request({
     url: '/api/equipment/eqpCheck/proCheckEqpConf',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 1000, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       checkId: params.checkId || null

@@ -10,6 +10,7 @@
         border
         :data="data"
         style="font-size: 0.7rem"
+                @select-all="handleSelectionChangeAll"
         @selection-change="handleSelectionChange"
         @row-click="handleClick"
         @row-dblclick="handleDblclick"
@@ -39,6 +40,7 @@
                   <el-checkbox
                     :value="params.row.id"
                     :label="params.row.id"
+                    v-model="params.row.checked"
                     :disabled="params.row.selectable === 0"
                     style="margin-left: 8px;"
                     @change="checkboxClick($event, params.row)"
@@ -46,8 +48,9 @@
                 </span>
               </span>
               <span v-else-if="col.prop === 'upload'">
-<!--                <el-button  size="small" type="primary" class="el-icon-upload" />-->
-                <input name="file" type="file"  :accept="acceptFormat" @change="changeUploadFile($event, params.row)">
+                  <el-button   size="small" type="primary" icon="Plus" ></el-button>
+                  <input  name="file" type="file" class="fileCls"  :accept="acceptFormat" @change="changeUploadFile($event, params.row)"/>
+
               </span>
               <span v-else> {{ params.row[col.prop] }}</span>
             </span>
@@ -63,6 +66,8 @@
 <script>
 import { h } from 'vue'
 import Pagination from '../Pagination/index'
+import { ElTable } from 'element-plus'
+
 // 自定义内容的组件
 const exSlot = {
   functional: true,
@@ -89,6 +94,7 @@ const exSlot = {
     return hs.render(h,params)
   }
 }
+
 
 export default {
   name: 'TableCheckAll',
@@ -167,6 +173,7 @@ export default {
       default: ''
     }
   },
+
   data() {
     return {
       checkIds: []
@@ -191,19 +198,40 @@ export default {
     handleSelectionChange(val) {
       if (val && val.length > 0) {
         val.forEach(rd => {
+
+          rd.checked = true
           this.checkIds.push(rd.id)
         })
       } else {
         this.checkIds = []
+        this.$refs.tableCheckAllRef.clearSelection()
       }
       this.checkAllFun(val)
+    },
+    handleSelectionChangeAll(val){
+      if (val.length === 0){
+        this.data.forEach( row =>{
+          row.checked = false
+        })
+      }
     },
     // 选择
     checkboxClick(event, item) {
       this.checkboxChange(event, item)
+      this.toggleSelection([item])
+    },
+    toggleSelection(rows){
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.tableCheckAllRef.toggleRowSelection(row, undefined)
+        })
+      } else {
+        this.$refs.tableCheckAllRef.clearSelection()
+      }
     },
     // 上传
     changeUploadFile(e, row) {
+      console.log("点击上传")
       this.$emit('changeUploadFile', { e: e, row: row })
     },
     //背景

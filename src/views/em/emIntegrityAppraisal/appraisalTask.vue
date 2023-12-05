@@ -66,7 +66,7 @@
         <el-table-column prop="personLiable" align="center" label="责任人" />
         <el-table-column prop="conclusion" align="center" label="鉴定结论">
           <template  #default="scope">
-            {{scope.row.conclusion==null&&scope.row.status==3? '经检测设备参数符合标准，确认完好' : row.conclusion}}
+            {{scope.row.conclusion==null&&scope.row.status==3? '经检测设备参数符合标准，确认完好' : scope.row.conclusion}}
           </template>
         </el-table-column>
         <el-table-column prop="startDate" align="center" label="实际开始时间" />

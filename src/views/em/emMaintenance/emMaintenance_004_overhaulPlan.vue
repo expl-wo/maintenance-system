@@ -17,7 +17,7 @@
           <el-button type="primary" icon="Plus" @click="onAdd">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="turnToOA()">转OA审批</el-button>
+          <el-button type="primary" icon="Upload" @click="turnToOA()">转OA审批</el-button>
         </el-form-item>
       </el-form>
     </div>

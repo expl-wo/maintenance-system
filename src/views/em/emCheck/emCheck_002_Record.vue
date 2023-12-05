@@ -19,7 +19,7 @@
             <el-radio :label="1">已完成</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label=""  size="small">
+        <el-form-item label=""  size="small" v-if="needShow">
           <el-input v-model="listQuery.eqpName" placeholder="设备名称/编号" style="width: 130px;" class="filter-item" clearable />
         </el-form-item>
         <el-form-item label="设备分类"  size="small" v-if="needShow">
@@ -39,7 +39,7 @@
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-download" @click="onExport">结果导出</el-button>
+          <el-button type="primary" icon="Download" @click="onExport">结果导出</el-button>
         </el-form-item>
       </el-form>
     </div>

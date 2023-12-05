@@ -22,10 +22,10 @@
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="sendTask()">生成出库任务</el-button>
+          <el-button type="primary" icon="Upload" @click="sendTask()">生成出库任务</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-printer" @click="handlePrint()">二维码打印</el-button>
+          <el-button type="primary" icon="Printer" @click="handlePrint()">二维码打印</el-button>
         </el-form-item>
       </el-form>
     </div>

@@ -13,9 +13,8 @@
           @contextmenu.prevent="onContextMenu(tag,$event)"
       >
         {{ tag.title }}
-        <span class="tags-icon" v-if="!isAffix(tag)" @click.prevent.stop="removeTab(tag)" >
-           <el-icon :size="12">
-            </el-icon>
+        <span  class="tags-icon" v-if="!isAffix(tag)" @click.prevent.stop="removeTab(tag)" >
+          <el-icon><Close /></el-icon>
         </span>
       </router-link>
     </scroll-pane>

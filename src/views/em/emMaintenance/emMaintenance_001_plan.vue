@@ -32,7 +32,7 @@
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
+          <el-button type="primary" icon="Upload" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
         <el-form-item  size="small">
           <el-button type="primary"  @click="generateMaintainTask">生成保养任务</el-button>
@@ -144,8 +144,8 @@
             </el-card>
           </div>
           <div class="hp leftSmallRCon app-containerC cc">
-            <el-button type="primary" size="small" plain icon="el-icon-arrow-left" @click="rightClick()" />
-            <el-button type="primary" size="small" plain icon="el-icon-arrow-right" style="margin: 10px 0 0;" @click="leftClick()" />
+            <el-button type="primary" size="small" plain icon="ArrowLeft"  @click="rightClick()" />
+            <el-button type="primary" size="small" plain icon="ArrowRight"  style="margin: 10px 0 0;" @click="leftClick()" />
           </div>
           <div class="hp otherCon">
             <el-card shadow="hover" class="hp">

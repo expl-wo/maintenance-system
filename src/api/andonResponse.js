@@ -2,7 +2,6 @@ import request from '@/utils/request'
 
 // 查询登录者待响应问题列表
 export function getAndonList(data) {
-  debugger
   return request({
     url: '/api/andon/LngList/query',
     method: 'POST',

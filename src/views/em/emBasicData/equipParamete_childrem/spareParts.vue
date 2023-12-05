@@ -6,13 +6,13 @@
           <el-button type="primary" icon="Plus" @click="showAdd()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = false">导入</el-button>
+          <el-button type="primary" icon="Upload" @click="uploadDialogVisible = false">导入</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-download" @click="onExport">导出</el-button>
+          <el-button type="primary" icon="Download" @click="onExport">导出</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-shopping-cart-2" @click="showApply()">请购</el-button>
+          <el-button type="primary" icon="ShoppingCart" @click="showApply()">请购</el-button>
         </el-form-item>
       </el-form>
     </div>

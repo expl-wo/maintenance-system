@@ -1,5 +1,6 @@
 <template>
-  <el-dialog draggable
+  <el-dialog
+    draggable
     title="添加问题"
     :model-value="true"
     :destroy-on-close="true"
@@ -116,7 +117,8 @@
 <script>
 import { safeLimit } from "@/common/js/validator";
 import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
-import { MAX_IMG_SIZE,MAX_VIDEO_SZIE } from "@/views/overhaul/constants.js"
+import { MAX_IMG_SIZE, MAX_VIDEO_SZIE } from "@/views/overhaul/constants.js";
+import { addIssueInfo } from "@/api/overhaul/workOrderApi.js";
 export default {
   components: {
     multiUploadVue,
@@ -129,6 +131,10 @@ export default {
         return null;
       },
     },
+    workCode: {
+      type: String,
+      default: "",
+    },
     modalName: {
       type: String,
       default: "",
@@ -136,7 +142,8 @@ export default {
   },
   data() {
     return {
-      MAX_IMG_SIZE,MAX_VIDEO_SZIE,
+      MAX_IMG_SIZE,
+      MAX_VIDEO_SZIE,
       form: {
         issue: undefined,
         exceptionItem: undefined,
@@ -161,7 +168,21 @@ export default {
     };
   },
   methods: {
+    //工序保存
     handleOk() {
+      let params = {
+        workCode: this.workCode,
+        workProcedureId: this.operateRow.workProcedureCode,
+        workProcedureName: this.operateRow.workProcedureName,
+        workProcedureType: this.operateRow.workProcedureType,
+      };
+      addIssueInfo(params).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          this.handleClose();
+        }
+      });
       console.log(this.fileList, this.videoList);
     },
     videoUploadSuccess(fileName, fileList) {

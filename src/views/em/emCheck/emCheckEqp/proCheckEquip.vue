@@ -28,7 +28,7 @@
           <el-button  size="small" type="primary" @click="onSelectEquip">选择设备</el-button>
         </el-form-item>
         <el-form-item label="下次点检日期:" prop="nextCheckDt"  size="small">
-          <el-date-picker v-model="listUpdate.nextCheckDt" :picker-options="pickerOptions0" value-format="yyyy-MM-dd" type="date" placeholder="下次点检日期" style="width: 250px;" class="filter-item" />
+          <el-date-picker v-model="listUpdate.nextCheckDt" :picker-options="pickerOptions0" value-format="YYYY-MM-DD" type="date" placeholder="下次点检日期" style="width: 250px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="点检负责人:" prop="checkHeadName"  size="small">
           <el-input v-model="listUpdate.checkHeadName" placeholder="点检负责人" style="width: 250px;" class="filter-item" disabled />
@@ -52,10 +52,10 @@
       <div class="filter-container">
         <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
           <el-form-item label="" prop="name"  size="small">
-            <el-input v-model="listPeopleQuery.name" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
+            <el-input v-model="listPeopleQuery.uName" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item label="" prop="intro"  size="small">
-            <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
+            <el-input v-model="listPeopleQuery.userId" placeholder="员工编号" style="width: 180px;" class="filter-item" />
           </el-form-item>
           <el-form-item label="" prop="intro"  size="small">
             <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门" style="width: 180px;" class="filter-item" />
@@ -83,10 +83,10 @@
     <el-dialog draggable :close-on-click-modal="false" title="请选择参与人"  v-model="dialogPeoplesFormVisible" class="roleDialog800" append-to-body>
       <el-form label-position="right" label-width="110px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy" >
         <el-form-item label="" prop="name"  size="small">
-          <el-input v-model="listPeopleQuery.name" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.uName" placeholder="员工姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
-          <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
+          <el-input v-model="listPeopleQuery.userId" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="" prop="intro"  size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
@@ -177,7 +177,7 @@ import { proEqpConf, deleteProEqp, proCheckEqp, getEqpConf } from '@/api/em/eqpC
 import { getUser, getUserAll } from '@/api/user'
 // 保养设备配置选择设备查询
 import { getMtcEqpInitList } from '@/api/em/eqpMtc'
-import { ElButton,ElButtonGroup} from "element-plus";
+import { ElButton,ElButtonGroup,ElCheckbox} from "element-plus";
 
 export default {
   name: 'Table',
@@ -240,8 +240,8 @@ export default {
       listPeopleQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条
         pg_pagesize: 10, // 查询第几页数据，默认第一页
-        name: '', // 模糊匹配，用户姓名
-        userid: '', // 模糊匹配，员工编号
+        uName: '', // 模糊匹配，用户姓名
+        userId: '', // 模糊匹配，员工编号
         gsbmName: '', // 模糊匹配，归属部门名称
       },
       dialogEquipFormVisible: false, // 选择设备弹窗
@@ -341,45 +341,44 @@ export default {
               h(ElButton, {
                 type: 'primary', size: 'small', icon:"Edit",
                 // style: { marginRight: '0px' },
-                on: {
-                 onClick: function() {
-                    self.listUpdate = {
-                      id: params.row.id, // 保养计划id
-                      checkId: self.checkDataSelected.id, // 保养计划id
-                      checkName: self.checkDataSelected.name, // 保养计划名称
-                      eqpId: params.row.eqpId, // 保养设备id
-                      eqpName: params.row.eqpName, // 保养设备名称
-                      lastCheckDt: params.row.lastCheckDt, // 上次保养时间
-                      nextCheckDt: params.row.nextCheckDt, // 下次保养时间
-                      checkHeadId: params.row.checkHeadId, // 提醒人姓名
-                      checkHeadName: params.row.checkHeadName, // 提醒人姓名
-                      checkOtherIds: params.row.checkOtherIds, // 提醒人姓名
-                      checkOtherNames: params.row.checkOtherNames, // 提醒人姓名
-                    }
-                    self.dialogFormVisible = true
-                    self.dialogStatus = 'update'
+                onClick: function() {
+                  console.log(params.row);
+                  self.listUpdate = {
+
+                    id: params.row.id, // 保养计划id
+                    checkId: self.checkDataSelected.id, // 保养计划id
+                    checkName: self.checkDataSelected.cName, // 保养计划名称
+                    eqpId: params.row.eqpId, // 保养设备id
+                    eqpName: params.row.eqpName, // 保养设备名称
+                    lastCheckDt: params.row.lastCheckDt, // 上次保养时间
+                    nextCheckDt: params.row.nextCheckDt, // 下次保养时间
+                    checkHeadId: params.row.checkHeadId, // 提醒人姓名
+                    checkHeadName: params.row.checkHeadName, // 提醒人姓名
+                    checkOtherIds: params.row.checkOtherIds, // 提醒人姓名
+                    checkOtherNames: params.row.checkOtherNames, // 提醒人姓名
                   }
+                  self.dialogFormVisible = true
+                  self.dialogStatus = 'update'
                 }
               }, ''),
               h(ElButton, {
                 type: 'danger', size: 'small', icon: "Delete",
-                on: {
-                 onClick: function() {
-                    self.dataListUpdate = params.row
-                    self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
-                      confirmButtonText: '确定',
-                      cancelButtonText: '取消',
-                      type: 'warning'
-                    }).then(() => {
-                      deleteProEqp(params.row.id).then(response => {
-                        self.$message({ message: '删除成功', type: 'success' })
-                        self.onQuery() // 查询
-                      })
-                    }).catch(() => {
-                      self.$message({ type: 'info', message: '已取消删除' })
+                onClick: function() {
+                  self.dataListUpdate = params.row
+                  self.$confirm('此操作将永久删除该条信息, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }).then(() => {
+                    deleteProEqp(params.row.id).then(response => {
+                      self.$message({ message: '删除成功', type: 'success' })
+                      self.onQuery() // 查询
                     })
-                  }
+                  }).catch(() => {
+                    self.$message({ type: 'info', message: '已取消删除' })
+                  })
                 }
+
               }, '')
 
             ])
@@ -401,12 +400,12 @@ export default {
           label: '序号'
         },
         {
-          prop: 'name',
+          prop: 'uName',
           align: 'center',
           label: '员工姓名'
         },
         {
-          prop: 'userid',
+          prop: 'userId',
           align: 'center',
           label: '员工编号'
         },
@@ -426,14 +425,12 @@ export default {
               h(ElButton, {
                 type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
-                on: {
-                 onClick: function() {
-                    self.listUpdate.checkHeadId = params.row.id // 提醒人id
-                    self.listUpdate.checkHeadName = params.row.name // 提醒人姓名
-                    self.dialogPeopleFormVisible = false
-                  }
+                onClick: function() {
+                  self.listUpdate.checkHeadId = params.row.id // 提醒人id
+                  self.listUpdate.checkHeadName = params.row.uName // 提醒人姓名
+                  self.dialogPeopleFormVisible = false
                 }
-              }, '确认选择')
+              },() => '确认选择')
 
             ])
           }
@@ -451,12 +448,12 @@ export default {
           label: '序号'
         },
         {
-          prop: 'name',
+          prop: 'uName',
           align: 'center',
           label: '员工姓名'
         },
         {
-          prop: 'userid',
+          prop: 'userId',
           align: 'center',
           label: '员工编号'
         },
@@ -478,25 +475,23 @@ export default {
               ownerIdChecked = true
             }
             return h('div', [
-              h('el-checkbox', {
+              h(ElCheckbox, {
                 type: 'primary', size: 'small', checked: ownerIdChecked,
-                on: {
-                  change: function(event) {
-                    // 选中
-                    if (event) {
-                      self.owner.ownerIdArray.push(params.row.id)
-                      self.owner.ownerNameArray.push(params.row.name)
-                    } else {
-                      for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
-                        if (self.owner.ownerIdArray[i] === params.row.id) {
-                          self.owner.ownerIdArray.splice(i, 1)
-                          self.owner.ownerNameArray.splice(i, 1)
-                        }
+                onChange: function(event) {
+                  // 选中
+                  if (event) {
+                    self.owner.ownerIdArray.push(params.row.id)
+                    self.owner.ownerNameArray.push(params.row.uName)
+                  } else {
+                    for (var i = 0; i < self.owner.ownerIdArray.length; i++) {
+                      if (self.owner.ownerIdArray[i] === params.row.id) {
+                        self.owner.ownerIdArray.splice(i, 1)
+                        self.owner.ownerNameArray.splice(i, 1)
                       }
                     }
                   }
                 }
-              }, '')
+              }, () => '')
             ])
           }
         }
@@ -555,12 +550,10 @@ export default {
               h(ElButton, {
                 type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
-                on: {
-                 onClick: function() {
-                    self.listUpdate.eqpId = params.row.k // 大修计划设备id
-                    self.listUpdate.eqpName = params.row.v // 大修计划设备名称
-                    self.dialogEquipFormVisible = false
-                  }
+                onClick: function() {
+                  self.listUpdate.eqpId = params.row.k // 大修计划设备id
+                  self.listUpdate.eqpName = params.row.v // 大修计划设备名称
+                  self.dialogEquipFormVisible = false
                 }
               }, '确认选择')
             ])
@@ -595,7 +588,7 @@ export default {
     clearData() {
       this.listUpdate = { // 弹窗
         checkId: this.checkDataSelected.id, // 保养计划id
-        checkName: this.checkDataSelected.name, // 保养计划名称
+        checkName: this.checkDataSelected.cName, // 保养计划名称
         eqpId: '', // 保养设备id
         eqpName: '', // 保养设备名称
         lastCheckDt: '', // 上次保养时间
@@ -605,6 +598,7 @@ export default {
         checkOtherIds: '', // 提醒人姓名
         checkOtherNames: '', // 提醒人姓名
       }
+      console.log(this.checkDataSelected);
     },
     saveData(listUpdate) {
       this.$refs[listUpdate].validate((valid) => {

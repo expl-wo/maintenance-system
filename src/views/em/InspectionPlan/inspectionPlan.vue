@@ -20,7 +20,7 @@
           <el-button type="primary" @click="onExport"><svg-icon icon-class="qrcode" /> 导出</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="uploadDialogVisible = true">导入</el-button>
+          <el-button type="primary" icon="Upload" @click="uploadDialogVisible = true">导入</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -159,7 +159,7 @@
           <el-date-picker
                 v-model="form.plannedInspectDate"
                 style="width: 250px;"
-                value-format="yyyy-MM-dd"
+                value-format="YYYY-MM-DD"
                 type="date"
                 placeholder="选择日期">
               </el-date-picker>

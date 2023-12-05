@@ -5,7 +5,7 @@ export function findIntegrityAppraisalList(params) {
   return request({
     url: '/api/equipment/integrityAppraisal/findList',
     method: 'get',
-    params: {
+      data: {
       pg_pagesize: params.pg_pagesize || 10,
       pg_pagenum: params.pg_pagenum || 1,
       name: params.name || ''
@@ -63,7 +63,7 @@ export function findQualificationEquipmentList(params) {
   return request({
     url: '/api/equipment/integrityAppraisal/queryEquipmentList',
     method: 'get',
-    params: {
+      data: {
       em31Id: params.em31Id || ''
     }
   })
@@ -74,7 +74,7 @@ export function equipList(params) {
   return request({
     url: '/api/equipment/integrityAppraisal/equipList',
     method: 'get',
-    params: params
+      data: params
   })
 }
 
@@ -101,7 +101,7 @@ export function findTaskList(params) {
   return request({
     url: '/api/equipment/integrityAppraisal/queryTaskList',
     method: 'get',
-    params: {
+      data: {
       search: params.search || '',
       usingDepId: params.usingDepId || '',
       eqpName: params.eqpName || '',
@@ -127,7 +127,7 @@ export function getWorkStep(params) {
   return request({
     url: '/dncEqp/getWorkStep',
     method: 'get',
-    params: {
+      data: {
       workshop: params.workshop || ''
     }
   })
@@ -138,7 +138,7 @@ export function getAllData(params) {
   return request({
     url: '/dncEqp/getAllData',
     method: 'get',
-    params: {
+      data: {
       productNo: params.productNo || '',
       gx: params.gx || '',
       pg_pagesize: params.pageSize || 10,

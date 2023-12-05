@@ -12,10 +12,10 @@
           <el-button type="primary" icon="Plus" @click="addOrUpdate()">新增</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="excelDialogVisible = true">导入</el-button>
+          <el-button type="primary" icon="Upload" @click="excelDialogVisible = true">导入</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-upload2" @click="exportExcel('forExportExcelFile','鉴定配置')">导出</el-button>
+          <el-button type="primary" icon="Upload" @click="exportExcel('forExportExcelFile','鉴定配置')">导出</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -88,11 +88,11 @@
           <el-input v-model="mainForm.cycleUnit" placeholder="鉴定周期单位" style="width: 320px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="鉴定前提醒日:" prop="remindDay"  size="small">
-<!--          <el-date-picker v-model="mainForm.remindDay" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker> -->
+<!--          <el-date-picker v-model="mainForm.remindDay" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker> -->
           <el-input v-model="mainForm.remindDay" placeholder="鉴定前提醒日" style="width: 320px;" class="filter-item"><template v-slot:append>天</template></el-input>
         </el-form-item>
         <el-form-item label="鉴定滞后提醒日:" prop="waringDay"  size="small">
-          <!-- <el-date-picker v-model="mainForm.waringDay" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker> -->
+          <!-- <el-date-picker v-model="mainForm.waringDay" value-format="YYYY-MM-DD" type="date" placeholder="选择日期"></el-date-picker> -->
           <el-input v-model="mainForm.waringDay" placeholder="鉴定滞后提醒日" style="width: 320px;" class="filter-item"><template v-slot:append>天</template></el-input>
         </el-form-item>
       </el-form>

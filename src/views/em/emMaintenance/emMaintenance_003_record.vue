@@ -37,7 +37,7 @@
           <el-button type="primary" icon="Search" @click="onBtnQuery">查询</el-button>
         </el-form-item>
         <el-form-item  size="small">
-          <el-button type="primary" icon="el-icon-download" @click="onExport">结果导出</el-button>
+          <el-button type="primary" icon="Download" @click="onExport">结果导出</el-button>
         </el-form-item>
       </el-form>
     </div>
