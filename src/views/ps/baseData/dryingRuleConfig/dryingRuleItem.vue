@@ -148,9 +148,8 @@ export default {
     };
   },
   methods: {
-    // initData(data) {
-    initData() {
-      // this.timeLimitId = data.id;
+    initData(data) {
+      this.timeLimitId = data.id;
       dryingManage.findAllDryingTank({
         dryingTankCode: "",
         dryingMethod: "",

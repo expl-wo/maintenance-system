@@ -8,14 +8,52 @@
             <span>日工作模板名称定义</span>
             <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onAdd"></el-button>
           </div>
-          <table-simple
+          <el-table
             :data="tableData"
-            :row-header="rowHeader"
-            stripe="true"
-            :total="total"
-            @handleClick="handleDblclick"
-            :hidePage="true"
-          />
+            :border="true"
+            header-cell-class-name="bgblue"
+            style="width: 100%"
+            stripe
+            row-key="id"
+            @row-click="handleDblclick"
+          >
+            <el-table-column
+              prop="tempName"
+              label="模板名称"
+              align="center"
+              min-width="15%"
+            />
+            <el-table-column
+              prop="tempDesc"
+              align="center"
+              label="模板描述"
+              min-width="15%"
+            />
+            <el-table-column
+              min-width="8%"
+              align="center"
+              label="操作"
+            >
+              <template #default="scope">
+                <el-button-group>
+                  <el-button
+                    plain
+                    icon="Edit"
+                    type="primary"
+                    @click="editCalendarTemplate(scope.row)"
+                  >
+                  </el-button>
+                  <el-button
+                    plain
+                    icon="Delete"
+                    type="danger"
+                    @click="deleteCalendarTemplate(scope.row)"
+                  >
+                  </el-button>
+                </el-button-group>
+              </template>
+            </el-table-column>
+          </el-table>
 
         </el-card>
       </el-col>
@@ -25,12 +63,51 @@
             <span>模板时间设定</span>
             <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onNapeAdd"></el-button>
           </div>
-          <table-simple
+          <el-table
             :data="tableTimeData"
-            :row-header="rowTimeHeader"
-            :total="total"
-            :hidePage="true"
-          />
+            :border="true"
+            header-cell-class-name="bgblue"
+            style="width: 100%"
+            stripe
+            row-key="id"
+          >
+            <el-table-column
+              prop="startTime"
+              label="开始时间"
+              align="center"
+              min-width="15%"
+            />
+            <el-table-column
+              prop="endTime"
+              align="center"
+              label="模板描述"
+              min-width="15%"
+            />
+            <el-table-column
+              min-width="8%"
+              align="center"
+              label="操作"
+            >
+              <template #default="scope">
+                <el-button-group>
+                  <el-button
+                    plain
+                    icon="Edit"
+                    type="primary"
+                    @click="editTimeTemplate(scope.row)"
+                  >
+                  </el-button>
+                  <el-button
+                    plain
+                    icon="Delete"
+                    type="danger"
+                    @click="deleteTimeTemplate(scope.row)"
+                  >
+                  </el-button>
+                </el-button-group>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-card>
       </el-col>
     </el-row>
@@ -284,8 +361,9 @@ export default {
       this.dialogFormVisible = true
     },
     // 日工作模板
-    handleDblclick(val) {
-      this.handleDblclickItem = val.item //  点击的日工作模板
+    handleDblclick(row) {
+      debugger
+      this.handleDblclickItem = row //  点击的日工作模板
       this.onTimeQuery()
     },
     // 添加 模板时间
@@ -301,7 +379,41 @@ export default {
         this.$message({ message: '请选择日工作模板', type: 'warning' })
       }
 
-    }
+    },
+    editCalendarTemplate(row){
+      this.listUpdate = {
+        id: row.id,
+        tempName: row.tempName, // 模板名称
+        tempDesc: row.tempDesc // 模板描述
+      }
+      this.dialogStatus = 'update'
+      this.dialogFormVisible = true
+    },
+    deleteCalendarTemplate(row){
+      this.$confirm('此操作将永久删除该条信息, 是否继续?','取消').then(response =>{
+        deleteDailyWorkTemp({tempId: row.id }).then(res =>{
+          this.$message({ message: '操作成功', type: 'success' })
+          this.onQuery() // 查询日工作模板查询
+        })
+      })
+    },
+    editTimeTemplate(row){
+      this.rowTimeUpdata = row
+      this.listTimeUpdate = {
+        startDate: row.startTime, // 开始时间
+        endDate: row.endTime // 结束时间
+      }
+      this.dialogStatus = 'update'
+      this.dialogTimeFormVisible = true
+    },
+    deleteTimeTemplate(row){
+      this.$confirm('此操作将永久删除该条信息, 是否继续?','取消').then(response =>{
+        deleteTempTime({ids: [row.id] }).then(res =>{
+          this.$message({ message: '操作成功', type: 'success' })
+          this.onTimeQuery() // 查询日工作模板查询
+        })
+      })
+    },
   }
 }
 </script>

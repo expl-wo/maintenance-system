@@ -74,8 +74,8 @@ export default defineComponent({
     })
 
     if(process.env.NODE_ENV === "development"){
-      model.username = '412104';
-      model.password = '9t95tgQJA';
+      model.username = '';
+      model.password = '';
     }
 
     const  loginFormRef = ref();

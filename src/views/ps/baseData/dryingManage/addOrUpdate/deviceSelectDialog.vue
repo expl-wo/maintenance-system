@@ -47,15 +47,19 @@
           </template>
         </el-table-column>
       </el-table>
-      <xui-pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon wp"/>
+      <pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon wp"/>
     </div>
   </el-dialog>
 </template>
 
 <script>
 import dryingManage from '@/api/plan/dryingManage'
+import Pagination from '@/components/Pagination/index.vue'
 export default {
   name: 'deviceSelectDialog',
+  components: {
+    Pagination
+  },
   data() {
     return {
       dialogVisible: false,

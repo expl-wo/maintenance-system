@@ -70,7 +70,12 @@
         align="center"
         label="是否可用"
         min-width="5%"
-      />
+      >
+        <template v-slot="{row}">
+          <div v-if="row.rEnabled == 1">是</div>
+          <div v-if="row.rEnabled == 0">否</div>
+        </template>
+      </el-table-column>
       <el-table-column
         min-width="20%"
         align="center"

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 获取本人的用户详情
 export function getInfo() {
   return request({
-    url: '/my/info',
+    url: '/api/pbpermissions/my/info',
     method: 'get',
   })
 }

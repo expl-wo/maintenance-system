@@ -30,16 +30,16 @@ export default {
     dryingRule,
     dryingRuleItem
   },
-  mounted() {
-    this.onload()
-  },
+  // mounted() {
+  //   this.onload()
+  // },
   methods: {
     handleUpdateChild(params) {
       this.$refs.dryingRuleItemRef && this.$refs.dryingRuleItemRef.initData(params)
     },
-    onload(){
-      this.$refs.dryingRuleItemRef.initData()
-    }
+    // onload(){
+    //   this.$refs.dryingRuleItemRef.initData()
+    // }
   }
 }
 </script>

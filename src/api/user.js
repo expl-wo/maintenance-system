@@ -12,7 +12,7 @@ export function getInfo(token) {
 // 分页获取用户列表，所有用户
 export function getUserAll(params) {
   return request({
-    url: '/api/pbpermissions/userInfo',
+    url: '/api/pbpermissions/userInfo/query',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条

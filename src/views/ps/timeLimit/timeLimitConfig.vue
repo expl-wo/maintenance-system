@@ -59,9 +59,9 @@
         min-width="5%"
       >
         <template v-slot:default="scope">
-          <el-tag v-if="scope.row.productType ==0 ">换流变</el-tag>
-          <el-tag v-else-if="scope.row.productType ==1 ">变压器</el-tag>
-          <el-tag v-else-if="scope.row.productType ==2 ">电抗器</el-tag>
+          <span v-if="scope.row.productType ==0 ">换流变</span>
+          <span v-else-if="scope.row.productType ==1 ">变压器</span>
+          <span v-else-if="scope.row.productType ==2 ">电抗器</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -69,7 +69,11 @@
         label="总时长(小时)"
         align="center"
         min-width="5%"
-      />
+      >
+        <template #default="scope">
+          <span v-if="scope.row.longestPath">{{ scope.row.longestPath*24 }} </span>
+        </template>
+      </el-table-column>
       <el-table-column
         prop="coilQuantity"
         label="相数"
@@ -226,10 +230,10 @@
         </el-table-column>
         <el-table-column
           prop="duration"
-          label="周期"
+          label="周期(小时)"
           align="center">
           <template #default="scope">
-            <span v-if="scope.row.duration">{{ scope.row.duration }} 天</span>
+            <span v-if="scope.row.duration">{{ scope.row.duration }} </span>
           </template>
         </el-table-column>
         <el-table-column
