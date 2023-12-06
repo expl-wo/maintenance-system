@@ -148,13 +148,11 @@
                   class="otherCon wp"
                   :data="transferNoData"
                   :props="props"
-                  show-checkbox
                   default-expand-all
                   highlight-current
                   :expand-on-click-node="false"
                   node-key="id"
-                  :check-strictly="true"
-                  @check="handleCheckChangeArea"
+                  @node-click="handleCheckChangeArea"
                 />
               </div>
             </el-card>
@@ -386,7 +384,9 @@ export default {
         }
       ]
       this.onQueryPeople() // 人员表格表头
+      this.onQueryPeoples()
       this.onQueryEquip() // 设备表格表头
+
     },
     // 人员表格表头
     onQueryPeople() {
@@ -504,7 +504,7 @@ export default {
         ownerNameArray: [] // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
       },
       this.dialogPeoplesFormVisible = true
-      this.onQueryPeoples() // 查询人员表格
+      this.onPeopleQuery();
     },
     // 确认选择的人员
     createTablePeopleData() {
@@ -680,11 +680,16 @@ export default {
       })
     },
     handleCheckChangeArea(data) {
-      const checkedObj = data  //暂存选中节点
-      this.$refs.dataTreeNo.setCheckedKeys([]); //删除所有选中节点
-      this.$refs.dataTreeNo.setCheckedNodes([checkedObj]); //选中已选中节点
-      this.listUpdate.eqpId = checkedObj.id
-      this.listUpdate.eqpName = checkedObj.name
+      this.$confirm('确定选择设备'+data.name+'?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.listUpdate.eqpId = data.id
+        this.listUpdate.eqpName = data.name
+        this.dialogEquipFormVisible = false
+      })
+
     },
   }
 }
