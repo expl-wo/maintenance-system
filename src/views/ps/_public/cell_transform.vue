@@ -18,6 +18,7 @@ export default {
     }
   },
   mounted(){
+    debugger
     //如果是生产模块的
     if(this.item.opType === this.$constants.opType.product) {
       let content = this.data[this.property];
