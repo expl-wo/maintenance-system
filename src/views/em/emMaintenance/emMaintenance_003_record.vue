@@ -22,7 +22,7 @@
         </el-form-item>
         <el-form-item label="设备分类"  size="small" v-if="needShow">
           <el-select v-model="listQuery.eqpClazz"  size="small" placeholder="设备分类" style="width: 120px;" filterable default-first-option>
-            <el-option v-for="items in eqCateData" :key="items.id" :label="items.name" :value="items.id" />
+            <el-option v-for="items in eqCateData" :key="items.id" :label="items.ecName" :value="items.id" />
           </el-select>
         </el-form-item>
         <el-form-item label="时间:"  size="small" prop="dateCount">
@@ -241,12 +241,11 @@ export default {
   methods: {
     // 按时间倒序分页查询工序计划列表的简单信息，主用于在下拉列表中显示
     onEqCateQuery() {
-      this.eqCateData = [{ 'id': '', 'name': '全部' }]
+      this.eqCateData = [{ 'id': '', 'ecName': '全部' }]
       getEqCateList().then(response => {
         response.data.forEach((dd) => {
           this.eqCateData.push(dd)
         })
-        this.eqCateData.push({ 'id': '-1', 'name': '未分类' })
       })
     },
     onBtnQuery() {
