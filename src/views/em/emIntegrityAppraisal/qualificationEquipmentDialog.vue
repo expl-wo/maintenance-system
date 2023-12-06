@@ -201,12 +201,13 @@ export default {
         this.title = '修改';
         this.addOrUpdateForm.id = row.id;
         this.addOrUpdateForm.em31Id = row.em31id;
-        this.addOrUpdateForm.eNumber = row.eName;
+        this.addOrUpdateForm.eName = row.eName;
         this.addOrUpdateForm.eNumber = row.eNumber;
         this.addOrUpdateForm.lastTime = row.lastTime;
         this.addOrUpdateForm.nextTime = row.nextTime;
         this.addOrUpdateForm.remindTime = row.remindTime;
         this.addOrUpdateForm.personLiable = row.personLiable;
+        this.addOrUpdateForm.personName = row.personName;
       }
     },
     submitForm(formName){

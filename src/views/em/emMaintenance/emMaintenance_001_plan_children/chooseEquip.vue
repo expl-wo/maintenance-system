@@ -461,6 +461,7 @@ export default {
         }
       ]
       this.onQueryPeople() // 人员表格表头
+      this.onQueryPeoples() // 查询人员表格
       this.onQueryEquip() // 设备表格表头
       this.onQueryCheck()
     },
@@ -636,12 +637,14 @@ export default {
 
     // 选择提醒人
     onSelectPeoples() {
+
+      this.onPeopleQuery() // 查询
       this.owner = {
         ownerIdArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
         ownerNameArray: [] // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
       },
       this.dialogPeoplesFormVisible = true
-      this.onQueryPeoples() // 查询人员表格
+
     },
     // 确认选择的人员
     createTablePeopleData() {
@@ -799,16 +802,17 @@ export default {
     },
     // 选择提醒人
     onSelectPeople() {
-      this.dialogPeopleFormVisible = true
       this.onPeopleQuery() // 查询
+      this.dialogPeopleFormVisible = true
     },
     onSelectCheck() {
+      this.onPeopleQuery() // 查询
       this.checker={
         checkerIdArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
         checkerNameArray: [] // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
       },
       this.dialogCheckFormVisible = true
-      this.onPeopleQuery() // 查询
+
     },
     // 确认选择的人员
     createTableCheckerData() {

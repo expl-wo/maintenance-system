@@ -112,8 +112,9 @@ export default {
       console.log(initData)
       this.params.mainId = initData.mainId
       this.typeOfDialog = initData.typeOfDialog
-      this.dialogVisible = true;
       this.equipSearch()
+      this.dialogVisible = true;
+
     },
     // getParams(){
 

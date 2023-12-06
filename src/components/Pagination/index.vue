@@ -2,12 +2,14 @@
   <div :class="{'hidden':hidden}" class="pagination-container">
     <el-pagination
       :background="background"
-      :current-page.sync="currentPage"
-      :page-size.sync="pageSize"
+      :current-page="currentPage"
+      :page-size="pageSize"
       :layout="layout"
       :page-sizes="pageSizes"
       :total="total"
       v-bind="$attrs"
+      small
+      :pager-count="pageCount"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :hide-on-single-page="hidePage"
@@ -29,6 +31,10 @@ export default {
     hidePage: {
       type: Boolean,
       default: false
+    },
+    pageCount:{
+      type:Number,
+      default:5
     },
     page: {
       type: Number,

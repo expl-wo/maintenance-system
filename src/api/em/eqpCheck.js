@@ -23,6 +23,7 @@ export function getMainConfUpdate(data) {
         url: '/api/equipment/eqpCheck/mainConf',
         method: 'POST',
         data:{
+            id:data.id,
             cName:data.name,
             cType:data.type,
             cDesc:data.description,

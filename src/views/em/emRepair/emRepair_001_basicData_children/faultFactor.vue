@@ -206,8 +206,12 @@ export default {
           this.dialogFormVisible = false
           const req = { ...this.listUpdate }
           getFactorUpdate(req).then(response => {
-            this.$message({ message: message, type: 'success' })
-            this.onQuery() // 查询
+            if (response.err_code === 10000){
+              this.$message({ message: message, type: 'success' })
+              this.onQuery() // 查询
+            }else {
+              this.$message({ message: response.err_msg, type: 'error' })
+            }
           })
         } else {
           this.$message({ message: '请填写必填项', type: 'warning' })

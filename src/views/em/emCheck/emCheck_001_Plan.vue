@@ -131,7 +131,7 @@
           <el-input v-model="listUpdate.description" placeholder="点检描述" style="width: 320px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="点检类型:" prop="type"  size="small">
-          <el-select v-model="listUpdate.type" placeholder="请选择" style="width: 100px;" @change="typeChange">
+          <el-select v-model="listUpdate.type" placeholder="请选择" style="width: 100px;" >
             <el-option label="日常点检" value="0" />
             <el-option label="专业点检" value="1" />
           </el-select>
@@ -388,6 +388,7 @@ export default {
         description: '', // 点检计划描述
         name: '', // 模糊匹配，角色名称
         type: '0',
+        id:'',
         cycle: 1, // 点检周期、仅技术鉴定填写
         cycleUnit: '0'// 点检周期单位、枚举、仅技术鉴定填写 0：日 1：月 2：年
       },
@@ -506,12 +507,13 @@ export default {
     handleEditDict(item) {
       this.dialogFormVisible = true
       this.dialogStatus = 'update'
+      console.log(item)
       this.listUpdate = { // 弹窗
-        description: item.description, // 点检计划描述
-        name: item.name, // 模糊匹配，角色名称
-        type: item.type ? item.type.toString() : '0',
+        description: item.cDesc, // 点检计划描述
+        name: item.cName, // 模糊匹配，角色名称
+        type: item.cType ? item.cType.toString() : '0',
         id: item.id,
-        cycle: item.cycle,
+        cycle: item.cCycle,
         cycleUnit: item.cycleUnit ? item.cycleUnit.toString() : '0'
       }
     },
@@ -538,6 +540,7 @@ export default {
         description: '', // 点检计划描述
         name: '', // 模糊匹配，角色名称
         type: '0',
+        id:'',
         cycle: 1, // 点检周期、仅技术鉴定填写
         cycleUnit: '0'// 点检周期单位、枚举、仅技术鉴定填写 0：日 1：月 2：年
       }
@@ -553,9 +556,10 @@ export default {
       this.$refs[listUpdate].validate((valid) => {
         if (valid) {
           this.dialogFormVisible = false
-          const req = { ...this.listUpdate }
+          let req = { ...this.listUpdate }
           req.type = parseInt(this.listUpdate.type)
           req.cycleUnit = parseInt(this.listUpdate.cycleUnit)
+
           getMainConfUpdate(req).then(response => {
             this.$message({ message: message, type: 'success' })
             this.onQuery() // 查询
@@ -803,7 +807,11 @@ export default {
     },
     generateCheckTask(){
       genCheckTask().then(response => {
-        this.$message({ message: response.data, type: 'success' })
+        if (res.err_code === 10000){
+          this.$message.success("生成成功！");
+        }else {
+          this.$message.error("生成失败！");
+        }
       })
     },
     handleChange(file, fileList) {

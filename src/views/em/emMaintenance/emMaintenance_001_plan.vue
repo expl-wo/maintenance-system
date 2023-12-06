@@ -742,7 +742,11 @@ export default {
     },
     generateMaintainTask(){
       genMaintainTask().then(response => {
-        this.$message({ message: response.data, type: 'success' })
+        if (res.err_code === 10000){
+          this.$message.success("生成成功！");
+        }else {
+          this.$message.error("生成失败！");
+        }
       })
     },
     handleClose() {

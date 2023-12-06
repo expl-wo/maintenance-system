@@ -193,4 +193,9 @@ export function integrityRecordExport(data) {
         data
     })
 }
-
+export function generateAppraisalTask() {
+    return request({
+        url: '/api/equipment/integrityAppraisal/generateAppraisalTask',
+        method: 'get'
+    })
+}

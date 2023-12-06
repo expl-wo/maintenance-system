@@ -17,6 +17,9 @@
         <el-form-item  size="small">
           <el-button type="primary" icon="Upload" @click="onExport">导出</el-button>
         </el-form-item>
+        <el-form-item  size="small">
+          <el-button type="primary"  @click="generateAppraisalTask">生成鉴定任务</el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -64,10 +67,10 @@
       <el-table-column header-align="center" align="center" width="260" label="操作">
         <template  #default="scope">
           <el-button-group>
-            <el-button  size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdate(scope.row)"></el-button>
-            <el-button  size="small" title="删除" type="danger" icon="Delete" @click="deleteMain(scope.row)" />
-            <el-button  size="small" title="添加鉴定项" type="primary" icon="Plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
-            <el-button  size="small" title="选择设备" type="primary" icon="Plus" @click="selectEquipment(scope.row)">选择设备</el-button>
+            <el-button size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdate(scope.row)"></el-button>
+            <el-button size="small" title="删除" type="danger" icon="Delete" @click="deleteMain(scope.row)" />
+            <el-button size="small" title="添加鉴定项" type="primary" icon="Plus" @click="addOrUpdateDe(scope.row,true)">添加鉴定项</el-button>
+            <el-button size="small" title="选择设备" type="primary" icon="Plus" @click="selectEquipment(scope.row)">选择设备</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -188,7 +191,7 @@
 
 <script>
 
-import { findIntegrityAppraisalList,addOrUpdateIntegrityAppraisal,deleteIntegrityAppraisal,addOrUpdateIntegrityAppraisalDe,deleteIntegrityAppraisalDe,imageUpload,integrityImport,integrityExport } from '@/api/em/eqp'
+import { findIntegrityAppraisalList,addOrUpdateIntegrityAppraisal,deleteIntegrityAppraisal,addOrUpdateIntegrityAppraisalDe,deleteIntegrityAppraisalDe,imageUpload,integrityImport,integrityExport,generateAppraisalTask } from '@/api/em/eqp'
 import file from '@/api/file/file'
 import { $exportExcel} from '@/utils/common'
 import Pagination from '@/components/Pagination'
@@ -286,7 +289,7 @@ export default {
       if(row!=null && row.id) {
         this.title = '修改';
         this.mainForm.id = row.id;
-        this.mainForm.name = row.name;
+        this.mainForm.name = row.cName;
         this.mainForm.cycle = row.cycle;
         this.mainForm.cycleUnit = row.cycleUnit;
         this.mainForm.remindDay = row.remindDay;
@@ -415,6 +418,15 @@ export default {
       } else {
         this.$message.error("请选取一张图片！");
       }
+    },
+    generateAppraisalTask(){
+      generateAppraisalTask().then(res =>{
+        if (res.err_code === 10000){
+          this.$message.success("生成成功！");
+        }else {
+          this.$message.error("生成失败！");
+        }
+      })
     },
     selectEquipment(row) {
       this.dialogEquipmentVisible = true;
