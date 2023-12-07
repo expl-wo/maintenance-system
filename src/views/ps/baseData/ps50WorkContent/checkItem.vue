@@ -10,10 +10,19 @@
     </div>
     <div class="app-container app-containerC">
       <div class="otherCon wp">
-        <el-table stripe   :data="tableData" class="otherCon wp"    style="width: 100%;font-size:0.7rem;" row-key="id">
+        <el-table stripe ref="tableRef"  :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id" >
+          <el-table-column align="center" width="110" label="工步编码" property="stepCode"></el-table-column>
+          <el-table-column align="center" width="110" label="工步名称" property="stepName"></el-table-column>
+          <el-table-column align="center" width="110" label="操作项序号" property="operationNumber"></el-table-column>
+          <el-table-column align="center" width="110" label="操作项编码" property="operationCode"></el-table-column>
           <el-table-column align="center" width="110" label="操作项名称" property="operationName"></el-table-column>
-          <el-table-column  align="center" label="标准工时"  property="standardWorkingHour"></el-table-column>
-          <el-table-column align="center" label="设备名称" property="equipmentTypeName"></el-table-column>
+          <el-table-column align="center" width="110" label="操作项描述" property="operationDescription"></el-table-column>
+          <el-table-column align="center" width="110" label="操作项类型" property="operationType"></el-table-column>
+          <el-table-column header-align="center" align="center" label="选项名称" width="110" property="dictCode">
+            <template v-slot="{row}">
+              <xui-dict-name v-if="row.operationType === 'singleSelect' || row.operationType === 'inputSelect'" :itemCode="row.dictionaryCode"></xui-dict-name>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="下限"  property="lowerLimit"></el-table-column>
           <el-table-column  align="center" label="上限"  property="upperLimit"></el-table-column>
           <el-table-column  align="center" label="正确值" width="100" property="correctValue"></el-table-column>
@@ -21,22 +30,22 @@
           <el-table-column  align="center" label="内容最大长度" width="100" property="maximumContentLength"></el-table-column>
           <el-table-column prop="requireImageFile" align="center" width="100" label="是否需要上传图片/文件">
             <template v-slot="{row}">
-              <div v-if="row.requireImageFile == 0">否</div>
-              <div v-if="row.requireImageFile == 1">是</div>
+              <xui-dictionary itemCode="yn" :code="row.requireImageFile"></xui-dictionary>
             </template>
           </el-table-column>
           <el-table-column prop="isMultiline" align="center" width="100" label="是否多行">
             <template v-slot="{row}">
-              <div v-if="row.isMultiline == 0">否</div>
-              <div v-if="row.isMultiline == 1">是</div>
+              <xui-dictionary itemCode="yn" :code="row.isMultiline"></xui-dictionary>
             </template>
           </el-table-column>
-          <el-table-column prop="isRequired" align="center" width="100" label="是否必填">
+          <el-table-column prop="isRequire" align="center" width="100" label="是否必填">
             <template v-slot="{row}">
-              <div v-if="row.isRequired == 0">否</div>
-              <div v-if="row.isRequired == 1">是</div>
+              <xui-dictionary itemCode="yn" :code="row.isRequire"></xui-dictionary>
             </template>
           </el-table-column>
+          <el-table-column  align="center" label="依赖操作项"  property="dependentOperation"></el-table-column>
+          <el-table-column align="center" label="依赖操作项选项" property="dependentOperationOption"></el-table-column>
+          <el-table-column  align="center" label="执行频次"  property="executionFrequency"></el-table-column>
           <el-table-column label="操作" width="300" align="center" header-align="center">
             <template v-slot="scope">
               <el-button-group>
@@ -52,6 +61,8 @@
         </el-table>
       </div>
     </div>
+    <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
+                @pagination="getList" />
     <check-item-form-dialog ref="checkItemFormDialogRef"  @refresh="getDataList"></check-item-form-dialog>
 
   </div>
@@ -59,18 +70,29 @@
 
 <script>
 import checkItemFormDialog from './components/checkItemFormDialog.vue'
+import Pagination from '@/components/Pagination'
 
 import {deleteWorkContent,  getWorkContent} from "@/api/plan";
+import {getDictListByKey} from "@/components/xui/dictionary";
 
 export default {
-  name: 'Table',
-  components: {checkItemFormDialog},
+  name: 'checkItemFronTab',
+  components: {checkItemFormDialog,Pagination},
   data() {
     return {
+      total:0,
+      checkItem: {},
       entity: {},
       dataList: [],
       listQuery:{
+        stepCode:'',
+        stepName:'',
+        operationNumber:'',
+        operationCode:'',
+        operationDescription:'',
+        operationType:'',
         operationName:'',
+        dictionaryCode:'',
         lowerLimit:'',
         upperLimit:'',
         correctValue:'',
@@ -78,9 +100,12 @@ export default {
         maximumContentLength:'',
         requireImageFile:'',
         isMultiline:'',
-        isRequired:'',
-        standardWorkingHour: '', //标准工时
-        equipmentTypeName:'',//设备名称
+        isRequire:'',
+        dependentOperation:'',
+        dependentOperationOption:'',
+        executionFrequency:'',
+        pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
+        pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
       },
       tableData:[]
     }
@@ -89,6 +114,10 @@ export default {
     this.getDataList();
   },
   methods: {
+    init() {
+      this.getDataList();
+      this.dialogVisible = true;
+    },
     handleSearch(){
       this.getDataList();
     },
@@ -100,7 +129,21 @@ export default {
       getWorkContent(this.listQuery).then(response => {
         this.tableData = response.data
         this.total = response.total_count
+        response.data.forEach(item=>{
+          item.allName = item.operationName
+          if(this.$constants.isNotEmpty(item.relyPropertyId)){
+            this.setRelyPropertyAttr(response.data, item);
+          }
+
+        })
       })
+    },
+    getList(val) {
+      this.listQuery.pg_pagenum = val.page
+      if (val.limit) {
+        this.listQuery.pg_pagesize = val.limit
+      }
+      this.onQuery() // 查询
     },
 
     handleEdit(row){
@@ -128,15 +171,29 @@ export default {
       })
     },
 
-    initData() {
+    setRelyPropertyAttr(dataList, data){
+      dataList.some(item=>{
+        if(item.id === data.relyPropertyId){
+          data.operationName = item.operationName;
+          return true;
+        }else{
+          return false;
+        }
+      })
+    },
+
+    initData(stepId) {
+      let temp = stepId ==null ?'':stepId.id
       getWorkContent({
-        stepId: '',
+        stepId: temp,
         stepCode: '',
         stepName:'',
-        pageNum: 1,
-        pageSize: 10
+        pg_pagenum: 1,
+        pg_pagesize: 10
+      }).then(response => {
+        this.tableData = response.data
+        this.total = response.total_count
       })
-        this.getDataList()
     },
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog draggable  appendToBody :title="model.id? '编辑': '新增'" width="600px" v-model="dialogVisible" modal>
+  <el-dialog v-dialogDrag  appendToBody :title="model.id? '编辑': '新增'" width="600px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
@@ -30,7 +30,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <div  >
+    <div slot="footer">
       <el-button @click="dialogVisible=false">取消</el-button>
       <el-button  type="primary" @click="handleSubmit">保存</el-button>
     </div>

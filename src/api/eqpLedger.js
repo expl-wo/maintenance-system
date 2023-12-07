@@ -195,10 +195,11 @@ export function getCrafsAndEquipment(params) {
     url: '/api/gcplan/baseData/getCrafsAndEquipment',
     method: 'get',
     data: {
+      crafsId: params.crafsId,
+      equipmentTypeName: params.equipmentTypeName , // 模糊匹配，分类名称
+      crafsName:params.crafsName,
       pg_pagesize: params.pg_pagesize,
       pg_pagenum: params.pg_pagenum ,
-      equipmentTypeName: params.equipmentTypeName , // 模糊匹配，分类名称
-      crafsName:params.crafsName
     }
   })
 }

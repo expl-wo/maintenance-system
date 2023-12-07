@@ -1,7 +1,7 @@
 <template>
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
-      <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
+      <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy" >
         <el-form-item label="工步名称" >
           <el-input v-model="listQuery.craftsDeName" placeholder="输入工步名称" style="width: 180px;" class="filter-item"
                     clearable />
@@ -13,14 +13,14 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-table stripe   :data="tableData" class="otherCon wp"    style="width: 100%;font-size:0.7rem;" row-key="id">
+    <el-table stripe  ref="tableRef" :data="tableData" class="otherCon wp" :stripe=true style="width: 100%;font-size:0.7rem;" row-key="id" @row-click="handleClick">
       <el-table-column prop="craftsDeCode" align="center" label="工步编码" />
       <el-table-column prop="craftsDeName" align="center" label="工步名称" />
       <el-table-column prop="standardWorkingHour" align="center" label="标准工时" />
       <el-table-column label="操作" width="300" align="center">
         <template v-slot="scope">
           <el-button-group>
-            <el-button type="primary" icon="Edit"
+            <el-button type="primary"  icon="Edit"
                        @click="handleEdit(scope.row)"
             >
             </el-button>
@@ -44,8 +44,9 @@
 import Pagination from '@/components/Pagination'
 import {findAllCraftsDe,deleteProcessCraftsDe} from '@/api/plan'
 import templateFormDialog from "@/views/ps/baseData/ps50WorkContent/components/templateFormDialog";
+import checkItem from "@/views/ps/baseData/ps50WorkContent/checkItem";
 export default {
-  components: {Pagination,templateFormDialog},
+  components: {Pagination,templateFormDialog,checkItem},
   data() {
     return {
       total: 0, // 总个数
@@ -68,16 +69,22 @@ export default {
       this.listQuery.pg_pagenum = 1
       this.onQuery()
     },
-    // 查询关键节点数据（第一层）,identifier为delete时，为删除调用。其他时候没有特殊限制
-    onQuery(identifier) {
+
+    onQuery() {
       this.tableData = []
       findAllCraftsDe(this.listQuery).then(response => {
         this.tableData = response.data
         this.total = response.total_count
-        // this.isDropItem() // 判断有没有展开的下拉项，有的话重新查找
-        // this.expands = []
+        if(this.tableData && this.tableData.length > 0){
+          this.$refs.tableRef.setCurrentRow(this.tableData[0]);
+          this.handleClick(this.tableData[0])
+        }
       })
     },
+    handleClick(item) {
+      this.$emit('updateChild', item)
+    },
+
     // 分页数据发生变化
     getList(val) {
       this.listQuery.pg_pagenum = val.page

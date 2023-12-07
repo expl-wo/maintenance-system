@@ -15,7 +15,7 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
-    <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+    <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
       <el-table-column prop="index" label="序号" align="center" min-width="5%">
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
@@ -46,7 +46,7 @@
 <script>
 
 // 辅材类型查询
-import {deleteEquipment,  getCrafsAndEquipment} from '@/api/eqpLedger'
+import {deleteEquipment, getCrafsAndAuxiliary, getCrafsAndEquipment} from '@/api/eqpLedger'
 import Pagination from "@/components/Pagination/index";
 import Constants from "@/utils/constants";
 
@@ -118,6 +118,21 @@ export default {
           }
           this.onQuery()
         })
+      })
+    },
+
+    initData(crafsId) {
+      this.listItemUpdate.crafsId = crafsId ==null ?'':crafsId.id
+      // this.timeLimitId = data.id;
+      getCrafsAndEquipment({
+        crafsId:this.listItemUpdate.crafsId,
+        auxiliaryTypeName:'',
+        crafsName: '',
+        pg_pagesize: 10,
+        pg_pagenum: 1,
+      }).then(response => {
+        this.tableData = response.data
+        this.total = response.total_count
       })
     },
 

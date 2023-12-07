@@ -631,6 +631,15 @@ export const sysRouter : Array<RouteRecordRaw> = [
 						}
 					},
 					{
+						path: 'checkItem',
+						name: 'checkItem',
+						component: () => import('@/views/ps/baseData/ps50WorkContent/checkItem.vue'),
+						meta: {
+							title: '工作内容',
+							icon: 'ps_011'
+						},
+					},
+					{
 						path: 'ps34ProcessTemplateHngc',
 						name: '040307_mesProcessModel',
 						component: () => import('@/views/ps/baseData/ps34ProcessTemplateHngc/index.vue'),

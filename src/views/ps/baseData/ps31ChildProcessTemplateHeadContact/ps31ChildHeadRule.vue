@@ -1,13 +1,20 @@
 <template>
   <div  class="wp hp app-containerC">
-    <div class="panel-menu-search filter-container searchCon">
+    <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="中工序名称" >
-          <el-input v-model="listQuery.craftsName" placeholder="请输入中工序名称" style="width: 180px;" class="filter-item" clearable />
+        <el-form-item label="中工序编码" >
+          <el-input v-model="listQuery.craftsCode" placeholder="输入中工序编码" style="width: 120px;"
+                    class="filter-item" clearable />
         </el-form-item>
-        <el-form-item size="mini">
-          <el-button type="primary" icon="Search" @click="handleSearch">查询
-          </el-button>
+        <el-form-item label="中工序名称" >
+          <el-input v-model="listQuery.craftsName" placeholder="输入中工序名称" style="width: 120px;" class="filter-item"
+                    clearable />
+        </el-form-item>
+        <el-form-item >
+          <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
+        </el-form-item>
+        <el-form-item >
+            <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -32,10 +39,14 @@
           <el-table-column header-align="center" align="center" width="160" label="操作">
             <template v-slot="scope">
               <el-button-group>
-                <el-button size="mini" title="操作" type="primary" icon="Cellphone"
+                <el-button  title="操作" type="primary" icon="Cellphone"
                            @click="handleItemSave(scope.row)">
                   保存
                 </el-button>
+                <el-button  title="编辑" type="primary" icon="Edit"
+                            @click="handEdit(scope.row)" />
+                <el-button  title="删除" type="danger" icon="Delete"
+                            @click="handleDelete(scope.row)" />
               </el-button-group>
             </template>
           </el-table-column>
@@ -46,14 +57,52 @@
                   @pagination="getList"
       />
     </div>
-<!--    <ps31-child-head-rule-item ref="ps31ChildHeadRuleItemRef" ></ps31-child-head-rule-item>-->
+    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'"
+               v-model="dialogVisible" modal width="600">
+      <el-form :model="listModeUpdate" class="element-list" ref="form"  label-width="160px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label=" 中工序编码:" prop="craftsCode" >
+              <el-input v-model="listModeUpdate.craftsCode" placeholder="请输入中工序编码" style="width: 350px;"
+                        class="filter-item" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="中工序名称:" prop="craftsName" >
+              <el-input v-model="listModeUpdate.craftsName" placeholder="请输入中工序名称" style="width: 350px;"
+                        class="filter-item" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label=" 是否本体:" prop="isOntology">
+              <el-switch v-model="listModeUpdate.isOntology" active-value='1' inactive-value='0' active-color="#13ce66"
+                         inactive-color="#808080" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <el-button  @click="dialogVisible=false">取消</el-button>
+        <el-button  type="primary" @click="saveItemData">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {findAllCrafts,insertCraftsOrder} from '@/api/plan'
+import {
+  deleteProcessCrafts,
+  findAllCrafts,
+  insertCraftsOrder,
+  insertPLMProcessCrafts,
+} from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
 import ps31ChildHeadRuleItem from "@/views/ps/baseData/ps31ChildProcessTemplateHeadContact/ps31ChildHeadRuleItem";
+import Constants from "@/utils/constants";
 
 export default {
   name: 'ps31ChildHeadRule',
@@ -64,13 +113,20 @@ export default {
     return {
       dataList: [],
       total: 0,
+      dialogVisible:false,
+      listModeUpdate: {
+        craftsCode: '',
+        craftsName: '',
+        isOntology:'',
+        id:''
+      },
       listQuery: { // 查询条件
         id: '', //PLM工序子工艺模板头ID
         name: '', //
         type: null, //
         gxUid: '', //PLM工序编码
         gxName: '', //PLM工序名称
-        standardtime: '', //标准工时
+        standardWorkingHour: '', //标准工时
         node_id: '', //
         craftsCode: '', //子工艺模板头编码
         craftsName: '', //子工艺模板头名称
@@ -117,11 +173,6 @@ export default {
       this.listQuery.pg_pagenum = 1
       this.getDataList()
     },
-    handlePagination({ page, limit }) {
-      this.listQuery.pg_pagenum = page
-      this.pg_pagesize = limit
-      this.getDataList()
-    },
     handleItemSave(params) {
       insertCraftsOrder(params).then(response => {
         this.$message({
@@ -130,6 +181,68 @@ export default {
         })
       })
     },
+    handEdit(row){
+      this.dialogVisible = true
+       this.listModeUpdate.id = row.id
+      this.listModeUpdate.craftsCode = row.craftsCode
+      this.listModeUpdate.craftsName = row.craftsName
+      this.listModeUpdate.isOntology = row.isOntology
+    },
+
+    saveItemData() {
+      this.dialogVisible = false;
+      let params = {
+        // id:this.listQueryPlm.id,
+            procedures: [{
+              id:this.listModeUpdate.id,
+              craftsCode: this.listModeUpdate.craftsCode,
+              craftsName: this.listModeUpdate.craftsName,
+              isOntology: this.listModeUpdate.isOntology
+            }]
+      }
+      insertPLMProcessCrafts(params).then(response => {
+        this.$message({
+          message: "新增成功",
+          type: 'success'
+        })
+        this.getDataList()
+      })
+    },
+    handleDelete(rowData) {
+      this.$confirm(Constants.deleteTip).then(() => {
+        deleteProcessCrafts({
+          id: rowData.id
+        }).then(response => {
+          if (response.err_code === Constants.respCode.success) {
+            this.$message({
+              type: 'error',
+              message: '删除失败'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+          }
+          this.getDataList()
+        })
+      })
+    },
+
+
+    handleAdd(){
+
+      this.listModeUpdate={
+        craftsCode: '',
+        craftsName: '',
+        isOntology: ''
+      }
+          this.$nextTick(()=>{
+            this.$refs.formRef && this.$refs.formRef.clearValidate();
+          })
+      this.dialogVisible  = true;
+    },
+
   }
 }
 </script>

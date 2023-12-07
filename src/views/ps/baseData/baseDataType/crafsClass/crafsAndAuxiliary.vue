@@ -14,7 +14,7 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
-    <el-table :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+    <el-table ref ="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
       <el-table-column prop="index" label="序号" align="center" min-width="5%">
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
@@ -50,6 +50,7 @@ import Pagination from "@/components/Pagination/index";
 import Constants from "@/utils/constants";
 
 import crafsAuxiliaryAddOrUpdateDialog from "@/views/ps/baseData/baseDataType/crafsClass/crafsAuxiliaryAddOrUpdateDialog";
+import {queryListCrafts} from "@/api/plan";
 
 export default {
   components: {crafsAuxiliaryAddOrUpdateDialog,Pagination },
@@ -60,7 +61,8 @@ export default {
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         auxiliaryTypeName: '', // 模糊匹配，设备分类名称
-        crafsName:''
+        crafsName:'',
+        crafsId:''
       },
       tableData: [], // 角色分类列表表格数据
     }
@@ -119,6 +121,23 @@ export default {
         })
       })
     },
+
+    initData(crafsId) {
+      let temp = crafsId ==null ?'':crafsId.id
+      // this.timeLimitId = data.id;
+      getCrafsAndAuxiliary({
+        crafsId:temp,
+        auxiliaryTypeName:'',
+        crafsName: '',
+        pg_pagesize: 10,
+        pg_pagenum: 1,
+      }).then(response => {
+        this.tableData = response.data
+        this.total = response.total_count
+      })
+    },
+
+
 
   }
 }

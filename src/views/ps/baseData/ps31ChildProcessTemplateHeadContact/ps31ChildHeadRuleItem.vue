@@ -3,7 +3,7 @@
     <div class="panel-menu-search filter-container searchCon">
       <el-button @click="handleAdd"  type="primary">新增</el-button>
     </div>
-      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" >
                   style="font-size: 0.7rem">
         <el-table-column prop="craftsDeCode" align="center"  width="120"   label="工步编码" />
         <el-table-column prop="craftsDeName" align="center" width="120" label="工步名称" />
@@ -15,15 +15,21 @@
           </template>
         </el-table-column>
         <el-table-column prop="standardWorkingHour" align="center"  width="120"   label="标准工时" />
-        <el-table-column header-align="center" align="center" width="160" label="操作">
+        <el-table-column header-align="center" align="center" width="300" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button  title="操作" type="primary" icon="Cellphone"
+              <el-button  title="编辑" type="primary" icon="Edit"
+                          @click="handEdit(scope.row)" />
+              <el-button  title="保存" type="primary" icon="Cellphone"
                          @click="saveItemDataCondition(scope.row)">
                 保存
               </el-button>
               <el-button  title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
+              <el-button  title="保存" type="primary" icon="Cellphone"
+                          @click="handleWorkContent(scope.row)">
+                查看工作内容
+              </el-button>
             </el-button-group>
           </template>
         </el-table-column>
@@ -78,8 +84,8 @@
 
       </el-form>
       <div slot="footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
+        <el-button  @click="dialogVisible=false">取消</el-button>
+        <el-button  type="primary" @click="saveItemData">保存</el-button>
       </div>
     </el-dialog>
   </div>
@@ -96,11 +102,13 @@ import {
   insertCraftsDe, deleteProcessCrafts
 } from "@/api/plan";
 import Pagination from "@/components/Pagination/index";
+import checkItem from "@/views/ps/baseData/ps50WorkContent/checkItem";
+import { certainProp} from '@/utils'
 
 
 export default {
   name: 'ps31ChildHeadRuleItem',
-  components: {Pagination},
+  components: {Pagination,checkItem},
   data() {
     return {
       dataList: [],
@@ -111,8 +119,6 @@ export default {
         craftsId:'',
         craftsDeName: '',
         craftsDeCode: '',
-        // isVisible: '',
-        // craftsId: '',
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         standardWorkingHour: '', //标准工时
@@ -135,12 +141,7 @@ export default {
     this.getDataList()
   },
   methods: {
-    handleAdd(){
-      this.$nextTick(()=>{
-        this.$refs.formRef && this.$refs.formRef.clearValidate();
-      })
-      this.dialogVisible  = true;
-    },
+
     //获取
     getDataList() {
         this.tableData = []
@@ -158,30 +159,47 @@ export default {
       this.getDataList() // 查询
     },
 
-    // 保存
-    saveItemData() {
-      this.dialogVisible = false;
-      let params = {
-        craftsDeName: this.listItemUpdate.craftsDeName,
-        craftsDeCode: this.listItemUpdate.craftsDeCode,
-        isVisible: this.listItemUpdate.isVisible,
-        needRate:this.listItemUpdate.needRate,
-        isEnd:this.listItemUpdate.isEnd,
-        standardWorkingHour: this.listItemUpdate.standardWorkingHour,
-      }
-      insertCraftsDe(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
-      })
-    },
+
     saveItemDataCondition(params) {
       insertCraftsDeOrder(params).then(response => {
         this.$message({
           message: "保存成功",
           type: 'success'
         })
+        this.getDataList()
+      })
+    },
+
+    handEdit(row){
+      this.dialogVisible = true
+          this.listItemUpdate.id = row.id
+      this.craftsId= this.listItemUpdate.craftsId
+      this.listItemUpdate.craftsDeCode = row.craftsDeCode
+      this.listItemUpdate.craftsDeName = row.craftsDeName
+      this.listItemUpdate.isEnd = row.isEnd
+      this.listItemUpdate.isVisible = row.isVisible
+      this.listItemUpdate.standardWorkingHour = row.standardWorkingHour
+    },
+    saveItemData() {
+      this.dialogVisible = false;
+      let params = {
+            procedures: [{
+        id:this.listItemUpdate.id,
+        craftsId: this.listItemUpdate.craftsId,
+        craftsDeName: this.listItemUpdate.craftsDeName,
+        craftsDeCode: this.listItemUpdate.craftsDeCode,
+        isVisible: this.listItemUpdate.isVisible,
+        needRate:this.listItemUpdate.needRate,
+        isEnd:this.listItemUpdate.isEnd,
+        standardWorkingHour: this.listItemUpdate.standardWorkingHour,
+              }]
+      }
+      insertCraftsDe(params).then(response => {
+        this.$message({
+          message: "新增成功",
+          type: 'success'
+        })
+        this.getDataList()
       })
     },
     handleDelete(rowData) {
@@ -206,17 +224,17 @@ export default {
     },
     initData(craftsId) {
 
-      console.log('cr',craftsId)
-      let temp = craftsId ==null ?'':craftsId.id
-      console.log('cr2',temp)
+      this.listItemUpdate.craftsId = craftsId ==null ?'':craftsId.id
       // this.timeLimitId = data.id;
      findAllCraftsDes({
-        craftsId: temp,
+        craftsId:this.listItemUpdate.craftsId,
         craftsDeCode: '',
         craftsDeName: '',
        pg_pagenum: 1,
        pg_pagesize: 10
       }).then(response => {
+       this.tableData = response.data
+       this.total = response.total_count
 
         this.dataList = response.data.map(item => {
           return {
@@ -224,6 +242,30 @@ export default {
             v: item.craftsDeName
           }
         })
+      })
+    },
+
+    handleWorkContent(row) {
+      let params = certainProp(row, ['id', 'tempName'])
+      this.$router.push({
+        path: 'checkItem',
+        query: params
+      })
+    },
+    handleAdd() {
+      this.listItemUpdate = {
+        id: '',
+        craftsId: this.listItemUpdate.craftsId,
+        craftsDeCode: '', //工步编码
+        craftsDeName: '', //工步名称
+        standardWorkingHour:'',
+        isVisible:'',
+        isEnd:'',
+
+      }
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.formRef.clearValidate()
       })
     },
   }
