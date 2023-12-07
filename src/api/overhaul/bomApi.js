@@ -34,7 +34,7 @@ export function addBomTree(data) {
 //删除bom树节点
 export function delBomTreeNode(data) {
     return request({
-        url: `/api/evo-ims-overhaul/bom/delete-child`,
+        url: `/api/evo-ims-overhaul/bom/delete`,
         method: 'post',
         data
     })
@@ -87,4 +87,10 @@ export function getBigComponent(data) {
         data: data
     })
 }
-
+//同步bom
+export function syncBom(workId) {
+    return request({
+        url: `/api/evo-ims-overhaul/bom/sync/${workId}`,
+        method: 'get'
+    })
+}

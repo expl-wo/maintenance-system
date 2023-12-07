@@ -473,7 +473,7 @@ export default {
 };
 </script>
 <style  lang="scss">
-.el-date-picker {
+.el-date-table__row {
   .normal {
     background-color: transparent !important;
   }

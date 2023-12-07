@@ -119,11 +119,11 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             label: "复核状态",
         },
         {
-            prop: "startTime",
+            prop: "workBeginDate",
             label: "开工时间",
         },
         {
-            prop: "endTime",
+            prop: "workFinishDate",
             label: "完工时间",
         },
         {
@@ -164,7 +164,7 @@ const WORK_STATUS_ENUM = {
     0: "未派工",
     1: "未开工",
     2: "已开工",
-    5: "已完工"
+    3: "已完工"
 }
 //复核状态
 const REVIEW_STATUS_ENUM ={

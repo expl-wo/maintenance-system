@@ -7,42 +7,42 @@ export const ISSUE_COLUMNS = [
         width: 50
     },
     {
-        prop: "ownership",
+        prop: "problemProcedureOwn",
         label: "问题所属",
         align: "center",
 
     },
     {
-        prop: "issue",
+        prop: "cateName",
         label: "问题分类",
         align: "center",
 
     },
     {
-        prop: "exceptionItem",
+        prop: "abnormalName",
         label: "异常项",
         align: "center",
 
     },
     {
-        prop: "issueDescription",
+        prop: "problemDesc",
         label: "问题描述",
         align: "center",
 
     },
     {
-        prop: "createTime",
+        prop: "reporterDate",
         label: "上报时间",
         align: "center",
 
     },
     {
-        prop: "submitter",
+        prop: "reporterName",
         label: "提交人",
         align: "center",
 
     }, {
-        prop: "notifier",
+        prop: "notifierName",
         label: "通知人",
         align: "center",
 

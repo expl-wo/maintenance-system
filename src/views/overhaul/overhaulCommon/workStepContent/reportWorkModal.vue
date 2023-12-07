@@ -35,6 +35,10 @@
 import { reportWorkContent } from "@/api/overhaul/workOrderApi.js";
 export default {
   props: {
+    progress:{
+    type: Number,
+     default:0
+    },
     //操作行
     operateRow: {
       type: Object,
@@ -57,6 +61,11 @@ export default {
       default: "",
     },
   },
+  watch:{
+    progress(val){
+      this.form.value =val
+    }
+  },
   data() {
     return {
       form: {
@@ -72,7 +81,7 @@ export default {
         workProcedureCode: this.operateRow.workProcedureCode,
         progress: this.form.value,
         workScene: this.sceneType,
-        // isAddLib:this.form.isAddLib
+        operator:localStorage.getItem("userId")
       };
       reportWorkContent(params).then((res) => {
         if (res.code !== "0") {

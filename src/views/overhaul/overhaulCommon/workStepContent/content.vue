@@ -6,7 +6,7 @@
         contentHeader
       }}</span>
     </el-col>
-    <el-col :span="6" class="work-content-title">
+    <el-col :span="8" class="work-content-title">
       <el-date-picker
         v-model="form.date"
         v-if="[0, 1].includes(executionFrequency)"
@@ -18,13 +18,14 @@
         :disabled-date="disabledDate"
         @panel-change="panelChange"
         @change="searchChange"
-        style="width: 100%"
+        style="width: 200px"
       />
       <el-select
         v-if="[0].includes(executionFrequency)"
         v-model="form.time"
         class="mgl12"
         placeholder="时间"
+        style="width: 200px"
         @change="searchChange"
         @visible-change="visibleChange"
       >
@@ -249,13 +250,21 @@ export default {
     },
   },
   methods: {
-    visibleChange(open){
-      if(open){
+    resetContent() {
+      this.form.contentData = "";
+      this.form.fileUrl = "";
+      this.form.fileName = "";
+      this.fileUrl = "";
+      this.fileName = "";
+      this.opearationId = "";
+    },
+    visibleChange(open) {
+      if (open) {
         let params = {
-            beginTime: dayjs(this.form.date).startOf("day").format(COMMON_FORMAT),
-            endTime: dayjs(this.form.date).endOf("day").format(COMMON_FORMAT),
-          };
-          this.getStatus(params.beginTime,params.endTime);
+          beginTime: dayjs(this.form.date).startOf("day").format(COMMON_FORMAT),
+          endTime: dayjs(this.form.date).endOf("day").format(COMMON_FORMAT),
+        };
+        this.getStatus(params.beginTime, params.endTime);
       }
     },
     panelChange(data, mode) {
@@ -279,58 +288,57 @@ export default {
               .format(COMMON_FORMAT),
           };
         }
-        this.getStatus(params.beginTime,params.endTime);
+        this.getStatus(params.beginTime, params.endTime);
       }
     },
-    getStatus(beginTime,endTime){
+    getStatus(beginTime, endTime) {
       getWorkStatusByTime({
-          // workCode: this.workOrderInfo.id,
-          // craftId: this.currentSelectNode.procedureCode,
-          // operationCode:this.id,
-          // beginTime,
-          // endTime,
-          workScene: this.sceneType,
-          workCode: "20220705093359824311000301954583",
-          craftCode: "20231125",
-          operationCode: "5",
-          beginTime: "2023-12-05 19:00:00",
-          endTime: "2023-12-05 20:00:00",
-        }).then((res) => {
-          const result = res.data.value;
-          if (this.executionFrequency === 0) {
-            const success = result.map((item) => {
-              return dayjs(item).startOf("hour").format("HH:mm");
-            });
-             this.getTimeOptions(false,success)
-          } else {
-            this.successList = [];
-            this.successList = result.forEach((item) => {
-              return dayjs(item).format("YYYY-MM-DD");
-            });
-          }
-        });
+        workCode: this.workOrderInfo.id,
+        craftCode: this.currentSelectNode.procedureCode,
+        operationCode: this.id,
+        beginTime,
+        endTime,
+        workScene: this.sceneType,
+      }).then((res) => {
+        const result = res.data.value;
+        if (this.executionFrequency === 0) {
+          const success = result.map((item) => {
+            return dayjs(item).startOf("hour").format("HH:mm");
+          });
+          this.getTimeOptions(false, success);
+        } else {
+          this.successList = [];
+          this.successList = result.forEach((item) => {
+            return dayjs(item).format("YYYY-MM-DD");
+          });
+        }
+      });
     },
     //查询条件
     searchChange() {
+      this.resetContent();
       this.$emit("searchChange", this.id, this.beginTime);
     },
     //禁用时间主要用于禁止开始时间早于结束时间
     disabledDate(Date) {
       return dayjs(Date).isAfter(dayjs());
     },
-    getTimeOptions(isSetTime =true,targetStatus=[]) {
+    getTimeOptions(isSetTime = true, targetStatus = []) {
       this.timeOptions = [];
       new Array(24).fill(1).forEach((item, index) => {
         this.timeOptions.push({
-          label: `${String(index).padStart(2, "0")}:00 ~ ${String(index + 1).padStart(2, "0")}:00`,
-          value: `${String(index + 1 ).padStart(2, "0")}:00`,
-          status: targetStatus.includes(`${String(index + 1 ).padStart(2, "0")}:00`),
+          label: `${String(index).padStart(2, "0")}:00 ~ ${String(
+            index + 1
+          ).padStart(2, "0")}:00`,
+          value: `${String(index + 1).padStart(2, "0")}:00`,
+          status: targetStatus.includes(
+            `${String(index + 1).padStart(2, "0")}:00`
+          ),
         });
       });
-      if(isSetTime){
+      if (isSetTime) {
         this.form.time = dayjs().startOf("hour").format("HH:mm"); //设置临近的时间点
       }
-      
     },
     uploadSuccess(fileName, fileList) {
       this.form.fileName = fileName;
@@ -338,10 +346,10 @@ export default {
     },
     setCellClassName(data) {
       let time = dayjs(data).format("YYYY-MM-DD");
-      if (this.successList.includes(time)) {
-        return "success-pick";
-      } else if (dayjs(data).isAfter(dayjs())) {
+      if (dayjs(data).isAfter(dayjs()) || this.executionFrequency === 0) {
         return "";
+      } else if (this.successList.includes(time)) {
+        return "success-pick";
       } else {
         return "warn-pick";
       }
@@ -357,8 +365,8 @@ export default {
   bottom: 0;
   left: 50%;
   background-color: #67c23a;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   transform: translateX(-50%);
 }
@@ -369,8 +377,8 @@ export default {
   bottom: 0;
   left: 50%;
   background-color: #f56c6c;
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   transform: translateX(-50%);
 }

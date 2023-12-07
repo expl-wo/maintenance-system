@@ -75,24 +75,18 @@
           </div>
           <div class="operate-wrap" v-else>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check'])&& !isSurvey"
+              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
               type="primary"
-              :disabled="
-                isPauseOrFinish ||
-                isRoleContorl.isDisabled
-              "
+              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
               title="保存"
               @click="workTreeSave"
             >
               <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey "
+              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
               type="primary"
-              :disabled="
-                isPauseOrFinish ||
-                isRoleContorl.isDisabled
-              "
+              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
               title="发起审核"
               @click="workTreeCheck"
             >
@@ -140,7 +134,8 @@
                       :disabled="isPauseOrFinish"
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
-                        $isAuth(roleBtnEnum['review']) && !isSurvey
+                        $isAuth(roleBtnEnum['review']) &&
+                        !isSurvey
                       "
                       title="复核"
                       @click="openModal(row, 'recheckModal')"
@@ -207,6 +202,7 @@
           v-if="issueModal"
           :workCode="workOrderInfo.id"
           :operateRow="operateRow"
+          :sceneType="sceneType"
           modalName="issueModal"
           @closeModal="closeModal"
         ></add-issue>
@@ -511,7 +507,11 @@ export default {
           workOrderSceneType: this.sceneType,
           treeNode: parmas,
         }).then((res) => {
-          this.$message.success("保存成功");
+          if (res.code === "0") {
+            this.$message.error(res.errMsg);
+          } else {
+            this.$message.success("保存成功");
+          }
         });
       } else {
         this.$message({

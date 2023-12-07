@@ -9,11 +9,10 @@
         :clearable="false"
         @change="handleTemplateChange"
       />
-      <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
-        ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
-      >
     </template>
-
+    <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
+      ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
+    >
     <div class="bom-content" v-if="bomTreeId">
       <div class="bom-content-left">
         <div class="bom-content-left-title">BOM结构</div>
@@ -123,6 +122,7 @@ import {
   getBomTemplate,
   getBomByWorkOrderId,
   addBomTree,
+  syncBom,
   updateBomImgNode,
   delBomTreeNode,
 } from "@/api/overhaul/bomApi.js";
@@ -195,6 +195,14 @@ export default {
     this.getBomTree();
   },
   computed: {
+    imgType() {
+      let map_type = {
+        "siteDismantle-BomVue": 1,
+        "factoryDismantle-BomVue": 1,
+        "factoryCreate-BomVue": 2,
+      };
+      return map_type[this.onlyTabName];
+    },
     //只有现场检修时会进行模板选择，后续流程均时同步
     isShowTemplate() {
       return ["siteDismantle-BomVue"].includes(this.onlyTabName);
@@ -203,7 +211,13 @@ export default {
   methods: {
     //同步PLM
     syncPLM() {
-      debugger;
+      syncBom(this.workOrderInfo.id).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          this.$message.success("同步成功！");
+        }
+      });
     },
     getBomTree() {
       getBomByWorkOrderId({ workId: this.workOrderInfo.id }).then((res) => {
@@ -234,6 +248,7 @@ export default {
         this.fileList.push({
           fileName: data.fileName,
           fileUrl: data.filePath,
+          imgType: this.imgType,
           uid: file.uid,
         });
         this.updateBomImgList();
@@ -249,6 +264,7 @@ export default {
         imgList: this.fileList.map((item) => ({
           imgPath: item.fileUrl,
           imgName: item.fileName,
+          imgType: item.imgType,
         })),
       };
       updateBomImgNode(params).then((res) => {
@@ -424,10 +440,13 @@ export default {
      */
     handleNodeClick(data) {
       this.operateRow = data;
-      this.fileList = (data.imgList || []).map((item) => ({
-        fileName: item.imgName,
-        fileUrl: item.imgPath,
-      }));
+      this.fileList = (data.imgList || [])
+        .filter((item) => this.imgType === item.imgType)
+        .map((item) => ({
+          fileName: item.imgName,
+          fileUrl: item.imgPath,
+          imgType: item.imgType,
+        }));
     },
     //二维码打印
     printQrCode(targetValue) {

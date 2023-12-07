@@ -6,7 +6,8 @@
           <el-date-picker
             v-model="queryParams.time"
             type="datetimerange"
-            :picker-options="pickerOptions"
+            :disabled-date="disabledDate"
+            :default-time="defaultTime"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -106,6 +107,7 @@
 import dayjs from "dayjs";
 import EditMarkerModal from "./editMarkerRecord.vue";
 import Pagination from "@/components/Pagination"; // 分页
+import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import { pageVideoMarker, deleteVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   components: {
@@ -129,20 +131,22 @@ export default {
   data() {
     return {
       showImgViewer: false,
+      COMMON_FORMAT,
+      defaultTime: [new Date(0, 0, 0, 0, 0, 0),new Date(0, 0, 0, 23, 59, 59)], //默认时间
       testImg:
         "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
       imgViewerList: [], //图片预览列表
       //分页参数
       pageOptions: {
-        total: 1,
+        total: 0,
         pageNum: 1,
         pageSize: 20,
       },
       //查询参数
       queryParams: {
         time: [
-          dayjs().startOf().format("YYYY-MM-DD HH:mm:ss"),
-          dayjs().endOf().format("YYYY-MM-DD HH:mm:ss"),
+          dayjs().startOf('day').format(COMMON_FORMAT),
+          dayjs().endOf('day').format(COMMON_FORMAT),
         ],
       },
       //全选相关数据
@@ -151,38 +155,6 @@ export default {
       markList: [],
       //选择项
       checkList: [],
-      //日期选择框
-      pickerOptions: {
-        shortcuts: [
-          {
-            text: "最近一周",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "最近一个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-          {
-            text: "最近三个月",
-            onClick(picker) {
-              const end = new Date();
-              const start = new Date();
-              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-              picker.$emit("pick", [start, end]);
-            },
-          },
-        ],
-      },
       operateRow: null,
       editRecordFlag: false,
     };
@@ -202,6 +174,10 @@ export default {
     this.getList();
   },
   methods: {
+        //禁用时间主要用于禁止开始时间早于结束时间
+    disabledDate(Date) {
+      return dayjs(Date).isAfter(dayjs());
+    },
     //打开图片预览
     openImgViewer(urlList) {
       this.imgViewerList = urlList;

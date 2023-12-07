@@ -363,6 +363,13 @@ export default {
   },
 };
 </script>
+<style  lang="scss">
+.el-date-table__row {
+  .normal {
+    background-color: transparent !important;
+  }
+}
+</style>
 <style scoped lang="scss">
 :deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;
