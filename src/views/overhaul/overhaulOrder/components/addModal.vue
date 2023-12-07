@@ -219,9 +219,9 @@ export default {
         projName: safeLimit("", true),
         prodNumber: safeLimit("", false),
         customName: safeLimit("", true),
-        prodCategory: requiredVerify(),
-        voltageLevel: safeLimit("", true),
-        prodModel: safeLimit("", false),
+        // prodCategory: requiredVerify(),
+        // voltageLevel: safeLimit("", true),
+        // prodModel: safeLimit("", false),
       },
       prodCategoryOptions: [],
       businessOrderOptions: [],
@@ -291,6 +291,7 @@ export default {
         pageNum,
         pageSize,
         searchKey,
+        workOrderType: 2,
       };
       return new Promise((resolve, reject) => {
         getBusinessOrderList(queryParms).then((res) => {
