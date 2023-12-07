@@ -25,7 +25,7 @@
 				</el-col>
 				<el-col :span="24">
 					<el-form-item label="工位" name="" >
-						<el-table ref="multipleTableRef" :key="id" :data="midOp" @selection-change="handleSelectionChange">
+						<el-table ref="multipleTableRef" key="id" :data="midOp" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="55" />
 							<el-table-column prop="name" label="名称" width="140px">
 								<template #default="scope">
@@ -96,7 +96,7 @@
     })
   }
 	const dialogVisible = ref(false);
-	
+
 	const initModel = {
 		productPlanId:'',
 		productNodeId:'',
@@ -111,7 +111,7 @@
 	
 	const midOp = reactive([])
 	
-	const work = reactive([])
+	const work = reactive([]);
 	
 	const pickerOptions0 = {
 		placement: 'auto',
@@ -133,33 +133,38 @@
 	const model = reactive(deepClone(initModel));
 
 	const init = async(row) => {
+    console.log(row);
+    let data = {
+      ...initModel,
+    }
+    let workData = []
+    let opData = []
 		let response = await planMain.getOpInfo({productPlanId:row.productplanId,nodeId:row.nodeId})
     if((response as any).err_code === 10000 ){
       response.data.instances.forEach(item =>{
-        work.push(item)
+        workData.push(item)
       })
       response.data.midOp.forEach(item =>{
-        midOp.push({id:item.id,name:item.craftsName,work:null})
+        opData.push({id:item.id,name:item.craftsName,work:null})
       })
-      console.log(work)
-      console.log(midOp)
+      data.workspaceName = response.data.workspaceName;
+      data.workspaceNumber = response.data.workspaceNumber;
       // toggleSelection(work)
     }else {
       openWarning("查询节点信息失败")
     }
 
-		console.log(row);
-		let data = {
-			...initModel,
-		}
+
 		data.productNo = row.productNo;
 		data.nodeName = row.nodeName;
 		data.productPlanId = row.productplanId;
 		data.productNodeId = row.id;
 		data.nodeId = row.nodeId;
-    data.workspaceName = response.data.workspaceName;
-    data.workspaceNumber = response.data.workspaceNumber;
+
+
 		Object.assign(model, data);
+		Object.assign(work, workData);
+		Object.assign(midOp, opData);
 		dialogVisible.value = true;
 	}
 

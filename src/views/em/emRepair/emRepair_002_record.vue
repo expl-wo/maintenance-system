@@ -310,7 +310,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 onClick: function() {
                   self.pictureTitle='故障现象照片';
                   self.dialogPicturePcVisible = true
@@ -327,7 +327,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 onClick: function() {
                   self.dialogTableWaiting = true;
                   self.listWaitQuery.id=params.row.id;
@@ -386,7 +386,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 onClick: function() {
                   self.pictureTitle='维修完成照片';
                   self.dialogPicturePcVisible = true
@@ -458,7 +458,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, ()=>[
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 // style: { marginRight: '0px' },
                 onClick: function() {
                   self.dialogTablePcVisible = true

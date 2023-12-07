@@ -775,7 +775,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					component: () => import('@/views/em/emBasicData/levelIndex.vue'),
 					name: '030105_equipLevel',
 					meta: {
-						title: '设备分类',
+						title: '设备等级',
 						icon: 'em_002_002',
 						keepAlive: true
 					}

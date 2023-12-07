@@ -145,24 +145,20 @@ import { ElButton,ElButtonGroup} from "element-plus";
             render: (h, params) => {
               return h(ElButtonGroup, ()=>[
                 h(ElButton, {
-                  props:function(){
-                  return { type: 'text', size: 'small' }
-                },
-                  on: {
-                   onClick: function() {
-                      self.dialogQRCodeFormVisible = true
-                      self.$nextTick(function() {
-                        document.getElementById('qrcode').innerHTML = ''
-                        const qrcode = new QRCode('qrcode', {
-                          width: 300,
-                          height: 300,
-                          text: params.row.id,
-                          colorDark: '#000000', // 前景色
-                          colorLight: '#ffffff', // 背景色
-                          correctLevel: QRCode.CorrectLevel.H// 降低容错级别
-                        })
+                  link : true,type: 'primary', size: 'small',
+                  onClick: function() {
+                    self.dialogQRCodeFormVisible = true
+                    self.$nextTick(function() {
+                      document.getElementById('qrcode').innerHTML = ''
+                      const qrcode = new QRCode('qrcode', {
+                        width: 300,
+                        height: 300,
+                        text: params.row.id,
+                        colorDark: '#000000', // 前景色
+                        colorLight: '#ffffff', // 背景色
+                        correctLevel: QRCode.CorrectLevel.H// 降低容错级别
                       })
-                    }
+                    })
                   }
                 }, '二维码'),
               ])

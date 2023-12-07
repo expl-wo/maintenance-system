@@ -10,7 +10,7 @@
           tag="span"
           class="tags-view-item"
           @click.middle="!isAffix(tag)?removeTab(tag):''"
-          @contextmenu.prevent="onContextMenu(tag,$event)"
+          @contextmenu.prevent="openMenu(tag,$event)"
       >
         {{ tag.title }}
         <span  class="tags-icon" v-if="!isAffix(tag)" @click.prevent.stop="removeTab(tag)" >
@@ -38,11 +38,11 @@
     <ul
         v-show="showContextMenu"
         class="contex-menu-wrapper"
-        :style="contextMenuStyle"
+        :style="{left:left+'px',top:top+'px'}"
     >
       <li :disabled="showLeftMenu">
         <el-button
-            :disabled="showLeftMenu"
+            :disabled="isLeftLast(selectRoute)"
             icon="BackIcon"
             text
             @click="closeLeft"
@@ -51,7 +51,7 @@
       </li>
       <li :disabled="showRightMenu">
         <el-button
-            :disabled="showRightMenu"
+            :disabled="isRightLast(selectRoute)"
             icon="RightIcon"
             text
             @click="closeRight"
@@ -87,6 +87,8 @@ export default {
         left: 0,
         top: 0,
       },
+      top: 0,
+      left: 0,
       showContextMenu: false,
       selectRoute: null,
       showLeftMenu: true,
@@ -177,6 +179,23 @@ export default {
     isAffix(route) {
       return route.meta && route.meta.affix;
     },
+    openMenu(tag, e) {
+      const menuMinWidth = 105
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      const offsetWidth = this.$el.offsetWidth // container width
+      const maxLeft = offsetWidth - menuMinWidth // left boundary
+      const left = e.clientX - offsetLeft + 15 // 15: margin right
+
+      if (left > maxLeft) {
+        this.left = maxLeft
+      } else {
+        this.left = left
+      }
+
+      this.top = e.clientY - 60
+      this.showContextMenu = true
+      this.selectRoute = tag
+    },
     removeTab(tag) {
       const findItem = this.state.visitedView.find(
           (it) => it.path === tag.path
@@ -195,7 +214,7 @@ export default {
     },
     // context menu actions
     isLeftLast(tempRoute) {
-      return this.state.visitedView.indexOf(tempRoute) === 0;
+      return this.state.visitedView.indexOf(tempRoute) <= 1;
     },
     isRightLast(tempRoute) {
       return (
@@ -213,6 +232,7 @@ export default {
       });
     },
     closeRight() {
+      this.$router.push(this.selectRoute)
       store.closeRightVisitedView(this.selectRoute).then((_) => {
         if (this.$route.name !== this.selectRoute.name) {
           this.$router.push(

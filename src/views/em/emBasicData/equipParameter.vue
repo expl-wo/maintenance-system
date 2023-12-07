@@ -458,7 +458,7 @@ export default {
           render: (h, params) => {
             return h(ElButtonGroup, () => [
               h(ElButton, {
-                type:  'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 onClick: function() {
                   self.dialogQRCodeFormVisible = true
                   self.$nextTick(function() {
@@ -475,7 +475,7 @@ export default {
                 }
               }, () => '二维码'),
               h(ElButton, {
-                 type: 'text', size: 'small',
+                 link : true,type: 'primary', size: 'small',
                  onClick: function() {
                     self.onFileload()
                     self.onFileQuery(params.row)
@@ -484,7 +484,7 @@ export default {
 
               },() => '技术文件'),
               h(ElButton, {
-                 type: 'text', size: 'small',
+                 link : true,type: 'primary', size: 'small',
                  onClick: function() {
                     self.onPictureload()
                     self.onPictureQuery(params.row)
@@ -492,13 +492,13 @@ export default {
                  }
               },() => '图片'),
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                 onClick: function() {
                   self.onDetailQuery(params.row)
                 }
               },() => '运维记录'),
               h(ElButton, {
-                type: 'text', size: 'small',
+                link : true,type: 'primary', size: 'small',
                  onClick: function() {
                     self.dialogSparePartsFormVisible = true
                     self.onSparePart(params.row)

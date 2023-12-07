@@ -120,7 +120,7 @@
             <el-button
                size="small"
               title="查看"
-              type="text"
+              text
               @click="handleSelect(scope.row)"
             >
               查看
