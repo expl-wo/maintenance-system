@@ -317,6 +317,9 @@ export default {
     },
     //开始时间改变时
     planStartTimeChange(val) {
+      if (dayjs(val).isAfter(dayjs(this.form.planEndTime))) {
+        this.form.planEndTime = dayjs(val).endOf("day");
+      }
       if (!val) {
         //如果为空了则需要重新选择结束时间
         this.form.planEndTime = "";

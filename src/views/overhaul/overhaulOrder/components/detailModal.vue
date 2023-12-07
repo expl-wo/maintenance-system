@@ -79,6 +79,15 @@
               v-else-if="isNotSurvey"
               description="暂无关联的勘查工单数据"
             />
+            <middle-ware
+              v-else-if="item.name === 'surveyItem'"
+              v-bind="item"
+              :workOrderType="2"
+              :workOrderInfo="overHaulSurveyData"
+              :sceneType="sceneType"
+              :appointInfo="appointInfo"
+              :tabList="TAB_LIST_MAP[item.name]"
+            ></middle-ware>
             <!-- 中间件 -->
             <middle-ware
               v-else
@@ -157,6 +166,7 @@ export default {
       overhaulType: 0, //检修类型 0时现场 1 是返厂
       info: {},
       appointInfo: {},
+      overHaulSurveyData: {},
     };
   },
   async mounted() {
@@ -205,7 +215,7 @@ export default {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = data;
         //根据不同的检修类型定义不同的时间轴
-        this.overhaulType = this.info.retFactory || 1; //现场检修
+        this.overhaulType = +this.info.retFactory;
         this.timeLineData = TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
@@ -217,19 +227,30 @@ export default {
       this.getAppointSetting();
     },
     //获取配置信息
-    getAppointSetting() {
+    async getAppointSetting() {
       const targetTabIndex = this.tabList.findIndex(
         (item) => item.name === this.activeName
       );
       if (targetTabIndex === -1) return;
+      this.sceneType = this.tabList[targetTabIndex].sceneType;
+      //如果是勘查则回显勘查数据
+      let orderId = this.operateRow.id;
+      if (this.activeName === "surveyItem" && !this.isNotSurvey) {
+        orderId = this.info.overHaulId;
+        const { data } = await findWorkOrder(orderId);
+        this.overHaulSurveyData = { ...data, workOrderType: 2 };
+      }
       getAppiontInfo({
-        sceneType: this.tabList[targetTabIndex].sceneType,
-        orderId: this.operateRow.id,
+        sceneType: this.sceneType,
+        orderId,
       }).then(({ data }) => {
         this.appointInfo = data;
         if (data.projManagerId) {
           this.tabList[targetTabIndex].hiddenAssign = true;
         }
+        //  else {
+        //   this.tabList[targetTabIndex].hiddenAssign = false;
+        // }
       });
     },
     /**
@@ -278,7 +299,7 @@ export default {
         {
           key: "prodCategory",
           label: "产品大类",
-          value: targetData["prodCategory"],
+          value: targetData["prodCategoryName"],
         },
         { key: "projName", label: "项目名称", value: targetData["projName"] },
         {

@@ -19,7 +19,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="510px"
+      height="570px"
     >
       <template v-for="item in COLUMNS">
         <el-table-column
@@ -31,7 +31,7 @@
         >
           <template #default="{ row }">
             <el-tag>
-              {{ row.status }}
+              {{ row.status ? "繁忙" : "空闲" }}
             </el-tag>
           </template>
         </el-table-column>
@@ -55,10 +55,24 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { BIG_COMPONENTS_COLUMNS } from "../config.js";
+import { getBigComponentList } from "@/api/overhaul/workOrderApi.js";
 export default {
-  name: "ReturnList",
+  name: "BigComponents",
   components: {
     Pagination,
+  },
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    sceneType: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -73,11 +87,11 @@ export default {
       },
       //查询参数
       queryParams: {
-        deviceName: "",
+        name: "",
       },
     };
   },
-  created() {
+  mounted() {
     this.getList();
   },
   methods: {
@@ -94,19 +108,17 @@ export default {
       this.getList();
     },
     getList() {
-      this.listLoading = false;
-      new Array(10).fill(1).forEach((item, index) => {
-        this.tableData.push({
-          id: index,
-          productNumber: "123132321",
-          materialName: "物料名称",
-          pipelineCode: "4564646456",
-          classifyName: "hhhh",
-          status: 1,
-          demo: "2023-10-23 12:00:00",
-        });
+      this.listLoading = true;
+      getBigComponentList({
+        workCode: this.workOrderInfo.id,
+        scene: this.sceneType,
+        searchKey:this.queryParams.name
+      }).then((res) => {
+        this.listLoading = false;
+        const { total, pageList } = res.data;
+        this.tableData = (pageList||[]).map((item, index) => ({ ...item, id: index }));
+        this.pageOptions.total=total
       });
-      this.pageOptions.total = 1;
     },
   },
 };

@@ -9,14 +9,21 @@
         :clearable="false"
         @change="handleTemplateChange"
       />
+      <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
+        ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
+      >
     </template>
 
-    <div class="bom-content" v-if="templateChoose">
+    <div class="bom-content" v-if="bomTreeId">
       <div class="bom-content-left">
         <div class="bom-content-left-title">BOM结构</div>
         <div class="bom-tree">
           <bom-tree
+            ref="bomTreeRef"
+            labelWidth="150px"
             :treeData="treeData"
+            :defaultProps="defaultProps"
+            :changeDataEmit="true"
             @nodeClick="handleNodeClick"
             @addNode="addNode"
             @updateNode="updateNode"
@@ -24,9 +31,9 @@
           ></bom-tree>
         </div>
       </div>
-      <div class="bom-content-right">
+      <div class="bom-content-right" v-if="operateRow">
         <div class="operate-wrap">
-          {{ currentSelectNode.treeName }}
+          {{ operateRow.bomName }}
         </div>
         <el-descriptions
           title="基础信息"
@@ -38,19 +45,32 @@
               >打印二维码</el-button
             >
           </template>
-          <el-descriptions-item label="利旧状态">利旧</el-descriptions-item>
-          <el-descriptions-item label="流水码"
-            >18100000000</el-descriptions-item
-          >
-          <el-descriptions-item label="工位码"
-            >18100000000</el-descriptions-item
-          >
-          <el-descriptions-item label="待入库状态"
-            >18100000000</el-descriptions-item
-          >
+          <el-descriptions-item label="利旧状态">{{
+            utilizeStatusMap[operateRow.utilize] || "-"
+          }}</el-descriptions-item>
+          <el-descriptions-item label="BOM类型">{{
+            bomNodeTypeMap[operateRow.bomType]
+          }}</el-descriptions-item>
+          <el-descriptions-item label="流水码">{{
+            operateRow.serialCode || "-"
+          }}</el-descriptions-item>
+          <el-descriptions-item label="工位码">{{
+            operateRow.stationCode || "-"
+          }}</el-descriptions-item>
+          <el-descriptions-item label="待入库状态">{{
+            operateRow.bomStatus === null
+              ? "-"
+              : operateRow.bomStatus
+              ? "待入库"
+              : "已入库"
+          }}</el-descriptions-item>
+          <el-descriptions-item label="备注">{{
+            operateRow.memo || "-"
+          }}</el-descriptions-item>
           <el-descriptions-item label="拆解照片">
             <div>
               <el-upload
+                v-if="operateRow.ptreeId"
                 class="upload-demo"
                 action="#"
                 :on-remove="handleRemove"
@@ -80,12 +100,14 @@
       v-if="showAdd"
       :operateType="operateType"
       :operateRow="operateRow"
+      :workOrderInfo="workOrderInfo"
       modalName="showAdd"
       @closeModal="closeModal"
     ></add-bom>
     <print-modal
       v-if="showPrint"
       modalName="showPrint"
+      :workOrderInfo="workOrderInfo"
       @closeModal="closeModal"
       @printQrCode="printQrCode"
     ></print-modal>
@@ -99,8 +121,10 @@ import PrintModal from "./printModal.vue";
 import BomTree from "@/components/BomTree/index.vue";
 import {
   getBomTemplate,
-  findBomTemplateById,
   getBomByWorkOrderId,
+  addBomTree,
+  updateBomImgNode,
+  delBomTreeNode,
 } from "@/api/overhaul/bomApi.js";
 import { uploadFile } from "@/api/overhaul/fileUploadApi.js";
 import QRCode from "qrcodejs2";
@@ -144,29 +168,31 @@ export default {
       acceptType: "image/*",
       fileList: [],
       treeData: [],
-      //当前选中的节点
-      currentNodeKey: [],
-      currentSelectNode: {},
+      operateRow: {},
+      defaultProps: {
+        children: "children",
+        label: "bomName",
+      },
       //派工配置属性
-      operateRow: null,
       operateType: "add",
       printWin: null, //打印二维码窗口
+      bomTreeId: "",
+      utilizeStatusMap: { 1: "废弃", 2: "利旧", 3: "维修" },
+      bomNodeTypeMap: { 1: "大部件", 2: "物料类别" },
     };
   },
   created() {
     //默认模板回显
-    this.defaultSelectVal = {
-      label: this.workOrderInfo.bomTemplateName,
-      value: this.workOrderInfo.bomTemplateId,
-    };
-    this.templateChoose = this.workOrderInfo.bomTemplateId;
+    if (this.workOrderInfo.bomTemplateId) {
+      this.defaultSelectVal = {
+        label: this.workOrderInfo.bomTemplateName,
+        value: this.workOrderInfo.bomTemplateId,
+      };
+      this.templateChoose = this.workOrderInfo.bomTemplateId;
+      this.oldTemplateChoose = this.workOrderInfo.bomTemplateId;
+    }
     //获取当前工单绑定的bom
-    getBomByWorkOrderId({ id: this.workOrderInfo.id }).then((res) => {
-      debugger;
-      
-      this.getTreeData();
-      
-    });
+    this.getBomTree();
   },
   computed: {
     //只有现场检修时会进行模板选择，后续流程均时同步
@@ -175,6 +201,27 @@ export default {
     },
   },
   methods: {
+    //同步PLM
+    syncPLM() {
+      debugger;
+    },
+    getBomTree() {
+      getBomByWorkOrderId({ workId: this.workOrderInfo.id }).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+          return;
+        }
+        const { id } = res.data;
+        this.bomTreeId = id;
+
+        if (id) {
+          this.treeData = [res.data];
+          // this.oldTemplateChoose = id;
+        } else {
+          this.treeData = [];
+        }
+      });
+    },
     //图片限制
     onExceed() {
       this.$message.error(`最多上传${MAX_IMG_NUM}个附件 `);
@@ -186,9 +233,26 @@ export default {
       uploadFile(formData).then(({ data }) => {
         this.fileList.push({
           fileName: data.fileName,
-          fileUrl: data.url,
+          fileUrl: data.filePath,
           uid: file.uid,
         });
+        this.updateBomImgList();
+      });
+    },
+    updateBomImgList() {
+      if (!this.operateRow) {
+        return;
+      }
+      let params = {
+        bomId: this.operateRow.id,
+        workId: this.workOrderInfo.id,
+        imgList: this.fileList.map((item) => ({
+          imgPath: item.fileUrl,
+          imgName: item.fileName,
+        })),
+      };
+      updateBomImgNode(params).then((res) => {
+        this.getBomTree();
       });
     },
     //删除图片
@@ -206,6 +270,7 @@ export default {
           if (index >= 0) {
             this.fileList.splice(index, 1);
           }
+          this.updateBomImgNode();
         })
         .catch(() => {
           this.$message.info("操作已取消!");
@@ -234,10 +299,17 @@ export default {
         return;
       }
       try {
-        const {
-          data: { bomTreeList },
-        } = await findBomTemplateById(this.templateChoose);
-        this.treeData = bomTreeList || [];
+        addBomTree({
+          workId: this.workOrderInfo.id,
+          bomTemplateId: this.templateChoose,
+        }).then((res) => {
+          if (res.code !== "0") {
+            this.$message.error(res.errMsg);
+            return;
+          }
+          this.$message.success("拆解bom树已生成！");
+          this.getBomTree();
+        });
       } catch (error) {
         this.treeData = [];
       }
@@ -281,20 +353,20 @@ export default {
       });
     },
     /**树节点操作 */
-    addNode(node) {
-      this.operateRow = node;
+    addNode(node, data) {
+      this.operateRow = data;
       this.operateType = "add";
       this.openModal("showAdd");
     },
-    updateNode(node) {
-      this.operateRow = node;
+    updateNode(node, data) {
+      this.operateRow = data;
       this.operateType = "update";
       this.openModal("showAdd");
     },
     //删除
     removeNode(node, data) {
       this.$confirm(
-        `此操作将永久删除该${data.treeName}节点, 是否继续?`,
+        `此操作将永久删除该${data.bomName}节点, 是否继续?`,
         "提示",
         {
           confirmButtonText: "确定",
@@ -304,7 +376,17 @@ export default {
         }
       )
         .then(() => {
-          this.$message.success("操作成功");
+          delBomTreeNode({
+            workId: this.workOrderInfo.id,
+            bomId: data.id,
+          }).then((res) => {
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+              return;
+            }
+            this.$message.success("操作成功");
+            this.getBomTree();
+          });
         })
         .catch(() => {
           this.$message.info("操作已取消!");
@@ -321,17 +403,15 @@ export default {
     },
     /**处理图片 */
     handleRemove(file, fileList) {
+      debugger;
       console.log(file, fileList, this.fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
     },
     /**
      * 关闭弹窗
      */
     closeModal(modeName, isSearch = false) {
       this[modeName] = false;
-      isSearch && this.getList();
+      isSearch && this.getBomTree();
     },
     /**
      *  打开弹窗
@@ -343,7 +423,11 @@ export default {
      * 树节点选中时操作
      */
     handleNodeClick(data) {
-      this.currentSelectNode = data;
+      this.operateRow = data;
+      this.fileList = (data.imgList || []).map((item) => ({
+        fileName: item.imgName,
+        fileUrl: item.imgPath,
+      }));
     },
     //二维码打印
     printQrCode(targetValue) {
@@ -351,11 +435,11 @@ export default {
       let dom = ""; // 拼接的字符串
       targetValue.forEach((item, i) => {
         dom += `<div style='page-break-after:always'>
-        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black' colspan='2'>${item}</th>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black' colspan='2'>${this.workOrderInfo.prodNumber}</th>
         <td rowspan='3' colspan='3'><div id='${item}' style='text-align: center'></div></td>
         </tr>
-        <tr style='border: 1px solid black'> <td colspan='2' style='border: 1px solid black;text-align: center'>${item}</td></tr>
-        <tr style='border: 1px solid black'> <td colspan='1' style='border: 1px solid black;text-align: center'>${item}</td></tr>
+        <tr style='border: 1px solid black'> <td colspan='2' style='border: 1px solid black;text-align: center'>${this.workOrderInfo.projName}</td></tr>
+        <tr style='border: 1px solid black'> <td colspan='1' style='border: 1px solid black;text-align: center'>${this.workOrderInfo.prodModel}</td></tr>
         </table>
         </div>
         `;

@@ -38,7 +38,7 @@
         </div>
         <plan-status-legend></plan-status-legend>
       </div>
-      <div class="wp hp app-containerC">
+      <div class="wp hp app-containerC" style="height: fit-content;">
         <div class="app-container app-containerC">
           <div class="otherCon wp" id="psMainPlan">
             <el-table stripe ref="tableRef" :height="'100%'" highlight-current-row border
@@ -46,6 +46,7 @@
                     :data="dataList" @selection-change="selectChange" style="font-size: 0.7rem" >
               <el-table-column
                 header-align="center"
+                align="center"
                 type="selection"
                 width="50">
               </el-table-column>
@@ -99,8 +100,8 @@
                 </template>
               </el-table-column>
             </el-table>
+            <pagination :total="total" :page="pageNum" :limit="pageSize" :layout="'total, sizes, prev, pager, next'" @pagination="handlePagination" class="searchCon wp" />
           </div>
-          <pagination :total="total" :page="pageNum" :limit="pageSize" :layout="'total, sizes, prev, pager, next'" @pagination="handlePagination" class="searchCon wp" />
         </div>
       </div>
     </el-card>

@@ -575,17 +575,17 @@ const INSTRUMENT_COLUMNS = [
         width: 50
     },
     {
-        prop: "productNumber",
+        prop: "toolName",
         label: "工器具名称",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "procedureLevel",
         label: "工序组织",
         align: "center",
     },
     {
-        prop: "num",
+        prop: "toolNum",
         label: "数量",
         align: "center",
     },
@@ -641,38 +641,38 @@ const BIG_COMPONENTS_COLUMNS = [
         width: 50
     },
     {
-        prop: "deviceName",
+        prop: "equipmentType",
         label: "大件设备类别",
         align: "center",
     },
     {
-        prop: "deviceModelName",
+        prop: "equipmentModel",
         label: "设备类型",
         align: "center",
     },
     {
-        prop: "deviceNumber",
+        prop: "equipmentNumber",
         label: "设备编号",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "organization",
         label: "工序组织",
         align: "center",
     },
 
     {
-        prop: "user",
+        prop: "receivePerson",
         label: "领用人",
         align: "center",
     },
     {
-        prop: "useTime",
+        prop: "receiveDate",
         label: "领用时间",
         align: "center",
     },
     {
-        prop: "useStatus",
+        prop: "status",
         label: "设备空闲状态",
         align: "center",
     }

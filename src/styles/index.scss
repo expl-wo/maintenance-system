@@ -1068,38 +1068,38 @@ input::-webkit-inner-spin-button {
 }
 
 .Cancel{
-  background-color: $Cancel;
+  background-color: $Cancel!important;;
 }
 .Back{
-  background-color: $Back;
+  background-color: $Back!important;;
 }
 .Normal{
-  background-color: $Normal;
+  background-color: $Normal!important;;
 }
 .HaveGx{
-  background-color: $HaveGx;
+  background-color: $HaveGx!important;;
 }
 .Suspended{
-  background-color: $Suspended;
+  background-color: $Suspended!important;;
 }
 .Plan{
-  background-color: $Plan;
+  background-color: $Plan!important;
   @include colorPadding
 }
 .Start{
-  background-color: $Start;
+  background-color: $Start!important;;
   @include colorPadding
 }
 .Report{
-  background-color: $Report;
+  background-color: $Report!important;;
 }
 .Finished{
-  background-color: $Finished;
+  background-color: $Finished!important;;
   color: #000;
   @include colorPadding
 }
 .overDueUnfinished{
-  background-color: $overDueUnfinished;
+  background-color: $overDueUnfinished!important;;
 }
 
 .defaultColor{

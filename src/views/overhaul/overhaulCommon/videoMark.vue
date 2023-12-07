@@ -1,14 +1,10 @@
 <template>
   <div class="video-box">
     <div class="video-content">
-      <div class="video-content-left">
+      <div class="video-content-left" v-loading="treeLoading">
         <div class="video-content-left-title">工序结构</div>
         <div class="video-content-left-search">
-          <el-input
-            
-            placeholder="输入关键字进行过滤"
-            v-model="filterText"
-          >
+          <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           </el-input>
         </div>
 
@@ -27,7 +23,6 @@
         </div>
         <div class="video-form">
           <el-select
-            
             v-model="videoForm.channelCodes"
             class="filter-item"
             placeholder="请选择"
@@ -43,23 +38,24 @@
             v-model="videoForm.videoStartTime"
             type="datetime"
             :clearable="false"
-            
             placeholder="选择开始日期"
+            @change="videoStartTimeChange"
           >
           </el-date-picker>
           <el-date-picker
+            :disabled="!videoForm.videoStartTime"
             v-model="videoForm.videoEndTime"
             type="datetime"
             :clearable="false"
-            
             placeholder="选择结束日期"
+            :disabled-date="disabledDate"
           >
           </el-date-picker>
           <div class="video-form-operate">
-            <el-button type="primary" >
-              <el-icon><Search /></el-icon>查询
+            <el-button type="primary" @click="search">
+              <el-icon><Search /></el-icon>查询录像
             </el-button>
-            <el-button type="info" >
+            <el-button type="info" @click="reset">
               <el-icon><RefreshLeft /></el-icon> 重置
             </el-button>
           </div>
@@ -75,144 +71,36 @@
 <script>
 import DHPlayer from "@/components/DHPlayer/index";
 import dayjs from "dayjs";
-const testTreeData = [
-  {
-    procedureCode: "",
-    procedureName: "根节点",
-    procedureType: "0",
-    uniqueCode: "0",
-    childNodeList: [
-      {
-        procedureCode: "4",
-        procedureName: "测试_标准工序_1",
-        procedureType: "1",
-        uniqueCode: "1_4",
-        childNodeList: [
-          {
-            procedureCode: "4",
-            procedureName: "工序头_4",
-            procedureType: "2",
-            uniqueCode: "2_4",
-            childNodeList: [
-              {
-                procedureCode: "4",
-                procedureName: "工序行_4",
-                procedureType: "3",
-                uniqueCode: "3_4",
-                childNodeList: [
-                  {
-                    procedureCode: "4",
-                    procedureName: "内容工序_4",
-                    procedureType: "4",
-                    uniqueCode: "4_4",
-                    childNodeList: null,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "5",
-        procedureName: "测试_标准工序_2",
-        procedureType: "1",
-        uniqueCode: "1_5",
-        childNodeList: [
-          {
-            procedureCode: "5",
-            procedureName: "工序头_5",
-            procedureType: "2",
-            uniqueCode: "2_5",
-            childNodeList: [
-              {
-                procedureCode: "5",
-                procedureName: "工序行_5",
-                procedureType: "3",
-                uniqueCode: "3_5",
-                childNodeList: [
-                  {
-                    procedureCode: "5",
-                    procedureName: "内容工序_5",
-                    procedureType: "4",
-                    uniqueCode: "4_5",
-                    childNodeList: null,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "6",
-        procedureName: "测试_标准工序_3",
-        procedureType: "1",
-        uniqueCode: "1_6",
-        childNodeList: [
-          {
-            procedureCode: "6",
-            procedureName: "工序头_6",
-            procedureType: "2",
-            uniqueCode: "2_6",
-            childNodeList: [
-              {
-                procedureCode: "6",
-                procedureName: "工序行_6",
-                procedureType: "3",
-                uniqueCode: "3_6",
-                childNodeList: [
-                  {
-                    procedureCode: "6",
-                    procedureName: "内容工序_6",
-                    procedureType: "4",
-                    uniqueCode: "4_6",
-                    childNodeList: null,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      {
-        procedureCode: "7",
-        procedureName: "测试_标准工序_4",
-        procedureType: "1",
-        uniqueCode: "1_7",
-        childNodeList: [
-          {
-            procedureCode: "7",
-            procedureName: "工序头_7",
-            procedureType: "2",
-            uniqueCode: "2_7",
-            childNodeList: [
-              {
-                procedureCode: "7",
-                procedureName: "工序行_7",
-                procedureType: "3",
-                uniqueCode: "3_7",
-                childNodeList: [
-                  {
-                    procedureCode: "7",
-                    procedureName: "内容工序_7",
-                    procedureType: "4",
-                    uniqueCode: "4_7",
-                    childNodeList: null,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
+import { PROCESS_NODE_ENUM } from "@/views/overhaul/constants.js";
+import { getBindDev, getWorkTree } from "@/api/overhaul/workOrderApi.js";
 export default {
   name: "VideoMark",
   components: {
-    DHPlayer
+    DHPlayer,
+  },
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    //指派人员信息
+    appointInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
+    sceneType: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
@@ -224,11 +112,15 @@ export default {
       //当前选中的节点
       currentSelectNode: {},
       filterText: "",
-      channelCodesOptions: [{ label: "视频1", value: 1 }],
+      treeLoading: false,
+      channelCodesOptions: [],
+      templateChoose: "",
+      templateName: "",
+      workTreeStatus: "",
       videoForm: {
         channelCodes: undefined,
         videoStartTime: dayjs().startOf("day"),
-        videoEndTime: dayjs().startOf("day"),
+        videoEndTime: dayjs().endOf("day"),
       },
     };
   },
@@ -236,36 +128,111 @@ export default {
     filterText(val) {
       this.$refs["treeRef"].filter(val);
     },
-  },
-  mounted() {
-    this.getTreeData();
+    workOrderInfo: {
+      handler(val) {
+        const { procedureTemplateName, procedureTemplateCode } =
+          this.workOrderInfo;
+        this.templateChoose = procedureTemplateCode || undefined;
+        this.templateName = procedureTemplateName || "";
+        if (this.templateChoose && this.templateName) {
+          this.getTreeData();
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
+    reset() {
+      this.videoForm = {
+        channelCodes: undefined,
+        videoStartTime: dayjs().startOf("day"),
+        videoEndTime: dayjs().endOf("day"),
+      };
+    },
+    search() {
+      if (
+        this.videoForm.channelCodes &&
+        this.videoForm.videoStartTime &&
+        this.videoForm.videoEndTime
+      ) {
+        debugger;
+      } else {
+        this.$message.error("请完善查询条件！");
+      }
+    },
+    videoStartTimeChange(val) {
+      if (dayjs(val).isAfter(dayjs(this.videoForm.videoEndTime))) {
+        this.videoForm.videoEndTime = dayjs(val).endOf("day");
+      }
+    },
+    //禁用时间主要用于禁止开始时间早于结束时间
+    disabledDate(Date) {
+      return dayjs(Date).isBefore(dayjs(this.videoForm.videoStartTime));
+    },
     /**
      * 树节点过滤
      */
     filterNode(value, data) {
       if (!value) return true;
-      return data.procedureName.indexOf(value) !== -1;
+      return data[this.defaultProps.label].indexOf(value) !== -1;
     },
-
+    //获取通道list
+    getChannelList() {
+      getBindDev({
+        workCode: this.workOrderInfo.id,
+        workOrderSceneType: this.sceneType,
+        procedureCode: this.currentSelectNode.procedureCode,
+        procedureType: this.currentSelectNode.procedureType,
+        ifShowChild:true,
+      }).then((res) => {
+        const { channelInfoList } = res.data;
+        this.channelCodesOptions = (channelInfoList || []).map((item) => ({
+          label: item.channelName,
+          value: item.channelCode,
+        }));
+      });
+    },
     /**
      * 树节点选中时操作
      */
     handleNodeClick(data) {
-      if (data.type) {
-        this.currentSelectNode = data;
-      }
+      this.currentSelectNode = data;
+      this.getChannelList();
     },
 
     /**
      * 获取树的 数据
      */
     getTreeData() {
-      this.treeData = testTreeData;
-      this.$nextTick(() => {
-        // this.$refs["treeRef"].setCurrentKey("001");
-      });
+      if (!this.templateChoose) return;
+      this.treeLoading = true;
+      getWorkTree({
+        workCode: this.workOrderInfo.id,
+        templateCode: this.templateChoose,
+        procedureTypeList: [
+          PROCESS_NODE_ENUM.NORM,
+          PROCESS_NODE_ENUM.MIDDLE,
+          PROCESS_NODE_ENUM.STEP,
+        ],
+        workOrderSceneType: this.sceneType,
+      })
+        .then(({ data: { oaExamineStatus, treeNode } }) => {
+          if (!treeNode) return;
+          this.treeData = [treeNode];
+          this.workTreeStatus = +oaExamineStatus || 0;
+          this.$nextTick(() => {
+            if (this.$refs["treeRef"]) {
+              this.$refs["treeRef"].setCurrentKey(
+                this.treeData[0].uniqueCode || "root"
+              );
+            }
+            this.currentSelectNode = this.$refs["treeRef"].getCurrentNode();
+            this.getChannelList();
+          });
+        })
+        .finally(() => {
+          this.treeLoading = false;
+        });
     },
   },
 };

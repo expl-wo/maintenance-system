@@ -3,12 +3,13 @@
   <el-row>
     <el-col :span="10">
       <span class="el-descriptions__title" style="font-size: 14px">{{
-        contentLabel
+        contentHeader
       }}</span>
     </el-col>
     <el-col :span="6" class="work-content-title">
       <el-date-picker
         v-model="form.date"
+        v-if="[0, 1].includes(executionFrequency)"
         type="date"
         placeholder="日期"
         :clearable="false"
@@ -20,10 +21,12 @@
         style="width: 100%"
       />
       <el-select
+        v-if="[0].includes(executionFrequency)"
         v-model="form.time"
         class="mgl12"
         placeholder="时间"
         @change="searchChange"
+        @visible-change="visibleChange"
       >
         <template #prefix
           ><el-icon><Clock /></el-icon
@@ -52,27 +55,31 @@
   </el-row>
   <el-row>
     <el-col :span="6">
-      <el-form-item label="反馈内容">
+      <el-form-item :label="contentLabel" :required="isRequired">
         <el-input
-          v-if="contentType === 1"
+          v-if="contentType === 0"
           v-model="form.contentData"
+          :maxlength="maximumContentLength"
           clearable
         />
         <el-input
-          v-else-if="contentType === 6"
+          v-else-if="contentType === 5"
           v-model="form.contentData"
+          :maxlength="maximumContentLength"
           autosize
           type="textarea"
           clearable
         />
-        <el-input-number
-          v-else-if="contentType === 2"
-          v-model="form.contentData"
-          :min="1"
-          :max="10"
-        />
+        <template v-else-if="contentType === 1">
+          <el-input-number
+            v-model="form.contentData"
+            :min="lowerLimit"
+            :max="upperLimit"
+          />
+          {{ dataUnit }}
+        </template>
         <el-date-picker
-          v-else-if="contentType === 3"
+          v-else-if="contentType === 2"
           v-model="form.contentData"
           type="date"
           placeholder="Pick a date"
@@ -80,32 +87,37 @@
         />
         <el-radio-group
           v-model="form.contentData"
-          v-else-if="contentType === 4"
+          v-else-if="contentType === 3"
         >
-          <el-radio :label="3">Option A</el-radio>
-          <el-radio :label="6">Option B</el-radio>
-          <el-radio :label="9">Option C</el-radio>
+          <el-radio
+            v-for="(item, index) in dictionaryContent"
+            :key="index"
+            :label="item.code"
+            >{{ item.name }}</el-radio
+          >
         </el-radio-group>
         <el-checkbox-group
           v-model="form.contentData"
-          v-else-if="contentType === 5"
+          v-else-if="contentType === 4"
         >
-          <el-checkbox label="Option A" />
-          <el-checkbox label="Option B" />
-          <el-checkbox label="Option C" />
-          <el-checkbox label="disabled" />
-          <el-checkbox label="selected and disabled" />
+          <el-checkbox
+            v-for="(item, index) in dictionaryContent"
+            :key="index"
+            :label="item.name"
+            :value="item.code"
+          />
         </el-checkbox-group>
       </el-form-item>
     </el-col>
   </el-row>
-  <el-row>
+  <el-row v-if="requireImageFile">
     <el-col :span="12">
       <el-form-item label="附件">
         <multi-upload-vue
           :limit="3"
           :fileUrl="fileUrl"
           :fileName="fileName"
+          accept="video/*,image/*"
           @uploadSuccess="uploadSuccess"
         ></multi-upload-vue>
       </el-form-item>
@@ -117,14 +129,74 @@
 import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 import dayjs from "dayjs";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import { getWorkStatusByTime } from "@/api/overhaul/workOrderApi.js";
 export default {
   components: {
     multiUploadVue,
   },
   props: {
+    currentSelectNode: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    sceneType: {
+      type: String,
+      default: "",
+    },
+    id: {
+      type: String,
+      default: "",
+    },
+    lowerLimit: {
+      type: Number,
+      default: 0,
+    },
+    dictionaryContent: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    executionFrequency: {
+      type: Number,
+      default: 0,
+    },
+    upperLimit: {
+      type: Number,
+      default: 100,
+    },
+    isRequired: {
+      type: Boolean,
+      default: true,
+    },
     contentType: {
       type: Number,
-      default: 1, //1为文本 2为数字 3为时间 4为radio 5为checkbox 6文本域
+      default: 1, //0为文本 1为数字 2为时间 3为radio 4为checkbox 5文本域
+    },
+    dataUnit: {
+      type: String,
+      default: "",
+    },
+    maximumContentLength: {
+      type: String,
+      default: "1000",
+    },
+    requireImageFile: {
+      type: Boolean,
+      default: true,
+    },
+    contentHeader: {
+      type: String,
+      default: "",
     },
     contentLabel: {
       type: String,
@@ -133,12 +205,15 @@ export default {
   },
   data() {
     return {
+      COMMON_FORMAT,
       fileUrl: "",
       fileName: "",
       timeOptions: [],
+      opearationId: "",
+      successList: [],
       form: {
         date: dayjs().format(COMMON_FORMAT),
-        time: "00:00",
+        time: "01:00",
         contentData: "",
         fileUrl: "",
         fileName: "",
@@ -148,42 +223,127 @@ export default {
   created() {
     this.getTimeOptions();
   },
-  methods: {
-    panelChange(data, mode) {
-      debugger;
+  watch: {
+    dictionaryContent: {
+      handler(val) {
+        if (Array.isArray(val) && val.length && !this.form.contentData) {
+          this.form.contentData = val[0].code;
+        }
+      },
+      immediate: true,
     },
+  },
+  computed: {
+    beginTime() {
+      let beginTime = "";
+      if (this.executionFrequency === 0) {
+        beginTime = dayjs(this.form.date)
+          .hour(this.form.time.split(":")[0])
+          .minute(0)
+          .second(0)
+          .format(COMMON_FORMAT);
+      } else if (this.executionFrequency === 1) {
+        beginTime = dayjs(this.form.date).endOf("day").format(COMMON_FORMAT);
+      }
+      return beginTime;
+    },
+  },
+  methods: {
+    visibleChange(open){
+      if(open){
+        let params = {
+            beginTime: dayjs(this.form.date).startOf("day").format(COMMON_FORMAT),
+            endTime: dayjs(this.form.date).endOf("day").format(COMMON_FORMAT),
+          };
+          this.getStatus(params.beginTime,params.endTime);
+      }
+    },
+    panelChange(data, mode) {
+      if (mode === "month") {
+        let params;
+        //每小时
+        if (this.executionFrequency === 0) {
+          params = {
+            beginTime: dayjs(data).startOf("day").format(COMMON_FORMAT),
+            endTime: dayjs(data).endOf("day").format(COMMON_FORMAT),
+          };
+        } else {
+          params = {
+            beginTime: dayjs(data)
+              .startOf("month")
+              .startOf("day")
+              .format(COMMON_FORMAT),
+            endTime: dayjs(data)
+              .endOf("month")
+              .endOf("day")
+              .format(COMMON_FORMAT),
+          };
+        }
+        this.getStatus(params.beginTime,params.endTime);
+      }
+    },
+    getStatus(beginTime,endTime){
+      getWorkStatusByTime({
+          // workCode: this.workOrderInfo.id,
+          // craftId: this.currentSelectNode.procedureCode,
+          // operationCode:this.id,
+          // beginTime,
+          // endTime,
+          workScene: this.sceneType,
+          workCode: "20220705093359824311000301954583",
+          craftCode: "20231125",
+          operationCode: "5",
+          beginTime: "2023-12-05 19:00:00",
+          endTime: "2023-12-05 20:00:00",
+        }).then((res) => {
+          const result = res.data.value;
+          if (this.executionFrequency === 0) {
+            const success = result.map((item) => {
+              return dayjs(item).startOf("hour").format("HH:mm");
+            });
+             this.getTimeOptions(false,success)
+          } else {
+            this.successList = [];
+            this.successList = result.forEach((item) => {
+              return dayjs(item).format("YYYY-MM-DD");
+            });
+          }
+        });
+    },
+    //查询条件
     searchChange() {
-      console.log("筛选发生变化");
+      this.$emit("searchChange", this.id, this.beginTime);
     },
     //禁用时间主要用于禁止开始时间早于结束时间
     disabledDate(Date) {
       return dayjs(Date).isAfter(dayjs());
     },
-    getTimeOptions() {
+    getTimeOptions(isSetTime =true,targetStatus=[]) {
       this.timeOptions = [];
       new Array(24).fill(1).forEach((item, index) => {
         this.timeOptions.push({
-          label: `${String(index).padStart(2, "0")}:00`,
-          value: `${String(index).padStart(2, "0")}:00`,
-          status: 0,
+          label: `${String(index).padStart(2, "0")}:00 ~ ${String(index + 1).padStart(2, "0")}:00`,
+          value: `${String(index + 1 ).padStart(2, "0")}:00`,
+          status: targetStatus.includes(`${String(index + 1 ).padStart(2, "0")}:00`),
         });
       });
-      this.form.time = dayjs().startOf("hour").format("HH:mm"); //设置临近的时间点
+      if(isSetTime){
+        this.form.time = dayjs().startOf("hour").format("HH:mm"); //设置临近的时间点
+      }
+      
     },
     uploadSuccess(fileName, fileList) {
       this.form.fileName = fileName;
       this.form.fileUrl = fileList.map((item) => item.fileUrl || []).join("|");
     },
     setCellClassName(data) {
-      const successList = ["2023-12-03", "2023-12-02"];
-      const failList = ["2023-12-01"];
       let time = dayjs(data).format("YYYY-MM-DD");
-      if (successList.includes(time)) {
+      if (this.successList.includes(time)) {
         return "success-pick";
-      } else if (failList.includes(time)) {
-        return "warn-pick";
-      } else {
+      } else if (dayjs(data).isAfter(dayjs())) {
         return "";
+      } else {
+        return "warn-pick";
       }
     },
   },

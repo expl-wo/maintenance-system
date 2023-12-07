@@ -31,10 +31,10 @@ const substr = () => {
 
 const getStatus = () => {
   //判断状态
-  let dictList = getDictListByKey('processStatus');
+  let dictList = getDictListByKey('mainPlanStatus');
   let clz = '';
   dictList.forEach(item => {
-    if (item.code == props.item.processStatus) {
+    if (item.code == props.item._status) {
       clz = item.remark ? item.remark : 'normal';
     }
   })

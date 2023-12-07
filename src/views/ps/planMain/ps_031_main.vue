@@ -69,7 +69,6 @@
           <el-button @click="handleAddRemark" v-if="$isAuth('mainPlan_editData')">添加备注</el-button>
           <el-button @click="handleShowRemarkList" v-if="$isAuth('mainPlan_none')">查看历史备注</el-button>
           <el-button @click="handleShowHistoryChangeDelivery" v-if="$isAuth('mainPlan_none')">查看厂内完工时间申请记录</el-button>
-<!--          <el-button @click="handleChangeRepairStatus" v-if="$isAuth('mainPlan_editData')">返修</el-button>-->
           <el-button @click="handleChangeCompletionTime" v-if="false">修改生产完工时间</el-button>
           <el-button @click="exportMainPlan" v-if="$isAuth('mainPlan_editData')">导出</el-button>
           <el-button @click="exportBomSum" v-if="$isAuth('mainPlan-exportBom')">导出BOM汇总</el-button>
@@ -89,7 +88,7 @@
           <el-table-column header-align="center" align="center" type="selection" fixed width="40" property="selection"
           ></el-table-column>
           <el-table-column label="操作"
-                           align="center" width="78" fixed property="caozuo">
+                           align="center" width="85" fixed property="caozuo">
             <template #default="scope">
               <el-button-group>
                 <el-button type="default"
@@ -104,7 +103,6 @@
             label="生产号"
             property="productNo"
             fixed
-
             width="110"
           >
           </el-table-column>
@@ -301,17 +299,6 @@
               {{ dateFilter(scope.row.orderIssuedTime) }}
             </template>
           </el-table-column>
-          <el-table-column
-            header-align="center"
-            align="center"
-            label="工序先后关系限制"
-            property="limitRelation"
-            width="80"
-          >
-            <template #default="scope">
-              <xui-dictionary itemCode="flag01" :code="scope.row.limitRelation"></xui-dictionary>
-            </template>
-          </el-table-column>
           <el-table-column v-for="(item, index) in moreHeaders" :key="index" :label="item.label"
                            align="center"
                            :class-name="item.className"
@@ -388,6 +375,7 @@ import changeCompletionTimeDialog from './dialog/changeCompletionTimeDialog'
 import limitRelationDialog from './dialog/limitRelationDialog'
 import changePlanCompletimeDialog from './dialog/changePlanCompletimeDialog'
 import moment from 'moment'
+import cellTransform from '@/views/ps/_public/cell_transform.vue'
 
 const propertyClassFromDict = ['designSource', 'importmentLevel', 'urgentLevel', 'processStatus']
 const frozenDesc = '冻结'
@@ -396,7 +384,7 @@ export default {
   components: { Pagination, XuiDictionary, opStatusDialog, OpPurchaseTreeDialog,opStartDateDialog,
     timeLimitDialog, changeDeliveryDialog, selectUserDialog, processFlowchart,configColumnDialog, frozenDialog,
     historyFrozenDialog,remarkDialog,historyRemarkDialog, historyChangeDeliveryDialog,repairDialog,
-    changeCompletionTimeDialog,limitRelationDialog,changePlanCompletimeDialog},
+    changeCompletionTimeDialog,limitRelationDialog,changePlanCompletimeDialog,cellTransform},
   data() {
     return {
       processType: '',
@@ -459,7 +447,7 @@ export default {
       let dictList = getDictListByKey("mainPlanStatus");
       let dictArr = [];
       dictList.forEach(item => {
-        if (item.code != 4) {
+        if (item.code != 5||item.code != 25) {
           dictArr.push(item.code);
         }
       });
@@ -467,7 +455,7 @@ export default {
       console.log("主计划状态字典:", this.listQuery.status);
     } else {
       //状态为冻结和已开工 已下发
-      this.listQuery.status = [-2, 2, 10];
+      this.listQuery.status = [-50, 20, 15];
     }
     this.initDate()
   },
@@ -523,10 +511,11 @@ export default {
                 finishDate = "(" + finishDate.getFullYear() + "-" + month + "-" + strDate + ")";
               }
               item["_" + secondItem.nodeId + "_startDate"] = (secondItem.type === 0 || secondItem.type === 1) ? secondItem.startDate : secondItem.nodeDate;
-              item["_" + secondItem.nodeId + "_status"] = secondItem.status;
-              item["_" + secondItem.nodeId + "_progressStatus"] = transformDictDetail("nodeWeekDeStatus", secondItem.progressStatus) + finishDate;
+              item["_" + secondItem.nodeId + "_status"] = secondItem.pnStatus;//节点状态
+              item["_" + secondItem.nodeId + "_progressStatus"] = transformDictDetail("nodeWeekDeStatus", secondItem.status) + finishDate;//节点进度状态
               item["_" + secondItem.nodeId + "_nodeId"] = secondItem.id;
-              item["_" + secondItem.nodeId + "_finishDate"] = secondItem.finishDate;
+              // item["_" + secondItem.nodeId + "_finishDate"] = secondItem.finishDate;
+              item["_" + secondItem.nodeId + "_finishDate"] = secondItem.nodeDate;
             });
           }
         });

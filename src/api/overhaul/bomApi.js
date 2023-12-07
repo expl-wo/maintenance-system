@@ -1,8 +1,40 @@
 import request from '@/utils/request'
+//修改BOM节点 bom/update-child
+export function updateBomNode(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/bom/update-child',
+        method: 'post',
+        data
+    })
+}
+//修改bom 模板图片
+export function updateBomImgNode(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/bom/update-child-img',
+        method: 'post',
+        data
+    })
+}
 //添加BOM节点
 export function addBomNode(data) {
     return request({
-        url: '/api/evo-ims-overhaul/bom/addBomInfo',
+        url: '/api/evo-ims-overhaul/bom/add-child',
+        method: 'post',
+        data
+    })
+}
+//新增bom树
+export function addBomTree(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/bom/add',
+        method: 'post',
+        data
+    })
+}
+//删除bom树节点
+export function delBomTreeNode(data) {
+    return request({
+        url: `/api/evo-ims-overhaul/bom/delete-child`,
         method: 'post',
         data
     })
@@ -18,7 +50,7 @@ export function getBomTemplate(data) {
 //通过工单id查询改工单绑定的bom
 export function getBomByWorkOrderId(data) {
     return request({
-        url: '/api/evo-ims-overhaul/bom/bind',
+        url: '/api/evo-ims-overhaul/bom/query-tree',
         method: 'post',
         data
     })
@@ -32,11 +64,11 @@ export function findBomTemplateById(id) {
     })
 }
 //生成二维码内容
-export function createQrCodeText(num) {
+export function createQrCodeText(data) {
     return request({
-        url: '/api/evo-ims-overhaul/bom/generateQRContent',
+        url: '/api/evo-ims-overhaul/bom/generate-qr-code',
         method: 'post',
-        data: { num }
+        data
     })
 }
 //获取物料类别 

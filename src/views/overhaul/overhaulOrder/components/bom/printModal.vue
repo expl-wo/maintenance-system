@@ -25,7 +25,7 @@
         <el-col :span="24">
           <el-form-item label="空白二维码" prop="bomNodeType">
             <el-select v-model="form.bomType" placeholder="请选择">
-              <el-option label="否" :value="0" />
+              <el-option label="否" :value="2" />
               <el-option label="是" :value="1" />
             </el-select>
           </el-form-item>
@@ -50,13 +50,20 @@ export default {
       type: String,
       default: "",
     },
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
 
   data() {
     return {
       form: {
         number: 10,
-        bomType: 0, //空白二维码携带生产号
+        bomType: 1, //空白二维码携带生产号
       },
       rules: {
         number: requiredVerify(),
@@ -68,10 +75,21 @@ export default {
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
         if (valid) {
-          const qrCodeList = ["12313", "4546"];
-          createQrCodeText(this.form.number).then((res) => {
-            debugger;
-            this.$emit("printQrCode", qrCodeList);
+          let params = {};
+          //是否空白二维码
+          params = {
+            generateNum: this.form.number,
+            prodNumber:
+              this.form.bomType === 2 || !this.workOrderInfo.prodNumber
+                ? undefined
+                : this.workOrderInfo.prodNumber,
+          };
+          createQrCodeText(params).then((res) => {
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+              return;
+            }
+            this.$emit("printQrCode", res.data.value);
           });
         }
       });

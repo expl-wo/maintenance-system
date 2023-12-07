@@ -43,6 +43,7 @@
                 ><Plus
               /></el-icon>
               <el-icon
+                v-if="data.ptreeId"
                 class="mgr5"
                 title="修改"
                 @click.stop="$emit('updateNode', node, data)"
@@ -50,7 +51,7 @@
               /></el-icon>
               <el-icon
                 class="mgr5"
-                 v-if="treeNodeId && data.$treeNodeId !== treeNodeId"
+                v-if="treeNodeId && data.$treeNodeId !== treeNodeId"
                 title="删除"
                 @click.stop="$emit('removeNode', node, data)"
                 ><Delete
@@ -85,6 +86,10 @@ export default {
       default() {
         return [];
       },
+    },
+    changeDataEmit: {
+      type: Boolean,
+      default: false,
     },
     defaultProps: {
       type: Object,
@@ -126,7 +131,10 @@ export default {
               val && this.$refs["bomTreeRef"].getNode(this.treeData[0]);
             this.treeNodeId = treeNodeId ? treeNodeId.id : 0;
             let node = this.$refs["bomTreeRef"].getNode(this.currentNode);
-            this.$refs["bomTreeRef"].setCurrentNode(node ? this.currentNode : this.treeData[0]);
+            this.$refs["bomTreeRef"].setCurrentNode(
+              node ? this.currentNode : this.treeData[0]
+            );
+            this.changeDataEmit &&  this.$emit("nodeClick", this.$refs["bomTreeRef"].getCurrentNode());
           }
         });
       },
@@ -154,6 +162,11 @@ export default {
 $search-height: 36px;
 .mgr5 {
   margin-right: 5px;
+}
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .bom-tree-container {
   height: 100%;

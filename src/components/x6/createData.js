@@ -83,6 +83,7 @@ class CreateData {
 
   //构造节点数据
   createNode() {
+    debugger
     let nodeList = [];
     this.data.forEach((item, index) => {
       if(this.isValidNode(item)){
@@ -179,6 +180,7 @@ class CreateData {
 
   //获取节点状态，包括提前、滞后、暂停  原材料、电抗  不是所有
   getNodeStatusAndTime(node){
+    debugger
     let sourceNode = this.sourceDataList.find(item=>{
       return node.id == item.nodeId;
     })
@@ -188,12 +190,12 @@ class CreateData {
         notHave: true,
       }
     }
-    let timeStatus = '', typeStatus = '';
-    if(sourceNode.type == Constants.processType.product) {
+    let timeStatus = 'forward', typeStatus = '';
+    if(sourceNode.pnType == Constants.processType.product) {
       typeStatus = 'product';
-    }else if(sourceNode.type == Constants.processType.design){
+    }else if(sourceNode.pnType == Constants.processType.design){
       // typeStatus = 'design'
-    }else if(sourceNode.type == Constants.processType.purchase){
+    }else if(sourceNode.pnType == Constants.processType.purchase){
       typeStatus = 'purchase'
     }
 

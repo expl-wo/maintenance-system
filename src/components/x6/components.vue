@@ -27,13 +27,14 @@
       </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue'
 import {getFontWidth} from '@/utils'
 
-export default {
-  name: "components",
+export default defineComponent({
+  name: 'components',
   inject: ["getGraph", "getNode"],
-  data(){
+  data() {
     return {
       backData: {},
       data: '',
@@ -43,7 +44,6 @@ export default {
       statusClass: ''
     }
   },
-
   mounted() {
     const self = this;
     const node = this.getNode();
@@ -75,7 +75,8 @@ export default {
       self.selected = current.selected;
     });
   },
-}
+})
+
 </script>
 
 <style scoped lang="scss">

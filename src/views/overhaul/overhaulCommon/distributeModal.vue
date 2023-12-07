@@ -27,6 +27,7 @@
             <select-page
               ref="selectRef"
               v-model="form.channelCodes"
+              :defaultSelectVal="defaultSelectVal"
               :getOptions="getChannelOptions"
               multiple
               @change="channelChange"
@@ -117,13 +118,13 @@
         v-if="operateRow === 4"
         v-model="form.taskTeamPerson"
         :options="devOptions"
-        :props="{ multiple: true }"
+        :props="{ multiple: true, emitPath: false }"
       >
-        <template #default="{ node, data }">
+        <template #default="{ data }">
           <span>{{ data.label }}</span>
 
           <el-popover
-            v-if="node.isLeaf"
+            v-if="data.equipmentModel"
             placement="bottom"
             :width="200"
             trigger="click"
@@ -159,6 +160,9 @@ import {
   bindDispatch,
   bindBigComponent,
   getBigComponent,
+  getBindDev,
+  getBindReview,
+  getBindDispatch,
 } from "@/api/overhaul/workOrderApi.js";
 import { getChannelList } from "@/api/overhaul/deviceListApi.js";
 import { getPersonByWorkClazz } from "@/api/overhaul/workClazzApi.js";
@@ -240,12 +244,10 @@ export default {
         groupLeader: requiredVerify(),
         date: requiredVerify(),
       },
-      assistantGroupLeaderOptions: [{ label: "张学友", value: 1 }],
-      approvalPersonlOptions: [{ label: "张学友", value: 1 }],
-      membersOptions: [{ label: "四大天王", value: 1 }],
-      groupLeaderOptions: [{ label: "四大天王", value: 1 }],
-      channelOptions: [{ label: "视频通道1", value: 1 }],
+      defaultSelectVal: [],
+      channelOptions: [],
       taskPersonOptions: [], //任务人员
+      allBigList: [],
     };
   },
   computed: {
@@ -262,20 +264,87 @@ export default {
     },
   },
   mounted() {
-    if (this.operateRow === 4) {
-      getBigComponent().then(({ data }) => {
-        this.getDevOptions(data);
-        // this.devOptions.forEach((element) => {
-        //   element.children = data[element.value].map((item) => ({
-        //     ...item,
-        //     label: item.equipmentModel,
-        //     value: item.equipmentTypeId,
-        //   }));
-        // });
-      });
+    let infoParams;
+    let work = this.getProcedureInfoList(3);
+    if (work.length === 1) {
+      infoParams = {
+        workCode: this.workOrderInfo.id,
+        workOrderSceneType: this.sceneType,
+        procedureCode: work[0].procedureCode,
+        procedureType: work[0].procedureType,
+      };
     }
-
-    this.getPersonOptions(this.appointInfo.taskGroupId || "120");
+    if (this.operateRow === 4) {
+      this.allBigList = [];
+      this.getDevOptions();
+      const middleId = this.devOptions.map((item) => item.value);
+      getBigComponent(middleId).then(({ data }) => {
+        this.devOptions.forEach((element) => {
+          const target = data[+element.value];
+          element.disabled = true;
+          if (!target) return;
+          element.children = element.children.map((el) => {
+            const chil = target[el.value].map((item) => ({
+              ...item,
+              label: item.equipmentModel,
+              value: item.equipmentNumber + "_" + item.middleCode,
+            }));
+            this.allBigList.push(...chil);
+            return {
+              ...el,
+              children: chil,
+              disabled: !chil.length,
+            };
+          });
+          element.disabled = !element.children.length;
+        });
+        console.log(this.devOptions);
+      });
+    } else if (this.operateRow === 3) {
+      if (infoParams) {
+        getBindDispatch(infoParams).then((res) => {
+          const {
+            teamLeaderUserInfoList,
+            memberUserInfoList,
+            deputyTeamLeaderUserInfoList,
+          } = res.data;
+          this.form.groupLeader = teamLeaderUserInfoList.length
+            ? teamLeaderUserInfoList[0].userId
+            : undefined;
+          this.form.assistantGroupLeader = deputyTeamLeaderUserInfoList.length
+            ? deputyTeamLeaderUserInfoList[0].userId
+            : undefined;
+          this.form.members = memberUserInfoList.map((item) => item.userId);
+        });
+      }
+      //派工
+      this.getPersonOptions(this.appointInfo.taskGroupId || "120");
+    } else if (this.operateRow === 2) {
+      if (infoParams) {
+        getBindReview(infoParams).then((res) => {
+          const { checkType, reviewUserInfoList } = res.data;
+          this.form.checkType = checkType || "NOW";
+          this.form.approvalPerson = reviewUserInfoList.length
+            ? reviewUserInfoList[0].userId
+            : undefined;
+        });
+      }
+      //复核
+      this.getPersonOptions(this.appointInfo.taskGroupId || "120");
+    } else {
+      //视频
+      if (infoParams) {
+        getBindDev(infoParams).then((res) => {
+          const { channelInfoList } = res.data;
+          this.form.channelCodes = channelInfoList.map(
+            (item) => item.channelCode
+          );
+          this.defaultSelectVal = channelInfoList.map(
+            (item) => ({label:item.channelName,value:item.channelCode})
+          );
+        });
+      }
+    }
   },
   methods: {
     /**获取大件设备选项 */
@@ -289,22 +358,12 @@ export default {
             {
               value: "BUSY",
               label: "占用",
-              children: [
-                {
-                  value: "1",
-                  label: "设备1",
-                },
-              ],
+              children: [],
             },
             {
               value: "FREE",
               label: "空闲",
-              children: [
-                {
-                  value: "2",
-                  label: "设备2",
-                },
-              ],
+              children: [],
             },
           ],
         }));
@@ -323,7 +382,7 @@ export default {
     /**
      * 获取通道list
      */
-    getChannelOptions() {
+    getChannelOptions(pageOptions) {
       const { pageNum, pageSize, searchKey } = pageOptions;
       let queryParms = {
         pageNum,
@@ -334,11 +393,12 @@ export default {
       return new Promise((resolve, reject) => {
         getChannelList(queryParms).then((res) => {
           resolve({
-            options: res.data.pageList.map((item) => ({
-              label: item.projName,
-              value: item.rowId,
+            options: res.data.pageData.map((item) => ({
+              ...item,
+              label: item.channelName,
+              value: item.channelCode,
             })),
-            totalPage: res.data.allPageNum,
+            totalPage: res.data.totalPage,
           });
         });
       });
@@ -354,7 +414,6 @@ export default {
           label: item.userName,
         }));
         // .filter((item) => taskUserIds.includes(item.value));
-        debugger;
       } else {
         this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
       }
@@ -391,7 +450,13 @@ export default {
             procedureInfoList: this.getProcedureInfoList(3),
             deviceInfoList: this.form.channelList,
           }).then((res) => {
-            debugger;
+            this.saveLoading = false;
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+            } else {
+              this.$message.success("保存成功！");
+              this.handleClose();
+            }
           });
         } else if (this.operateRow === 2) {
           //复核
@@ -405,8 +470,10 @@ export default {
             },
           }).then((res) => {
             this.saveLoading = false;
-            if (res.code === "0") {
-              this.$message.success("操作成功！");
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+            } else {
+              this.$message.success("保存成功！");
               this.handleClose();
             }
           });
@@ -425,23 +492,37 @@ export default {
             },
           }).then((res) => {
             this.saveLoading = false;
-            if (res.code === "0") {
-              this.$message.success("操作成功！");
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+            } else {
+              this.$message.success("保存成功！");
               this.handleClose();
             }
           });
         } else {
+          const reuslt = this.allBigList
+            .filter((item) => {
+              return this.form.taskTeamPerson.includes(item.value);
+            })
+            .map((el) => {
+              return {
+                ...el,
+                workCode: this.workOrderInfo.id,
+                scene: this.sceneType,
+                receivePerson: this.appointInfo.projManagerId,
+              };
+            });
           //大件设备
-          bindBigComponent({
-            workCode: this.workOrderInfo.id,
-            workOrderSceneType: this.sceneType,
-            procedureInfoList: this.getProcedureInfoList(2),
-            deviceInfoList: [],
-          }).then((res) => {
-            debugger;
+          bindBigComponent(reuslt).then((res) => {
+            this.saveLoading = false;
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+            } else {
+              this.$message.success("保存成功！");
+              this.handleClose();
+            }
           });
         }
-        //请求保存接口
       });
     },
     handleClose(isSearch = false) {
