@@ -212,11 +212,13 @@ export default {
       if (workClazzId) {
         const { data } = await getPersonStatusByBusId(workClazzId);
         this.options.forEach((item) => {
+          item.disabled = true;
           item.children = (data[item.value] || []).map((a) => ({
             ...a,
             label: a.userName,
             value: a.userId,
           }));
+          item.disabled = !item.children.length
         });
       }
     },

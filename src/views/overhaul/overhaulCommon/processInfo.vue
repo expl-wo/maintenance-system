@@ -37,7 +37,7 @@
         <template v-if="columns && treeData.length">
           <div class="operate-wrap" v-if="workTreeStatus === 2">
             <el-button
-              v-if="$isAuth(roleBtnEnum['videoBind'])"
+              v-if="$isAuth(roleBtnEnum['videoBind']) && !isSurvey"
               type="primary"
               :disabled="isPauseOrFinish"
               @click="openModal(1, 'distributeModalFlag')"
@@ -46,7 +46,7 @@
               视频绑定
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['orderCheck'])"
+              v-if="$isAuth(roleBtnEnum['orderCheck']) && !isSurvey"
               type="primary"
               :disabled="isPauseOrFinish"
               @click="openModal(2, 'distributeModalFlag')"
@@ -55,7 +55,7 @@
               复核人员
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['infoAppoint'])"
+              v-if="$isAuth(roleBtnEnum['infoAppoint']) && !isSurvey"
               type="primary"
               :disabled="isPauseOrFinish"
               @click="openModal(3, 'distributeModalFlag')"
@@ -64,7 +64,7 @@
               派工
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['bigComponent'])"
+              v-if="$isAuth(roleBtnEnum['bigComponent']) && !isSurvey"
               type="primary"
               :disabled="isPauseOrFinish"
               @click="openModal(4, 'distributeModalFlag')"
@@ -75,18 +75,24 @@
           </div>
           <div class="operate-wrap" v-else>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check'])"
+              v-if="$isAuth(roleBtnEnum['workInfo_check'])&& !isSurvey"
               type="primary"
-              :disabled="isPauseOrFinish || [1, 2].includes(workTreeStatus)"
+              :disabled="
+                isPauseOrFinish ||
+                isRoleContorl.isDisabled
+              "
               title="保存"
               @click="workTreeSave"
             >
               <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check'])"
+              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey "
               type="primary"
-              :disabled="isPauseOrFinish || [1, 2].includes(workTreeStatus)"
+              :disabled="
+                isPauseOrFinish ||
+                isRoleContorl.isDisabled
+              "
               title="发起审核"
               @click="workTreeCheck"
             >
@@ -120,7 +126,7 @@
                 >
                   <template #default="{ row }">
                     <el-button
-                      v-if="$isAuth(roleBtnEnum['addIssue'])"
+                      v-if="$isAuth(roleBtnEnum['addIssue']) && !isSurvey"
                       type="primary"
                       title="添加问题"
                       :disabled="isPauseOrFinish"
@@ -134,10 +140,10 @@
                       :disabled="isPauseOrFinish"
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
-                        $isAuth(roleBtnEnum['review'])
+                        $isAuth(roleBtnEnum['review']) && !isSurvey
                       "
                       title="复核"
-                      @click="check"
+                      @click="openModal(row, 'recheckModal')"
                     >
                       <el-icon><Stamp /></el-icon>
                     </el-button>
@@ -177,6 +183,7 @@
           <work-step-content
             :workOrderInfo="workOrderInfo"
             :onlyTabName="onlyTabName"
+            :sceneType="sceneType"
             :currentSelectNode="currentSelectNode"
             :templateChoose="templateChoose"
             v-else
@@ -203,6 +210,14 @@
           modalName="issueModal"
           @closeModal="closeModal"
         ></add-issue>
+        <recheck-modal
+          v-if="recheckModal"
+          :workOrderInfo="workOrderInfo"
+          :operateRow="operateRow"
+          modalName="recheckModal"
+          :sceneType="sceneType"
+          @closeModal="closeModal"
+        ></recheck-modal>
       </div>
     </div>
   </div>
@@ -213,6 +228,7 @@ import AddIssue from "@/views/overhaul/workIssueCommon/addIssue.vue";
 import DistributeModal from "./distributeModal.vue"; //派工配置弹窗
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 import WorkStepContent from "./workStepContent/index.vue"; //执行项
+import RecheckModal from "./recheckModal.vue";
 import Pagination from "@/components/Pagination"; // 分页
 import {
   COMMON_PROCESS_COLUMNS_MAP,
@@ -223,7 +239,6 @@ import {
   WORK_STATUS_ENUM,
   REVIEW_STATUS_ENUM,
 } from "@/views/overhaul/constants.js";
-import { ElMessageBox } from "element-plus";
 import {
   getProcedureTemplate,
   getWorkTree,
@@ -271,6 +286,7 @@ export default {
     WorkStepContent,
     AddIssue,
     SelectPage,
+    RecheckModal,
     Pagination,
   },
   data() {
@@ -300,6 +316,7 @@ export default {
       distributeModalFlag: false,
       currentNode: [], //选中的节点
       issueModal: false,
+      recheckModal: false,
       operateRow: null,
       isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是勘查工单
       //分页相关数据
@@ -364,7 +381,7 @@ export default {
         isCanShowTree =
           ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
             this.workOrderInfo.orderStatus
-          ) || this.templateChoose;
+          ) || !!this.templateChoose;
       } else if (this.isSurvey) {
         //在检修中查看勘查
         isDisabled = true;
@@ -406,16 +423,7 @@ export default {
         });
       });
     },
-    //复核
-    check() {
-      ElMessageBox.confirm("是否确认复核?", "复核", {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {})
-        .catch(() => {});
-    },
+
     /**
      * 模板选择发生改变时
      */
@@ -611,7 +619,10 @@ export default {
               );
               this.$refs["treeRef"].setCheckedKeys(currentKeysList);
             }
-            this.currentSelectNode = { type: +this.treeData[0].procedureType,...this.treeData[0] };
+            this.currentSelectNode = {
+              type: +this.treeData[0].procedureType,
+              ...this.treeData[0],
+            };
             this.getList();
           });
         })

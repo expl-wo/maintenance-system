@@ -80,10 +80,10 @@
     </el-row>
     <div class="report-box-editor">
       <iframe
-        v-if="pdfURL"
+        v-if="pdfUri"
         width="100%"
         height="100%"
-        :src="pdfURL"
+        :src="pdfUri"
         frameborder="0"
       ></iframe>
       <el-empty
@@ -144,16 +144,15 @@ export default {
       REPORT_CHECK_STATUS,
       templateStatus: 0,
       //pdf的回显URL
-      pdfURL: "",
+      pdfUri: "",
+      //wordUri
+      wordUri: "",
       loading: false,
       loadingType: 1,
       fileList: [],
       templateChoose: undefined,
       //模板项
-      templateOptions: [
-        { label: "模板1", value: 1 },
-        { label: "模板2", value: 2 },
-      ],
+      templateOptions: [],
     };
   },
   computed: {
@@ -208,10 +207,11 @@ export default {
         workCode: this.workOrderInfo.id,
         workDocType: this.workType,
       }).then(({ data }) => {
-        const { templateCode, reviewStatus, pdfUri } = data;
+        const { templateCode, reviewStatus, pdfUri, wordUri } = data;
         this.templateStatus = reviewStatus || 0;
         this.templateChoose = templateCode || undefined;
-        this.pdfURL = this.dealUrl(pdfUri);
+        this.pdfUri = this.dealUrl(pdfUri);
+        this.wordUri = this.dealUrl(wordUri);
       });
     },
     /**
@@ -228,10 +228,16 @@ export default {
     saveFile() {
       this.loading = true;
       this.loadingType = 2;
+      if (!this.pdfUri) {
+        this.$message.error("暂无可保存数据！");
+        return;
+      }
       saveWorkDocmentInfo({
         workCode: this.workOrderInfo.id,
         templateCode: this.templateChoose,
         workDocType: this.workType,
+        wordUri: this.wordUri,
+        pdfUri: this.pdfUri,
       }).then((res) => {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
@@ -241,7 +247,6 @@ export default {
         this.loading = false;
       });
     },
-    // 上传图片
     uploadFile(file) {
       const formData = new FormData();
       // 文件对象
@@ -256,7 +261,7 @@ export default {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("操作成功，上传文件已自动保存！");
-          this.pdfURL = this.dealUrl(res.data.docUri);
+          this.pdfUri = this.dealUrl(res.data.pdfUri);
           this.templateChoose = undefined;
         }
         this.loading = false;
@@ -311,13 +316,13 @@ export default {
         templateCode: val,
         workDocType: this.workType,
       }).then((res) => {
-        if (Reflect.has(res, "code")) {
-          if (res.code !== "0") {
-            this.$message.error(res.errMsg);
-          }
+        if (res.code !== "0") {
+          this.wordUri = "";
+          this.pdfUri = "";
+          this.$message.error(res.errMsg);
         } else {
-          const blob = new Blob([res], { type: "application/pdf" });
-          this.pdfURL = window.URL.createObjectURL(blob);
+          this.wordUri = this.dealUrl(res.data.ossWordUri);
+          this.pdfUri = this.dealUrl(res.data.ossPdfFileUri);
         }
         this.loading = false;
       });

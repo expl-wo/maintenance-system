@@ -102,10 +102,34 @@ export function bindDev(data) {
         data
     })
 }
+//获取已经绑定的视频
+export function getBindDev(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/dev-channel-info',
+        method: 'post',
+        data
+    })
+}
+//获取已经绑定的复核人员
+export function getBindReview(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/review-info',
+        method: 'post',
+        data
+    })
+}
 //工序复核人员
 export function bindReview(data) {
     return request({
         url: '/api/evo-ims-overhaul/work-procedure/binding-review-info',
+        method: 'post',
+        data
+    })
+}
+//获取已经绑定的派工信息
+export function getBindDispatch(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/dispatch-info',
         method: 'post',
         data
     })
@@ -130,8 +154,9 @@ export function bindBigComponent(data) {
 export function getBigComponent(middleId) {
     return request({
         url: '/api/evo-ims-overhaul/middle-big-equipment/query',
-        method: 'get',
-        data: { middleId }
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        data: middleId
     })
 }
 //获取大件设备清单
@@ -139,6 +164,7 @@ export function getBigComponentList(data) {
     return request({
         url: '/api/evo-ims-overhaul/middle-big-equipment/query-use',
         method: 'get',
+
         data
     })
 }
@@ -158,6 +184,14 @@ export function getWorkDocmentTemplate(type) {
         data: { type }
     })
 }
+//查询工步信息 
+export function getWorkStepInfo(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/procedure-info',
+        method: 'post',
+        data
+    })
+}
 //获取文档信息
 export function getWorkDocmentInfo(data) {
     return request({
@@ -171,7 +205,7 @@ export function createPDF(data) {
     return request({
         url: '/api/evo-ims-overhaul/doc-info/loading',
         method: 'post',
-        config: { responseType: 'blob', timeout: 100000 },
+        config: { timeout: 100000 },
         data
     })
 }
@@ -247,9 +281,97 @@ export function getAppiontInfo(data) {
     })
 }
 //添加问题
-export function addIssueInfo(data){
+export function addIssueInfo(data) {
     return request({
         url: '/api/evo-ims-overhaul/work-procedure-problem/add',
+        method: 'post',
+        data
+    })
+}
+//获取工器具
+export function getTools(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/tool-info',
+        method: 'post',
+        data
+    })
+}
+//编辑工器具数据
+export function editToolNum(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/change-tool-num',
+        method: 'post',
+        data
+    })
+}
+//获取材料
+export function getMaterials(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/material-page-info',
+        method: 'post',
+        data
+    })
+}
+//编辑材料数量
+export function editMaterialsNum(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/change-material-num',
+        method: 'post',
+        data
+    })
+}
+//获取工作内容信息
+export function getWorkContent(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-content-mes/query',
+        method: 'get',
+        data
+    })
+}
+//开工完工
+export function editWorkStatus(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/report-status',
+        method: 'post',
+        data
+    })
+}
+//复核 checkWorkContent
+export function checkWorkContent(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/check',
+        method: 'post',
+        data
+    })
+}
+//保存工作内容
+export function saveWorkContent(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-content/report',
+        method: 'post',
+        data
+    })
+}
+//批量查询工作内容
+export function batchWorkContent(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-content/query-batch',
+        method: 'post',
+        data
+    })
+}
+//获取工序内容时间完成情况
+export function getWorkStatusByTime(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-content/query-time',
+        method: 'post',
+        data
+    })
+}
+// 报工
+export function reportWorkContent(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-procedure/report',
         method: 'post',
         data
     })

@@ -1,5 +1,6 @@
 <template>
-  <el-dialog draggable
+  <el-dialog
+    draggable
     :title="operateTypeTitle"
     :model-value="true"
     class="overhaul-bom-modal"
@@ -39,6 +40,7 @@
               v-model="form.bomNode"
               :defaultSelectVal="defaultSelectVal"
               :getOptions="getOptions"
+              @change="selectChange"
             />
           </el-form-item>
         </el-col>
@@ -46,7 +48,11 @@
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="24">
           <el-form-item label="利旧状态">
-            <el-select v-model="form.utilizeStatus" placeholder="请选择" clearable>
+            <el-select
+              v-model="form.utilizeStatus"
+              placeholder="请选择"
+              clearable
+            >
               <el-option
                 v-for="item in utilizeStatusOptions"
                 :key="item.value"
@@ -54,6 +60,19 @@
                 :value="item.value"
               />
             </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle" justify="space-between">
+        <el-col :span="24">
+          <el-form-item label="备注">
+            <el-input
+              v-model="form.memo"
+              :maxlength="500"
+              autosize
+              type="textarea"
+              clearable
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -69,7 +88,12 @@
 
 <script>
 import { requiredVerify } from "@/common/js/validator";
-import { getMaterial, getBigComponent } from "@/api/overhaul/bomApi.js";
+import {
+  getMaterial,
+  getBigComponent,
+  addBomNode,
+  updateBomNode,
+} from "@/api/overhaul/bomApi.js";
 import SelectPage from "@/components/SelectPage/selectPage.vue";
 export default {
   components: {
@@ -91,19 +115,28 @@ export default {
       type: String,
       default: "",
     },
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
       form: {
         bomNode: undefined,
+        bomCode: "",
         bomNodeType: 1,
-        bomNodeName: "",
+        bomName: "",
         utilizeStatus: undefined,
+        memo: "",
       },
       rules: {
         bomNode: requiredVerify(),
         bomNodeType: requiredVerify(),
-        // bomNodeName: safeLimit("", true),
+        // bomName: safeLimit("", true),
       },
       utilizeStatusOptions: [
         { label: "废弃", value: 1 },
@@ -122,6 +155,12 @@ export default {
       handler(val) {
         //切换节点类型时需要重置下拉选择框
         this.$refs.selectRef && this.$refs.selectRef.selectSearch("");
+        this.form = {
+          ...this.form,
+          bomNode: undefined,
+          bomCode: "",
+          bomName: "",
+        };
         this.defaultSelectVal = {};
       },
     },
@@ -133,11 +172,50 @@ export default {
   },
   mounted() {
     if (this.operateType === "update") {
-      this.form.bomNode = 1;
-      this.form.bomNodeName = this.operateRow.data.treeName;
+      this.form.bomType = +this.operateRow.bomType;
+      this.form.bomCode = this.operateRow.bomCode;
+      this.form.bomName = this.operateRow.bomName;
+      this.form.utilizeStatus = this.operateRow.utilize;
+      this.form.memo = this.operateRow.memo;
+      if (this.form.bomNodeType === 1) {
+        this.form.bomNode = this.operateRow.bomName;
+        if (!this.operateRow.bomName) return;
+        this.defaultSelectVal = {
+          label: this.form.bomNode,
+          value: this.form.bomNode,
+          featureNo: this.form.bomCode,
+        };
+      } else {
+        this.form.bomNode = this.operateRow.bomCode;
+        if (!this.operateRow.bomName) return;
+        this.defaultSelectVal = {
+          label: this.form.bomName,
+          value: this.form.bomNode,
+        };
+      }
     }
   },
   methods: {
+    selectChange(val) {
+      this.form.bomCode = val;
+      if (!val) {
+        this.form.bomName = "";
+        return;
+      }
+      const options = this.$refs.selectRef.selectOptions;
+      const target = options.find((item) => item.value === val);
+      if (target) {
+        if (this.form.bomNodeType === 1) {
+          this.form.bomName = target.name;
+          this.form.bomCode = target.featureNo;
+        } else {
+          this.form.bomName = target.label;
+        }
+      } else {
+        this.form.bomName = "";
+        this.form.bomCode = "";
+      }
+    },
     //获取下拉选择项
     getOptions(params) {
       return new Promise((resolve, reject) => {
@@ -149,10 +227,10 @@ export default {
         };
         if (this.form.bomNodeType === 1) {
           getBigComponent(queryParms).then((res) => {
-            debugger;
             let options = (res.data.pageList || []).map((item) => ({
-              label: item.templateName,
-              value: item.id,
+              ...item,
+              label: item.name,
+              value: `${item.name}_${item.featureNo}`,
             }));
             resolve({
               options: options,
@@ -161,10 +239,9 @@ export default {
           });
         } else {
           getMaterial(queryParms).then((res) => {
-            debugger;
             let options = (res.data.pageList || []).map((item) => ({
-              label: item.templateName,
-              value: item.id,
+              label: item.className,
+              value: item.classCode,
             }));
             resolve({
               options: options,
@@ -176,8 +253,36 @@ export default {
     },
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
-        debugger;
-        this.$emit("closeModal", this.modalName);
+        if (!valid) return;
+        let params = {
+          workId: this.workOrderInfo.id,
+          bomType: this.form.bomNodeType,
+          bomCode: this.form.bomCode,
+          bomName: this.form.bomName,
+          utilize: this.form.utilizeStatus,
+          memo: this.form.memo,
+        };
+        if (this.operateType === "update") {
+          updateBomNode({ ...params, id: this.operateRow.id }).then((res) => {
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+              return;
+            }
+            this.$message.success("操作成功！");
+            this.handleClose(true);
+          });
+        } else {
+          addBomNode({ ...params, parentTreeId: this.operateRow.treeId }).then(
+            (res) => {
+              if (res.code !== "0") {
+                this.$message.error(res.errMsg);
+                return;
+              }
+              this.$message.success("操作成功！");
+              this.handleClose(true);
+            }
+          );
+        }
       });
     },
     handleClose(isSearch = false) {

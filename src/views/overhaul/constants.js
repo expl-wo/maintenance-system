@@ -106,10 +106,10 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             prop: "memberName",
             label: "成员",
         },
-        {
-            prop: "checkType",
-            label: "频次",
-        },
+        // {
+        //     prop: "checkType",
+        //     label: "频次",
+        // },
         {
             prop: "workStatus",
             label: "当前状态",

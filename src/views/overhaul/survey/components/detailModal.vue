@@ -117,7 +117,6 @@ import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor";
 import dayjs from "dayjs";
-import { create } from 'domain';
 export default {
   components: {
     ProcessInfo,
@@ -222,6 +221,7 @@ export default {
         this.tabList = this.tabList.filter((item) =>
           this.$isAuth(item.menuCode)
         );
+        // this.tabList.push({ label: "录像标记", name: "videoAndImg", components: "videoMark" })
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
         this.getAppointSetting();
@@ -269,7 +269,7 @@ export default {
         {
           key: "prodCategory",
           label: "产品大类",
-          value: targetData["prodCategory"],
+          value: targetData["prodCategoryName"],
         },
         { key: "projName", label: "项目名称", value: targetData["projName"] },
         {

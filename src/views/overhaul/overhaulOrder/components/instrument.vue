@@ -89,8 +89,22 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { INSTRUMENT_COLUMNS } from "../config.js";
+import { editToolNum, getTools } from "@/api/overhaul/workOrderApi.js";
 export default {
-  name: "ReturnList",
+  name: "Instrument",
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    sceneType: {
+      type: String,
+      default: "",
+    },
+  },
   components: {
     Pagination,
   },
@@ -107,7 +121,7 @@ export default {
       },
       //查询参数
       queryParams: {
-        deviceName: "",
+        name: "",
       },
       form: {
         num: 1,
@@ -132,7 +146,17 @@ export default {
       isSearch && this.getList();
     },
     updateNum() {
-      this.closeModal("closeModal", true);
+      editToolNum({
+        changeId: this.operateRow.toolId,
+        changeNum: this.form.num,
+      }).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+        } else {
+          this.$message.success("保存成功！");
+          this.closeModal("closeModal", true);
+        }
+      });
     },
     /**
      * 打开弹窗
@@ -150,19 +174,19 @@ export default {
       this.getList();
     },
     getList() {
-      this.listLoading = false;
-      new Array(10).fill(1).forEach((item, index) => {
-        this.tableData.push({
-          id: index,
-          productNumber: "123132321",
-          materialName: "物料名称",
-          pipelineCode: "4564646456",
-          classifyName: "hhhh",
-          status: 1,
-          demo: "2023-10-23 12:00:00",
-        });
+      this.listLoading = true;
+      getTools({
+        pageNum: this.pageOptions.pageNum,
+        pageSize: this.pageOptions.pageSize,
+        workCode: this.workOrderInfo.id,
+        workOrderSceneType: this.sceneType,
+        searchInfo: this.queryParams.name,
+      }).then((res) => {
+        const { total, pageList } = res.data;
+        this.tableData = pageList || [];
+        this.pageOptions.total = total;
+        this.listLoading = false;
       });
-      this.pageOptions.total = 1;
     },
   },
 };
