@@ -4,7 +4,7 @@ export function getSparePartsList(params) {
   return request({
     url: '/api/equipment/spareParts/sparePart',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum, // 查询第几页数据，默认第一页
       materialCode: params.materialCode, //备品备件编号
@@ -16,14 +16,14 @@ export function getSparePartsRecords(params) {
   return request({
     url: '/api/equipment/spareParts/getSparePartsRecord',
     method: 'get',
-    params: params
+    data: params
   })
 }
 export function getSparePartsBom(params){
   return request({
     url: '/api/equipment/spareParts/getSparePartsBom',
     method: 'get',
-    params: params
+    data: params
   })
 }
 export function addSparePartsBom(data){
@@ -45,7 +45,7 @@ export function deleteSparePartsBom(params){
   return request({
     url: '/api/equipment/spareParts/deleteSparePartsBom',
     method: 'post',
-    params: {
+    data: {
       id: params, //设备编号
     }
   })
@@ -62,7 +62,7 @@ export function getSparePartsApplyRecord(params){
   return request({
     url: '/api/equipment/spareParts/getSparePartsApplyRecord',
     method: 'get',
-    params
+    data
   })
 }
 export function editApply(data){
@@ -83,7 +83,7 @@ export function deleteApply(params){
   return request({
     url: '/api/equipment/spareParts/deleteApply',
     method: 'post',
-    params:{
+    data:{
       id:params
     }
   })

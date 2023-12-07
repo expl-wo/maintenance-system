@@ -5,14 +5,14 @@ export function plan(params) {
   return request({
     url: '/inspectionPlan/plan',
     method: 'get',
-    params:params
+    data:params
   })
 }
 export function queryTreeEqp(params) {
   return request({
     url: '/inspectionPlan/queryTreeEqp',
     method: 'get',
-    params:params
+    data:params
   })
 }
 export function addOrUpdate(data) {
@@ -26,7 +26,7 @@ export function deleteData(params) {
   return request({
     url: '/inspectionPlan/delete',
     method: 'post',
-    params:params
+    data:params
   })
 }
 
@@ -34,7 +34,7 @@ export function eqpInfo(params) {
   return request({
     url: '/api/equipment/eqpCommon/eqpInfo',
     method: 'get',
-    params:params
+    data:params
   })
 }
 //导入
@@ -50,7 +50,7 @@ export function getInspectionFileList(params) {
   return request({
     url: '/inspectionPlan/file',
     method: 'get',
-    params: {
+    data: {
       id: params.id || '' // 设备id
     }
   })

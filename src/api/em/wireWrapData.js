@@ -17,14 +17,14 @@ export default {
     return request({
       url: url.getDeviceStatus,
       method: 'get',
-      params
+      data: params
     })
   },
   getStatisticData(params) {
     return request({
       url: url.getStatisticData,
       method: 'get',
-      params
+      data: params
     })
   },
 

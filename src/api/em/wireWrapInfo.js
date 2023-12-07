@@ -22,7 +22,7 @@ export default {
     return request({
       url: url.list,
       method: 'get',
-      params
+      data: params
     })
   },
   codeUnion(params) {
