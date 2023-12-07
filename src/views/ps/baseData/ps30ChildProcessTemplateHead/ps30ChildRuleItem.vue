@@ -204,6 +204,7 @@ export default {
     handleAdd() {
       this.listItemUpdate = {
         id: '',
+        plmProcessId :this.listItemUpdate.plmProcessId,
         craftsCode: '', //子工艺模板头编码
         craftsName: '', //子工艺模板头名称
         isOntology: '0', //是否本体
