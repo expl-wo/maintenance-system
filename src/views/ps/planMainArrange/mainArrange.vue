@@ -9,17 +9,21 @@
         </el-form-item>
         <el-form-item label="审批状态">
           <xui-dict-select item-code="mainConfirmStatus" multiple includeAll
-                           v-model="listQuery.approvalStatus"
-                           style="width:160px;" class="filter-item" clearable></xui-dict-select>
+                           v-model="listQuery.approvalStatus" :widthFull="false"
+                           style="width:140px;" class="filter-item" clearable></xui-dict-select>
         </el-form-item>
         <el-form-item label="生产状态">
           <xui-dict-select item-code="mainPlanStatus" multiple includeAll
-                           v-model="listQuery.status"
-                           style="width:160px;" class="filter-item" clearable></xui-dict-select>
+                           v-model="listQuery.status" :widthFull="false"
+                           style="width:140px;" class="filter-item" clearable></xui-dict-select>
         </el-form-item>
-        <el-form-item label="计划完工时间:" prop="dateCount">
+        <el-form-item label="计划完工时间:" prop="dateGroup">
           <el-date-picker v-model="listQuery.dateGroup" type="monthrange" range-separator="至" :clearable="false"
-                          style="width: 240px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
+                          style="width: 180px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
+        </el-form-item>
+        <el-form-item label="甘特图时间段:" prop="gantDate">
+          <el-date-picker v-model="listQuery.gantDate" type="monthrange" range-separator="至" :clearable="false"
+                          style="width: 180px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
         </el-form-item>
         <el-form-item>
           <el-button icon="Search" type="primary" @click="handleSearch">查询</el-button>
@@ -107,13 +111,15 @@ const rejectDescDialogRef = ref();
 const intervalMonths = 2;
 const list = ref([]);
 const BGScrollTop = ref(0);
-const expand = ref(true);
+const expand = ref(false);
 const dateTypeDesc = ref('今天');
 
 const listQuery = reactive({
   search: '',
   dateGroup: [dayjs().format('YYYY-MM-DD'),
     dayjs().add(intervalMonths, 'months').format('YYYY-MM-DD')],
+  gantDate: [dayjs().subtract(1, "months").format('YYYY-MM-DD'),
+    dayjs().add(3, 'months').format('YYYY-MM-DD')],
   status: [],
   op: "",
   opStatus: [],
@@ -161,6 +167,8 @@ const handleApprovalSubmit = async () => {
       if (response.err_code === constants.statusCode.success) {
         ElMessage.success("审批已提交");
         getDataList();
+      }else{
+        ElMessage.error(response.err_msg);
       }
     })
   }
@@ -186,6 +194,8 @@ const handleApprovalPass = async () => {
       if (response.err_code === constants.statusCode.success) {
         ElMessage.success("审批已通过");
         getDataList();
+      }else{
+        ElMessage.error(response.err_msg);
       }
     })
   }
@@ -209,6 +219,8 @@ const handleRejectDesc = async (rejectReason, planId) => {
   if (response.err_code === constants.statusCode.success) {
     ElMessage.warning("审批已被驳回");
     getDataList();
+  }else{
+    ElMessage.error(response.err_msg);
   }
 }
 
@@ -223,6 +235,8 @@ const getParams = () => {
   delete params.dateGroup;
   params.strDate = formatMonthStartDate(listQuery.dateGroup[0]) // 开始日期
   params.endDate = formatMonthEndDate(listQuery.dateGroup[1]) // 结束日期
+  params.gantStrDate = formatMonthStartDate(listQuery.gantDate[0]) // 开始日期
+  params.gantEndDate = formatMonthEndDate(listQuery.gantDate[1]) // 结束日期
   return params;
 }
 
@@ -236,6 +250,11 @@ const getDataList = async () => {
     pcModel: '',
   };
   let params = getParams();
+  let gantMonth = dayjs(params.gantEndDate).diff(dayjs(params.gantStrDate), 'months') + 1;
+  if(gantMonth > 12){
+    ElMessage.error("甘特图时间段不能超过12个月");
+    return;
+  }
   let response = await planMain.planListWithNodes(params);
   // let response = getData();
   let resultList = [];
@@ -243,6 +262,7 @@ const getDataList = async () => {
     let productItem = {
       ...commonAttr,
       ...item,
+      _status: item.schedulingStatus,
       productOrNodeName: item.productNo,
       planStartDate: item.planStartDate,
       planEndDate: item.dateEnd,
@@ -252,16 +272,19 @@ const getDataList = async () => {
     let children = [];
     if (item.nodeList && item.nodeList.length > 0) {
       item.nodeList.forEach(subItem => {
-        let obj = {
-          ...commonAttr,
-          ...subItem,
-          productNo: item.productNo,
-          planStartDate: subItem.startDate,
-          planEndDate: subItem.nodeDate,
-          productOrNodeName: subItem.nodeName,
-          dataType: constants.productOrGx.gx
+        if(subItem.pnType == 2){
+          let obj = {
+            ...commonAttr,
+            ...subItem,
+            _status: subItem.status,
+            productNo: item.productNo,
+            planStartDate: subItem.startDate,
+            planEndDate: subItem.nodeDate,
+            productOrNodeName: subItem.nodeName,
+            dataType: constants.productOrGx.gx
+          }
+          children.push(obj)
         }
-        children.push(obj)
       })
     }
     productItem.children = children;
@@ -286,7 +309,7 @@ const handleChangeDateType = dateTypeItem => {
 
 const initChildComponent = params => {
   productListRef.value.init(deepClone(list.value));
-  ganttListRef.value.init(deepClone(list.value), [params.strDate, params.endDate]);
+  ganttListRef.value.init(deepClone(list.value), [params.gantStrDate, params.gantEndDate]);
 }
 
 const handleRefresh = () => {

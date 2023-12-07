@@ -86,6 +86,7 @@
 import '@antv/x6-vue-shape'
 import Components from "./components.vue";
 import {Graph, Shape} from '@antv/x6'
+import { register, getTeleport } from '@antv/x6-vue-shape'
 import data from './data'
 import planWeek from '@/api/plan/planWeek'
 import CreateData from '@/components/x6/createData'
@@ -124,7 +125,6 @@ export default {
       })
     },
     handleNodeClick(nodeData){
-      console.log(nodeData)
       if(nodeData.type ==this.$constants.processType.product) {
         if(nodeData.planNodeId === 'lung'){
           this.$refs.opLungStatusDialog.init(nodeData.opPlanList)
@@ -423,7 +423,16 @@ export default {
           },
         ],
       }
-      Graph.registerNode("my-component", {
+
+      register({
+        inherit: "vue-shape",
+        shape: 'my-component',
+        width: 96,
+        height: 55,
+        component: Components,
+        ports: {...ports},
+      })
+   /*   Graph.registerNode("my-component", {
         inherit: "vue-shape",
         width: 96,
         height: 55,
@@ -435,7 +444,7 @@ export default {
           },
         },
         ports: {...ports},
-      }, true);
+      }, true);*/
 
       Graph.registerEdge(
         'dag-edge',

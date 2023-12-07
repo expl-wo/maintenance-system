@@ -351,10 +351,7 @@ const lineMouseenter = (domId, e, id, parentId, index, item) => {
   Object.assign(currentProjectMsg, {
     ...item,
     //名称
-    name: item.productNo,
-    //持续时间
-    allTime: '',
-    per: computedList.value[index].per,
+    name: item.productOrNodeName,
     left,
     top
   });
@@ -414,10 +411,6 @@ const lineMouseleave = (e, move) => {
     isShowMsg.value = false;
     Object.assign(currentProjectMsg, {
       name: "",
-      allTime: 0,
-      per: 0,
-      startTime: 0,
-      endTime: 0,
       left: 0,
       top: 0
     })
@@ -431,10 +424,6 @@ const lineMouseleave = (e, move) => {
   isShowMsg.value = false;
   Object.assign(currentProjectMsg, {
     name: "",
-    allTime: 0,
-    per: 0,
-    startTime: 0,
-    endTime: 0,
     left: 0,
     top: 0
   })
@@ -561,8 +550,8 @@ const handleRefresh = () => {
 
 //设置颜色
 const setItemClz = item => {
-  let status = item.status;
-  let clz = getGantClzByStatus(status);
+  let _status = item._status;
+  let clz = getGantClzByStatus(_status);
   if (item.per == 0) {
     item.bgClz = clz;
     item.sliderClz = '';
@@ -578,11 +567,16 @@ const formatDataList = (list, dataType = constants.productOrGx.product) => {
   for (const item of list) {
     item.planStartDate = dateFilter(item.planStartDate);
     item.planEndDate = dateFilter(item.planEndDate);
+    if(item.planStartDate && item.planEndDate){
+      item.allTime = dayjs(item.planEndDate).diff(dayjs(item.planStartDate), "days") + 1;
+    }else{
+      item.allTime = "";
+    }
     let startTime = item.planStartDate;
     item.dataType = dataType;
     let endTime = item.planEndDate;
     item.expand = true;
-    item.isShow = true;
+    item.isShow = (dataType === constants.productOrGx.product);
     //是否隐藏
     item.display = true;
     //设置颜色
@@ -590,9 +584,6 @@ const formatDataList = (list, dataType = constants.productOrGx.product) => {
     let gantStartDate = allDetailDates.value[0].startDate;
     let gantEndDate = allDetailDates.value[allDetailDates.value.length - 1].endDate;
     if (startTime && endTime) {
-      if (item.processStatus === null || item.processStatus === undefined) {
-        item.processStatus = 'normal';
-      }
       if (startTime > endTime) {
         let temp = endTime;
         endTime = startTime;
@@ -651,6 +642,7 @@ const initInner = () => {
   }
   let tempList = formatDataList(deepClone(listBak.value));
   setComputedList(tempList);
+  resetTop();
 }
 
 const handlerExpandRow = (row, expand) => {

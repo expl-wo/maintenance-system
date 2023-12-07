@@ -17,6 +17,19 @@ export function uuid() {
     return uuid
 }
 
+//获取宽度
+let canvas = null;
+export const getFontWidth = function (text, fontParams = "400 16px 'Microsoft Yahei'") {
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+    }
+    const context = canvas.getContext('2d');
+    context.font = fontParams;
+    const metrics = context.measureText(text);
+    console.log('metrics.width:' + metrics.width);
+    return metrics.width
+}
+
 export function fileSuffix(fileName) {
     if (constants.isEmpty(fileName)) {
         return '';

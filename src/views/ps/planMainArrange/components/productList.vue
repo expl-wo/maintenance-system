@@ -8,7 +8,6 @@
           size="default"
           class="el-table__row-pointer"
           height="100%"
-          default-expand-all
           highlight-current-row
           row-key="id"
           @row-click="handlerRowClick"
@@ -61,10 +60,10 @@
             header-align="center"
             align="center"
             label="生产进度"
-            property="processStatus"
+            property="_status"
             width="110">
           <template #default="{row}">
-            <xui-dictionary itemCode="processStatus" :code="row.processStatus"></xui-dictionary>
+            <xui-dictionary itemCode="mainPlanStatus" :code="row._status"></xui-dictionary>
           </template>
         </el-table-column>
         <el-table-column
@@ -136,9 +135,9 @@ const handlerExpand = (row, expand) => {
 }
 
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
-  if (column.property === 'processStatus') {
+  if (column.property === '_status') {
     //从字典中获取数据
-    return transformDictDetail('processStatus', row.processStatus, 'remark')
+    return transformDictDetail('mainPlanStatus', row._status, 'remark')
   } else if(column.type ==='selection' && row.dataType === constants.productOrGx.gx){
     return 'hidden-checkbox';
   }else{
@@ -196,14 +195,14 @@ const getSelectedData = () => {
     ElMessage.warning("请先勾选列表数据后再处理");
     return;
   }
-  let productList = [];
+  let productIdList = [];
   selectRows.forEach(item => {
-    let productNo = item.productNo;
-    if (!productList.includes(productNo)) {
-      productList.push(productNo);
+    let id = item.id;
+    if (!productIdList.includes(id) && item.dataType === constants.productOrGx.product) {
+      productIdList.push(id);
     }
   })
-  return productList;
+  return productIdList;
 }
 
 const setCurrentRow = row => {

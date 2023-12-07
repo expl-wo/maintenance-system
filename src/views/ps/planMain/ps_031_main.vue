@@ -88,7 +88,7 @@
           <el-table-column header-align="center" align="center" type="selection" fixed width="40" property="selection"
           ></el-table-column>
           <el-table-column label="操作"
-                           align="center" width="78" fixed property="caozuo">
+                           align="center" width="85" fixed property="caozuo">
             <template #default="scope">
               <el-button-group>
                 <el-button type="default"

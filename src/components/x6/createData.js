@@ -190,7 +190,7 @@ class CreateData {
         notHave: true,
       }
     }
-    let timeStatus = '', typeStatus = '';
+    let timeStatus = 'forward', typeStatus = '';
     if(sourceNode.pnType == Constants.processType.product) {
       typeStatus = 'product';
     }else if(sourceNode.pnType == Constants.processType.design){
