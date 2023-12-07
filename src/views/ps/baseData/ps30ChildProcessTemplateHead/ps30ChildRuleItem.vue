@@ -5,7 +5,8 @@
     <div class="panel-menu-list app-container app-containerC otherCon wp"  >
       <div class="otherCon wp xui-table__highlight">
         <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
-        <el-table-column prop="craftsName" align="center" label="中工序名称" />
+          <el-table-column prop="craftsCode" align="center" label="中工序编码" />
+          <el-table-column prop="craftsName" align="center" label="中工序名称" />
 
         <el-table-column prop="isOntology" align="center" width="100" label="是否本体">
           <template v-slot="{row}">
@@ -33,6 +34,14 @@
       <el-dialog v-dialogDrag  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label=" 中工序编码:" prop="craftsName" >
+              <el-input v-model="listItemUpdate.craftsCode" placeholder="请输入中工序编码" style="width: 350px;"
+                        class="filter-item" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label=" 中工序名称:" prop="craftsName" >
@@ -137,9 +146,10 @@ export default {
     },
 
     handEdit(row){
-      this.dialogVisible = true,
+      this.dialogVisible = true
           this.listItemUpdate.id = row.id
            this.plmProcessId= this.listItemUpdate.plmProcessId
+           this.listItemUpdate.craftsCode = row .craftsCode
           this.listItemUpdate.craftsName = row.craftsName
           this.listItemUpdate.isOntology = row.isOntology
           this.listItemUpdate.standardWorkingHour = row.standardWorkingHour
