@@ -52,18 +52,16 @@ export default {
           return;
         }
         let submitData = {
-          nodeId: this.listQuery.nodeId,
+          nodeId: this.searchParams.nodeId,
           planId: [],
-          approvalStatus: this.$constants.isPass.yes,
+          approvalStatus: this.$constants.confirmStatus.reject,
           rejectReason: this.model.rejectReason
         };
-        selectedData.forEach(item=>{
-          submitData.planId.push({
-            planId: item.id,
-          })
+        this.selectedData.forEach(item=>{
+          submitData.planId.push(item.pl14Id)
         })
-        planWeekHttp.approvalPlan(submitData).then(response=>{
-          if(response.err_code ===this.$constants.status.success){
+        planWeekHttp.approvalPlanZ(submitData).then(response=>{
+          if(response.err_code ===this.$constants.statusCode.success){
             this.$message.success('数据审批完成');
             this.dialogVisible = false;
             this.$emit('refresh', {})

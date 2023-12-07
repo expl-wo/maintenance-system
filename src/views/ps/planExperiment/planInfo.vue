@@ -226,7 +226,7 @@ export default {
         passPlan.isPass = this.$constants.isPass.yes
         passInfo.push(passPlan)
       })
-      planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:passInfo,approveStatus:this.$constants.isPass.yes}).then(res=>{
+      planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:passInfo,approveStatus:this.$constants.confirmStatus.pass}).then(res=>{
         if(res.err_code===10000){
           this.queryTableDataParam()
           this.$message.success("审批成功！");
@@ -331,11 +331,7 @@ export default {
         } else if (propertyClassFromDict.indexOf(column.property) >= 0) {
           //从字典中获取数据
           retClass.push(transformDictDetail(column.property, row[column.property], 'remark'))
-        } else if (column.property === 'model' ) {
-          if (this.$constants.isEmpty(row.timeLimitName)) {
-            retClass.push('cellNotPorductNum')
-          }
-        }else if (column.property ==='status_23') {
+        } else if (column.property ==='status_23') {
           if (row.status_23 == -1){
             retClass.push('celldelay')
           }else if (row.status_23 == 1){

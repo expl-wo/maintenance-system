@@ -145,7 +145,7 @@ export default {
         }
         console.log(submitModel)
         planWeek.updateTank(submitModel).then(resoponse=>{
-          if(resoponse.err_code === this.$constants.status.success){
+          if(resoponse.err_code === this.$constants.statusCode.success){
             this.$message.success("数据保存成功");
             this.dialogVisible = false;
             this.$emit('refresh', {})

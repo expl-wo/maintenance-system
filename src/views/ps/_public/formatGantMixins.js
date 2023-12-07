@@ -350,7 +350,7 @@ export default {
               startDate: this.gantSelectedNode.startDate,
               finishDate:  this.gantSelectedNode.nodeDate
             })
-            if(response.err_code === this.$constants.status.success){
+            if(response.err_code === this.$constants.statusCode.success){
               this.commitData(pl14Data, this.gantSelectedNode.tableId)
             }
           });
@@ -399,11 +399,11 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          planWeekHttp.delWeekPlan({
-            pl14Id: [product.pl14Id],
-            nodeId: this.nodeType
+          planWeekHttp.delPlan({
+            ids: [product.planNodeId],
+            planType: 'furance'
           }).then(response=>{
-            if(response.err_code === this.$constants.status.success){
+            if(response.err_code === this.$constants.statusCode.success){
               this.$message.success('删除成功');
               this.handleSearch();
             }else{

@@ -9,10 +9,12 @@
         </el-col>
       </el-row>
     </el-form>
-    <div  >
+    <template #footer>
+      <div class="dialog-footer">
       <el-button @click="dialogVisible=false">取消</el-button>
       <el-button type="primary" @click="handleSubmit">保存</el-button>
     </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -34,7 +36,7 @@ export default {
           required: true,message: '驳回原因不能为空', trigger: 'blur'
         }]
       },
-      planType: 'experiment',
+      planType: 'dismantle',
     }
   },
   methods: {
@@ -50,7 +52,7 @@ export default {
         if(!valid){
           return;
         }
-        let nodeId = '23'
+        let nodeId = '800'
         let rejectInfo = []
         this.selectedData.forEach(item=>{
           nodeId = item.nodeId
@@ -61,8 +63,8 @@ export default {
           rejectPlan.rejectReason = this.model.rejectReason
           rejectInfo.push(rejectPlan)
         })
-        planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.isPass.no}).then(response=>{
-          if(response.err_code ===this.$constants.status.success){
+        planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:rejectInfo,approveStatus:this.$constants.confirmStatus.reject}).then(response=>{
+          if(response.err_code ===this.$constants.statusCode.success){
             this.$message.success('数据审批完成');
             this.dialogVisible = false;
             this.$emit('refresh', {})

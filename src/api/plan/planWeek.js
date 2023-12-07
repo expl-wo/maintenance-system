@@ -36,7 +36,7 @@ const url = {
   //是否有磁屏蔽GET
   isMagnetic: '/api/gcplan/nodeCoordinate/isMagnetic',
   //  生产主计划--生产节点报工详情  GET
-  searchByPlan:  '/api/gcplan/baseConfigWeb/searchByPlan',
+  searchByPlan:  '/api/gcplan/productPlan/searchByPlan',
   //生产主计划-修改交货期 POST
   changeDelivery: '/api/gcplan/plan/proplan/changeDelivery',
   //入炉计划列表
@@ -357,6 +357,13 @@ export default {
     return request({
       url: url.updateProductLimit,
       method: 'post',
+      data: params
+    })
+  },
+  searchByPlan(params) {
+    return request({
+      url: url.searchByPlan,
+      method: 'get',
       data: params
     })
   },

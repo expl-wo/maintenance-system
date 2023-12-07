@@ -163,6 +163,7 @@ export default {
     },
     //提交审批
     handleApproval(){
+      debugger
       if(this.gantList.length ===0){
         this.$message.error('甘特图没有数据');
         return;

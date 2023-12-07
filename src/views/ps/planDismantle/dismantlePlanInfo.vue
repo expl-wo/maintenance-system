@@ -59,7 +59,6 @@
       <el-table-column prop="model" label="型号" align="center"></el-table-column>
       <el-table-column prop="planStartTime" label="计划开始时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>
       <el-table-column prop="planEndTime" label="计划结束时间" align="center" width="100"></el-table-column>
-      <el-table-column prop="tentativePhase" label="计划员排产时间" align="center" width="100" :sortable="true" :sort-method="dateSortMethod"></el-table-column>
       <el-table-column prop="noTaxAmount" label="产值(万元)" align="center" width="90"></el-table-column>
       <el-table-column prop="outPut" label="产量(万kVA)" align="center" width="90"></el-table-column>
     </el-table>
@@ -180,7 +179,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let nodeId = '23'
+        let nodeId = '800'
         let planId = []
         this.tableData.forEach(item=>{
           if(item.id && item.confirmStatus === 1){
@@ -203,7 +202,7 @@ export default {
         this.$message.error("无可申请的计划");
         return;
       }
-      let nodeId = '23'
+      let nodeId = '800'
       let passInfo = []
       debugger
       this.selectList.forEach(item=>{
@@ -213,7 +212,7 @@ export default {
         passPlan.isPass = this.$constants.isPass.yes
         passInfo.push(passPlan)
       })
-      planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:passInfo,approveStatus:this.$constants.isPass.yes}).then(res=>{
+      planWeek.approvalPlan({planType:this.planType,nodeId:nodeId,condition:passInfo,approveStatus:this.$constants.confirmStatus.pass}).then(res=>{
         if(res.err_code===10000){
           this.queryTableDataParam()
           this.$message.success("审批成功！");
@@ -318,11 +317,7 @@ export default {
         } else if (propertyClassFromDict.indexOf(column.property) >= 0) {
           //从字典中获取数据
           retClass.push(transformDictDetail(column.property, row[column.property], 'remark'))
-        } else if (column.property === 'model' ) {
-          if (this.$constants.isEmpty(row.timeLimitName)) {
-            retClass.push('cellNotPorductNum')
-          }
-        }else if (column.property ==='status_23') {
+        } else if (column.property ==='status_23') {
           if (row.status_23 == -1){
             retClass.push('celldelay')
           }else if (row.status_23 == 1){

@@ -82,7 +82,7 @@ export default {
         // })
       })
       planWeek.applyWeekPlan(commitData).then(response=>{
-        if(response.err_code === this.$constants.status.success){
+        if(response.err_code === this.$constants.statusCode.success){
           this.$message.success('数据保存成功');
           this.$emit('refresh', {})
           this.dialogVisible = false;

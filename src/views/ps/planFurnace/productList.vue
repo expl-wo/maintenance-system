@@ -186,45 +186,6 @@
                 </el-date-picker>
               </template>
             </el-table-column>
-            <el-table-column
-              align="center"
-              label="是否关联BOM"
-              property="relativeBom"
-              width="110"
-            >
-              <template #default="scope">
-                <xui-dictionary itemCode="flag01" :code="scope.row.relativeBom"></xui-dictionary>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="BOM数量"
-              property="bomInfo"
-              width="250"
-            >
-              <template  #default="scope" >
-                <div style="display: flex;flex-wrap: wrap;">
-                  <span v-for="(item, index) in scope.row._bomInfo" :key="index">{{item}}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="是否有工艺计划"
-              property="haveGyjh"
-              width="150"
-            >
-              <template #default="scope">
-                <xui-dictionary itemCode="flag01" :code="scope.row.haveGyjh"></xui-dictionary>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="center"
-              label="工艺计划名称"
-              property="gyjhName"
-              width="150"
-            >
-            </el-table-column>
             <el-table-column label="操作" align="center" fixed="right" width="120">
               <template #default="scope">
                 <el-button-group>
@@ -306,6 +267,7 @@ export default {
           ]
         }
       },
+      tankName: '',
       dateValue: '',
       checkDate: [],
       canChange: true,
@@ -320,7 +282,10 @@ export default {
               let date = nowDate.getFullYear()+"-"+month+"-"+day;
               return (date < this.furnace.startDate || date > this.furnace.nodeDate);
           }
-      }
+      },
+      planType: 'furance',
+      nodeInfo: [],
+      isApproval:this.$constants.isApprove.no
     }
   },
   mounted(){
@@ -343,24 +308,27 @@ export default {
       this.$emit('refresh', {});
       this.getDataList();
     },
-    joinFurnace(){
-      // if(this.selectList.length === 0) this.$message.error("请至少选择一条数据！");
-      // else if(this.selectList.length > 1) this.$message.error("该功能只支持单数据操作！");
-      // else {
-      //   this.$emit('addGant', this.selectList[0]);
-      // }
+    async joinFurnace(){
+      debugger
       if(this.furnace) {
         console.log(this.furnace)
         if(this.furnace.children.length>0) this.canChange = false
         if(this.selectList.length === 0) this.$message.error("请至少选择一条数据！");
         else {
-          this.pl14Ids = [];
-          this.pl14Ids = this.selectList.map(item=>{
-            return item.pl14Id;
+          // this.planNodeIds = [];
+          // this.planNodeIds = this.selectList.map(item=>{
+          //   return item.planNodeId;
+          // })
+          planWeekHttp.findTankById({id:this.furnace.tableId}).then(data=>{
+            this.tankName = data.data.dryingTankCode
+            this.selectList.forEach(item =>{
+              item.tankName = this.tankName
+              item.usedEquipment = this.furnace.tableId
+            })
           })
-
+          this.model.checkDataList = this.selectList
+          console.log('结果',this.model.checkDataList)
           this.dialogVisible = true;
-          this.getCheckDataList();
         }
       } else this.$message.error("请先选择干燥罐")
     },
@@ -374,19 +342,6 @@ export default {
           this.dataList = res.data;
           this.total = res.total_count;
         })
-    },
-    getCheckDataList(){
-      planWeekHttp.findTankById({id:this.furnace.tableId}).then(data=>{
-        planWeekHttp.furnaceBeforeHand({pl14Id: this.pl14Ids,nodeId: '20'}).then(res=>{
-          res.data.checkVos.forEach(item=>{
-            item.usedEquipment = this.furnace.tableId
-            item.tankName = data.data.dryingTankCode
-          })
-          this.dataFormat(res.data.checkVos)
-          this.model.checkDataList = res.data.checkVos;
-          console.log(this.model.checkDataList)
-        })
-      })
     },
     handlePagination({ page, limit }){
       this.pageNum = page;
@@ -409,41 +364,19 @@ export default {
           this.$message.warning("没有数据！");
           return;
         }
-        if(this.model.checkDataList.some(item=> item.haveGyjh === 0)) {
-          this.$confirm(`包含了没有工艺计划的数据，是否剔除错误数据后继续操作？`, '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'error'
-          }).then(() => {
-            this.model.checkDataList = this.model.checkDataList.filter(item => item.haveGyjh != 0)
-          })
-        } else {
-          let arr = []
-          let that = this
+        this.nodeInfo = []
           this.model.checkDataList.forEach(item => {
             let itemObj = {
-              pl14Id: item.pl14Id,
-              relativeBom: item.relativeBom,
-              bomInfo: item.bomInfo,
-              haveGyjh: item.haveGyjh,
-              gx: item.gx,
+              productPlanId: item.pl14Id,
+              productNodeId: item.planNodeId,
               usedEquipment: item.usedEquipment,
               planStartTime: moment(item.daterange[0]).format('YYYY-MM-DD HH:mm:ss'),
               planEndTime: moment(item.daterange[1]).format('YYYY-MM-DD HH:mm:ss')
             }
-            data.condition.push(itemObj)
+            this.nodeInfo.push(itemObj)
           })
-          if(this.checkDate.length>0) {
-            this.$confirm(`所选时间区间存在冲突，请调整后重试`, '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'error'
-            }).then(() => {
-            })
-            return;
-          }
-          planWeekHttp.addWeekPlan(data).then(response=>{
-            if(response.err_code === this.$constants.status.success){
+          planWeekHttp.addToExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:'',isApproval:this.isApproval}).then(response=>{
+            if(response.err_code === this.$constants.statusCode.success){
               this.$message.success('数据保存成功');
               this.dialogVisible = false;
               this.handleRefresh();
@@ -451,7 +384,6 @@ export default {
               this.$message.error(response.err_msg);
             }
           })
-        }
       })
     },
     tableRowClassName({ row, rowIndex }) {
@@ -524,6 +456,7 @@ export default {
       })
     },
     handleApproval(){
+      debugger
       this.$emit('approval', {});
      /* this.getSelectedData('approval').then(selectedData=>{
         if(selectedData.length === 0){
@@ -553,15 +486,13 @@ export default {
       let submitData = {
         nodeId: this.listQuery.nodeId,
         planId: [],
-        approvalStatus: this.$constants.isPass.yes
+        approvalStatus: this.$constants.confirmStatus.pass
       };
       selectedData.forEach(item=>{
-        submitData.planId.push({
-          planId: item.pl14Id,
-        })
+        submitData.planId.push(item.pl14Id)
       })
-      planWeekHttp.approvalPlan(submitData).then(response=>{
-        if(response.err_code ===this.$constants.status.success){
+      planWeekHttp.approvalPlanZ(submitData).then(response=>{
+        if(response.err_code ===this.$constants.statusCode.success){
           this.$message.success('数据审批完成');
           this.handleRefresh();
         }else{

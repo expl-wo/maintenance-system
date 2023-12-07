@@ -91,7 +91,7 @@ export default {
         planWeekHttp.addToExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
           if(res.err_code===10000){
             this.dialogVisible = false;
-            this.$message.success("修改成功！");
+            this.$message.success("加入成功！");
             this.$emit('refresh', {})
             this.$emit('queryRightData',null)
           } else {
