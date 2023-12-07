@@ -5,7 +5,7 @@ export function getCateList(params) {
   return request({
     url: '/api/equipment/repairBase/cate',
     method: 'get',
-    params: {
+    data: {
       pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
       pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
       name: params.name || '' // 模糊匹配，故障分类名称
@@ -36,7 +36,7 @@ export function getFactorList(params) {
     return request({
       url: '/api/equipment/repairBase/factor',
       method: 'get',
-      params: {
+        data: {
         pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
         pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
         name: params.name || '' // 模糊匹配，故障分类名称
