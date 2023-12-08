@@ -176,6 +176,8 @@
           </template>
           <!-- 执行项操作 -->
           <work-step-content
+            :isEditAuth="$isAuth(roleBtnEnum['editContent']) && !isSurvey"
+            :isCheckAuth="$isAuth(roleBtnEnum['review']) && !isSurvey"
             :workOrderInfo="workOrderInfo"
             :onlyTabName="onlyTabName"
             :sceneType="sceneType"
@@ -358,7 +360,8 @@ export default {
         infoAppoint: `${prefix}_${middle}_infoAppoint`, //工序派工
         videoBind: `${prefix}_${middle}_videoBind`, //视频绑定
         orderCheck: `${prefix}_${middle}_orderCheck`, //复核人员配置按钮
-        bigComponent: `${prefix}_${middle}_bigComponent`,
+        bigComponent: `${prefix}_${middle}_bigComponent`, //搭建设备
+        editContent: `${prefix}_${middle}_editContent`, //工作内容执行项编辑
       };
     },
     isPauseOrFinish() {

@@ -4,6 +4,7 @@
     <el-descriptions title="基础信息" :column="4" :style="{ width: '800px' }">
       <template #extra>
         <el-button
+          v-if="isEditAuth"
           type="primary"
           title="开工"
           :disabled="workStatus !== 1"
@@ -11,6 +12,7 @@
           >开工</el-button
         >
         <el-button
+          v-if="isEditAuth"
           type="primary"
           title="完工"
           :disabled="workStatus !== 2"
@@ -18,8 +20,9 @@
           >完工</el-button
         >
         <el-button
+          v-if="isCheckAuth"
           type="primary"
-          :disabled="recheckStatus === 1 ||[0,1].includes(workStatus)"
+          :disabled="recheckStatus === 1 || [0, 1].includes(workStatus)"
           title="复核"
           @click="check"
           >复核</el-button
@@ -61,6 +64,7 @@
         <content-item
           :ref="`contentItemRef${item.id}`"
           v-bind="item"
+          :isEditAuth="isEditAuth"
           :workOrderInfo="workOrderInfo"
           :sceneType="sceneType"
           :currentSelectNode="currentSelectNode"
@@ -68,12 +72,12 @@
         ></content-item>
       </template>
     </el-form>
-    <div class="operate-wrap">
+    <div class="operate-wrap" v-if="isEditAuth">
       <el-button type="primary" title="保存" @click="save"> 保存 </el-button>
       <el-button
         type="primary"
         title="报工"
-        :disabled="workStatus !== 2 || [0,1].includes(workStatus)"
+        :disabled="workStatus !== 2 || [0, 1].includes(workStatus)"
         @click="reportWorkModal = true"
         >报工</el-button
       >
@@ -122,6 +126,16 @@ export default {
     ReportWorkModal,
   },
   props: {
+    //是否能编辑
+    isEditAuth: {
+      type: Boolean,
+      default: false,
+    },
+    //是否能复核
+    isCheckAuth: {
+      type: Boolean,
+      default: false,
+    },
     currentSelectNode: {
       type: Object,
       default() {
@@ -171,7 +185,7 @@ export default {
           this.getList();
         }
       },
-      deep:true,
+      deep: true,
       immediate: true,
     },
   },

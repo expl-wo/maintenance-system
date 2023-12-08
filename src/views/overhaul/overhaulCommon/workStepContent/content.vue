@@ -117,6 +117,7 @@
         <multi-upload-vue
           :limit="3"
           :fileUrl="fileUrl"
+          :disabled="!isEditAuth"
           :fileName="fileName"
           accept="video/*,image/*"
           @uploadSuccess="uploadSuccess"
@@ -136,6 +137,11 @@ export default {
     multiUploadVue,
   },
   props: {
+    //是否能编辑
+    isEditAuth: {
+      type: Boolean,
+      default: false,
+    },
     currentSelectNode: {
       type: Object,
       default() {

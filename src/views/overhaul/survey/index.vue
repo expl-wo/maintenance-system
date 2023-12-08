@@ -206,6 +206,7 @@ import {
   getWorkOrderPage,
   batchDelWorkOrder,
   setWorkOrderStatus,
+  reviewWorkOrder,
 } from "@/api/overhaul/workOrderApi.js";
 export default {
   name: "survey",
@@ -242,7 +243,7 @@ export default {
       WORK_ORDER_STATUS: Object.freeze(WORK_ORDER_STATUS),
       //状态下拉筛选
       satusFilterList: Object.values(WORK_ORDER_MAP),
-      WORK_ORDER_MAP
+      WORK_ORDER_MAP,
     };
   },
   created() {
@@ -381,17 +382,20 @@ export default {
     },
     //发起审核
     handleApproval(row) {
-      this.$confirm("确认将该数据发起审核?", "提示", {
+      this.$confirm("确认将该工单发起审核?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "error",
       })
         .then(() => {
-          setWorkOrderStatus({
-            orderId: row.id,
-            orderStatus: WORK_ORDER_MAP["check"].value,
+          reviewWorkOrder({
+            workId: row.id,
           })
-            .then(() => {
+            .then((res) => {
+              if (res.code !== "0") {
+                this.$message.error(res.errMsg);
+                return;
+              }
               this.$message({
                 type: "success",
                 message: "操作成功!",
