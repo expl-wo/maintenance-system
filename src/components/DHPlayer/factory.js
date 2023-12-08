@@ -1,8 +1,18 @@
 // import Vue from 'vue'
 // let vue = new Vue()
+import request from '@/utils/request'
 let vue = {
-    resetAjax: () => {
-        console.log(1)
+    //透传给大华ICC
+    resetAjax: (targetObj) => {
+        request({
+            url: '/api/evo-ims-link/icc/video-dh-player',
+            method: 'post',
+            data: { uri: targetObj.url, param: targetObj.data }
+        }).then(res => {
+            targetObj.onSuccess(res.data)
+        }).catch((err) => {
+            targetObj.onError(err)
+        })
     }
 }
 // vue.resetAjax() {

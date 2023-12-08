@@ -22,6 +22,7 @@
             <el-icon class="el-icon--left"><Search /></el-icon> 查询
           </el-button>
           <el-button
+            v-if="$isAuth(this.editAuth)"
             type="primary"
             :disabled="isPause || !checkList.length"
             @click="handleDelete('', true)"
@@ -85,12 +86,14 @@
             <el-icon
               class="el-icon--left"
               title="编辑"
+              v-if="$isAuth(this.editAuth)"
               @click.stop="editRecord(item)"
               ><Edit
             /></el-icon>
             <el-icon
               class="el-icon--left"
               title="删除"
+              v-if="$isAuth(this.editAuth)"
               @click.stop="handleDelete(item)"
               ><Delete
             /></el-icon>
@@ -124,7 +127,7 @@
 import dayjs from "dayjs";
 import EditMarkerModal from "./editMarkerRecord.vue";
 import Pagination from "@/components/Pagination"; // 分页
-import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
+import { COMMON_FORMAT, MENU_CODE } from "@/views/overhaul/constants.js";
 import { pageVideoMarker, deleteVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   components: {
@@ -138,6 +141,10 @@ export default {
       default() {
         return {};
       },
+    },
+    onlyTabName: {
+      type: String,
+      default: "",
     },
     //工单类型
     workOrderType: {
@@ -188,6 +195,9 @@ export default {
     //暂停
     isPause() {
       return this.workOrderInfo.orderStatus === 17;
+    },
+    editAuth() {
+      return `${MENU_CODE[+this.workOrderType]}_${this.onlyTabName.split("-")[0]}_markerList_edit`;
     },
   },
   mounted() {

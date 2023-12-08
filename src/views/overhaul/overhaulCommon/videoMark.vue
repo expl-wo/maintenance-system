@@ -53,10 +53,18 @@
           </el-date-picker>
           <div class="video-form-operate">
             <el-button type="primary" @click="search">
-              <el-icon><Search /></el-icon>查询录像
+              <el-icon class="el-icon--left"><Search /></el-icon>查询
             </el-button>
             <el-button type="info" @click="reset">
-              <el-icon><RefreshLeft /></el-icon> 重置
+              <el-icon class="el-icon--left"><RefreshLeft /></el-icon> 重置
+            </el-button>
+            <el-button
+              type="primary"
+              :loading="aimLoading"
+              :disabled="!videoForm.channelCode"
+              @click="addMarker"
+            >
+              <el-icon class="el-icon--left"><Aim /></el-icon> 标记
             </el-button>
           </div>
         </div>
@@ -80,9 +88,7 @@ import DHPlayer from "@/components/DHPlayer/index";
 import dayjs from "dayjs";
 import { PROCESS_NODE_ENUM } from "@/views/overhaul/constants.js";
 import { getBindDev, getWorkTree } from "@/api/overhaul/workOrderApi.js";
-import {
-  addVideoMarker
-} from "@/api/overhaul/videoApi.js";
+import { addVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   name: "VideoMark",
   components: {
@@ -128,6 +134,7 @@ export default {
       templateChoose: "",
       templateName: "",
       workTreeStatus: "",
+      aimLoading: false,
       videoForm: {
         channelCode: undefined,
         videoStartTime: dayjs().startOf("day"),
@@ -156,24 +163,41 @@ export default {
     this.disConnect();
   },
   methods: {
+    //进行标记
+    addMarker() {
+      this.player && this.player.snapshot(0);
+    },
     //标记
     picCap(imgInfo, info) {
-      const { base64Url } = imgInfo;
-      let params ={
-        workId:this.workOrderInfo.id,
-        sceneType:this.sceneType,
-        markType:1,
-        base64:base64Url,
-        capTime:'',
-        channelcode:'',
-        channelName:'',
-        workProcedureId:'',
-        workProcedureName:''
+      let target = this.channelCodesOptions.find(
+        (item) => item.value === this.videoForm.channelCode
+      );
+      if (!target) {
+        this.$message.error("通道不存在!");
+        return;
       }
-      addVideoMarker().then(res=>{
-        debugger
-      })
-      debugger;
+      this.aimLoading = true;
+      let baseInfo = {
+        channelCode: target.label,
+        channelName: target.value,
+        workProcedureId: this.currentSelectNode.procedureCode,
+        workProcedureName: this.currentSelectNode.procedureName,
+        capTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      };
+      let params = {
+        workId: this.workOrderInfo.id,
+        sceneType: this.sceneType,
+        markType: 1,
+        base64: imgInfo.base64Url,
+        ...baseInfo,
+      };
+      addVideoMarker(params).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+          return;
+        }
+        this.aimLoading = false;
+      });
     },
     createSuccess() {
       if (!this.player) {
