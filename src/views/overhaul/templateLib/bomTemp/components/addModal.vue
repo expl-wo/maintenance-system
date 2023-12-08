@@ -251,7 +251,7 @@ export default {
           accountId: localStorage.getItem('userId')
         };
         getModelList(queryParms).then((res) => {
-          let usedModelList = this.usedModelList.map(item => item.modelName);
+          let usedModelList = this.usedModelList.map(item => item.modelId);
           let options = (res.data.pageList || []).map((item) => ({
             label: item.model,
             value: item.model,
