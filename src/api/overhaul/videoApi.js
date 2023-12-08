@@ -26,9 +26,8 @@ export function deleteVideoMarker(data) {
 ///查询单条
 export function getVideoMarker(id) {
     return request({
-        url: '/api/evo-ims-overhaul/video-image/query',
+        url: `/api/evo-ims-overhaul/video-image/query/${id}`,
         method: 'get',
-        data:{id}
     })
 }
 //分页查询

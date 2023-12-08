@@ -91,7 +91,7 @@
     <el-dialog
       draggable
       title="视频预览"
-      :model-value="videoModal"
+      v-model="videoModal"
       :destroy-on-close="true"
     >
       <div>
@@ -141,7 +141,7 @@ export default {
   data() {
     return {
       COMMON_FORMAT,
-      defaultTime: [new Date(0, 0, 0, 0, 0, 0),new Date(0, 0, 0, 23, 59, 59)], //默认时间
+      defaultTime: [new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 23, 59, 59)], //默认时间
       imgModal: false,
       imgViewerList: [], //预览图片url
       videoModal: false,
@@ -159,8 +159,8 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          dayjs().startOf('day').format(COMMON_FORMAT),
-          dayjs().endOf('day').format(COMMON_FORMAT),
+          dayjs().startOf("day").format(COMMON_FORMAT),
+          dayjs().endOf("day").format(COMMON_FORMAT),
         ],
         searchKey: "",
         issue: undefined,
@@ -185,7 +185,7 @@ export default {
     },
     getAndonTypeList() {
       getAndonType().then((res) => {
-        this.issueOptions = res.data.value.map((item) => ({
+        this.issueOptions = (res.data.value || []).map((item) => ({
           label: item.cateName,
           value: item.id,
         }));
@@ -194,7 +194,9 @@ export default {
     //打开弹窗
     openModal(row, modalName) {
       if (modalName === "imgModal") {
-        this.imgViewerList = row.pictureUrl.split("|").map(item=>this.dealUrl(item));
+        this.imgViewerList = row.pictureUrl
+          .split("|")
+          .map((item) => this.dealUrl(item));
       } else {
         this.videoUrl = this.dealUrl(row.videoUrl);
       }
@@ -224,7 +226,8 @@ export default {
         .then((res) => {
           const { total, pageList } = res.data;
           this.tableData =
-            pageList.map((item, index) => ({ ...item, id: index })) || [];
+            (pageList || []).map((item, index) => ({ ...item, id: index })) ||
+            [];
           this.pageOptions.total = total;
         })
         .finally(() => {

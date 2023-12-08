@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container order-list-box">
+  <div class="app-container order-list-box" v-loading="listLoading">
     <el-row class="mrb15" type="flex" align="middle" justify="start">
       <el-button type="primary" @click="getList">
         <el-icon class="el-icon--left"><Refresh /></el-icon> 刷新
@@ -8,13 +8,7 @@
         <el-icon class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
     </el-row>
-    <el-table
-      :data="tableData"
-      v-loading="listLoading"
-      stripe
-      style="width: 100%"
-      height="510px"
-    >
+    <el-table :data="tableData" stripe style="width: 100%" height="510px">
       <template v-for="item in RETURN_COLUMNS">
         <el-table-column
           :key="item.prop"
@@ -47,6 +41,7 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { RETURN_COLUMNS } from "../config.js";
+import { BOM_STATUS } from "@/views/overhaul/constants.js";
 import {
   getReturnList,
   exportReturnListNum,
@@ -109,28 +104,26 @@ export default {
         }
         this.maxPageNum = maxPageNum;
         if (this.maxPageNum) {
+          this.listLoading = true;
           this.exportLoop();
         }
       });
     },
     //循环导出
-    exportLoop() {
+    async exportLoop() {
       if (this.hadFileNum >= this.maxPageNum) {
+        this.listLoading = false;
         return;
       }
-      exportReturnList({
+      await exportReturnList({
         pageNum: this.maxPageNum,
         pageSize: 10000,
         workCode: this.workOrderInfo.id,
-      })
-        .then((res) => {
-          debugger;
-          exportData(res, "返厂清单");
-          this.exportLoop();
-        })
-        .finally(() => {
-          this.hadFileNum++;
-        });
+      }).then((res) => {
+        exportData(res, "返厂清单.xls");
+        this.hadFileNum += 1;
+        this.exportLoop();
+      });
     },
     /**
      * 关闭弹窗
@@ -165,7 +158,11 @@ export default {
         .then((res) => {
           const { total, pageList } = res.data;
           this.tableData =
-            pageList.map((item, index) => ({ ...item, id: index })) || [];
+            pageList.map((item, index) => ({
+              ...item,
+              id: index,
+              examineStatus: BOM_STATUS[+item.examineStatus],
+            })) || [];
           this.pageOptions.total = total;
         })
         .finally(() => {

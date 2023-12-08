@@ -23,7 +23,7 @@
         </div>
         <div class="video-form">
           <el-select
-            v-model="videoForm.channelCodes"
+            v-model="videoForm.channelCode"
             class="filter-item"
             placeholder="请选择"
           >
@@ -62,7 +62,14 @@
         </div>
       </div>
       <div class="video-content-right">
-        <DHPlayer videoId="survey-video-mark" ref="dhPlayerRef" />
+        <DHPlayer
+          @createSuccess="createSuccess"
+          :shieldClass="['affix-anchor', 'affix-anchor-box']"
+          videoId="survey-video-mark"
+          :windowType="3"
+          ref="dhPlayerRef"
+          @picCap="picCap"
+        />
       </div>
     </div>
   </div>
@@ -73,6 +80,9 @@ import DHPlayer from "@/components/DHPlayer/index";
 import dayjs from "dayjs";
 import { PROCESS_NODE_ENUM } from "@/views/overhaul/constants.js";
 import { getBindDev, getWorkTree } from "@/api/overhaul/workOrderApi.js";
+import {
+  addVideoMarker
+} from "@/api/overhaul/videoApi.js";
 export default {
   name: "VideoMark",
   components: {
@@ -104,6 +114,7 @@ export default {
   },
   data() {
     return {
+      player: null,
       treeData: [],
       defaultProps: {
         children: "childNodeList",
@@ -118,7 +129,7 @@ export default {
       templateName: "",
       workTreeStatus: "",
       videoForm: {
-        channelCodes: undefined,
+        channelCode: undefined,
         videoStartTime: dayjs().startOf("day"),
         videoEndTime: dayjs().endOf("day"),
       },
@@ -141,21 +152,73 @@ export default {
       immediate: true,
     },
   },
+  destory() {
+    this.disConnect();
+  },
   methods: {
+    //标记
+    picCap(imgInfo, info) {
+      const { base64Url } = imgInfo;
+      let params ={
+        workId:this.workOrderInfo.id,
+        sceneType:this.sceneType,
+        markType:1,
+        base64:base64Url,
+        capTime:'',
+        channelcode:'',
+        channelName:'',
+        workProcedureId:'',
+        workProcedureName:''
+      }
+      addVideoMarker().then(res=>{
+        debugger
+      })
+      debugger;
+    },
+    createSuccess() {
+      if (!this.player) {
+        this.player = this.$refs.dhPlayerRef;
+      }
+    },
+    disConnect() {
+      if (this.player) {
+        this.player.hideWindow();
+        this.player.closeVideo();
+        this.player.destory();
+        this.player = null;
+      }
+    },
     reset() {
       this.videoForm = {
-        channelCodes: undefined,
+        channelCode: undefined,
         videoStartTime: dayjs().startOf("day"),
         videoEndTime: dayjs().endOf("day"),
       };
     },
     search() {
       if (
-        this.videoForm.channelCodes &&
+        this.videoForm.channelCode &&
         this.videoForm.videoStartTime &&
         this.videoForm.videoEndTime
       ) {
-        debugger;
+        let target = this.channelCodesOptions.find(
+          (item) => item.value === this.videoForm.channelCode
+        );
+        if (!target) {
+          this.$message.error("通道不存在！");
+          return;
+        }
+        this.player &&
+          this.player.startPlayback([
+            {
+              channelId: target.value,
+              channelName: target.label,
+              startTime: this.videoForm.videoStartTime,
+              endTime: this.videoForm.videoEndTime,
+              recordSource: 2,
+              snum: 0,
+            },
+          ]);
       } else {
         this.$message.error("请完善查询条件！");
       }
@@ -183,7 +246,7 @@ export default {
         workOrderSceneType: this.sceneType,
         procedureCode: this.currentSelectNode.procedureCode,
         procedureType: this.currentSelectNode.procedureType,
-        ifShowChild:true,
+        ifShowChild: true,
       }).then((res) => {
         const { channelInfoList } = res.data;
         this.channelCodesOptions = (channelInfoList || []).map((item) => ({

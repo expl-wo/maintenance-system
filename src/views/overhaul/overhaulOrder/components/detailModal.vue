@@ -36,7 +36,7 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag :type="WORK_ORDER_STATUS[item.value].tagType">{{
+              <el-tag v-if="item.value" :type="WORK_ORDER_STATUS[item.value].tagType">{{
                 WORK_ORDER_STATUS[item.value].text
               }}</el-tag>
             </template>

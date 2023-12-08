@@ -42,7 +42,7 @@
       >
         <el-form-item label="录像前后时间" required>
           <el-input-number
-            v-model="form.beforeTime"
+            v-model="form.capBefore"
             :step="1"
             :min="0"
             :max="20"
@@ -51,7 +51,7 @@
         </el-form-item>
         <el-form-item label-width="20" required>
           <el-input-number
-            v-model="form.affterTime"
+            v-model="form.capAfter"
             :step="1"
             :min="0"
             :max="20"
@@ -61,8 +61,8 @@
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="工序关联">
-            <el-select v-model="form.process" placeholder="请选择">
+          <el-form-item label="关联工序">
+            <el-select v-model="form.workProcedureId" placeholder="请选择">
               <el-option
                 v-for="item in processOptions"
                 :key="item.value"
@@ -73,9 +73,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="备注" prop="demo">
+          <el-form-item label="备注" prop="memo">
             <el-input
-              v-model="form.demo"
+              v-model="form.memo"
               type="textarea"
               :rows="2"
               placeholder="请输入备注"
@@ -97,7 +97,10 @@
 
 <script>
 import { safeLimit } from "@/common/js/validator";
-import { addVideoMarker, updateVideoMarker } from "@/api/overhaul/videoApi.js";
+import {
+  updateVideoMarker,
+  getVideoMarker,
+} from "@/api/overhaul/videoApi.js";
 
 const markTypeOptions = [
   { label: "图片", value: 1 },
@@ -123,21 +126,25 @@ export default {
       form: {
         markName: "", //标记名称
         markType: 1, //标记类型
-        process: undefined,
-        affterTime: "",
-        beforeTime: "",
-        demo: "",
+        workProcedureId: undefined,
+        capAfter: "",
+        capBefore: "",
+        memo: "",
       },
       rules: {
         markName: safeLimit("", true),
         markType: safeLimit("", true),
-        process: safeLimit("", true),
-        demo: safeLimit("", false),
+        workProcedureId: safeLimit("", true),
+        memo: safeLimit("", false),
       },
       markTypeOptions,
-      phuocManagerOptions: [{ label: "张学友", value: 1 }],
       processOptions: [{ label: "四大天王", value: 1 }],
     };
+  },
+  mounted() {
+    getVideoMarker(this.operateRow.id).then((res) => {
+      this.form = res.data;
+    });
   },
   methods: {
     handleOk() {
@@ -147,9 +154,17 @@ export default {
         }
         this.saveLoading = true;
         if (Reflect.has(this.operateRow, "id")) {
-          updateVideoMarker();
-        } else {
-          addVideoMarker();
+          updateVideoMarker(this.form)
+            .then((res) => {
+              if (res.code !== "0") {
+                this.$message.error(res.errMsg);
+                return;
+              }
+              this.handleClose(true);
+            })
+            .finally(() => {
+              this.saveLoading = false;
+            });
         }
         //请求保存接口
       });

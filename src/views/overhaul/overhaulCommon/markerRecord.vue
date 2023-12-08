@@ -1,5 +1,5 @@
 <template>
-  <div class="mark-box">
+  <div class="mark-box" v-loading="loading">
     <div class="mark-warp">
       <el-form :inline="true">
         <el-form-item label="标记时间">
@@ -8,14 +8,19 @@
             type="datetimerange"
             :disabled-date="disabledDate"
             :default-time="defaultTime"
+            :value-format="COMMON_FORMAT"
             range-separator="至"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             align="right"
+            :clearable="false"
           >
           </el-date-picker>
         </el-form-item>
         <el-form-item>
+          <el-button type="primary" @click="getList">
+            <el-icon class="el-icon--left"><Search /></el-icon> 查询
+          </el-button>
           <el-button
             type="primary"
             :disabled="isPause || !checkList.length"
@@ -34,15 +39,21 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="mark-list">
+    <div class="mark-list" v-show="markList.length">
       <div class="card-list" v-for="(item, index) in markList" :key="index">
         <div class="image">
-          <img :src="item.markImg" @click="openImgViewer([item.markImg])" />
-          <el-image-viewer
-            v-if="showImgViewer"
-            :url-list="imgViewerList"
-            @close="showImgViewer = false"
-          ></el-image-viewer>
+          <video
+            v-if="item.markType === 2"
+            style="width: 100%"
+            height="220"
+            controls="controls"
+            :src="dealUrl(item.videoPath)"
+          />
+          <img
+            v-else
+            :src="dealUrl(item.imagePath)"
+            @click="openImgViewer([dealUrl(item.imagePath)])"
+          />
         </div>
 
         <div class="card-list-content">
@@ -52,17 +63,17 @@
           >
             {{ item.markName }}
           </div>
-          <div class="card-list-content-item" :title="item.captureTime">
-            标记时间:{{ item.captureTime }}
+          <div class="card-list-content-item" :title="item.capTime">
+            标记时间:{{ item.capTime }}
           </div>
-          <div class="card-list-content-item" :title="item.process">
-            关联工序:{{ item.process }}
+          <div class="card-list-content-item" :title="item.workProcedureName">
+            关联工序:{{ item.workProcedureName }}
           </div>
-          <div class="card-list-content-item" :title="item.channelList">
-            所属通道:{{ item.channelList }}
+          <div class="card-list-content-item" :title="item.channelName">
+            所属通道:{{ item.channelName }}
           </div>
-          <div class="card-list-content-item" :title="item.demo">
-            备注:{{ item.demo }}
+          <div class="card-list-content-item" :title="item.memo">
+            备注:{{ item.memo }}
           </div>
         </div>
         <div class="card-list-footer">
@@ -87,6 +98,12 @@
         </div>
       </div>
     </div>
+    <el-empty v-show="!pageOptions.total" description="暂无标记记录！" />
+    <el-image-viewer
+      v-if="showImgViewer"
+      :url-list="imgViewerList"
+      @close="showImgViewer = false"
+    ></el-image-viewer>
     <pagination
       v-show="pageOptions.total"
       :total="pageOptions.total"
@@ -112,7 +129,7 @@ import { pageVideoMarker, deleteVideoMarker } from "@/api/overhaul/videoApi.js";
 export default {
   components: {
     EditMarkerModal,
-    Pagination
+    Pagination,
   },
   props: {
     //当前工单的详情
@@ -127,14 +144,17 @@ export default {
       type: String,
       default: "1",
     },
+    sceneType: {
+      type: String,
+      default: "",
+    },
   },
   data() {
     return {
+      loading: false,
       showImgViewer: false,
       COMMON_FORMAT,
-      defaultTime: [new Date(0, 0, 0, 0, 0, 0),new Date(0, 0, 0, 23, 59, 59)], //默认时间
-      testImg:
-        "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+      defaultTime: [new Date(0, 0, 0, 0, 0, 0), new Date(0, 0, 0, 23, 59, 59)], //默认时间
       imgViewerList: [], //图片预览列表
       //分页参数
       pageOptions: {
@@ -145,8 +165,8 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          dayjs().startOf('day').format(COMMON_FORMAT),
-          dayjs().endOf('day').format(COMMON_FORMAT),
+          dayjs().startOf("day").format(COMMON_FORMAT),
+          dayjs().endOf("day").format(COMMON_FORMAT),
         ],
       },
       //全选相关数据
@@ -174,7 +194,7 @@ export default {
     this.getList();
   },
   methods: {
-        //禁用时间主要用于禁止开始时间早于结束时间
+    //禁用时间主要用于禁止开始时间早于结束时间
     disabledDate(Date) {
       return dayjs(Date).isAfter(dayjs());
     },
@@ -195,66 +215,26 @@ export default {
      * 获取分页列表
      */
     getList() {
-      this.markList = [
-        {
-          id: 1,
-          markName: "测试标记名称1",
-          process: "子工序1",
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-          markImg: this.testImg,
-        },
-        {
-          id: 2,
-          markName: "测试标记名称1",
-          markImg: this.testImg,
-          process: "子工序1",
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-        },
-        {
-          id: 3,
-          markName: "测试标记名称1",
-          process: "子工序1",
-          markImg: this.testImg,
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-        },
-        {
-          id: 4,
-          markName: "测试标记名称1",
-          process: "子工序1",
-          markImg: this.testImg,
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-        },
-        {
-          id: 5,
-          markName: "测试标记名称1",
-          process: "子工序1",
-          markImg: this.testImg,
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-        },
-        {
-          id: 6,
-          markName: "测试标记名称1",
-          process: "子工序1",
-          markImg: this.testImg,
-          demo: "这是配置",
-          channelList: "视频通道1",
-          captureTime: "2023-11-17 10:22:23",
-        },
-      ];
       const { pageSize, pageNum } = this.pageOptions;
-      pageVideoMarker({ pageSize, pageNum }).then((res) => {
-        debugger;
-      });
+      let params = {
+        pageNum,
+        pageSize,
+        sceneType: this.sceneType,
+        workId: this.workOrderInfo.id,
+        associateType: -1,
+        startTime: this.queryParams.time ? this.queryParams.time[0] : undefined,
+        endTime: this.queryParams.time ? this.queryParams.time[1] : undefined,
+      };
+      this.loading = true;
+      pageVideoMarker(params)
+        .then((res) => {
+          const { total, pageList } = res.data;
+          this.markList = pageList || [];
+          this.pageOptions.total = total;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     /**
      * 关闭弹窗
@@ -292,11 +272,16 @@ export default {
       })
         .then(() => {
           //请求接口
-          deleteVideoMarker(params).then((res) => {
+          deleteVideoMarker({ ids: params }).then((res) => {
+            if (res.code !== "0") {
+              this.$message.error(res.errMsg);
+              return;
+            }
             this.$message({
               type: "success",
               message: "删除成功!",
             });
+            this.getList();
           });
         })
         .catch(() => {
@@ -317,6 +302,13 @@ export default {
       this.isIndeterminate =
         this.checkList.length > 0 &&
         this.checkList.length < this.markList.length;
+    },
+    dealUrl(url) {
+      if (!url) return "";
+      if (url.indexOf("minioServer") < 0) {
+        url = "minioServer/" + url;
+      }
+      return url;
     },
     /**
      * 全选按钮操作

@@ -167,9 +167,15 @@ const WORK_STATUS_ENUM = {
     3: "已完工"
 }
 //复核状态
-const REVIEW_STATUS_ENUM ={
+const REVIEW_STATUS_ENUM = {
     0: "未复核",
     1: "已复核",
+}
+const BOM_STATUS = {
+    0: "未复核",
+    1: "已复核",
+    2: "复核不通过",
+
 }
 export {
     COMMON_FORMAT,
@@ -184,5 +190,6 @@ export {
     INPLAN_OR_OUT,
     MENU_CODE,
     WORK_STATUS_ENUM,
-    REVIEW_STATUS_ENUM
+    REVIEW_STATUS_ENUM,
+    BOM_STATUS
 }
