@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="dialogVisible" :append-to-body="true">
-    <el-form ref="dialogForm" :model="dialogForm" label-position="left" label-width="120px">
+    <el-form ref="dialogForm" :model="dialogForm" :rules="experimentFormRules" label-position="left" label-width="120px">
       <el-form-item label="计划开工时间" prop="planStartTime">
         <el-date-picker
           v-model="dialogForm.planStartTime"
@@ -59,6 +59,14 @@ export default {
       isAdd:this.$constants.flag01.n,
       isApproval:this.$constants.flag.n,
       planType: 'experiment',
+      experimentFormRules: {
+        planStartTime: [
+          {required: true, validator: this.validateStartTime, trigger: 'blur'}
+        ],
+        planEndTime: [
+          {required: true,validator: this.validateEndTime, trigger: 'blur' }
+        ]
+      },
     }
   },
   methods: {
@@ -71,8 +79,8 @@ export default {
       //   this.dialogForm.laminationTables = res.data
       // })
       if (this.isAdd === this.$constants.flag.n) {
-        this.dialogForm.planStartTime = rowData.planStartTime
-        this.dialogForm.planEndTime = rowData.planEndTime
+        this.dialogForm.planStartTime = rowData.tentativeTime
+        this.dialogForm.planEndTime = rowData.tentativeEndTime
         this.dialogForm.spt = rowData.tableId
       } else {
         this.dialogForm.planStartTime = ''
@@ -88,49 +96,74 @@ export default {
     },
     addToNodeInfo(dialogFormData) {
       debugger
-      // if(!dialogFormData.planStartTime || !dialogFormData.planEndTime || !this.dialogForm.spt){
-      //   this.$message.error("计划时间或叠片台为空，不允许提交");
-      //   return
-      // }
-      this.nodeInfo = []
-      this.addInfo.planStartTime = moment(dialogFormData.planStartTime).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
-      this.addInfo.planEndTime = moment(dialogFormData.planEndTime).format('YYYY-MM-DD HH:mm:ss');
-      // this.addInfo.planEndTime = dialogFormData.planEndTime;
-      this.addInfo.isMultiple = parseInt(dialogFormData.isMultipleType);
-      this.addInfo.productNodeId = this.rowData.productNodeId
-      this.addInfo.productPlanId = this.rowData.productPlanId
-      this.addInfo.nodeId = this.rowData.nodeId
-      this.addInfo.productNodeName = this.rowData.productNodeName
-      this.addInfo.productNo = this.rowData.productNo
-      this.addInfo.id = this.rowData.id
+      this.$refs.dialogForm.validate((valid) => {
+        if (valid) {
+          this.nodeInfo = []
+          this.addInfo.planStartTime = moment(dialogFormData.planStartTime).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
+          this.addInfo.planEndTime = moment(dialogFormData.planEndTime).format('YYYY-MM-DD HH:mm:ss');
+          // this.addInfo.planEndTime = dialogFormData.planEndTime;
+          this.addInfo.isMultiple = parseInt(dialogFormData.isMultipleType);
+          this.addInfo.productNodeId = this.rowData.productNodeId
+          this.addInfo.productPlanId = this.rowData.productPlanId
+          this.addInfo.nodeId = this.rowData.nodeId
+          this.addInfo.productNodeName = this.rowData.productNodeName
+          this.addInfo.productNo = this.rowData.productNo
+          this.addInfo.id = this.rowData.id
 
-      this.nodeInfo.push(this.addInfo);
-      this.laminationTable = this.dialogForm.laminationTables.find(item => item.id === this.dialogForm.spt);
-      if(this.isAdd === this.$constants.flag01.y){
-        planWeekHttp.addToExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
-          if(res.err_code===10000){
-            this.dialogVisible = false;
-            this.$message.success("修改成功！");
-            this.$emit('refresh', {})
-            this.$emit('queryRightData',null)
-          } else {
-            this.$message.error("操作失败："+res.err_msg);
+          this.nodeInfo.push(this.addInfo);
+          this.laminationTable = this.dialogForm.laminationTables.find(item => item.id === this.dialogForm.spt);
+          if(this.isAdd === this.$constants.flag01.y){
+            planWeekHttp.addToExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
+              if(res.err_code===10000){
+                this.dialogVisible = false;
+                this.$message.success("加入成功！");
+                this.$emit('refresh', {})
+                this.$emit('queryRightData',null)
+              } else {
+                this.$message.error("操作失败："+res.err_msg);
+              }
+            })
+          }else {
+            planWeekHttp.editExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
+              if(res.err_code===10000){
+                this.dialogVisible = false;
+                this.$message.success("修改成功！");
+                this.$emit('refresh', {})
+                this.$emit('queryRightData',null)
+              } else {
+                this.$message.error("操作失败："+res.err_msg);
+              }
+            })
           }
-        })
-      }else {
-        planWeekHttp.editExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
-          if(res.err_code===10000){
-            this.dialogVisible = false;
-            this.$message.success("修改成功！");
-            this.$emit('refresh', {})
-            this.$emit('queryRightData',null)
-          } else {
-            this.$message.error("操作失败："+res.err_msg);
-          }
-        })
-      }
-
+        }
+      })
     },
+    // 时间的校验
+    validateStartTime: function (rule, value, callback) {
+      if (value === undefined) {
+        callback(new Error('开始时间不能为空'))
+      } else {
+        if (this.dialogForm.planStartTime <= new Date().getTime()) {
+          callback(new Error('开始时间不能小于当前时间'))
+        } else {
+          callback()
+        }
+      }
+    },
+    validateEndTime: function (rule, value, callback) {
+      if (value === undefined) {
+        callback(new Error('结束时间不能为空'))
+      } else {
+        if (
+          this.dialogForm.planStartTime >=
+          this.dialogForm.planEndTime
+        ) {
+          callback(new Error('截止时间必须大于开始时间！'))
+        } else {
+          callback()
+        }
+      }
+    }
   }
 }
 </script>

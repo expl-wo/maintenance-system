@@ -514,8 +514,7 @@ export default {
               item["_" + secondItem.nodeId + "_status"] = secondItem.pnStatus;//节点状态
               item["_" + secondItem.nodeId + "_progressStatus"] = transformDictDetail("nodeWeekDeStatus", secondItem.status) + finishDate;//节点进度状态
               item["_" + secondItem.nodeId + "_nodeId"] = secondItem.id;
-              // item["_" + secondItem.nodeId + "_finishDate"] = secondItem.finishDate;
-              item["_" + secondItem.nodeId + "_finishDate"] = secondItem.nodeDate;
+              item["_" + secondItem.nodeId + "_finishDate"] = secondItem.finishDate;
             });
           }
         });

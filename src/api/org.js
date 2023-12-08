@@ -25,7 +25,7 @@ export function getOrgAlltree() {
 // 班组信息查询
 export function getWkClazzAlltree() {
   return request({
-    url: '/api/pbpermissions/wkclazz/alltree',
+    url: '/api/gcplan/wkclazz/alltree',
     method: 'get'
   })
 }
@@ -33,7 +33,7 @@ export function getWkClazzAlltree() {
 // 查询班组用户分页查询
 export function getWkcUser(params) {
   return request({
-    url: '/api/pbpermissions/wkclazz/users',
+    url: '/api/gcplan/wkclazz/users',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条
@@ -47,7 +47,7 @@ export function getWkcUser(params) {
 // 获得人员图片
 export function getUsrPic(params) {
   return request({
-    url: '/api/pbpermissions/wkclazz/getPicPath',
+    url: '/api/gcplan/wkclazz/getPicPath',
     method: 'get',
     params: {
       userId: params.userId || '' // 用户id
@@ -57,7 +57,7 @@ export function getUsrPic(params) {
 
 export function upLoadUserPic(data) {
   return request({
-    url: '/api/pbpermissions/wkclazz/setpic',
+    url: '/api/gcplan/wkclazz/setpic',
     method: 'POST',
     data
   })
@@ -66,7 +66,7 @@ export function upLoadUserPic(data) {
 // 查询用户所在班组的所有成员
 export function getClazzUser() {
   return request({
-    url: '/api/pbpermissions/wkclazz/getClazzUser',
+    url: '/api/gcplan/wkclazz/getClazzUser',
     method: 'get'
   })
 }
