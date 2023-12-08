@@ -29,7 +29,7 @@
               <div v-if="row.isOntology == 1">是</div>
             </template>
           </el-table-column>
-          <el-table-column label="前置条件" align="center" min-width="300">
+          <el-table-column label="前置条件" align="center" min-width="200">
             <template v-slot="scope">
               <el-select multiple value-key="k" v-model="scope.row.preCrafts" style="width: 270px">
                 <el-option v-for="item in scope.row.allCrafts" :key="item.k" :value="item" :label="item.v"></el-option>

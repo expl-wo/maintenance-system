@@ -1,10 +1,16 @@
 <template>
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
-      <el-form :inline="true" class="demo-form-inline demo-form-zdy">
+      <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
+        <el-form-item label="中工序编码" >
+          <el-input v-model="listQuery.stepCode" placeholder="输入工步编码" style="width: 120px;"
+                    class="filter-item" clearable />
+        </el-form-item>
         <el-form-item >
-          <el-button @click="handleSearch" icon="refresh" >刷新</el-button>
-          <el-button type="primary" @click="handleAdd" icon="plus" >新增</el-button>
+          <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
+        </el-form-item>
+        <el-form-item >
+          <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,6 +52,8 @@
           <el-table-column  align="center" label="依赖操作项"  property="dependentOperation"></el-table-column>
           <el-table-column align="center" label="依赖操作项选项" property="dependentOperationOption"></el-table-column>
           <el-table-column  align="center" label="执行频次"  property="executionFrequency"></el-table-column>
+          <el-table-column  align="center" label="合格标准"  property="eligibilityCriteria"></el-table-column>
+          <el-table-column  align="center" label="复核时效"  property="reviewTimeLimit"></el-table-column>
           <el-table-column label="操作" width="300" align="center" header-align="center">
             <template v-slot="scope">
               <el-button-group>
@@ -104,6 +112,8 @@ export default {
         dependentOperation:'',
         dependentOperationOption:'',
         executionFrequency:'',
+        eligibilityCriteria:'',
+        reviewTimeLimit:'',
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
       },
@@ -119,6 +129,7 @@ export default {
       this.dialogVisible = true;
     },
     handleSearch(){
+      this.listQuery.pg_pagenum = 1
       this.getDataList();
     },
     handleAdd(){
@@ -143,7 +154,7 @@ export default {
       if (val.limit) {
         this.listQuery.pg_pagesize = val.limit
       }
-      this.onQuery() // 查询
+      this.getDataList() // 查询
     },
 
     handleEdit(row){

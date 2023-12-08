@@ -11,24 +11,25 @@
             <ps30-child-rule-item ref="ps30ChildRuleItemRef" @updateChild="handleUpdateChild1" ></ps30-child-rule-item>
           </el-card>
           <el-card shadow="hover" class="height-40">
-            <crafs-class-index ref="crafsClassIndexRef" ></crafs-class-index>
+            <crafs-class-index ref="crafsClassIndexRef"></crafs-class-index>
+<!--            <crafs-and-auxiliary ref="crafsAndAuxiliaryRef"></crafs-and-auxiliary>-->
+<!--            <crafs-and-equipment ref="crafsAndEquipmentRef"></crafs-and-equipment>-->
+<!--            <crafs-and-main ref="crafsAndEquipmentRef"></crafs-and-main>-->
+<!--            <crafs-and-tools ref="crafsAndEquipmentRef"></crafs-and-tools>-->
           </el-card>
         </el-col>
       </el-row>
-    <crafs-and-auxiliary ref="crafsAndAuxiliaryRef"></crafs-and-auxiliary>
-    <crafs-and-equipment ref="crafsAndEquipmentRef"></crafs-and-equipment>
   </div>
 </template>
 
 <script type="text/jsx">
 import ps30ChildRule from '@/views/ps/baseData/ps30ChildProcessTemplateHead/ps30ChildRule.vue'
 import ps30ChildRuleItem from '@/views/ps/baseData/ps30ChildProcessTemplateHead/ps30ChildRuleItem.vue'
-import CrafsClassIndex from "@/views/ps/baseData/baseDataType/crafsClassIndex";
-import CrafsAndAuxiliary from "@/views/ps/baseData/baseDataType/crafsClass/crafsAndAuxiliary";
-import CrafsAndEquipment from "@/views/ps/baseData/baseDataType/crafsClass/crafsAndEquipment";
+import crafsClassIndex from "@/views/ps/baseData/baseDataType/crafsClassIndex";
 
 export default {
-  components: {CrafsAndEquipment, CrafsAndAuxiliary, CrafsClassIndex, ps30ChildRule, ps30ChildRuleItem},
+  components: {
+   crafsClassIndex, ps30ChildRule, ps30ChildRuleItem},
   // mounted() {
   //   this.onload()
   // },
@@ -37,8 +38,7 @@ export default {
       this.$refs.ps30ChildRuleItemRef && this.$refs.ps30ChildRuleItemRef.initData(params)
     },
     handleUpdateChild1(params) {
-      this.$refs.crafsAndAuxiliaryRef && this.$refs.crafsAndAuxiliaryRef.initData(params)
-      this.$refs.crafsAndEquipmentRef && this.$refs.crafsAndEquipmentRef.initData(params)
+      this.$refs.crafsClassIndexRef && this.$refs.crafsClassIndexRef.initData(params)
     },
   }
 }

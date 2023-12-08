@@ -134,6 +134,18 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item prop="eligibilityCriteria" label="合格标准：" >
+            <el-input v-model="model.eligibilityCriteria"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item prop="reviewTimeLimit" label="复核时效：" >
+            <el-input v-model="model.reviewTimeLimit"  ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
 
     </el-form>
     <div slot="footer">
@@ -177,7 +189,8 @@ export default {
         dependentOperation:'',
         dependentOperationOption:'',
         executionFrequency:'',
-
+        eligibilityCriteria:'',
+        reviewTimeLimit:'',
       },
       model: {},
       propertyList: [],
@@ -204,16 +217,7 @@ export default {
 
 
   methods: {
-    init(obj,propertyList,row) {
-      if(row && row.id){
-        this.propertyList = propertyList.filter(item=>{
-          //去掉本身
-          return item.id !== row.id;
-        })
-        this.relyPropertyDictCode = row.relyPropertyDictCode;
-      }else{
-        this.propertyList = propertyList;
-      }
+    init(obj) {
       if (obj === null || obj === undefined) {
         //是新增
         this.model = {
@@ -259,9 +263,6 @@ export default {
       this.$refs.form.validate(val=>{
         if(!val){
           return;
-        }
-        if(!this.model.relyPropertyId){
-          this.model.dependentOperationOption = ''
         }
         saveWorkContent(this.model).then(resoponse=>{
           if(resoponse.err_code === Constants.statusCode.success){

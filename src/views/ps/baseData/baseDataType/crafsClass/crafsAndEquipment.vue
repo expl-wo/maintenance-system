@@ -25,7 +25,7 @@
         <template v-slot="scope">
           <el-button-group>
             <el-button  type="primary" icon="Edit"
-                        @click="handleEdit(scope.row)">
+                        @click="handEdit(scope.row)">
             </el-button>
             <el-button type="danger"  icon="Delete"
                        @click="handleDelete(scope.row)">
@@ -39,29 +39,62 @@
                   @pagination="getList"
     />
     </div>
-    <crafs-equipment-add-or-update-dialog @refresh="onBtnQuery" ref="crafsEquipmentAddOrUpdateDialogRef"></crafs-equipment-add-or-update-dialog>
+    <el-dialog v-dialogDrag  appendToBody :title="listItemQuery.id? '编辑': '新增'"
+               v-model="dialogVisible" modal width="600">
+      <el-form :model="listItemQuery" class="element-list" ref="form" label-width="160px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label=" 设备类型名称:" prop="craftsName" >
+              <el-input v-model="listItemQuery.equipmentTypeName" placeholder="请输入设备类型名称" style="width: 350px;"
+                        class="filter-item" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label=" 中工序名称:" prop="crafsName" >
+              <el-input v-model="listItemQuery.crafsName" placeholder="请输入中工序名称" style="width: 350px;"
+                        class="filter-item" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer">
+        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
+        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 
 // 辅材类型查询
-import {deleteEquipment, getCrafsAndAuxiliary, getCrafsAndEquipment} from '@/api/eqpLedger'
+import {deleteEquipment, getCrafsAndEquipment, saveEquipment} from '@/api/eqpLedger'
 import Pagination from "@/components/Pagination/index";
 import Constants from "@/utils/constants";
 
-import crafsEquipmentAddOrUpdateDialog from "@/views/ps/baseData/baseDataType/crafsClass/crafsEquipmentAddOrUpdateDialog";
 
 export default {
-  components: {crafsEquipmentAddOrUpdateDialog,Pagination },
+  components: {Pagination },
   data() {
     return {
+      dialogVisible:false,
       total: 0, // 角色列表表格总条数
+      listItemQuery:{
+        id:'',
+        crafsId:'',
+        crafsName:'',
+        equipmentTypeName: ''
+
+      },
       listQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         equipmentTypeName: '', // 模糊匹配，设备分类名称
-        crafsName:''
+        crafsName:'',
+        crafsId:'',
+        id:''
       },
       tableData: [], // 角色分类列表表格数据
     }
@@ -93,12 +126,44 @@ export default {
       }
       this.onQuery() // 查询
     },
-    handleAdd(){
-      this.$refs.crafsEquipmentAddOrUpdateDialogRef.init();
+    handleAdd() {
+      this.listItemQuery = {
+        id: '',
+        crafsName: '',
+        equipmentTypeName: '',
+        crafsId: this.listQuery.crafsId,
+
+      }
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.formRef.clearValidate()
+      })
     },
-    handleEdit(rowData){
-      this.$refs.crafsEquipmentAddOrUpdateDialogRef.init(rowData);
+    handEdit(row){
+      this.dialogVisible = true
+      this.listItemQuery.id = row.id
+      this.listItemQuery.equipmentTypeName = row.equipmentTypeName
+      this.listItemQuery.crafsName = row.crafsName
+      this.crafsId = this.listQuery.crafsId
     },
+
+    saveItemData() {
+      this.dialogVisible = false;
+      let params = {
+        id:this.listItemQuery.id,
+       equipmentTypeName: this.listItemQuery.equipmentTypeName,
+        crafsName: this.listItemQuery.crafsName,
+        crafsId:this.listQuery.crafsId
+      }
+      saveEquipment(params).then(response => {
+        this.$message({
+          message: "新增成功",
+          type: 'success'
+        })
+        this.onQuery()
+      })
+    },
+
 
     handleDelete(rowData) {
       this.$confirm(Constants.deleteTip).then(() => {
@@ -122,11 +187,11 @@ export default {
     },
 
     initData(crafsId) {
-      this.listItemUpdate.crafsId = crafsId ==null ?'':crafsId.id
+      this.listQuery.crafsId = crafsId ==null ?'':crafsId.id
       // this.timeLimitId = data.id;
       getCrafsAndEquipment({
-        crafsId:this.listItemUpdate.crafsId,
-        auxiliaryTypeName:'',
+        crafsId:this.listQuery.crafsId,
+       equipmentTypeName:'',
         crafsName: '',
         pg_pagesize: 10,
         pg_pagenum: 1,

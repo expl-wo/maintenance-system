@@ -163,10 +163,11 @@ export function getCrafsAndMain(params) {
     url: '/api/gcplan/baseData/getCrafsAndMain',
     method: 'get',
     data: {
-      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
+      crafsId:params.crafsId,
       mainTypeName: params.mainTypeName ,// 模糊匹配，分类名称
-      crafsName:params.crafsName
+      crafsName:params.crafsName,
+      pg_pagesize: params.pg_pagesize , // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum , // 查询第几页数据，默认第一页
     }
   })
 }
@@ -226,11 +227,12 @@ export function getCrafsAndTools(params) {
   return request({
     url: '/api/gcplan/baseData/getCrafsAndTools',
     method: 'get',
-    params: {
-      pg_pagesize: params.pg_pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pg_pagenum || 1, // 查询第几页数据，默认第一页
-      toolsTypeName: params.toolsTypeName || '', // 模糊匹配，分类名称
-      crafsName:params.crafsName
+    data: {
+      crafsId:params.crafsId,
+      toolsTypeName: params.toolsTypeName, // 模糊匹配，分类名称
+      crafsName:params.crafsName,
+      pg_pagesize: params.pg_pagesize , // 每页显示多少条数据，默认为10条
+      pg_pagenum: params.pg_pagenum , // 查询第几页数据，默认第一页
     }
   })
 }
