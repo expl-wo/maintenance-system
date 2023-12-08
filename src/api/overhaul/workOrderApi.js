@@ -15,6 +15,14 @@ export function editWorkOrder(data) {
         data
     })
 }
+//审核勘查工单
+export function reviewWorkOrder(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-order/initiate-review',
+        method: 'post',
+        data
+    })
+}
 //根据ID查询工单详情
 export function findWorkOrder(id) {
     return request({

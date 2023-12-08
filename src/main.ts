@@ -15,7 +15,7 @@ import "@/styles/xui/xui.scss"
 import "@/styles/main.scss";
 import "@/styles/el-reset.scss";
 import Constants from '@/utils/constants'
-import Print from 'vue-print-nb'
+// import Print from 'vue-print-nb'
 import LayoutStore from "@/layouts";
 import http from "@/utils/http";
 import * as Icons from "@element-plus/icons-vue";
@@ -50,7 +50,7 @@ app.use(LayoutStore, {
     },
   },
 });
-app.use(Print)
+//app.use(Print)
 app.config.globalProperties.$isAuth = isAuth;
 app.config.globalProperties.$constants = Constants;
 app.use(pinia).use(router);

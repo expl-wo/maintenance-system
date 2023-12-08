@@ -529,42 +529,47 @@ const RETURN_COLUMNS = [
         width: 50
     },
     {
-        prop: "productNumber",
+        prop: "bomLevelName",
+        label: "全路径名称",
+        align: "center",
+    },
+    {
+        prop: "prodNumber",
         label: "生产号",
         align: "center",
     },
     {
-        prop: "materialName",
-        label: "物料名称",
+        prop: "materialTypeName",
+        label: "物料(材料)分类名称",
         align: "center",
     },
     {
-        prop: "pipelineCode",
+        prop: "parentSerialCode",
         label: "父节点流水码",
         align: "center",
     },
     {
-        prop: "classifyName",
+        prop: "parentMaterialTypeName",
         label: "父节点分类名",
         align: "center",
     },
     {
-        prop: "status",
-        label: "状态",
+        prop: "examineStatus",
+        label: "复核",
         align: "center",
         width: 100,
     },
     {
-        prop: "demo",
+        prop: "examineNote",
         label: "复核备注信息",
         align: "center",
     },
-    {
-        prop: "operation",
-        label: "操作",
-        align: "center",
-        width: 150,
-    },
+    // {
+    //     prop: "operation",
+    //     label: "操作",
+    //     align: "center",
+    //     width: 150,
+    // },
 ]
 // 工器具表格项
 const INSTRUMENT_COLUMNS = [

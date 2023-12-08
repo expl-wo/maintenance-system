@@ -31,6 +31,7 @@ service.interceptors.request.use(
         config.headers['Authorization'] = token;
     }
     config.headers['userId'] = localStorage.getItem('userId');//检修后端需要使用
+    config.headers['clientType'] = 'WEB';//检修后端日志区分web端还是app
     return config;
   },
   (error) => {

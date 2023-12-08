@@ -137,6 +137,10 @@ export default {
       type: Number,
       default: 1,
     },
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
   },
 
   data() {
@@ -177,7 +181,10 @@ export default {
       ].includes(this.workOrderInfo.orderStatus);
     },
     isDisabledStauts() {
-      return [1, 2].includes(this.templateStatus);
+      return (
+        [1, 2].includes(this.templateStatus) ||
+        this.onlyTabName === "surveyItem-report"
+      );
     },
   },
   async mounted() {

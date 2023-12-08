@@ -1,20 +1,14 @@
 <template>
-  <div class="app-container order-list-box" v-if="!showInfo">
+  <div class="app-container order-list-box" v-loading="listLoading">
     <el-row class="mrb15" type="flex" align="middle" justify="start">
       <el-button type="primary" @click="getList">
-        <el-icon class="el-icon--left"><Refresh /></el-icon> 根据BOM同步
+        <el-icon class="el-icon--left"><Refresh /></el-icon> 刷新
       </el-button>
       <el-button type="primary" @click="download">
         <el-icon class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
     </el-row>
-    <el-table
-      :data="tableData"
-      v-loading="listLoading"
-      stripe
-      style="width: 100%"
-      height="510px"
-    >
+    <el-table :data="tableData" stripe style="width: 100%" height="510px">
       <template v-for="item in RETURN_COLUMNS">
         <el-table-column
           :key="item.prop"
@@ -46,15 +40,30 @@
 
 <script>
 import Pagination from "@/components/Pagination"; // 分页
-import { RETURN_COLUMNS, BOM_STATUS } from "../config.js";
+import { RETURN_COLUMNS } from "../config.js";
+import { BOM_STATUS } from "@/views/overhaul/constants.js";
+import {
+  getReturnList,
+  exportReturnListNum,
+  exportReturnList,
+} from "@/api/overhaul/returnListApi.js";
+import { exportData } from "@/utils";
 export default {
   name: "ReturnList",
   components: {
     Pagination,
   },
-  filters: {
-    statusFilter(status) {
-      return BOM_STATUS[status];
+  props: {
+    //当前工单的详情
+    workOrderInfo: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    sceneType: {
+      type: String,
+      default: "",
     },
   },
   data() {
@@ -64,7 +73,7 @@ export default {
       tableData: [],
       //分页参数
       pageOptions: {
-        total: 1,
+        total: 0,
         pageNum: 1,
         pageSize: 20,
       },
@@ -74,13 +83,48 @@ export default {
       },
       dialogStatus: "add",
       operateRow: null, //操作行
+      maxPageNum: 0,
+      hadFileNum: 0,
     };
   },
   created() {
     this.getList();
   },
   methods: {
-    download() {},
+    download() {
+      exportReturnListNum({
+        pageNum: 1,
+        pageSize: 1,
+        workCode: this.workOrderInfo.id,
+      }).then((res) => {
+        const { promptInfo, maxPageNum } = res.data;
+        if (promptInfo) {
+          this.$message.error(promptInfo);
+          return;
+        }
+        this.maxPageNum = maxPageNum;
+        if (this.maxPageNum) {
+          this.listLoading = true;
+          this.exportLoop();
+        }
+      });
+    },
+    //循环导出
+    async exportLoop() {
+      if (this.hadFileNum >= this.maxPageNum) {
+        this.listLoading = false;
+        return;
+      }
+      await exportReturnList({
+        pageNum: this.maxPageNum,
+        pageSize: 10000,
+        workCode: this.workOrderInfo.id,
+      }).then((res) => {
+        exportData(res, "返厂清单.xls");
+        this.hadFileNum += 1;
+        this.exportLoop();
+      });
+    },
     /**
      * 关闭弹窗
      */
@@ -104,19 +148,26 @@ export default {
       this.getList();
     },
     getList() {
-      this.listLoading = false;
-      new Array(10).fill(1).forEach((item, index) => {
-        this.tableData.push({
-          id: index,
-          productNumber: "123132321",
-          materialName: "物料名称",
-          pipelineCode: "4564646456",
-          classifyName: "hhhh",
-          status: 1,
-          demo: "2023-10-23 12:00:00",
+      this.listLoading = true;
+      let params = {
+        pageNum: this.pageOptions.pageNum,
+        pageSize: this.pageOptions.pageSize,
+        workCode: this.workOrderInfo.id,
+      };
+      getReturnList(params)
+        .then((res) => {
+          const { total, pageList } = res.data;
+          this.tableData =
+            pageList.map((item, index) => ({
+              ...item,
+              id: index,
+              examineStatus: BOM_STATUS[+item.examineStatus],
+            })) || [];
+          this.pageOptions.total = total;
+        })
+        .finally(() => {
+          this.listLoading = false;
         });
-      });
-      this.pageOptions.total = 1;
     },
   },
 };

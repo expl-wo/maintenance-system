@@ -75,24 +75,18 @@
           </div>
           <div class="operate-wrap" v-else>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check'])&& !isSurvey"
+              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
               type="primary"
-              :disabled="
-                isPauseOrFinish ||
-                isRoleContorl.isDisabled
-              "
+              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
               title="保存"
               @click="workTreeSave"
             >
               <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
             </el-button>
             <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey "
+              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
               type="primary"
-              :disabled="
-                isPauseOrFinish ||
-                isRoleContorl.isDisabled
-              "
+              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
               title="发起审核"
               @click="workTreeCheck"
             >
@@ -140,7 +134,8 @@
                       :disabled="isPauseOrFinish"
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
-                        $isAuth(roleBtnEnum['review']) && !isSurvey
+                        $isAuth(roleBtnEnum['review']) &&
+                        !isSurvey
                       "
                       title="复核"
                       @click="openModal(row, 'recheckModal')"
@@ -181,6 +176,8 @@
           </template>
           <!-- 执行项操作 -->
           <work-step-content
+            :isEditAuth="$isAuth(roleBtnEnum['editContent']) && !isSurvey"
+            :isCheckAuth="$isAuth(roleBtnEnum['review']) && !isSurvey"
             :workOrderInfo="workOrderInfo"
             :onlyTabName="onlyTabName"
             :sceneType="sceneType"
@@ -207,6 +204,7 @@
           v-if="issueModal"
           :workCode="workOrderInfo.id"
           :operateRow="operateRow"
+          :sceneType="sceneType"
           modalName="issueModal"
           @closeModal="closeModal"
         ></add-issue>
@@ -362,7 +360,8 @@ export default {
         infoAppoint: `${prefix}_${middle}_infoAppoint`, //工序派工
         videoBind: `${prefix}_${middle}_videoBind`, //视频绑定
         orderCheck: `${prefix}_${middle}_orderCheck`, //复核人员配置按钮
-        bigComponent: `${prefix}_${middle}_bigComponent`,
+        bigComponent: `${prefix}_${middle}_bigComponent`, //搭建设备
+        editContent: `${prefix}_${middle}_editContent`, //工作内容执行项编辑
       };
     },
     isPauseOrFinish() {
@@ -511,7 +510,11 @@ export default {
           workOrderSceneType: this.sceneType,
           treeNode: parmas,
         }).then((res) => {
-          this.$message.success("保存成功");
+          if (res.code === "0") {
+            this.$message.error(res.errMsg);
+          } else {
+            this.$message.success("保存成功");
+          }
         });
       } else {
         this.$message({

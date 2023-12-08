@@ -789,7 +789,7 @@
                         base64Url: data.info.PicBuf,
                         path: imageUrl
                     }, channelInfo)
-                    break
+                break
                 case 'window.LocalRecordFinish':
                     hwndInfo.videoDownloadSuccess && hwndInfo.videoDownloadSuccess(data.info.path, channelInfo)
                     break
@@ -828,6 +828,7 @@
                             mesage: errMessage[Number(data.info.errCode)]
                         })
                     }
+                    break;
                 default:
                     break
             }

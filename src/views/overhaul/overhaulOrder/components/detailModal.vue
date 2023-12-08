@@ -36,7 +36,7 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag :type="WORK_ORDER_STATUS[item.value].tagType">{{
+              <el-tag v-if="item.value" :type="WORK_ORDER_STATUS[item.value].tagType">{{
                 WORK_ORDER_STATUS[item.value].text
               }}</el-tag>
             </template>
@@ -215,8 +215,9 @@ export default {
         const { data } = await findWorkOrder(this.operateRow.id);
         this.info = data;
         //根据不同的检修类型定义不同的时间轴
-        this.overhaulType = +this.info.retFactory;
-        this.timeLineData = TIME_LINE[this.overhaulType];
+        this.overhaulType =
+          this.info.retFactory === null ? null : +this.info.retFactory;
+        this.timeLineData =this.overhaulType===null ? []: TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
@@ -262,10 +263,14 @@ export default {
         this.tabList = TAB_LIST_OUT.slice(0, 2).filter((item) => {
           return this.$isAuth(item.menuCode);
         });
-      } else {
+      } else if(this.overhaulType === 1) {
         //返厂检修
         this.tabList = TAB_LIST_OUT.filter((item) => {
           return item.name !== "siteOverhaul" && this.$isAuth(item.menuCode);
+        });
+      }else{
+          this.tabList = TAB_LIST_OUT.slice(0, 1).filter((item) => {
+          return this.$isAuth(item.menuCode);
         });
       }
     },

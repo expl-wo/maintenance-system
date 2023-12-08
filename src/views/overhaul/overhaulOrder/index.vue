@@ -18,7 +18,7 @@
         <el-button type="primary" @click="handleFilter">
           <el-icon class="el-icon--left"><Search /></el-icon> 查询
         </el-button>
-        <el-button
+        <!-- <el-button
           v-if="$isAuth('2005_btn_delete')"
           :disabled="!selectRowList.length"
           title="删除"
@@ -26,7 +26,7 @@
           @click="handleDelete(null)"
         >
           <el-icon class="el-icon--left"><Delete /></el-icon> 删除
-        </el-button>
+        </el-button> -->
       </el-form-item>
     </el-form>
     <el-table
@@ -71,7 +71,7 @@
                   <el-icon><View /></el-icon>
                 </el-button>
                 <!-- 工单审批之后就不能删除了 -->
-                <el-button
+                <!-- <el-button
                   v-if="$isAuth('2005_btn_delete')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
@@ -82,7 +82,7 @@
                   type="danger"
                   @click="handleDelete(row)"
                   ><el-icon><Delete /></el-icon>
-                </el-button>
+                </el-button> -->
                 <el-button
                   v-if="$isAuth('2005_btn_finish')"
                   title="结束"
@@ -116,7 +116,7 @@
           :filters="satusFilterList"
         >
           <template #default="{ row }">
-            <el-tag :type="WORK_ORDER_STATUS[row.orderStatus].tagType">
+            <el-tag v-if="row.orderStatus" :type="WORK_ORDER_STATUS[row.orderStatus].tagType">
               {{ WORK_ORDER_STATUS[row.orderStatus].text }}
             </el-tag>
           </template>
@@ -363,6 +363,13 @@ export default {
   },
 };
 </script>
+<style  lang="scss">
+.el-date-table__row {
+  .normal {
+    background-color: transparent !important;
+  }
+}
+</style>
 <style scoped lang="scss">
 :deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;

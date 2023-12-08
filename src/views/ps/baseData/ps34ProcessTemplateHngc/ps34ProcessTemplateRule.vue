@@ -35,10 +35,8 @@
                            @click="initEditData(scope.row)">
                   编辑模板
                 </el-button>
-                <el-button  title="" type="primary" icon="Plus"
-                           @click="handleItemAddDict(scope.row);">
-                  添加工序
-                </el-button>
+              <el-button  title="删除" type="danger" icon="Delete"
+                          @click="handleDelete(scope.row)" />
             </template>
           </el-table-column>
         </el-table>
@@ -78,49 +76,12 @@
       </div>
     </el-dialog>
 
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
-      <div class="filter-container searchCon">
-        <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
-          <el-form-item label="工序编号" >
-            <el-input v-model="listQueryProduces.gxUid" placeholder="工序编号" style="width: 110px;" class="filter-item" clearable />
-          </el-form-item>
-          <el-form-item label="工序名称" >
-            <el-input v-model="listQueryProduces.gxName" placeholder="工序名称" style="width: 110px;" class="filter-item" clearable />
-          </el-form-item>
-          <el-form-item >
-            <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <el-table :data="tableRuleConfigData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe height="300px">
-        <el-table-column prop="gxUid" label="工序编码" align="center" min-width="15%"/>
-        <el-table-column prop="gxName" label="工序名称" align="center" min-width="15%"/>
-        <el-table-column header-align="center" align="center" width="160" label="操作">
-          <template v-slot="scope">
-            <el-button-group>
-              <el-button type="primary"
-                         @click="chooseItemData(scope.row)">
-                选择
-              </el-button>
-            </el-button-group>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div>
-        <el-tag v-for="x in checkboxRuleConfigList" :key="x.gxUid" style="margin-right:10px;">{{x.gxName}}</el-tag>
-      </div>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import {
+  deleteProcessCraftsDe, deleteProcessPlan,
   getHbCraftMode, insertGx, insertMaterialNode,
   insertPLMProcessCrafts,
   queryMaterialNotNode,
@@ -130,6 +91,7 @@ import {
 } from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
 import ps34ProcessTemplateRuleItem from "@/views/ps/baseData/ps34ProcessTemplateHngc/ps34ProcessTemplateRuleItem";
+import Constants from "@/utils/constants";
 
 export default {
   name: 'ps34ProcessTemplateRule',
@@ -200,6 +162,10 @@ export default {
          getHbCraftMode(this.listQuery).then(response => {
           this.tableData = response.data
           this.total = response.total_count
+           if(this.tableData && this.tableData.length > 0){
+             this.$refs.tableRef.setCurrentRow(this.tableData[0]);
+             this.handleClick(this.tableData[0])
+           }
         })
     },
     handleClick(item) {
@@ -224,36 +190,14 @@ export default {
           })
       this.dialogVisible  = true;
     },
-    chooseItemData(row){
-      this.dialogConfigCaiGouFormVisible = false;
-      this.createItemData(row);
-    },
-    // 点击添加分类关系
-    createItemData(classzzItem) {
-      this.saveItemData(classzzItem)
-    },
-    saveItemData(classzzItem) {
-      let params = {
-        id:this.nowChooseData.id,
-        gxUid:classzzItem.gxUid,
-        gxName:classzzItem.gxName,
-      }
-      insertGx(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
-        this.nowChooseData = null;
-        this.isDropItem() // 判断有没有展开的下拉项，有的话重新查找
-      })
-    },
-
     createOrUpdateProcess() {
       this.dialogVisible = false;
       let params = {
         procedures: [{
-          gxUid: this.listQueryProduces.gxUid,
-          gxName: this.listQueryProduces.gxName,
+          processPlanId:this.listModeUpdate.processPlanId,
+          processPlanNumber: this.listModeUpdate.processPlanNumber,
+          processPlanName: this.listModeUpdate.processPlanName,
+          isUse: parseInt(this.listModeUpdate.isUse),
         }]
 
       }
@@ -281,117 +225,26 @@ export default {
       this.listModeUpdate.isUse = row.isUse.toString()
     },
 
-    handleItemAddDict(params) {
-      this.nowChooseData = params;
-      this.onRuleConfigQuery()
-    },
 
-    tagClose(i) {
-      this.owner.ownerItemArray.splice(i, 1);
-      this.owner.ownerIdArray.splice(i, 1);
-      this.owner.ownerNameArray.splice(i, 1);
-      //this.onPeopleQuery();
-      return true;
-    },
-    createProcedures() {
-      let params = {
-        procedures: []
-      }
-      if ((this.owner.ownerIdArray.length == 0) || (this.nowChooseData == null)) {
-        this.$message({
-          type: 'warning',
-          message: '请选择工序数据!'
-        })
-      } else {
-        this.dialogTablePeopleVisible = false
-        this.owner.ownerItemArray.forEach(item => {
-          let param = {
-            id: item.id,
-            gxId: item.gxUid,
-            processPlanId: this.nowChooseData.processPlanId,
-            preGx: null,
-            workspaceNumber: item.workspaceNumber,
-            workspaceName: item.workspaceName
+    handleDelete(rowData) {
+      this.$confirm(Constants.deleteTip).then(() => {
+        deleteProcessPlan({
+          id: rowData.id
+        }).then(response => {
+          if (response.err_code === Constants.respCode.success) {
+            this.$message({
+              type: 'error',
+              message: '删除失败'
+            })
+          } else {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
           }
-          params.procedures.push(param)
+          this.onQuery()
         })
-      }
-      saveProcedure(params).then(response => {
-        this.$message({
-          message: "操作成功",
-          type: 'success'
-        })
-        this.nowChooseData = null;
-        this.owner.ownerIdArray = [];
-        this.owner.ownerNameArray = [];
-        this.owner.ownerItemArray = []
       })
-    },
-    onRuleConfigQuery() {
-      // var oldes = [];
-      // if (this.listConfigUpdate.ruleConfig && this.listConfigUpdate.ruleConfig.length > 3) {
-      //   oldes = JSON.parse(this.listConfigUpdate.ruleConfig);
-      // }
-      this.tableRuleConfigData = [];
-      queryProduces(this.listQueryProduces).then(response => {
-        this.tableRuleConfigData = response.data
-        this.clazzTotal = response.total_count
-        // this.tableRuleConfigData.forEach(element => {
-        //   // element.checked = false
-        //   for (let oes in oldes) {
-        //     if (oldes[oes].id === element.id) {
-        //       // element.checked = true
-        //       self.checkboxRuleConfigList.push(element)
-        //       break
-        //     }
-        //   }
-        // })
-      })
-      this.dialogConfigCaiGouFormVisible = true;
-    },
-
-    updateProcedures(row) {
-      let params = {
-        procedures: []
-      }
-      row.dicts.forEach(item => {
-        let param = {
-          id: item.id,
-          gxId: item.gxUid,
-          processPlanId: row.processPlanId,
-          preGx: item.preGx,
-          workspaceNumber: item.workspaceNumber,
-          workspaceName: item.workspaceName
-        }
-        params.procedures.push(param);
-      })
-      saveProcedure(params).then(response => {
-        this.$message({
-          message: "操作成功",
-          type: 'success'
-        })
-        this.nowChooseData = null;
-        this.isDropItem() // 判断有没有展开的下拉项，有的话重新查找
-      })
-    },
-
-    checkboxChange(event, item) {
-      if (event) {
-        // const checked = { id: item.id, productionCode: item.productNo }
-        this.selectedRows.push(item)
-      } else if (item) {
-        const items = this.selectedRows
-        if (items && items.length > 0) {
-          this.selectedRows = []
-          items.forEach(oldi => {
-            if (item.id !== oldi.id) {
-              // const checked = { id: oldi.id, productionCode: oldi.productionCode }
-              this.selectedRows.push(oldi)
-            }
-          })
-        }
-      }
-      console.log(this.selectedRows)
     },
   }
 }

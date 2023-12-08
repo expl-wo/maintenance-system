@@ -4,6 +4,7 @@
     <el-descriptions title="基础信息" :column="4" :style="{ width: '800px' }">
       <template #extra>
         <el-button
+          v-if="isEditAuth"
           type="primary"
           title="开工"
           :disabled="workStatus !== 1"
@@ -11,6 +12,7 @@
           >开工</el-button
         >
         <el-button
+          v-if="isEditAuth"
           type="primary"
           title="完工"
           :disabled="workStatus !== 2"
@@ -18,26 +20,32 @@
           >完工</el-button
         >
         <el-button
+          v-if="isCheckAuth"
           type="primary"
-          :disabled="recheckStatus === 1"
+          :disabled="recheckStatus === 1 || [0, 1].includes(workStatus)"
           title="复核"
           @click="check"
           >复核</el-button
         >
-        <!-- <el-button
-          type="primary"
-          title="报工"
-          :disabled="workStatus !== 2"
-          @click="reportWorkModal = true"
-          >报工</el-button
-        > -->
       </template>
-      <el-descriptions-item label="工作内容名称名称"
-        >工作内容1</el-descriptions-item
-      >
-      <el-descriptions-item label="组长">张山</el-descriptions-item>
-      <el-descriptions-item label="副组长">里斯</el-descriptions-item>
-      <el-descriptions-item label="成员">王麻子</el-descriptions-item>
+      <el-descriptions-item label="工作内容名称">{{
+        contentInfo.workProcedureName
+      }}</el-descriptions-item>
+      <el-descriptions-item label="组长">{{
+        contentInfo.leaderName
+      }}</el-descriptions-item>
+      <el-descriptions-item label="副组长">{{
+        contentInfo.deputyLeaderName
+      }}</el-descriptions-item>
+      <el-descriptions-item label="成员">{{
+        contentInfo.memberName
+      }}</el-descriptions-item>
+      <el-descriptions-item label="开工时间">{{
+        contentInfo.workBeginDate || "-"
+      }}</el-descriptions-item>
+      <el-descriptions-item label="完工时间">{{
+        contentInfo.workFinishDate || "-"
+      }}</el-descriptions-item>
       <el-descriptions-item label="复核状态">{{
         REVIEW_STATUS_ENUM[recheckStatus]
       }}</el-descriptions-item>
@@ -56,6 +64,7 @@
         <content-item
           :ref="`contentItemRef${item.id}`"
           v-bind="item"
+          :isEditAuth="isEditAuth"
           :workOrderInfo="workOrderInfo"
           :sceneType="sceneType"
           :currentSelectNode="currentSelectNode"
@@ -63,12 +72,12 @@
         ></content-item>
       </template>
     </el-form>
-    <div class="operate-wrap">
+    <div class="operate-wrap" v-if="isEditAuth">
       <el-button type="primary" title="保存" @click="save"> 保存 </el-button>
       <el-button
         type="primary"
         title="报工"
-        :disabled="workStatus !== 2"
+        :disabled="workStatus !== 2 || [0, 1].includes(workStatus)"
         @click="reportWorkModal = true"
         >报工</el-button
       >
@@ -85,6 +94,7 @@
     <report-work-modal
       v-if="reportWorkModal"
       :operateRow="currentSelectNode"
+      :progress="contentInfo.progress"
       modalName="reportWorkModal"
       :sceneType="sceneType"
       :workOrderInfo="workOrderInfo"
@@ -116,6 +126,16 @@ export default {
     ReportWorkModal,
   },
   props: {
+    //是否能编辑
+    isEditAuth: {
+      type: Boolean,
+      default: false,
+    },
+    //是否能复核
+    isCheckAuth: {
+      type: Boolean,
+      default: false,
+    },
     currentSelectNode: {
       type: Object,
       default() {
@@ -146,6 +166,7 @@ export default {
     return {
       recheckModal: false,
       reportWorkModal: false,
+      contentInfo: {},
       REVIEW_STATUS_ENUM,
       WORK_STATUS_ENUM,
       recheckStatus: 1, //复核状态
@@ -160,13 +181,27 @@ export default {
     currentSelectNode: {
       handler(val) {
         if (+val.type === 3) {
+          this.getWorkSteoInfoList();
           this.getList();
         }
       },
+      deep: true,
       immediate: true,
     },
   },
   methods: {
+    getWorkSteoInfoList() {
+      getWorkStepInfo({
+        workCode: this.workOrderInfo.id,
+        procedureCode: this.currentSelectNode.procedureCode,
+        workProcedureType: this.currentSelectNode.procedureType,
+        workOrderSceneType: this.sceneType,
+      }).then((res) => {
+        this.contentInfo = res.data;
+        this.recheckStatus = this.contentInfo.reviewStatus;
+        this.workStatus = this.contentInfo.workStatus;
+      });
+    },
     closeModal(modeName, isSearch = false) {
       this[modeName] = false;
       isSearch && this.getList();
@@ -175,8 +210,7 @@ export default {
     getList() {
       this.loading = true;
       let parmas = {
-        // craftId: this.currentSelectNode.procedureCode,
-        craftId: "20231125",
+        craftId: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
       };
       getWorkContent(parmas)
@@ -195,7 +229,7 @@ export default {
       this.getList();
     },
     //分页查询内容
-    searchChange(operationCode, beginTime) {
+    searchChange(operationCode) {
       if (!this.dataList.length) return;
       let resultList = this.dataList.filter(
         (item) => +item.operationCode === +operationCode
@@ -211,16 +245,11 @@ export default {
           ? this.$refs[`contentItemRef${item.operationCode}`][0].beginTime
           : dayjs().format(COMMON_FORMAT);
         params.push({
-          // workCode: this.workOrderInfo.id,
-          // craftId: this.currentSelectNode.procedureCode,
-          workCode: "20220705093359824311000301954583",
-          craftCode: "20231125",
-          operationCode: "5",
-          executionFrequency: "0",
-          // operationCode: item.operationCode,
+          workCode: this.workOrderInfo.id,
+          craftCode: this.currentSelectNode.procedureCode,
+          operationCode: item.operationCode,
           workScene: this.sceneType,
-          // executionFrequency: item.executionFrequency,
-          // beginTime: "2023-12-05 19:30:47",
+          executionFrequency: item.executionFrequency,
           beginTime,
         });
       });
@@ -231,7 +260,6 @@ export default {
         } else {
           const value = res.data.value || [];
           value.forEach((item) => {
-            item.operationCode = "7";
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
               this.$refs[
                 `contentItemRef${item.operationCode}`
@@ -254,10 +282,8 @@ export default {
     },
     editStatus(type) {
       let params = {
-        // workCode: this.workOrderInfo.id,
-        // craftId: this.currentSelectNode.procedureCode,
-        workCode: "20220705093359824311000301954583",
-        workProcedureCode: "20231125",
+        workCode: this.workOrderInfo.id,
+        workProcedureCode: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
         isStart: Number(type === "isStart"),
         isFinished: Number(type === "isFinished"),
@@ -334,10 +360,8 @@ export default {
         return;
       }
       saveWorkContent({
-        workCode: "20220705093359824311000301954583",
-        craftCode: "20231125",
-        // workCode: this.workOrderInfo.id,
-        // craftId: this.currentSelectNode.procedureCode,
+        workCode: this.workOrderInfo.id,
+        craftCode: this.currentSelectNode.procedureCode,
         contentCode: "",
         workScene: this.sceneType,
         list: result,

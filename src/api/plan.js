@@ -160,7 +160,7 @@ export function insertPLMProcessCrafts(data) {
   return request({
     url: '/api/gcplan/nodeAndPlm/insert',
     method: 'post',
-    data
+    data:data
   })
 }
 /**删除子工艺模板头**/
@@ -180,7 +180,8 @@ export function findAllCrafts(params) {
       pg_pagenum: params.pg_pagenum,
       pg_pagesize: params.pg_pagesize,
       craftsName: params.craftsName,
-      gxName:params.gxName
+      craftsCode:params.craftsCode
+
     }
   })
 }
@@ -294,7 +295,7 @@ export function saveProcess(data) {
   return request({
     url: '/api/gcplan/mesProcessPlan/saveProcess',
     method: 'post',
-    data: data
+    data
   })
 }
 
@@ -382,3 +383,40 @@ export function deleteWorkContent(data) {
   })
 }
 
+
+/**新增、修改工序*/
+export function saveGx(data) {
+  return request({
+    url: 'api/gcplan/nodeAndPlm/saveGx',
+    method: 'post',
+    data
+  })
+}
+
+/**删除工序*/
+export function deleteGx(data) {
+  return request({
+    url: 'api/gcplan/nodeAndPlm/deleteGx',
+    method: 'post',
+    data
+  })
+}
+
+/**删除工艺模板*/
+export function deleteProcessPlan(data) {
+  return request({
+    url: 'api/gcplan/mesProcessPlan/deleteProcessPlan',
+    method: 'post',
+    data
+  })
+}
+
+
+/**删除工艺模板对应工序*/
+export function deletePlanHngc(data) {
+  return request({
+    url: 'api/gcplan/mesProcessPlan/deletePlanHngc',
+    method: 'post',
+    data:data
+  })
+}

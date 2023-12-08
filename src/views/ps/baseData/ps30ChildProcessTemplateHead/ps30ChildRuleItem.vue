@@ -1,12 +1,12 @@
 <template>
   <div  class="wp hp app-containerC">
     <div class="panel-menu-search filter-container searchCon">
-      <el-button @click="handleAdd"  type="primary">新增</el-button>
-    </div>
-    <div class="panel-menu-list app-container app-containerC otherCon wp">
-      <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" @row-click="handleClick">
-                  style="font-size: 0.7rem">
-        <el-table-column prop="craftsName" align="center" label="中工序名称" />
+      <el-button @click="handleAdd"  type="primary">新增</el-button></div>
+    <div class="panel-menu-list app-container app-containerC otherCon wp"  >
+      <div class="otherCon wp xui-table__highlight">
+        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
+          <el-table-column prop="craftsCode" align="center" label="中工序编码" />
+          <el-table-column prop="craftsName" align="center" label="中工序名称" />
 
         <el-table-column prop="isOntology" align="center" width="100" label="是否本体">
           <template v-slot="{row}">
@@ -18,12 +18,15 @@
         <el-table-column header-align="center" align="center" width="120" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button size="mini" title="删除" type="danger" icon="Delete"
+              <el-button  title="编辑" type="primary" icon="Edit"
+                         @click="handEdit(scope.row)" />
+              <el-button  title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
             </el-button-group>
           </template>
         </el-table-column>
         </el-table>
+    </div>
       <pagination :total="total" :page ="listItemUpdate.pg_pagenum" :limit="listItemUpdate.pg_pagesize" class="searchCon"
                   @pagination="getList"
       />
@@ -33,7 +36,7 @@
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item prop="craftsCode" label="中工序编码" >
+            <el-form-item label=" 中工序编码:" prop="craftsName" >
               <el-input v-model="listItemUpdate.craftsCode" placeholder="请输入中工序编码" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
@@ -77,6 +80,8 @@
 import Constants from "../../../../utils/constants";
 import {queryListCrafts, deleteProcessCrafts, insertPLMProcessCrafts} from "@/api/plan";
 import Pagination from "@/components/Pagination/index";
+import dictHttp from "@/api/sys/dict";
+import {deleteDictItem} from "@/components/xui/dictionary";
 
 export default {
   components: {Pagination},
@@ -116,25 +121,21 @@ export default {
     this.getDataList()
   },
   methods: {
-    handleAdd(){
-
-    this.listItemUpdate,
-      this.$nextTick(()=>{
-        this.$refs.formRef && this.$refs.formRef.clearValidate();
-      })
-      this.dialogVisible  = true;
-    },
     //获取
     getDataList() {
         this.tableData = []
         queryListCrafts(this.listItemUpdate).then(response => {
           this.tableData = response.data
           this.total = response.total_count
+          if(this.tableData && this.tableData.length > 0){
+            this.$refs.tableRef.setCurrentRow(this.tableData[0]);
+            this.handleClick(this.tableData[0])
+          }
         })
 
     },
     handleClick(item) {
-      this.$emit('updateChild1', item)
+      this.$emit('updateChild', item)
     },
     getList(val) {
       this.listItemUpdate.pg_pagenum = val.page
@@ -143,17 +144,32 @@ export default {
       }
       this.getDataList() // 查询
     },
+
+    handEdit(row){
+      this.dialogVisible = true
+          this.listItemUpdate.id = row.id
+           this.plmProcessId= this.listItemUpdate.plmProcessId
+           this.listItemUpdate.craftsCode = row .craftsCode
+          this.listItemUpdate.craftsName = row.craftsName
+          this.listItemUpdate.isOntology = row.isOntology
+          this.listItemUpdate.standardWorkingHour = row.standardWorkingHour
+    },
+
     // 保存
     saveItemData() {
       this.dialogVisible = false;
       let params = {
-        craftsCode: this.listItemUpdate.craftsCode,
-        craftsName: this.listItemUpdate.craftsName,
-        isOntology: this.listItemUpdate.isOntology,
-        isEnd: this.listItemUpdate.isEnd,
-        needRate: this.listItemUpdate.needRate,
-        percentage:this.listItemUpdate.percentage,
-        standardWorkingHour: this.listItemUpdate.standardWorkingHour,
+        procedures: [{
+          id:this.listItemUpdate.id,
+          plmProcessId: this.listItemUpdate.plmProcessId,
+          craftsCode: this.listItemUpdate.craftsCode,
+          craftsName: this.listItemUpdate.craftsName,
+          isOntology: this.listItemUpdate.isOntology,
+          isEnd: this.listItemUpdate.isEnd,
+          needRate: this.listItemUpdate.needRate,
+          percentage: this.listItemUpdate.percentage,
+          standardWorkingHour: this.listItemUpdate.standardWorkingHour,
+        }]
       }
       insertPLMProcessCrafts(params).then(response => {
         this.$message({
@@ -184,15 +200,31 @@ export default {
       })
     },
     initData(plmProcessId) {
-      let temp = plmProcessId ==null ?'':plmProcessId.id
+      this.listItemUpdate.plmProcessId = plmProcessId ==null ?'':plmProcessId.id
       // this.timeLimitId = data.id;
      queryListCrafts({
-       plmProcessId:temp,
+       plmProcessId:this.listItemUpdate.plmProcessId,
        pg_pagenum: 1,
        pg_pagesize: 10
       }).then(response => {
        this.tableData = response.data
        this.total = response.total_count
+      })
+    },
+    handleAdd() {
+      this.listItemUpdate = {
+        id: '',
+        plmProcessId :this.listItemUpdate.plmProcessId,
+        craftsCode: '', //子工艺模板头编码
+        craftsName: '', //子工艺模板头名称
+        isOntology: '0', //是否本体
+        needRate:'',//是否需要打等级
+        isEnd:'',//是否最后一道工序
+        percentage: '', //百分比
+      }
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.formRef.clearValidate()
       })
     },
   }

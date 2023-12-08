@@ -119,11 +119,11 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             label: "复核状态",
         },
         {
-            prop: "startTime",
+            prop: "workBeginDate",
             label: "开工时间",
         },
         {
-            prop: "endTime",
+            prop: "workFinishDate",
             label: "完工时间",
         },
         {
@@ -164,12 +164,18 @@ const WORK_STATUS_ENUM = {
     0: "未派工",
     1: "未开工",
     2: "已开工",
-    5: "已完工"
+    3: "已完工"
 }
 //复核状态
-const REVIEW_STATUS_ENUM ={
+const REVIEW_STATUS_ENUM = {
     0: "未复核",
     1: "已复核",
+}
+const BOM_STATUS = {
+    0: "未复核",
+    1: "已复核",
+    2: "复核不通过",
+
 }
 export {
     COMMON_FORMAT,
@@ -184,5 +190,6 @@ export {
     INPLAN_OR_OUT,
     MENU_CODE,
     WORK_STATUS_ENUM,
-    REVIEW_STATUS_ENUM
+    REVIEW_STATUS_ENUM,
+    BOM_STATUS
 }

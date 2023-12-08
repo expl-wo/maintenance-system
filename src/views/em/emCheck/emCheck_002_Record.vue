@@ -60,7 +60,7 @@
           <!--第二层表格 开始-->
           <el-table stripe  highlight-current-row  :data="props.row.dicts"  style="font-size:0.7rem;">
             <el-table-column prop="step" width="60" align="center" label="步骤" />
-            <el-table-column prop="itemName" align="center" width="300" label="点检项名称" />
+            <el-table-column prop="itemName" align="center" width="100" label="点检项名称" />
             <el-table-column prop="itemDesc" align="center" label="点检内容" />
             <el-table-column prop="value" align="center" width="100" label="点检值">
               <template  #default="scope">
@@ -69,12 +69,12 @@
             </el-table-column>
             <el-table-column prop="result" width="70" align="center" label="点检结果">
               <template  #default="scope">
-                {{ scope.row.result == 1 ? '通过' : '不通过' }}
+                {{ scope.row.result === 1 ? '通过' : '不通过' }}
               </template>
             </el-table-column>
-            <el-table-column align="center" label="点检照片" width="150">
+            <el-table-column align="center" label="点检照片" >
               <template  #default="scope">
-                <el-image class="imgIcon" :src="scope.row.photoPath" style="width: 100px; height: 100px" :preview-src-list="[scope.row.photoPath]"></el-image>
+                <el-image preview-teleported	  :src="rootUrl+scope.row.photo" style="width: 100px; height: 100px" :preview-src-list="[rootUrl+scope.row.photo]"></el-image>
               </template>
             </el-table-column>
           </el-table>
@@ -107,7 +107,7 @@
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 // 点检记录查询,点检记录查询
 import { getMainRec, getItemRec,exportCheckRecord } from '@/api/em/eqpCheck'
-import { $exportExcel, timeTranslate } from '@/utils/common'
+import {$exportExcel, $rooturl, timeTranslate} from '@/utils/common'
 import {getEqCateList, finEqpDep, equipExport} from '@/api/em/eqpLedger'
 import {exportData} from "@/utils";
 export default {
@@ -140,6 +140,7 @@ export default {
         checkType:100,
         status:100
       },
+      rootUrl:'',
       tableData: [], // 点检配置查询（第一层）
       expands: [], // 控制表格左侧伸缩箭头打开关闭
       expandedRowData: [], // 控制点击向下箭头,展开时有数据，不展开没有数据
@@ -151,6 +152,9 @@ export default {
     this.onEqCateQuery()
     this.getEqpDpt()
     this.onQuery()
+    $rooturl().then(response => {
+      this.rootUrl = response.data
+    })
   },
   methods: {
     init(id){
@@ -222,8 +226,9 @@ export default {
     },
     queryDictData(row, labelType) {
       getItemRec({ mainRecId: row.id }).then(response => {
+
         const index = this.tableData.findIndex(data => data.id === row.id) // 首先pageData.results绑定的是父表格的数据，那么我们要把子表格数据塞到对应的父分组，那我们要知道是哪一个分组，这里的findIndex就是通过id去查找对应的父分组在数据数组里的下标
-        this.$set(this.tableData[index], 'dicts', response.data) // 这里就是给父表格数据数组self.pageData.results第index个对象加上dicts这个属性，然后把rspData.data我们从后台拿到的数据绑定到dicts这个key里
+        this.tableData[index].dicts =response.data
       })
     },
     exportExcel(id, name) {
