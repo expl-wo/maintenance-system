@@ -33,7 +33,6 @@
       <el-form-item label="问题所属/提交人">
         <el-input
           v-model="queryParams.searchKey"
-          @keyup.enter="handleFilter"
           clearable
         />
       </el-form-item>
@@ -185,6 +184,10 @@ export default {
     },
     getAndonTypeList() {
       getAndonType().then((res) => {
+        if(res.code!=='0'){
+          this.$message.error(res.errMsg)
+          return
+        }
         this.issueOptions = (res.data.value || []).map((item) => ({
           label: item.cateName,
           value: item.id,

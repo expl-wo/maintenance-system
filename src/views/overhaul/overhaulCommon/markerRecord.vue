@@ -353,13 +353,13 @@ $card-footer-height: 40px;
     overflow-y: auto;
     display: flex;
     justify-content: flex-start;
-    height: 600px;
+    height: 570px;
     flex-flow: wrap;
     .card-list {
       width: $card-width;
       height: $card-height;
       margin-right: 20px;
-      margin-top: 20px;
+      margin-bottom: 20px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
       border-radius: 4px;
       border: 1px solid #ebeef5;

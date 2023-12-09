@@ -445,7 +445,7 @@ $conent-padding: 15px;
   }
   &-survey {
     width: 100%;
-    height: 780px;
+    height: 800px;
     background: #fff;
     padding: 15px;
     margin-top: $conent-padding;
