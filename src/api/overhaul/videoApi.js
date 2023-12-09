@@ -38,3 +38,11 @@ export function pageVideoMarker(data) {
         data
     })
 }
+//获取当前通道关联的工序
+export function getWorkByChannel(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/video-image/work-procedure',
+        method: 'post',
+        data
+    })
+}

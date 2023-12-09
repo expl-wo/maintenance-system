@@ -462,6 +462,7 @@ export default {
           templateCode: this.templateChoose,
           workProcedureType: +this.currentSelectNode.type,
           workProcedureCode: this.currentSelectNode.procedureCode,
+          workOrderSceneType:this.sceneType,
         };
         getWorkInfoPage(parmas)
           .then((res) => {

@@ -159,7 +159,7 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          dayjs().startOf("day").format(COMMON_FORMAT),
+          dayjs().startOf("day").subtract(7, 'day').format(COMMON_FORMAT),
           dayjs().endOf("day").format(COMMON_FORMAT),
         ],
         searchKey: "",

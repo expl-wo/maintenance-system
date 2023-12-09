@@ -63,7 +63,7 @@ export default {
     return {
       form: {
         number: 10,
-        bomType: 1, //空白二维码携带生产号
+        bomType: 2, //空白二维码携带生产号
       },
       rules: {
         number: requiredVerify(),
@@ -80,7 +80,7 @@ export default {
           params = {
             generateNum: this.form.number,
             prodNumber:
-              this.form.bomType === 2 || !this.workOrderInfo.prodNumber
+              this.form.bomType === 1 || !this.workOrderInfo.prodNumber
                 ? undefined
                 : this.workOrderInfo.prodNumber,
           };

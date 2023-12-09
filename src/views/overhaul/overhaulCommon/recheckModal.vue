@@ -31,7 +31,7 @@
               placeholder="请选择"
             >
               <el-option label="是" :value="1" />
-              <el-option label="否" :value="2" />
+              <el-option label="否" :value="0" />
             </el-select>
           </el-form-item>
         </el-col>
@@ -87,14 +87,14 @@ export default {
         workCode: this.workOrderInfo.id,
         craftId: this.operateRow.workProcedureCode,
         pass: this.form.result,
-        sceneType: this.sceneType,
-        isAddLib:this.form.isAddLib
+        workScene: this.sceneType,
+        isProblem:this.form.isAddLib
       };
       checkWorkContent(params).then((res) => {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
-          this.handleClose();
+          this.handleClose(true);
         }
       });
     },

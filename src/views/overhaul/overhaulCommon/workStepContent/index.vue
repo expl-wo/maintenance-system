@@ -204,7 +204,10 @@ export default {
     },
     closeModal(modeName, isSearch = false) {
       this[modeName] = false;
-      isSearch && this.getList();
+      if (isSearch) {
+        this.getWorkSteoInfoList();
+        this.getList();
+      }
     },
     //获取列表
     getList() {
@@ -261,6 +264,12 @@ export default {
           const value = res.data.value || [];
           value.forEach((item) => {
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
+              if (+item.operationType === 3) {
+                //多选框
+                item.contentInfo = item.contentInfo
+                  ? item.contentInfo.split("|")
+                  : [];
+              }
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].form.contentData = item.contentInfo;
@@ -294,7 +303,7 @@ export default {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("保存成功！");
-          this.handleClose();
+          this.getWorkSteoInfoList();
         }
       });
     },
@@ -344,7 +353,12 @@ export default {
       this.dataList.forEach((item) => {
         let refObj = this.$refs[`contentItemRef${item.operationCode}`][0];
         item.contentInfo = refObj.form.contentData;
-        if (!item.contentInfo && [0, 2, 5].includes(+item.operationType)) {
+        if (+item.operationType === 3) {
+          //多选处理为字符串
+          item.contentInfo = (item.contentInfo || []).join("|");
+        }
+        if (!item.contentInfo && !!+item.isRequired) {
+          //检验必填项
           validFlag = false;
         }
         item.workPlanTime = refObj.beginTime;

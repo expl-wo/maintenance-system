@@ -180,8 +180,8 @@ export default {
       let baseInfo = {
         channelCode: target.label,
         channelName: target.value,
-        workProcedureId: this.currentSelectNode.procedureCode,
-        workProcedureName: this.currentSelectNode.procedureName,
+        workProcedureId: target.workProcedureCode,
+        workProcedureName: target.workProcedureName,
         capTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       };
       let params = {

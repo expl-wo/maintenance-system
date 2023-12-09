@@ -83,7 +83,6 @@
           v-else-if="contentType === 2"
           v-model="form.contentData"
           type="date"
-          placeholder="Pick a date"
           style="width: 100%"
         />
         <el-radio-group
@@ -233,7 +232,12 @@ export default {
   watch: {
     dictionaryContent: {
       handler(val) {
-        if (Array.isArray(val) && val.length && !this.form.contentData) {
+        if (
+          Array.isArray(val) &&
+          val.length &&
+          !this.form.contentData &&
+          +this.contentType === 3
+        ) {
           this.form.contentData = val[0].code;
         }
       },

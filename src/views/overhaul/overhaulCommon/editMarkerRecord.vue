@@ -5,6 +5,7 @@
     append-to-body
     :model-value="true"
     width="800px"
+    :close-on-click-modal="false"
     :destroy-on-close="true"
     @close="handleClose"
   >
@@ -22,7 +23,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="标记类型">
+          <el-form-item label="标记类型" prop="markType">
             <el-select v-model="form.markType" placeholder="请选择">
               <el-option
                 v-for="item in markTypeOptions"
@@ -35,7 +36,7 @@
         </el-col>
       </el-row>
       <el-row
-        v-if="form.markType === 2"
+        v-if="form.markType === 1"
         type="flex"
         align="middle"
         justify="start"
@@ -61,10 +62,10 @@
       </el-row>
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="关联工序">
+          <el-form-item label="关联工序" prop="workProcedureId">
             <el-select v-model="form.workProcedureId" placeholder="请选择">
               <el-option
-                v-for="item in processOptions"
+                v-for="item in workOptions"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -96,15 +97,16 @@
 </template>
 
 <script>
-import { safeLimit } from "@/common/js/validator";
+import { safeLimit,requiredVerify } from "@/common/js/validator";
 import {
   updateVideoMarker,
   getVideoMarker,
+  getWorkByChannel,
 } from "@/api/overhaul/videoApi.js";
 
 const markTypeOptions = [
-  { label: "图片", value: 1 },
-  { label: "视频", value: 2 },
+  { label: "图片", value: 0 },
+  { label: "视频", value: 1 },
 ];
 export default {
   props: {
@@ -133,26 +135,47 @@ export default {
       },
       rules: {
         markName: safeLimit("", true),
-        markType: safeLimit("", true),
-        workProcedureId: safeLimit("", true),
+        markType: requiredVerify(),
+        workProcedureId: requiredVerify(),
         memo: safeLimit("", false),
       },
       markTypeOptions,
-      processOptions: [{ label: "四大天王", value: 1 }],
+      workOptions: [],
     };
   },
   mounted() {
     getVideoMarker(this.operateRow.id).then((res) => {
       this.form = res.data;
+      this.getChannelCodesOptions(res.data.workId,res.data.sceneType);
     });
   },
   methods: {
+    /**
+     * 获取通道选项
+     */
+    getChannelCodesOptions(workId,sceneType) {
+      getWorkByChannel({
+        workId,
+        sceneType,
+        channelCode: this.form.channelCode,
+        // channelCode:'10087@1'
+      }).then((res) => {
+        this.workOptions = (res.data.value || []).map((item) => ({
+          label: item.workProcedureName,
+          value: item.workProcedureId,
+        }));
+      });
+    },
     handleOk() {
       this.$refs["dataForm"].validate((valid) => {
         if (!valid) {
           return false;
         }
         this.saveLoading = true;
+        let target =  this.workOptions.find(item=>item.value===this.form.workProcedureId)
+        if(target){
+          this.form.workProcedureName = target.label
+        }
         if (Reflect.has(this.operateRow, "id")) {
           updateVideoMarker(this.form)
             .then((res) => {
