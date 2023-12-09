@@ -1,10 +1,10 @@
 <template>
   <div class="full-content">
-    <div class="left-part">
+    <!-- <div class="left-part">
       <device-tree  @nodeChanged="nodeChanged"/>
-    </div>
+    </div> -->
     <div class="right-part">
-      <el-tabs class="tab-wrapper" v-model="activeName">
+      <el-tabs class="tab-wrapper" v-model="activeName" @tab-change="tabChange">
         <el-tab-pane label="设备" name="device">
             <device-table ref="deviceTable" />
         </el-tab-pane>
@@ -34,12 +34,17 @@ export default {
         currentNode: null
     };
   },
-
+  mounted() {
+    this.$refs.deviceTable.getData();
+  },
   methods: {
     // 树节点发生变化
     nodeChanged(node) {
       this.currentNode = node;
-    }
+    },
+    tabChange() {
+      this.$refs[`${this.activeName}Table`].getData();
+    },
   },
 };
 </script>
@@ -54,11 +59,13 @@ export default {
     height: 100%;
   }
   .right-part {
-    width: calc(100% - 260px);
+    // width: calc(100% - 260px);
     height: 100%;
+    width: 100%;
     padding: 0 12px;
     .tab-wrapper {
       height: 100%;
+      width: 100%;
       :deep(.el-tabs__content) {
         height: calc(100% - 55px);
         .el-tab-pane {

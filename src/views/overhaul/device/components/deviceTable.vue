@@ -176,9 +176,9 @@ export default {
       deviceType: Object.freeze(deviceType)
     };
   },
-  mounted() {
-    this.getData();
-  },
+  // mounted() {
+  //   this.getData();
+  // },
   methods: {
     // 获取表格数据
     getData() {
