@@ -204,7 +204,7 @@ const ORDER_COLUMNS = [
         prop: "orderStatus",
         label: "状态",
         align: "center",
-        width: 100,
+        width: 130,
     },
     {
         prop: "handlerName",

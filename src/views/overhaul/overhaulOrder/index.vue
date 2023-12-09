@@ -112,7 +112,7 @@
           :label="item.label"
           class-name="status-col"
           :column-key="item.prop"
-          width="100"
+          :width="item.width"
           :filters="satusFilterList"
         >
           <template #default="{ row }">

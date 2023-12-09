@@ -267,7 +267,7 @@ export default {
               if (+item.operationType === 3) {
                 //多选框
                 item.contentInfo = item.contentInfo
-                  ? item.contentInfo.split("|")
+                  ? item.contentInfo.split(",")
                   : [];
               }
               this.$refs[
@@ -355,7 +355,7 @@ export default {
         item.contentInfo = refObj.form.contentData;
         if (+item.operationType === 3) {
           //多选处理为字符串
-          item.contentInfo = (item.contentInfo || []).join("|");
+          item.contentInfo = (item.contentInfo || []).join(",");
         }
         if (!item.contentInfo && !!+item.isRequired) {
           //检验必填项

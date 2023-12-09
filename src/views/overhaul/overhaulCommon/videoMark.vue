@@ -19,13 +19,20 @@
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
-          ></el-tree>
+            ><template #default="{ node, data }">
+              <el-icon v-if="data.isDev" style="margin-right: 4px"
+                ><VideoCameraFilled
+              /></el-icon>
+              {{ node.label }}</template
+            >
+          </el-tree>
         </div>
         <div class="video-form">
           <el-select
             v-model="videoForm.channelCode"
             class="filter-item"
-            placeholder="请选择"
+            disabled
+            placeholder="请选择工序树节点"
           >
             <el-option
               v-for="item in channelCodesOptions"
@@ -180,8 +187,8 @@ export default {
       let baseInfo = {
         channelCode: target.label,
         channelName: target.value,
-        workProcedureId: target.workProcedureCode,
-        workProcedureName: target.workProcedureName,
+        workProcedureId: this.currentSelectNode.procedureCode,
+        workProcedureName:  this.currentSelectNode.parentProcedureName,
         capTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       };
       let params = {
@@ -263,28 +270,63 @@ export default {
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
+    //将树和通道组装
+    dealRanderTree(treeData) {
+      if (!this.channelCodesOptions.length || !treeData.length) return [];
+      let result = [];
+      treeData.forEach((item) => {
+        if (item.childNodeList && item.childNodeList.length) {
+          item.childNodeList = this.dealRanderTree(item.childNodeList);
+        }
+        let temp = this.channelCodesOptions.find((a) => {
+          return a.procedureCodeList.includes(item.procedureCode);
+        });
+        if (temp) {
+          item.childNodeList.push({
+            ...temp,
+            procedureName: temp.label,
+            procedureCode: item.uniqueCode,
+            uniqueCode: `${item.uniqueCode}_${temp.channelCode}`,
+            isDev: true,
+            parentProcedureName:item.procedureName
+          });
+        }
+        result.push(item);
+      });
+      return result;
+    },
     //获取通道list
     getChannelList() {
       getBindDev({
         workCode: this.workOrderInfo.id,
         workOrderSceneType: this.sceneType,
-        procedureCode: this.currentSelectNode.procedureCode,
-        procedureType: this.currentSelectNode.procedureType,
+        procedureCode: "",
+        procedureType: "0",
         ifShowChild: true,
       }).then((res) => {
         const { channelInfoList } = res.data;
         this.channelCodesOptions = (channelInfoList || []).map((item) => ({
           label: item.channelName,
           value: item.channelCode,
+          procedureCodeList: item.channelWorkProcedureDTOList.map(
+            (item) => item.workProcedureId.split("_")[1]
+          ),
         }));
+        this.treeData = this.dealRanderTree(this.treeData);
       });
     },
     /**
      * 树节点选中时操作
      */
     handleNodeClick(data) {
-      this.currentSelectNode = data;
-      this.getChannelList();
+      if (data.isDev) {
+        this.currentSelectNode = data;
+        this.videoForm.channelCode = data.value;
+      } else {
+        // this.videoForm.channelCode=undefined
+        this.$message.warning("请选择通道节点！");
+      }
+      // this.getChannelList();
     },
 
     /**

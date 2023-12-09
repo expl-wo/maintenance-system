@@ -147,7 +147,7 @@
           v-else-if="item.prop === 'orderStatus'"
           :label="item.label"
           class-name="status-col"
-          width="100"
+          :width="item.width"
           :column-key="item.prop"
           :filters="satusFilterList"
         >
