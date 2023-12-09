@@ -222,7 +222,7 @@ export default {
         let params = {bomTemplateId: null};
         if (this.info) {
           params.bomTemplateId = this.info.id;
-          this.getBomTemplate();
+          this.getBomTemplate(true);
         }
         this.getUsedModel(params);
       }
@@ -313,18 +313,21 @@ export default {
       })
       this.componentName = tempObj[val];
     },
-    async getBomTemplate() {
+    // flag 更新标志
+    async getBomTemplate(flag) {
       let res = await getBomTemplateById({ id: this.info.id });
       if (res.success && res.data) {
         let { templateName, templateCode, id, bomTreeList, templateModels } = res.data;
-        this.bomForm.templateName = templateName;
-        this.bomForm.templateCode = templateCode;
-        this.bomForm.templateModels = (templateModels || []).map(item => item.modelId);
-        this.defaultSelectVal = (templateModels || []).map(item => {
-          return {
-            value: item.modelId
-          }
-        });
+        if (flag) {
+          this.bomForm.templateName = templateName;
+          this.bomForm.templateCode = templateCode;
+          this.bomForm.templateModels = (templateModels || []).map(item => item.modelId);
+          this.defaultSelectVal = (templateModels || []).map(item => {
+            return {
+              value: item.modelId
+            }
+          });
+        }
         this.bomForm.id = id;
         this.treeData = bomTreeList;
       }
@@ -372,7 +375,7 @@ export default {
       }).then(() => {
         deleteBomTreeNode({ id: data.id }).then((res) => {
           if (res.success) {
-            this.getBomTemplate();
+            this.getBomTemplate(false);
             this.$message({
               type: "success",
               message: "删除成功!",
@@ -417,14 +420,13 @@ export default {
           params.treeName = this.componentName;
           params.componentId = this.bomForm.componentId;
         }
-        // 区分
         if (!this.isAddNode) {
           params.id = this.nodeInfo.id;
         }
         this[`${this.isAddNode ? "addBomTreeNode" : "editBomTreeNode"}`](params)
           .then((res) => {
             if (res.success) {
-              this.getBomTemplate();
+              this.getBomTemplate(false);
               // 编辑状态下更新节点信息
               if (!this.isAddNode) {
                 this.nodeInfo = {
