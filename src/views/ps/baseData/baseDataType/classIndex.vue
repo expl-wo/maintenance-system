@@ -11,7 +11,7 @@
       <el-tab-pane label="设备类型管理" >
         <equipment ></equipment>
       </el-tab-pane>
-      <el-tab-pane label="工器具类型管理" >
+      <el-tab-pane label="工装工具类型管理" >
         <tools ></tools>
       </el-tab-pane>
     </el-tabs>

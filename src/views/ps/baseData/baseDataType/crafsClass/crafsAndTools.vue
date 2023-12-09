@@ -3,8 +3,8 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="工器具类型名称" >
-          <el-input v-model="listQuery.toolsTypeName" placeholder="输入工器具类型名称" style="width: 170px;" class="filter-item"
+        <el-form-item label="工装工具类型名称" >
+          <el-input v-model="listQuery.toolsTypeName" placeholder="输入工装工具类型名称" style="width: 170px;" class="filter-item"
                     clearable />
         </el-form-item>
         <el-form-item >
@@ -19,7 +19,7 @@
           <el-table-column prop="index" label="序号" align="center" min-width="5%">
             <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
           </el-table-column>
-          <el-table-column prop="toolsTypeName" label="工器具类型名称 " align="center" min-width="15%"/>
+          <el-table-column prop="toolsTypeName" label="工装工具类型名称 " align="center" min-width="15%"/>
           <el-table-column prop="crafsName" label="中工序名称" align="center" min-width="15%"/>
           <el-table-column label="操作" align="center" width="200">
             <template v-slot="scope">
@@ -44,8 +44,8 @@
       <el-form :model="listItemQuery" class="element-list" ref="form" label-width="160px">
         <el-row>
           <el-col :span="24">
-            <el-form-item label=" 工器具类型名称:" prop="craftsName" >
-              <el-input v-model="listItemQuery.toolsTypeName" placeholder="请输入工器具类型名称" style="width: 350px;"
+            <el-form-item label=" 工装工具类型名称:" prop="craftsName" >
+              <el-input v-model="listItemQuery.toolsTypeName" placeholder="请输入工装工具类型名称" style="width: 350px;"
                         class="filter-item" />
             </el-form-item>
           </el-col>
