@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container" height="500">
+  <div class="app-container" >
 
     <el-tabs :tab-position="tabPosition" class="hp content">
       <el-tab-pane label="中工序对应辅材信息" >

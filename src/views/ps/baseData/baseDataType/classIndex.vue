@@ -2,9 +2,6 @@
   <div class="app-container">
 
     <el-tabs :tab-position="tabPosition" class="hp content">
-      <el-tab-pane label="主材类型管理" >
-        <main-material ></main-material>
-      </el-tab-pane>
       <el-tab-pane label="辅材类型管理" >
         <auxiliary-material ></auxiliary-material>
       </el-tab-pane>
@@ -19,13 +16,13 @@
 </template>
 
 <script>
-import mainMaterial from './class/mainMaterial' // 主材分类管理
+
 import auxiliaryMaterial from './class/auxiliaryMaterial' // 辅材分类管理
 import tools from './class/tools' // 工器具管理
 import equipment from "./class/equipment";//设备管理
 
 export default {
-  components: { tools,mainMaterial, auxiliaryMaterial,equipment},
+  components: { tools, auxiliaryMaterial,equipment},
   data() {
     return {
       tabPosition: 'top'

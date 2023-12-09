@@ -7,10 +7,6 @@
         <el-form-item label="节点名称" >
           <el-input v-model="listQuery.name" placeholder="输入节点名称" style="width: 180px;" class="filter-item" clearable />
         </el-form-item>
-        <el-form-item label="车间名称" >
-          <el-input v-model="listQuery.workshopName" placeholder="输入车间名称" style="width: 180px;" class="filter-item"
-                    clearable />
-        </el-form-item>
         <el-form-item label="PLM工序名称" >
           <el-input v-model="listQuery.gxName" placeholder="输入工序名称" style="width: 180px;" class="filter-item"
                     clearable />
@@ -26,10 +22,8 @@
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
       <el-table-column prop="gxName" label="PLM工序名称" align="center" min-width="15%"/>
-      <el-table-column prop="erpGxName" label="ERP工序名称" align="center" min-width="15%"/>
       <el-table-column prop="standardTime" label="标准工时" align="center" min-width="15%"/>
       <el-table-column prop="name" label="节点名称" align="center" min-width="15%"/>
-      <el-table-column prop="workshopName" label="车间名称" align="center" min-width="15%"/>
       <el-table-column prop="type" align="center" label="节点类型" min-width="15%">
         <template v-slot:default="scope">
           <el-tag v-if="scope.row.type ==0 ">设计</el-tag>
@@ -61,14 +55,10 @@ export default {
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         name: '', //节点基础数据名称
-        workshopId: '', //车间ID
-        workshopName: '', //车间名称
         type: '', //节点类型
         gxUid: '', //标准工序识别号
         gxName: '', //工序名称
         standardTime: '', //标准工时
-        erpGxId: '', //对应的ERP工序id
-        erpGxName: '', //对应的ERP工序名称
         node_id: '' //对应的HB-MES生产关键工序节点基础数据ID
       },
       tableData: [], // 角色分类列表表格数据

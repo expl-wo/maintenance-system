@@ -17,6 +17,12 @@
         <el-form-item>
           <el-button type="primary" icon="Edit" @click="unBound">解绑期量</el-button>
         </el-form-item>
+        <div>
+          <input type="text" v-model="listQuery.limitName">
+          <ul>
+            <li v-for=" limitName in filteredItems">{{ limitName }}</li>
+          </ul>
+        </div>
       </el-form>
     </div>
 
@@ -217,6 +223,11 @@ export default {
       this.listQuery.isUnBound = 1;
       this.queryTableData();
     }
+  },
+  filteredItems() {
+    return this.items.filter(limitName => {
+      return limitName.toLowerCase().includes(this.limitName.toLowerCase());
+    });
   },
 }
 </script>
