@@ -1,5 +1,6 @@
-
 // 算出一年有多少个周，并返回每一同的开始和结束时间
+import constants from "@/utils/constants";
+
 export const mapWeeksOfyear = ({year, week} = {}) => {
     year = year + ''
     const nowYear = year ? year : moment().year()
@@ -41,31 +42,37 @@ function getWeekNew(year, num, nowWeekStartDate) {
 }
 
 
-/*冻结       -2
-已取消     -1
-待排产      0
-粗排        1
-已下发      2
-生成工序计划 3
-已开工      10
-已完工      4*/
 //根据状态获取颜色样式类
 /*计划、开工中 图例正常颜色
 暂停 暂停颜色
 冻结、取消  灰色
 已完工  提前颜色 肯定有进度
 工位超上限， 超期*/
+/*
+cancel: '-100', //已取消
+    frozen: '-50', //冻结
+    back: '-5',//返工
+    waitScheduled: '0',//待排产
+    dismantlingPlan: '5',//仅拆解计划
+    preScheduling: '10',//预排节点计划
+    issuePlan: '15',//已下发计划
+    start: '20',//已开工
+    finish: '25',//已完工*/
 
 export const getGantClzByStatus = status => {
-    if (status == '0' || status == '1' || status == '10' || status == '2') { //正常
+    if (status == constants.mainPlanStatus.waitScheduled ||
+        status == constants.mainPlanStatus.preScheduling ||
+        status == constants.mainPlanStatus.dismantlingPlan ||
+        status == constants.mainPlanStatus.issuePlan ||
+        status == constants.mainPlanStatus.start) { //正常
         return 'normal';
-    } else if (status == '-1') { //暂停
+    } else if (status == constants.mainPlanStatus.cancel ||
+        status == constants.mainPlanStatus.frozen ||
+        status == constants.mainPlanStatus.back) { //暂停
         return 'cellsuspend';
-    } else if (status == '4') {//已完工
+    } else if (status == constants.mainPlanStatus.finish) {//已完工
         return 'celladvance';
-    } else if (status == '20') {//工位超上限
-        return 'cellalarm'
-    } else if (status == '-2') { //冻结、取消
-        return 'cellsuspend'
+    } else { //冻结、取消
+        return 'normal'
     }
 }

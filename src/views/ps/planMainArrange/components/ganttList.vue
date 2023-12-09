@@ -1,7 +1,7 @@
 <template>
   <div class="date" ref="ganttDateRef">
     <div class="allDaysArray"
-         :style="{ width: (allDetailDates.length * detailIntervalWidth + 10) + 'px' }">
+         :style="{ width: (allDetailDates.length * detailIntervalWidth + 11) + 'px' }">
       <div>
         <div class="allMonths" style="display:flex;">
           <div class="years" v-for="(item, parentIndex) in allMonths" :key="item.month">
@@ -94,11 +94,11 @@
                   :min="0"
                   :max="100"
                   :item="item"
-                  v-model="item.per"
+                  v-model="item.ratios"
                   @thunkMousedown="thunkMousedown"
                   @thunkMousemove="thunkMousemove"
               ></slider>
-              <div class="line-label">{{ item.productOrNodeName }}</div>
+              <div class="line-label">{{ item.productOrNodeName }}<span v-if="item.ratios != null && item.ratios != ''">({{item.ratios}}%)</span></div>
             </div>
           </div>
         </template>
@@ -549,10 +549,26 @@ const handleRefresh = () => {
 }
 
 //设置颜色
+// 默认：白色或浅蓝
+// 进度用占比显示
+// 还没有进度，状态使用横条颜色：计划、
+// 有进度，状态用占比横条颜色，开工中、暂停、已完工
+// 计划、开工中 图例正常颜色
+// 暂停 暂停颜色
+// 冻结、取消  灰色
+// 已完工  提前颜色 肯定有进度
+// 工位超上限， 超期
+// 有进度调整进度颜色、无进度修改底图颜色
+
 const setItemClz = item => {
   let _status = item._status;
-  let clz = getGantClzByStatus(_status);
-  if (item.per == 0) {
+  let clz = '';
+  if(item.isExceedLimit === constants.flag.y){
+    clz = 'cellalarm';
+  }else{
+    clz = getGantClzByStatus(_status);
+  }
+  if (constants.isEmpty(item.ratios)) {
     item.bgClz = clz;
     item.sliderClz = '';
   } else {

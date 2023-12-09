@@ -1,6 +1,6 @@
 <template>
   <div class="slider" :class="item.sliderClz" v-if="item.widthMe"
-       ref="slider" :style="{ width: item.per + '%' ,zIndex: 1000}">
+       ref="slider" :style="{ width: item.ratios + '%' ,zIndex: 1000}">
     <div class="contentWrapper">
       <!--    <div class="contentItem">
             <div class="time" v-if="showTimeDetail">{{item.planStartDate}}</div>
@@ -11,6 +11,9 @@
 <script lang="ts" setup>
 import {defineComponent, computed, onMounted, ref, reactive, nextTick, defineEmits} from "vue";
 import {getDictListByKey} from '@/components/xui/dictionary'
+
+//状态说明
+
 
 const props = defineProps({
   item: Object,

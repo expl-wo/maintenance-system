@@ -10,19 +10,15 @@
         <el-form-item label="审批状态">
           <xui-dict-select item-code="mainConfirmStatus" multiple includeAll
                            v-model="listQuery.approvalStatus" :widthFull="false"
-                           style="width:140px;" class="filter-item" clearable></xui-dict-select>
+                           style="width:180px;" class="filter-item" clearable></xui-dict-select>
         </el-form-item>
         <el-form-item label="生产状态">
           <xui-dict-select item-code="mainPlanStatus" multiple includeAll
                            v-model="listQuery.status" :widthFull="false"
-                           style="width:140px;" class="filter-item" clearable></xui-dict-select>
+                           style="width:180px;" class="filter-item" clearable></xui-dict-select>
         </el-form-item>
         <el-form-item label="计划完工时间:" prop="dateGroup">
           <el-date-picker v-model="listQuery.dateGroup" type="monthrange" range-separator="至" :clearable="false"
-                          style="width: 180px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
-        </el-form-item>
-        <el-form-item label="甘特图时间段:" prop="gantDate">
-          <el-date-picker v-model="listQuery.gantDate" type="monthrange" range-separator="至" :clearable="false"
                           style="width: 180px;" start-placeholder="开始月份" end-placeholder="结束月份"/>
         </el-form-item>
         <el-form-item>
@@ -88,7 +84,6 @@ import {useRoute} from 'vue-router'
 import {useDeleteConfirm} from "@/components/use/useCommon";
 import rejectDescDialog from './components/rejectDescDialog.vue'
 
-
 const pageTypeEnum = {
   arrange: 'arrange',
   approval: 'approval',
@@ -97,12 +92,17 @@ const pageTypeEnum = {
 const pageType = ref(pageTypeEnum.arrange);
 const route = useRoute();
 const fullPath = route.fullPath;
-let approvalStatus = [];
+let approvalStatus = [], status = [];
 if (fullPath.indexOf('ps_051_main_approval') >= 0) {
   pageType.value = pageTypeEnum.approval;
-  approvalStatus = ['2'];
+  approvalStatus = [constants.approvalStatus.Apply];
 } else if (fullPath.indexOf('ps_052_main_view') >= 0) {
   pageType.value = pageTypeEnum.view
+}
+
+//如果是编制与审批页面
+if (fullPath.indexOf('ps_052_main_view') < 0) {
+  status = constants.planApprovalStatus;
 }
 
 const ganttListRef = ref();
@@ -118,9 +118,7 @@ const listQuery = reactive({
   search: '',
   dateGroup: [dayjs().format('YYYY-MM-DD'),
     dayjs().add(intervalMonths, 'months').format('YYYY-MM-DD')],
-  gantDate: [dayjs().subtract(1, "months").format('YYYY-MM-DD'),
-    dayjs().add(3, 'months').format('YYYY-MM-DD')],
-  status: [],
+  status,
   op: "",
   opStatus: [],
   approvalStatus,
@@ -167,7 +165,7 @@ const handleApprovalSubmit = async () => {
       if (response.err_code === constants.statusCode.success) {
         ElMessage.success("审批已提交");
         getDataList();
-      }else{
+      } else {
         ElMessage.error(response.err_msg);
       }
     })
@@ -194,7 +192,7 @@ const handleApprovalPass = async () => {
       if (response.err_code === constants.statusCode.success) {
         ElMessage.success("审批已通过");
         getDataList();
-      }else{
+      } else {
         ElMessage.error(response.err_msg);
       }
     })
@@ -219,7 +217,7 @@ const handleRejectDesc = async (rejectReason, planId) => {
   if (response.err_code === constants.statusCode.success) {
     ElMessage.warning("审批已被驳回");
     getDataList();
-  }else{
+  } else {
     ElMessage.error(response.err_msg);
   }
 }
@@ -235,8 +233,6 @@ const getParams = () => {
   delete params.dateGroup;
   params.strDate = formatMonthStartDate(listQuery.dateGroup[0]) // 开始日期
   params.endDate = formatMonthEndDate(listQuery.dateGroup[1]) // 结束日期
-  params.gantStrDate = formatMonthStartDate(listQuery.gantDate[0]) // 开始日期
-  params.gantEndDate = formatMonthEndDate(listQuery.gantDate[1]) // 结束日期
   return params;
 }
 
@@ -250,12 +246,12 @@ const getDataList = async () => {
     pcModel: '',
   };
   let params = getParams();
-  let gantMonth = dayjs(params.gantEndDate).diff(dayjs(params.gantStrDate), 'months') + 1;
-  if(gantMonth > 12){
-    ElMessage.error("甘特图时间段不能超过12个月");
+  let productNoStartTime = '', productNoEndTime = '';
+  let response = await planMain.productPlanInfo(params);
+  if(response.err_code !== constants.statusCode.success){
+    ElMessage.error(response.err_msg);
     return;
   }
-  let response = await planMain.planListWithNodes(params);
   // let response = getData();
   let resultList = [];
   response.data.forEach(item => {
@@ -265,33 +261,42 @@ const getDataList = async () => {
       _status: item.schedulingStatus,
       productOrNodeName: item.productNo,
       planStartDate: item.planStartDate,
-      planEndDate: item.dateEnd,
+      planEndDate: item.planCompletime,
       dataType: constants.productOrGx.product
+    }
+    if (constants.isEmpty(productNoStartTime) ||
+        (constants.isNotEmpty(productItem.planStartDate) && productNoStartTime > productItem.planStartDate)) {
+      productNoStartTime = productItem.planStartDate;
+    }
+    if (constants.isEmpty(productNoEndTime)
+        || (constants.isNotEmpty(productItem.planEndDate) && productNoEndTime < productItem.planEndDate)) {
+      productNoEndTime = productItem.planEndDate;
     }
     delete productItem.nodeList;
     let children = [];
     if (item.nodeList && item.nodeList.length > 0) {
       item.nodeList.forEach(subItem => {
-        if(subItem.pnType == 2){
-          let obj = {
-            ...commonAttr,
-            ...subItem,
-            _status: subItem.status,
-            productNo: item.productNo,
-            planStartDate: subItem.startDate,
-            planEndDate: subItem.nodeDate,
-            productOrNodeName: subItem.nodeName,
-            dataType: constants.productOrGx.gx
-          }
-          children.push(obj)
+        let obj = {
+          ...commonAttr,
+          ...subItem,
+          _status: subItem.status,
+          productNo: item.productNo,
+          planStartDate: subItem.startDate,
+          planEndDate: subItem.nodeDate,
+          productOrNodeName: subItem.pnName,
+          dataType: constants.productOrGx.gx
         }
+        children.push(obj)
       })
     }
     productItem.children = children;
     resultList.push(productItem);
   })
   list.value = resultList;
-  initChildComponent(params);
+  initChildComponent(params, {
+    productNoStartTime,
+    productNoEndTime
+  });
 }
 
 const handleSearch = () => {
@@ -307,9 +312,16 @@ const handleChangeDateType = dateTypeItem => {
   ganttListRef.value.handleChangeDateType(dateTypeItem);
 }
 
-const initChildComponent = params => {
+const initChildComponent = (params, productNoIntervalDate) => {
   productListRef.value.init(deepClone(list.value));
-  ganttListRef.value.init(deepClone(list.value), [params.gantStrDate, params.gantEndDate]);
+  let gantDates = [params.strDate, params.endDate];
+  if(productNoIntervalDate.productNoStartTime){
+    gantDates[0] = dayjs(productNoIntervalDate.productNoStartTime).startOf("month").format("YYYY-MM-DD")
+  }
+  if(productNoIntervalDate.productNoEndTime){
+    gantDates[1] = dayjs(productNoIntervalDate.productNoEndTime).endOf("month").format("YYYY-MM-DD")
+  }
+  ganttListRef.value.init(deepClone(list.value), gantDates);
 }
 
 const handleRefresh = () => {
