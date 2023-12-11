@@ -19,7 +19,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="510px"
+      height="610px"
     >
       <template v-for="item in COLUMNS">
         <el-table-column

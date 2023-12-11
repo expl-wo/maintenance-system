@@ -279,7 +279,7 @@ export default {
      */
     dealProcess(targetList = []) {
       this.timeLineData.forEach((item) => {
-        const arr = targetList.find(
+        const arr = targetList.findLast(
           (ele) => ele.processState === item.processState
         );
         item.isActive = false;
@@ -312,7 +312,7 @@ export default {
           label: "商机订单",
           value: targetData["businessOrderName"],
         },
-        { key: "remark", label: "备注信息", value: targetData["remark"] },
+        // { key: "remark", label: "备注信息", value: targetData["remark"] },
         {
           key: "manufacturer",
           label: "厂商",
@@ -405,7 +405,7 @@ $conent-padding: 15px;
   margin-left: 20px;
 }
 :deep(.el-tabs__content) {
-  min-height: 660px;
+  min-height: 700px;
 }
 .detail-box {
   width: 100%;
@@ -445,7 +445,7 @@ $conent-padding: 15px;
   }
   &-survey {
     width: 100%;
-    height: 800px;
+    height: 850px;
     background: #fff;
     padding: 15px;
     margin-top: $conent-padding;

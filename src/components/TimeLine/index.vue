@@ -138,10 +138,13 @@ $circle-width: 20px;
   padding-right: 15px;
 }
 .timestamp {
+  word-break: break-all;
   margin-left: 35px;
   max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient:vertical;
+  white-space: normal;
 }
 </style>

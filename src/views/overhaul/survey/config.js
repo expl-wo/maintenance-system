@@ -94,7 +94,7 @@ const ORDER_COLUMNS = [
         width: 110,
     },
     {
-        prop: "prodCategory",
+        prop: "prodCategoryName",
         label: "产品大类",
         align: "center",
         width: 110,

@@ -48,7 +48,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="550"
+      height="610"
       show-overflow-tooltip
     >
       <template v-for="item in ISSUE_COLUMNS" :key="item.prop">

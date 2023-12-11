@@ -371,7 +371,7 @@ export default {
 $left-title-height: 36px;
 $left-search-height: 36px;
 $left-width: 255px;
-$left-search-time: 200px;
+$left-search-time: 150px;
 :deep(.el-input) {
   width: 220px;
 }
@@ -383,7 +383,7 @@ $left-search-time: 200px;
   display: flex;
   width: 100%;
   margin-top: 15px;
-  height: 610px;
+  height: 650px;
   border: 1px solid #e9ebee;
   &-left {
     width: $left-width;

@@ -58,7 +58,7 @@
           :http-request="uploadFile"
           :show-file-list="false"
           :auto-upload="true"
-          accept=".doc,.docx"
+          accept=".docx"
         >
           <el-button
             type="primary"
@@ -362,7 +362,7 @@ export default {
   }
   &-editor {
     width: 100%;
-    height: 600px;
+    height: 680px;
     margin-top: 10px;
     overflow-y: scroll;
   }

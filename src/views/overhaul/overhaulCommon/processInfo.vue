@@ -110,7 +110,7 @@
               stripe
               style="width: 100%"
               show-overflow-tooltip
-              height="500px"
+              height="560px"
             >
               <template v-for="item in columns">
                 <el-table-column
@@ -653,7 +653,7 @@ $left-width: 255px;
   display: flex;
   width: 100%;
   margin-top: 15px;
-  height: 610px;
+  height: 670px;
   border: 1px solid #e9ebee;
   &-left {
     width: $left-width;
