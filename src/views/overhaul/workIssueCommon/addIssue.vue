@@ -230,7 +230,7 @@ export default {
       )||{};
       let params = {
         workCode: this.workCode,
-        workProcedureCode: this.operateRow.workProcedureCode.split("_")[1],
+        workProcedureCode: this.operateRow.workProcedureCode.split("_").slice(1).join('_'),
         workProcedureType: this.operateRow.workProcedureType,
         workScene:this.sceneType,
         cateName: problemTypeObj.label,

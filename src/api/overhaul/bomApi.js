@@ -74,7 +74,7 @@ export function createQrCodeText(data) {
 //获取物料类别 
 export function getMaterial(data) {
     return request({
-        url: '/api/evo-ims-overhaul/work-order/wms-material-class',
+        url: '/api/evo-ims-overhaul/work-order/material-class',
         method: 'post',
         data: data
     })
@@ -82,7 +82,7 @@ export function getMaterial(data) {
 //获取大部件
 export function getBigComponent(data) {
     return request({
-        url: '/api/evo-ims-overhaul/work-order/plm-big-component',
+        url: '/api/evo-ims-overhaul/work-order/big-component',
         method: 'post',
         data: data
     })

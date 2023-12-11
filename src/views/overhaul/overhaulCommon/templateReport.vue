@@ -68,6 +68,7 @@
           >
         </el-upload>
         <el-tag
+          v-if="wordUri"
           :key="REPORT_CHECK_STATUS[templateStatus].label"
           :type="REPORT_CHECK_STATUS[templateStatus].type"
           class="mrl12"
@@ -75,6 +76,15 @@
           round
         >
           {{ REPORT_CHECK_STATUS[templateStatus].label }}
+        </el-tag>
+        <el-tag
+          v-else
+          type="warning"
+          class="mrl12"
+          effect="plain"
+          round
+        >
+          未生成文档
         </el-tag>
       </el-col>
     </el-row>

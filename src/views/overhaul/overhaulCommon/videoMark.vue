@@ -309,7 +309,7 @@ export default {
           label: item.channelName,
           value: item.channelCode,
           procedureCodeList: item.channelWorkProcedureDTOList.map(
-            (item) => item.workProcedureId.split("_")[1]
+            (item) => item.workProcedureId.split("_").slice(1).join('_')
           ),
         }));
         this.treeData = this.dealRanderTree(this.treeData);

@@ -374,21 +374,20 @@ export default {
     isRoleContorl() {
       let isCanShowTree, isDisabled;
       if (+this.workOrderInfo.workOrderType === 1) {
-        isDisabled = ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
-          this.workOrderInfo.orderStatus
-        );
+         //待审核和审核之后均为置灰
+        isDisabled =
+          ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
+            this.workOrderInfo.orderStatus
+          ) || [1, 2].includes(this.workTreeStatus);
         isCanShowTree =
           ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
             this.workOrderInfo.orderStatus
           ) || !!this.templateChoose;
-      } else if (this.isSurvey) {
+      } else{
         //在检修中查看勘查
         isDisabled = true;
         isCanShowTree = true;
-      } else {
-        isDisabled = [1, 2].includes(this.workTreeStatus); //待审核和审核之后均为置灰
-        isCanShowTree = true;
-      }
+      } 
       return {
         isDisabled,
         isCanShowTree,
@@ -470,7 +469,7 @@ export default {
           templateCode: this.templateChoose,
           workProcedureType: +this.currentSelectNode.type,
           workProcedureCode: this.currentSelectNode.procedureCode,
-          workOrderSceneType:this.sceneType,
+          workOrderSceneType: this.sceneType,
         };
         getWorkInfoPage(parmas)
           .then((res) => {
@@ -519,7 +518,7 @@ export default {
           workOrderSceneType: this.sceneType,
           treeNode: parmas,
         }).then((res) => {
-          if (res.code === "0") {
+          if (res.code !== "0") {
             this.$message.error(res.errMsg);
           } else {
             this.$message.success("保存成功");
@@ -539,6 +538,10 @@ export default {
         workCode: this.workOrderInfo.id,
         docType: sceneType_map[this.sceneType],
       }).then((res) => {
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+          return;
+        }
         this.$message.success("操作成功");
         this.getTreeData();
       });
