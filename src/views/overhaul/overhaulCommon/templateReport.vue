@@ -78,21 +78,14 @@
         </el-tag>
       </el-col>
     </el-row>
-    <div class="report-box-editor">
-      <iframe
-        v-if="pdfUri"
-        width="100%"
-        height="100%"
-        :src="pdfUri"
-        frameborder="0"
-      ></iframe>
-      <el-empty
+    <div class="report-box-editor" v-if="wordUri" ref="reportWordRef">
+    </div>
+    <el-empty
         v-else
         style="height: 100%"
         description="暂无可预览文档"
         :image-size="200"
       ></el-empty>
-    </div>
   </div>
 </template>
 
@@ -113,6 +106,7 @@ import {
   MENU_CODE,
 } from "@/views/overhaul/constants.js";
 import { downloadClick } from "@/utils";
+import { renderAsync } from "docx-preview";
 export default {
   props: {
     //报告模板类型类型
@@ -147,8 +141,6 @@ export default {
     return {
       REPORT_CHECK_STATUS,
       templateStatus: 0,
-      //pdf的回显URL
-      pdfUri: "",
       //wordUri
       wordUri: "",
       loading: false,
@@ -187,6 +179,13 @@ export default {
       );
     },
   },
+  watch:{
+    wordUri(val){
+      if(val){
+        this.renderWord(val);
+      }
+    }
+  },
   async mounted() {
     try {
       const {
@@ -202,6 +201,27 @@ export default {
     this.getSaveFile();
   },
   methods: {
+    renderWord(url) {
+      fetch(url).then((res) => {
+        res.blob().then((res) => {
+          renderAsync(res, this.$refs.reportWordRef, null, {
+            className: "docx", //默认和文档样式类的类名/前缀
+            inWrapper: true, //启用围绕文档内容呈现包装器
+            ignoreWidth: false, //禁用页面的渲染宽度
+            ignoreHeight: false, //禁用页面的渲染高度
+            ignoreFonts: false, //禁用字体渲染
+            breakPages: true, //在分页符上启用分页
+            ignoreLastRenderedPageBreak: true, //在lastRenderedPageBreak元素上禁用分页
+            experimental: false, //启用实验功能（制表符停止计算）
+            trimXmlDeclaration: true, //如果为true，则在解析之前将从xml文档中删除xml声明
+            useBase64URL: false, //如果为true，图像、字体等将转换为base 64 URL，否则使用URL.createObjectURL
+            useMathMLPolyfill: false, //包括用于铬、边等的MathML多填充。
+            showChanges: false, //启用文档更改的实验渲染（插入/删除）
+            debug: false, //启用额外的日志记录
+          });
+        });
+      });
+    },
     dealUrl(url) {
       if (!url) return "";
       if (url.indexOf("minioServer") < 0) {
@@ -214,10 +234,9 @@ export default {
         workCode: this.workOrderInfo.id,
         workDocType: this.workType,
       }).then(({ data }) => {
-        const { templateCode, reviewStatus, pdfUri, wordUri } = data;
+        const { templateCode, reviewStatus, wordUri } = data;
         this.templateStatus = reviewStatus || 0;
         this.templateChoose = templateCode || undefined;
-        this.pdfUri = this.dealUrl(pdfUri);
         this.wordUri = this.dealUrl(wordUri);
       });
     },
@@ -235,7 +254,7 @@ export default {
     saveFile() {
       this.loading = true;
       this.loadingType = 2;
-      if (!this.pdfUri) {
+      if (!this.wordUri) {
         this.$message.error("暂无可保存数据！");
         return;
       }
@@ -244,7 +263,6 @@ export default {
         templateCode: this.templateChoose,
         workDocType: this.workType,
         wordUri: this.wordUri,
-        pdfUri: this.pdfUri,
       }).then((res) => {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
@@ -268,7 +286,7 @@ export default {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("操作成功，上传文件已自动保存！");
-          this.pdfUri = this.dealUrl(res.data.pdfUri);
+          this.wordUri = this.dealUrl(res.data.wordUri);
           this.templateChoose = undefined;
         }
         this.loading = false;
@@ -325,11 +343,9 @@ export default {
       }).then((res) => {
         if (res.code !== "0") {
           this.wordUri = "";
-          this.pdfUri = "";
           this.$message.error(res.errMsg);
         } else {
           this.wordUri = this.dealUrl(res.data.ossWordUri);
-          this.pdfUri = this.dealUrl(res.data.ossPdfFileUri);
         }
         this.loading = false;
       });
@@ -348,6 +364,7 @@ export default {
     width: 100%;
     height: 600px;
     margin-top: 10px;
+    overflow-y: scroll;
   }
   .upload-report {
     display: inline-block;
