@@ -8,16 +8,16 @@
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="工序:" prop="nodeName">
-						<el-input v-model="model.nodeName" disabled />
+					<el-form-item label="工序:" prop="pnName">
+						<el-input v-model="model.pnName" disabled />
 					</el-form-item>
 				</el-col>
 				<el-col :span="24">
 					<el-form-item label="计划时间:" prop="time" >
 						<el-date-picker v-model="model.time" type="datetimerange"
-							:popper-options="pickerOptions0" 
+							:popper-options="pickerOptions0"
 							:disabled-date = "disabledDate"
-							value-format="YYYY-MM-DD HH:mm:ss" 	
+							value-format="YYYY-MM-DD HH:mm:ss"
 							range-separator="至"
 							start-placeholder="开始日期" end-placeholder="结束日期">
 						</el-date-picker>
@@ -101,18 +101,18 @@
 		productPlanId:'',
 		productNodeId:'',
 		productNo: '',
-		nodeName: 'y',
+    pnName: '',
     workspaceName : "",
     workspaceNumber : "",
 		time:[],
 		nodeId:'',
 		works:[],
 	}
-	
+
 	const midOp = reactive([])
-	
+
 	const work = reactive([]);
-	
+
 	const pickerOptions0 = {
 		placement: 'auto',
 		modifiers: [
@@ -125,11 +125,11 @@
 		  },
 		],
 	}
-	
+
 	const disabledDate = (dataTime: Date) => {
 	  return dataTime.getTime() < Date.now() - 8.64e7;
 	}
-	
+
 	const model = reactive(deepClone(initModel));
 
 	const init = async(row) => {
@@ -156,7 +156,7 @@
 
 
 		data.productNo = row.productNo;
-		data.nodeName = row.nodeName;
+		data.pnName = row.pnName;
 		data.productPlanId = row.productplanId;
 		data.productNodeId = row.id;
 		data.nodeId = row.nodeId;
@@ -181,7 +181,7 @@
 	const saveData = () => {
 		let params = {
 			productPlanId : model.productPlanId,
-			productNodeId : model.productNodeId, 
+			productNodeId : model.productNodeId,
 			planStartTime : model.time[0],
 			planEndTime   : model.time[1],
       workspaceName : model.workspaceName,
@@ -203,7 +203,7 @@
 	defineExpose({
 		init
 	})
-	
+
 </script>
 
 <style scoped lang="scss">

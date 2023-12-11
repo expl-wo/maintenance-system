@@ -524,7 +524,9 @@ const _handleExpandByMainId = (childrenList, expand) => {
 
 //点击行
 const handleClickItem = item => {
-  productArrangeDialogRef.value.init(item);
+  if(item.dataType === constants.productOrGx.gx){
+    productArrangeDialogRef.value.init(item);
+  }
 }
 
 
