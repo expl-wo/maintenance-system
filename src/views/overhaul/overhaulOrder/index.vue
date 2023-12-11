@@ -116,7 +116,10 @@
           :filters="satusFilterList"
         >
           <template #default="{ row }">
-            <el-tag v-if="row.orderStatus" :type="WORK_ORDER_STATUS[row.orderStatus].tagType">
+            <el-tag
+              v-if="row.orderStatus"
+              :type="WORK_ORDER_STATUS[row.orderStatus].tagType"
+            >
               {{ WORK_ORDER_STATUS[row.orderStatus].text }}
             </el-tag>
           </template>
@@ -373,6 +376,12 @@ export default {
 <style scoped lang="scss">
 :deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;
+}
+:deep(.el-table__column-filter-trigger) {
+  padding-left: 8px;
+  .el-icon-arrow-down {
+    transform: scale(1.5);
+  }
 }
 .mrb15 {
   margin-bottom: 15px;

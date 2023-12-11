@@ -23,7 +23,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary"  @click="onSearch"><el-icon class="el-icon--left"><Search /></el-icon>查询</el-button>
-          <el-button type="primary"  @click="searchAll">搜索所有任务</el-button>
+          <!-- <el-button type="primary"  @click="searchAll">搜索所有任务</el-button> -->
         </el-form-item>
       </el-form>
     </div>
@@ -263,20 +263,20 @@ export default {
   width: 100%;
   height: 100%;
 }
-:deep(.el-table__header-wrapper) {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+// :deep(.el-table__header-wrapper) {
+//   position: sticky;
+//   top: 0;
+//   z-index: 10;
+// }
 :deep(.el-table__column-filter-trigger) {
   padding-left: 8px;
   .el-icon-arrow-down {
     transform: scale(1.5);
   }
 }
-:deep(.el-table__header) tr th {
-  background-color: rgba(102, 102, 102, 0.1);
-}
+// :deep(.el-table__header) tr th {
+//   background-color: rgba(102, 102, 102, 0.1);
+// }
 :deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;

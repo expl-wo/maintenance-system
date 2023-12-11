@@ -43,7 +43,6 @@
       <el-table
         v-loading="loading"
         :data="tableData"
-        size="medium"
         border
         @sort-change="sortChange"
         @filter-change="filterChange"
@@ -327,11 +326,11 @@ export default {
   width: 100%;
   height: 100%;
 }
-:deep(.el-table__header-wrapper) {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+// :deep(.el-table__header-wrapper) {
+//   position: sticky;
+//   top: 0;
+//   z-index: 10;
+// }
 :deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;

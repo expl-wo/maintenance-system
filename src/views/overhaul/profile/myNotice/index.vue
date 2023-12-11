@@ -296,9 +296,9 @@ export default {
       })
     },
     // 搜索所有通知
-    searchAll() {
-      //
-    },
+    // searchAll() {
+    //   //
+    // },
     // 列表排序
     sortChange({ column, prop, order }) {
       this.sortInfo = null;
@@ -380,20 +380,20 @@ export default {
   width: 100%;
   height: 100%;
 }
-:deep(.el-table__header-wrapper) {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+// :deep(.el-table__header-wrapper) {
+//   position: sticky;
+//   top: 0;
+//   z-index: 10;
+// }
 :deep(.el-table__column-filter-trigger) {
   padding-left: 8px;
   .el-icon-arrow-down {
     transform: scale(1.5);
   }
 }
-:deep(.el-table__header) tr th {
-  background-color: rgba(102, 102, 102, 0.1);
-}
+// :deep(.el-table__header) tr th {
+//   background-color: rgba(102, 102, 102, 0.1);
+// }
 :deep(.el-table__body-wrapper) {
   height: calc(100% - 56px);
   width: 100%;

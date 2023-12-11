@@ -487,6 +487,12 @@ export default {
 .mrb15 {
   margin-bottom: 15px;
 }
+:deep(.el-table__column-filter-trigger) {
+  padding-left: 8px;
+  .el-icon-arrow-down {
+    transform: scale(1.5);
+  }
+}
 .mrl10 {
   margin-left: 10px;
 }
