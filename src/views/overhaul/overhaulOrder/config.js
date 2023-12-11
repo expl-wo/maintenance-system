@@ -555,15 +555,15 @@ const RETURN_COLUMNS = [
     },
     {
         prop: "examineStatus",
-        label: "复核",
+        label: "复核状态",
         align: "center",
         width: 100,
     },
-    {
-        prop: "examineNote",
-        label: "复核备注信息",
-        align: "center",
-    },
+    // {
+    //     prop: "examineNote",
+    //     label: "复核备注信息",
+    //     align: "center",
+    // },
     // {
     //     prop: "operation",
     //     label: "操作",

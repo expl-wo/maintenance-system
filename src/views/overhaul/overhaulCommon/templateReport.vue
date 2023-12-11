@@ -78,14 +78,13 @@
         </el-tag>
       </el-col>
     </el-row>
-    <div class="report-box-editor" v-if="wordUri" ref="reportWordRef">
-    </div>
+    <div class="report-box-editor" v-if="wordUri" ref="reportWordRef"></div>
     <el-empty
-        v-else
-        style="height: 100%"
-        description="暂无可预览文档"
-        :image-size="200"
-      ></el-empty>
+      v-else
+      style="height: 100%"
+      description="暂无可预览文档"
+      :image-size="200"
+    ></el-empty>
   </div>
 </template>
 
@@ -107,6 +106,7 @@ import {
 } from "@/views/overhaul/constants.js";
 import { downloadClick } from "@/utils";
 import { renderAsync } from "docx-preview";
+import dayjs from 'dayjs';
 export default {
   props: {
     //报告模板类型类型
@@ -179,12 +179,12 @@ export default {
       );
     },
   },
-  watch:{
-    wordUri(val){
-      if(val){
+  watch: {
+    wordUri(val) {
+      if (val) {
         this.renderWord(val);
       }
-    }
+    },
   },
   async mounted() {
     try {
@@ -301,7 +301,10 @@ export default {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
-          downloadClick(this.dealUrl(res.data.docUri), this.activeLabel);
+          downloadClick(
+            this.dealUrl(res.data.docUri),
+            `${this.activeLabel}_${dayjs().format("YYYY_MM_DD_HH_mm_ss")}`
+          );
         }
       });
     },

@@ -148,8 +148,8 @@ export default {
     },
     //工单类型
     workOrderType: {
-      type: String,
-      default: "1",
+      type: Number,
+      default: 1,
     },
     sceneType: {
       type: String,

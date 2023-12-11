@@ -171,8 +171,7 @@ export function getBigComponent(middleId) {
 export function getBigComponentList(data) {
     return request({
         url: '/api/evo-ims-overhaul/middle-big-equipment/query-use',
-        method: 'get',
-
+        method: 'post',
         data
     })
 }

@@ -48,6 +48,7 @@ import {
   exportReturnList,
 } from "@/api/overhaul/returnListApi.js";
 import { exportData } from "@/utils";
+import dayjs from 'dayjs';
 export default {
   name: "ReturnList",
   components: {
@@ -120,7 +121,7 @@ export default {
         pageSize: 10000,
         workCode: this.workOrderInfo.id,
       }).then((res) => {
-        exportData(res, "返厂清单.xls");
+        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xls`);
         this.hadFileNum += 1;
         this.exportLoop();
       });

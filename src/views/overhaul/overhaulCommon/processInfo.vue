@@ -402,6 +402,14 @@ export default {
     },
   },
   methods: {
+    //分页发生改变时
+    pageChange({ limit, page }) {
+      this.pageOptions.pageNum = page;
+      if (limit) {
+        this.pageOptions.pageSize = limit;
+      }
+      this.getList();
+    },
     //获取模板列表
     async getProcedureTemplateOptions(pageOptions) {
       const { pageNum, pageSize, searchKey } = pageOptions;
