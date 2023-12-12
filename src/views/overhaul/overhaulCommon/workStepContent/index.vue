@@ -98,7 +98,7 @@
     <report-work-modal
       v-if="reportWorkModal"
       :operateRow="currentSelectNode"
-      :progress="contentInfo.progress"
+      :contentInfo="contentInfo"
       modalName="reportWorkModal"
       :sceneType="sceneType"
       :workOrderInfo="workOrderInfo"

@@ -4,6 +4,7 @@
     title="报工"
     :model-value="true"
     :destroy-on-close="true"
+    :close-on-click-modal="false"
     width="500px"
     @close="handleClose"
   >
@@ -35,9 +36,11 @@
 import { reportWorkContent } from "@/api/overhaul/workOrderApi.js";
 export default {
   props: {
-    progress:{
-    type: Number,
-     default:0
+    contentInfo:{
+     type: Object,
+      default() {
+        return {};
+      },
     },
     //操作行
     operateRow: {
@@ -62,8 +65,12 @@ export default {
     },
   },
   watch:{
-    progress(val){
-      this.form.value =val
+    contentInfo:{
+      handler(val){
+        this.form.value =val.progress
+        
+      },
+      immediate:true
     }
   },
   data() {

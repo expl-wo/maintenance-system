@@ -17,7 +17,7 @@
         :cell-class-name="setCellClassName"
         :disabled-date="disabledDate"
         @panel-change="panelChange"
-        @change="searchChange"
+        @change="searchValChange"
         @focus="focusChange"
         style="width: 200px"
       />
@@ -27,7 +27,7 @@
         class="mgl12"
         placeholder="时间"
         style="width: 200px"
-        @change="searchChange"
+        @change="searchValChange"
         @visible-change="visibleChange"
       >
         <template #prefix
@@ -111,7 +111,7 @@
       </el-form-item>
     </el-col>
   </el-row>
-  <el-form-item label="操作描述">{{contentLabel}}</el-form-item>
+  <el-form-item label="操作描述">{{ contentLabel }}</el-form-item>
   <el-row v-if="requireImageFile">
     <el-col :span="12">
       <el-form-item label="附件">
@@ -195,7 +195,7 @@ export default {
       default: "",
     },
     maximumContentLength: {
-      type: String,
+      type: [String, Number],
       default: "1000",
     },
     requireImageFile: {
@@ -279,8 +279,8 @@ export default {
         this.getStatus(params.beginTime, params.endTime);
       }
     },
-    focusChange(){
-      this.panelChange(this.form.date,'month')
+    focusChange() {
+      this.panelChange(this.form.date, "month");
     },
     panelChange(data, mode) {
       if (mode === "month") {
@@ -330,7 +330,7 @@ export default {
       });
     },
     //查询条件
-    searchChange() {
+    searchValChange() {
       this.resetContent();
       this.$emit("searchChange", this.id, this.beginTime);
     },

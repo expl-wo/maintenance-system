@@ -4,6 +4,7 @@
     title="复核"
     :model-value="true"
     :destroy-on-close="true"
+    :close-on-click-modal="false"
     width="500px"
     @close="handleClose"
   >
