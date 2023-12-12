@@ -78,7 +78,7 @@ export default {
     handleOk() {
       let params = {
         workCode: this.workOrderInfo.id,
-        workProcedureCode: this.operateRow.workProcedureCode,
+        workProcedureCode: this.operateRow.procedureCode,
         progress: this.form.value,
         workScene: this.sceneType,
         operator:localStorage.getItem("userId")
@@ -87,7 +87,8 @@ export default {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
-          this.handleClose();
+          this.$message.success('操作成功！');
+          this.handleClose(true);
         }
       });
     },

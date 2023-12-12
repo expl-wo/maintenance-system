@@ -77,6 +77,7 @@
             <!-- 如果检修工单未关联勘查工单就不显示 -->
             <el-empty
               v-else-if="isNotSurvey"
+              style="height: 100%"
               description="暂无关联的勘查工单数据"
             />
             <middle-ware

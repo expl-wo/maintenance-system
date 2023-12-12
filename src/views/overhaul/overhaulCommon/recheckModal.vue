@@ -94,6 +94,7 @@ export default {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
+          this.$message.success('操作成功!')
           this.handleClose(true);
         }
       });

@@ -20,7 +20,6 @@
           v-model="queryParams.issue"
           placeholder="请选择"
           clearable
-          @change="getList"
         >
           <el-option
             v-for="item in issueOptions"

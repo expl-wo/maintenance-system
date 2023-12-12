@@ -49,9 +49,9 @@
           <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
+          ref="reprtUpload"
           v-if="$isAuth(this.menuCodeEdit)"
           class="upload-demo upload-report"
-          :limit="1"
           :disabled="isBtnDisabled || isDisabledStauts"
           v-model:file-list="fileList"
           :before-upload="beforeUpload"
@@ -77,13 +77,7 @@
         >
           {{ REPORT_CHECK_STATUS[templateStatus].label }}
         </el-tag>
-        <el-tag
-          v-else
-          type="warning"
-          class="mrl12"
-          effect="plain"
-          round
-        >
+        <el-tag v-else type="warning" class="mrl12" effect="plain" round>
           未生成文档
         </el-tag>
       </el-col>
@@ -91,7 +85,7 @@
     <div class="report-box-editor" v-if="wordUri" ref="reportWordRef"></div>
     <el-empty
       v-else
-      style="height: 100%"
+      style="height: 660px"
       description="暂无可预览文档"
       :image-size="200"
     ></el-empty>
@@ -116,7 +110,7 @@ import {
 } from "@/views/overhaul/constants.js";
 import { downloadClick } from "@/utils";
 import { renderAsync } from "docx-preview";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 export default {
   props: {
     //报告模板类型类型
@@ -261,25 +255,28 @@ export default {
       return true;
     },
     //保存文档
-    saveFile() {
-      this.loading = true;
-      this.loadingType = 2;
-      if (!this.wordUri) {
-        this.$message.error("暂无可保存数据！");
-        return;
-      }
-      saveWorkDocmentInfo({
-        workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
-        workDocType: this.workType,
-        wordUri: this.wordUri,
-      }).then((res) => {
-        if (res.code !== "0") {
-          this.$message.error(res.errMsg);
-        } else {
-          this.$message.success("保存成功");
+    saveFile(showTips = true) {
+      return new Promise((resolve, reject) => {
+        this.loading = true;
+        this.loadingType = 2;
+        if (!this.wordUri) {
+          this.$message.error("暂无可保存数据！");
+          return;
         }
-        this.loading = false;
+        saveWorkDocmentInfo({
+          workCode: this.workOrderInfo.id,
+          templateCode: this.templateChoose,
+          workDocType: this.workType,
+          wordUri: this.wordUri,
+        }).then((res) => {
+          if (res.code !== "0") {
+            this.$message.error(res.errMsg);
+          } else {
+            showTips && this.$message.success("文档保存成功");
+          }
+          resolve();
+          this.loading = false;
+        });
       });
     },
     uploadFile(file) {
@@ -292,6 +289,8 @@ export default {
       this.loadingType = 4;
       // 调用保存接口 将form的值全都传过去
       uploadWorkDocmentInfo(formData).then((res) => {
+        this.fileList = [];
+        this.$refs.reprtUpload.clearFiles();
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
@@ -327,7 +326,11 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
+        .then(async () => {
+          if (this.templateChoose) {
+            //如果是选择模板的发起审核就先保存之后发起审核
+            await this.saveFile(false);
+          }
           checkWorkDocmentInfo({
             workCode: this.workOrderInfo.id,
             workDocType: this.workType,
@@ -340,7 +343,9 @@ export default {
             this.loading = false;
           });
         })
-        .catch(() => {});
+        .catch(() => {
+          this.loading = false;
+        });
     },
     /**
      * 模板改变操作

@@ -469,7 +469,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else if (this.operateRow === 2) {
@@ -492,7 +492,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else if (this.operateRow === 3) {
@@ -518,7 +518,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else {
@@ -546,7 +546,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         }
