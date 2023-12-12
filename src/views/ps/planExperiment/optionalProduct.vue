@@ -95,6 +95,7 @@ export default {
       if (!flag) {
         return;
       }
+      this.$emit('refresh',{})
       this.queryTableData();
     },
     queryTableData() {

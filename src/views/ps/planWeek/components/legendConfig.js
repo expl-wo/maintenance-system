@@ -2,22 +2,22 @@ import scss from '@/styles/variables.scss'
 export default {
   getSimpleProgressData(){
     return [{
-      progressStatus: 5,
+      progressStatus: 15,
       clz: 'Plan',
       color: scss.Plan,
       label: '计划'
     },{
-      progressStatus: 10,
+      progressStatus: 20,
       clz: 'Start',
       color: scss.Start,
       label: '开工'
     },{
-      progressStatus: 20,
+      progressStatus: 25,
       clz: 'Finished',
       color: scss.Finished,
       label: '完工'
     },{
-      progressStatus: 20,
+      progressStatus: 5,
       clz: 'defaultColor',
       color: scss.defaultColor,
       label: '其它'
@@ -25,33 +25,35 @@ export default {
   },
   getProgressData() {
     return [{
-      progressStatus: 5,
+      progressStatus: 15,
       clz: 'Plan',
       color: scss.Plan,
       label: '计划'
     },{
-      progressStatus: 10,
+      progressStatus: 20,
       clz: 'Start',
       color: scss.Start,
       label: '开工'
     },{
-      progressStatus: 20,
+      progressStatus: 25,
       clz: 'Finished',
       color: scss.Finished,
       label: '完工'
-    },{
-      progressStatus: 20,
-      clz: 'overDueUnfinished',
-      status: -1,
-      color: scss.overDueUnfinished,
-      label: '超期未完工'
-    },{
-      progressStatus: -3,
+    },
+    //   {
+    //   progressStatus: -20,
+    //   clz: 'overDueUnfinished',
+    //   status: -1,
+    //   color: scss.overDueUnfinished,
+    //   label: '超期未完工'
+    // },
+      {
+      progressStatus: -100,
       clz: 'Cancel',
       color: scss.Cancel,
       label: '已取消'
     },{
-      progressStatus: -1,
+      progressStatus: -5,
       clz: 'Back',
       color: scss.Back,
       label: '返工'
@@ -60,22 +62,26 @@ export default {
       clz: 'Normal',
       color: scss.Normal,
       label: '未生成任务'
-    },{
-      progressStatus: 3,
-      clz: 'HaveGx',
-      color: scss.HaveGx,
-      label: '已生成任务'
-    },{
-      progressStatus: 4,
+    },
+    //   {
+    //   progressStatus: 3,
+    //   clz: 'HaveGx',
+    //   color: scss.HaveGx,
+    //   label: '已生成任务'
+    // },
+      {
+      progressStatus: -50,
       clz: 'Suspended',
       color: scss.Suspended,
       label: '暂停'
-    },{
-      progressStatus: 15,
-      clz: 'Report',
-      color: scss.Report,
-      label: '仅报工'
-    },]
+    }
+    // ,{
+    //   progressStatus: -50,
+    //   clz: 'Report',
+    //   color: scss.Report,
+    //   label: '仅报工'
+    // },
+    ]
   }
 }
 

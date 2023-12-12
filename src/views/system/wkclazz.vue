@@ -23,7 +23,7 @@
           <div  class="clearfix">
             <span>员工信息</span>
           </div>
-          <div class="wp hp app-containerC">
+          <div class="wp hp app-containerC" style="height: fit-content;">
             <div class="filter-container">
               <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
                 <el-form-item label="班组：">
@@ -60,26 +60,26 @@
                 </template>
               </el-table-column>
               <el-table-column
-                prop="userId"
+                prop="userid"
                 label="用户员工编号"
                 align="center"
                 min-width="15%"
               />
               <el-table-column
-                prop="uName"
+                prop="name"
                 align="center"
                 label="用户姓名"
                 min-width="15%"
               />
               <el-table-column
-                prop="lgnStatus"
+                prop="status"
                 align="center"
                 label="是否可用"
                 min-width="15%"
               >
                 <template v-slot:default="scope">
-                  <el-tag v-if="scope.row.lgnStatus ==1 ">是</el-tag>
-                  <el-tag v-else-if="scope.row.lgnStatus !==1 ">否</el-tag>
+                  <el-tag v-if="scope.row.status ===1 ">是</el-tag>
+                  <el-tag v-else-if="scope.row.status !==1 ">否</el-tag>
                 </template>
               </el-table-column>
               <el-table-column

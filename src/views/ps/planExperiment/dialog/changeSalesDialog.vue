@@ -70,7 +70,7 @@
             salesEndReply: moment(this.model.newDeliveryDate[1]).format('YYYY-MM-DD HH:mm:ss'),
           }
           planWeekHttp.updateSales(formData).then(response=>{
-            if(response.err_code === this.$constants.status.success){
+            if(response.err_code === this.$constants.statusCode.success){
               this.$message.success('数据提交成功');
               this.$emit('refresh', {});
               this.dialogVisible = false;

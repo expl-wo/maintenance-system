@@ -1,28 +1,40 @@
 <template>
   <el-dialog v-model="dialogVisible" :append-to-body="true">
     <el-form ref="dialogForm" :model="dialogForm" :rules="experimentFormRules" label-position="left" label-width="120px">
-      <el-form-item label="计划开工时间" prop="planStartTime">
-        <el-date-picker
-          v-model="dialogForm.planStartTime"
-          type="datetime"
-          placeholder="请选择计划开工时间">
-        </el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="计划开工时间" prop="planStartTime">-->
+<!--        <el-date-picker-->
+<!--          v-model="dialogForm.planStartTime"-->
+<!--          type="datetime"-->
+<!--          placeholder="请选择计划开工时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
       <el-form-item label="试验场所">
         <el-select  size="small" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
           <el-option
             v-for="item in dialogForm.laminationTables"
             :key="item.id"
-            :label="item.tableName"
+            :label="item.trialShopName"
             :value="item.id">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="计划完工时间" prop="planEndTime">
+<!--      <el-form-item label="计划完工时间" prop="planEndTime">-->
+<!--        <el-date-picker-->
+<!--          v-model="dialogForm.planEndTime"-->
+<!--          type="datetime"-->
+<!--          placeholder="请选择计划完工时间">-->
+<!--        </el-date-picker>-->
+<!--      </el-form-item>-->
+      <el-form-item prop="dateValue" label="计划时间：" >
         <el-date-picker
-          v-model="dialogForm.planEndTime"
-          type="datetime"
-          placeholder="请选择计划完工时间">
+          v-model="dialogForm.dateValue"
+          type="datetimerange"
+          start-placeholder="开始日期"
+          range-separator="至"
+          end-placeholder="结束日期"
+
+          style="width: 330px;"
+          :clearable="false">
         </el-date-picker>
       </el-form-item>
     </el-form>
@@ -36,7 +48,7 @@
 </template>
 
 <script>
-// import flipTable from '@/api/plan/flipTable'
+import experimentTable from '@/api/plan/experimentTable'
 import planWeekHttp from '@/api/plan/planWeek'
 import moment from 'moment'
 
@@ -51,6 +63,7 @@ export default {
         spt: '',
         isMultipleType: '0',
         laminationTables:[],
+        dateValue: []
       },
       nodeInfo: [],
       rowData:{},
@@ -65,7 +78,8 @@ export default {
         ],
         planEndTime: [
           {required: true,validator: this.validateEndTime, trigger: 'blur' }
-        ]
+        ],
+        dateValue: [{required: true,validator: this.validaterangeTime, trigger: 'blur' }]
       },
     }
   },
@@ -75,32 +89,36 @@ export default {
       this.rowData = rowData
       this.isAdd = isAdd
       //获取试验场所
-      // flipTable.findAllFlipTable({tableCode: ''}).then(res => {
-      //   this.dialogForm.laminationTables = res.data
-      // })
+      experimentTable.findAllTrialShop({tableCode: ''}).then(res => {
+        this.dialogForm.laminationTables = res.data
+      })
       if (this.isAdd === this.$constants.flag.n) {
-        this.dialogForm.planStartTime = rowData.tentativeTime
-        this.dialogForm.planEndTime = rowData.tentativeEndTime
+        this.dialogForm.dateValue[0] = rowData.planStartTime
+        this.dialogForm.dateValue[1] = rowData.planEndTime
+        this.dialogForm.planStartTime = rowData.planStartTime
+        this.dialogForm.planEndTime = rowData.planEndTime
         this.dialogForm.spt = rowData.tableId
       } else {
         this.dialogForm.planStartTime = ''
         this.dialogForm.planEndTime = ''
         this.dialogForm.spt = ''
+        this.dialogForm.dateValue[0] = ''
+        this.dialogForm.dateValue[1] = ''
       }
       this.dialogVisible = true;
     },
     onSptChange() {
       this.laminationTable = this.dialogForm.laminationTables.find(item => item.id === this.dialogForm.spt);
-      const endDate = moment(this.dialogForm.planStartTime).add(this.laminationTable.productionCycle-1, 'days'); // add 2 days to start date
-      this.dialogForm.planEndTime = moment(endDate).format('YYYY-MM-DD'); // format end date as yyyy-mm-dd string
+      const endDate = moment(this.dialogForm.dateValue[0]).add(this.laminationTable.productionCycle-1, 'days'); // add 2 days to start date
+      this.dialogForm.dateValue[1] = moment(endDate).format('YYYY-MM-DD'); // format end date as yyyy-mm-dd string
     },
     addToNodeInfo(dialogFormData) {
       debugger
       this.$refs.dialogForm.validate((valid) => {
         if (valid) {
           this.nodeInfo = []
-          this.addInfo.planStartTime = moment(dialogFormData.planStartTime).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
-          this.addInfo.planEndTime = moment(dialogFormData.planEndTime).format('YYYY-MM-DD HH:mm:ss');
+          this.addInfo.planStartTime = moment(this.dialogForm.dateValue[0]).format('YYYY-MM-DD HH:mm:ss'); // format end date as yyyy-mm-dd string
+          this.addInfo.planEndTime = moment(this.dialogForm.dateValue[1]).format('YYYY-MM-DD HH:mm:ss');
           // this.addInfo.planEndTime = dialogFormData.planEndTime;
           this.addInfo.isMultiple = parseInt(dialogFormData.isMultipleType);
           this.addInfo.productNodeId = this.rowData.productNodeId
@@ -118,7 +136,6 @@ export default {
                 this.dialogVisible = false;
                 this.$message.success("加入成功！");
                 this.$emit('refresh', {})
-                this.$emit('queryRightData',null)
               } else {
                 this.$message.error("操作失败："+res.err_msg);
               }
@@ -129,7 +146,6 @@ export default {
                 this.dialogVisible = false;
                 this.$message.success("修改成功！");
                 this.$emit('refresh', {})
-                this.$emit('queryRightData',null)
               } else {
                 this.$message.error("操作失败："+res.err_msg);
               }
@@ -163,8 +179,15 @@ export default {
           callback()
         }
       }
+    },
+    validaterangeTime: function (rule, value, callback) {
+      if (this.dialogForm.dateValue[0] <= new Date().getTime()) {
+        callback(new Error('开始时间不能小于当前时间'))
+      } else {
+          callback()
+        }
+      }
     }
-  }
 }
 </script>
 
