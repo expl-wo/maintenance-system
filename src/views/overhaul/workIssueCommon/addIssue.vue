@@ -2,6 +2,7 @@
   <el-dialog
     draggable
     title="添加问题"
+    :close-on-click-modal="false"
     :model-value="true"
     :destroy-on-close="true"
     @close="handleClose"

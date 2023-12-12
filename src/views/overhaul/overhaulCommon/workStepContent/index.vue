@@ -26,7 +26,7 @@
         <el-button
           v-if="isCheckAuth"
           type="primary"
-          :disabled="recheckStatus === 1 || [0, 2].includes(workStatus)"
+          :disabled="recheckStatus === 1 || [0, 2, 1].includes(workStatus)"
           title="复核"
           @click="check"
           >复核</el-button

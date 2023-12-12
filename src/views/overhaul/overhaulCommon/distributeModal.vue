@@ -419,11 +419,12 @@ export default {
           data: { value },
         } = await getPersonByWorkClazz(workClazzId);
         const taskUserIds = this.appointInfo.taskUserIds || [];
-        this.taskPersonOptions = (value || []).map((item) => ({
-          value: item.userId,
-          label: item.userName,
-        }));
-        // .filter((item) => taskUserIds.includes(item.value));
+        this.taskPersonOptions = (value || [])
+          .map((item) => ({
+            value: item.userId,
+            label: item.userName,
+          }))
+          .filter((item) => taskUserIds.includes(item.value));
       } else {
         this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
       }

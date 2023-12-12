@@ -53,7 +53,7 @@
         <el-button
           v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
           type="primary"
-          :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
+          :disabled="isPauseOrFinish"
           title="保存"
           @click="workTreeSave"
         >
@@ -62,7 +62,7 @@
         <el-button
           v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
           type="primary"
-          :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
+          :disabled="isPauseOrFinish"
           title="发起审核"
           @click="workTreeCheck"
         >
@@ -132,7 +132,7 @@
                     <!-- 只有叶子节点有复核 -->
                     <el-button
                       type="primary"
-                      :disabled="isPauseOrFinish"
+                      :disabled="isPauseOrFinish || 1===+row.reviewStatusOld || [0,1,2].includes(+row.workStatusOld)"
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
                         $isAuth(roleBtnEnum['review']) &&
@@ -304,6 +304,7 @@ export default {
       //tree的loading效果
       treeLoading: false,
       templateChoose: undefined,
+      standardProcedureCodeList:[],//检修工单模板编号
       defaultSelectVal: {}, //用于回显
       templateName: "", //模板name
       treeData: [],
@@ -334,18 +335,26 @@ export default {
     filterText(val) {
       this.$refs["treeRef"].filter(val);
     },
-    workOrderInfo(val) {
-      const { procedureTemplateName, procedureTemplateCode } =
-        this.workOrderInfo;
-      this.templateChoose = procedureTemplateCode || undefined;
-      this.templateName = procedureTemplateName || "";
-      if (this.templateChoose && this.templateName) {
-        this.defaultSelectVal = {
-          label: this.templateName,
-          value: this.templateChoose,
-        };
-        this.getTreeData();
-      }
+    workOrderInfo: {
+      handler(val) {
+        const { procedureTemplateName, procedureTemplateCode,standardProcedureCodeList } =
+          this.workOrderInfo;
+        this.templateChoose = procedureTemplateCode || undefined;
+        this.templateName = procedureTemplateName || "";
+        if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+          this.standardProcedureCodeList = standardProcedureCodeList;
+          this.templateChoose = standardProcedureCodeList.join(',');
+          this.templateName = standardProcedureCodeList.join(',');
+        }
+        if (this.templateChoose && this.templateName) {
+          this.defaultSelectVal = {
+            label: this.templateName,
+            value: this.templateChoose,
+          };
+          this.getTreeData();
+        }
+      },
+      immediate: true,
     },
   },
   computed: {
@@ -484,6 +493,9 @@ export default {
               ...item,
               reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
               workStatus: WORK_STATUS_ENUM[item.workStatus || 0],
+              workStatusOld:item.workStatus,
+              reviewStatusOld:item.reviewStatus,
+              procedureCode:item.workProcedureCode.split("_").slice(1).join('_'),
             }));
           })
           .finally(() => {
@@ -617,9 +629,15 @@ export default {
     getTreeData() {
       if (!this.templateChoose) return;
       this.treeLoading = true;
+      let params = {templateCode: this.templateChoose};
+      if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+
+          delete params.templateCode
+          params.standardProcedureCodeList= this.standardProcedureCodeList
+      }
       getWorkTree({
         workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
+        ...params,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,
