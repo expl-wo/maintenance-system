@@ -38,13 +38,13 @@ export default {
       dragFlag: false,
       cursor: "pointer",
       isOpen: true, //是否展开
-      top: "300px",
-      left: "1740px",
+      top: "40%",
+      left: "90%",
       abortContance: null,
       controlTime: null, //定时器
     };
   },
-  beforeuUnmount(){
+  beforeUnmount(){
     if (this.abortContance) {
         this.abortContance.abort();
         this.abortContance = null;

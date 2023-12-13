@@ -14,6 +14,7 @@
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
+          clearable
           @change="handleTemplateChange"
         >
           <el-option
@@ -243,7 +244,7 @@ export default {
         workDocType: this.workType,
       }).then(({ data }) => {
         const { templateCode, reviewStatus, wordUri } = data;
-        this.templateStatus = reviewStatus || 0;
+        this.templateStatus = +reviewStatus || 0;
         this.templateChoose = templateCode || undefined;
         this.wordUri = this.dealUrl(wordUri);
       });

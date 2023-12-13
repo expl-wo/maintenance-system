@@ -37,7 +37,6 @@
       fit
       highlight-current-row
       style="width: 100%"
-      height="calc(100% - 150px)"
       @selection-change="handleSelectionChange"
       @sort-change="sortChanged"
       @filter-change="filterChanged"
@@ -84,7 +83,6 @@
                   ><el-icon><Delete /></el-icon>
                 </el-button> -->
                 <el-button
-                  v-if="$isAuth('2005_btn_delete')"
                   type="primary"
                   :disabled="
                     [
@@ -441,6 +439,9 @@ export default {
 }
 </style>
 <style scoped lang="scss">
+:deep(.pagination-container){
+  padding:20px
+}
 :deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;
 }
@@ -466,11 +467,13 @@ export default {
 }
 .order-list-box {
   position: relative;
+  display: flex;
+  flex-direction: column;
   .order-info {
     position: absolute;
     inset: 0;
     width: 100%;
-    min-width: 1700px;
+    // min-width: 1700px;
     padding: 0;
     z-index: 999;
   }
