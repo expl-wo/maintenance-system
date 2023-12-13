@@ -83,7 +83,7 @@
                   @click="handleDelete(row)"
                   ><el-icon><Delete /></el-icon>
                 </el-button> -->
-                <!-- <el-button
+                <el-button
                   v-if="$isAuth('2005_btn_delete')"
                   type="primary"
                   :disabled="
@@ -93,9 +93,9 @@
                     ].includes(row.orderStatus)
                   "
                   title="打印二维码"
-                  @click="printModal(row)"
+                  @click="openModal(row, 'showPrint')"
                   ><el-icon><Printer /></el-icon>
-                </el-button> -->
+                </el-button>
                 <el-button
                   v-if="$isAuth('2005_btn_finish')"
                   title="结束"
@@ -167,6 +167,13 @@
       modalName="showInfo"
       @closeModal="closeModal"
     ></detail-modal>
+    <qr-code-modal
+      v-if="showPrint"
+      modalName="showPrint"
+      :workOrderInfo="operateRow"
+      @closeModal="closeModal"
+      @printQrCode="printQrCode"
+    ></qr-code-modal>
   </div>
 </template>
 
@@ -175,6 +182,8 @@ import Pagination from "@/components/Pagination"; // 分页
 import AddModal from "@/views/overhaul/overhaulOrder/components/addModal"; // 新增和编辑弹窗
 import DetailModal from "@/views/overhaul/overhaulOrder/components/detailModal"; //工单详情
 import { WORK_ORDER_STATUS, WORK_ORDER_MAP, ORDER_COLUMNS } from "./config.js";
+import QrCodeModal from "./components/qrCodeModal.vue";
+import QRCode from "qrcodejs2";
 import {
   getWorkOrderPage,
   batchDelWorkOrder,
@@ -186,6 +195,7 @@ export default {
     Pagination,
     AddModal,
     DetailModal,
+    QrCodeModal,
   },
   data() {
     return {
@@ -197,6 +207,7 @@ export default {
       showInfo: false, //详情
       showAppoint: false, //指派
       showPause: false, //暂停
+      showPrint: false, //二维码打印
       //表格相关
       listLoading: true,
       tableData: [],
@@ -216,12 +227,55 @@ export default {
       },
       //状态下拉筛选
       satusFilterList: Object.values(WORK_ORDER_MAP),
+      printWin: null,
     };
   },
   created() {
     this.getList();
   },
   methods: {
+    //二维码打印
+    printQrCode(targetValue) {
+      this.showPrint = false;
+      let dom = ""; // 拼接的字符串
+      targetValue.forEach((item, i) => {
+        dom += `<div style='page-break-after:always'>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black' colspan='2'>${item.prodNumber}</th>
+        <td rowspan='3' colspan='3'><div id='overhaul_print_${item.codeIndex}' style='text-align: center'></div></td>
+        </tr>
+        <tr style='border: 1px solid black'> <td colspan='2' style='border: 1px solid black;text-align: center'>${item.prodModel}</td></tr>
+        <tr style='border: 1px solid black'> <td colspan='1' style='border: 1px solid black;text-align: center'>${item.projName}</td></tr>
+        </table>
+        </div>
+        `;
+      });
+      this.printWin = window.open(""); // 新打开一个空窗口
+      this.printWin.document.write(dom);
+      setTimeout(() => {
+        this.printWin.document.title = "衡变MES管理端-工单二维码打印";
+        targetValue.forEach((item) => {
+          new QRCode(this.printWin.document.getElementById(`overhaul_print_${item.codeIndex}`), {
+            width: 80,
+            height: 80,
+            // text: JSON.stringify(item),
+            text: `${item.prodNumber}_${item.prodModel}_${item.id}`,
+            colorDark: "#000000", // 前景色
+            colorLight: "#ffffff", // 背景色
+            correctLevel: QRCode.CorrectLevel.M, // 降低容错级别
+          });
+        });
+        this.printWin.addEventListener("afterprint", this.backWin);
+        this.printWin.print();
+      }, 100);
+    },
+    backWin() {
+      console.log("打印结束")
+      if (this.printWin) {
+        this.printWin.close();
+        this.printWin.removeEventListener("afterprint", this.backWin);
+        this.printWin = null;
+      }
+    },
     /**
      * row 所选行 审批之后不能删除
      */
