@@ -101,6 +101,7 @@
                 <select-page
                   ref="componentIdRef"
                   v-model="bomForm.componentId"
+                  popverClass="cust-select"
                   :defaultSelectVal="defaultComponent"
                   @change="componentChange"
                   :getOptions="getComponentOptions"
@@ -260,7 +261,7 @@ export default {
           }));
           resolve({
             options: options,
-            totalPage: res.data.total,
+            totalPage: res.data.allPageNum,
           });
         });
       })
@@ -283,7 +284,7 @@ export default {
             }));
             resolve({
               options: options,
-              totalPage: res.data.total,
+              totalPage: res.data.allPageNum,
             });
           });
         } else {
@@ -295,7 +296,7 @@ export default {
             }));
             resolve({
               options: options,
-              totalPage: res.data.total,
+              totalPage: res.data.allPageNum,
             });
           });
         }
