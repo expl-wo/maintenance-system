@@ -83,6 +83,19 @@
                   @click="handleDelete(row)"
                   ><el-icon><Delete /></el-icon>
                 </el-button> -->
+                <!-- <el-button
+                  v-if="$isAuth('2005_btn_delete')"
+                  type="primary"
+                  :disabled="
+                    [
+                      WORK_ORDER_MAP['pause'].value,
+                      WORK_ORDER_MAP['finish'].value,
+                    ].includes(row.orderStatus)
+                  "
+                  title="打印二维码"
+                  @click="printModal(row)"
+                  ><el-icon><Printer /></el-icon>
+                </el-button> -->
                 <el-button
                   v-if="$isAuth('2005_btn_finish')"
                   title="结束"
