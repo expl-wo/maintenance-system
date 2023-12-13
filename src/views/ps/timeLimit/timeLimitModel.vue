@@ -17,12 +17,6 @@
         <el-form-item>
           <el-button type="primary" icon="Edit" @click="unBound">解绑期量</el-button>
         </el-form-item>
-        <div>
-          <input type="text" v-model="listQuery.limitName">
-          <ul>
-            <li v-for=" limitName in filteredItems">{{ limitName }}</li>
-          </ul>
-        </div>
       </el-form>
     </div>
 
@@ -69,7 +63,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="节点类型:" prop="timeLimitId">
-            <el-select v-model="limitModel.timeLimitId" clearable placeholder="请选择期量">
+            <el-select v-model="limitModel.timeLimitId" filterable placeholder="请选择期量">
                 <el-option
                   v-for="item in limitOptions"
                   :key="item.id"
@@ -223,11 +217,6 @@ export default {
       this.listQuery.isUnBound = 1;
       this.queryTableData();
     }
-  },
-  filteredItems() {
-    return this.items.filter(limitName => {
-      return limitName.toLowerCase().includes(this.limitName.toLowerCase());
-    });
   },
 }
 </script>
