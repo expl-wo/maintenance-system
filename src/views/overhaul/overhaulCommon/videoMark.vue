@@ -142,6 +142,7 @@ export default {
       templateName: "",
       workTreeStatus: "",
       aimLoading: false,
+      standardProcedureCodeList:[],//检修工单模板编号
       videoForm: {
         channelCode: undefined,
         videoStartTime: dayjs().startOf("day"),
@@ -155,10 +156,15 @@ export default {
     },
     workOrderInfo: {
       handler(val) {
-        const { procedureTemplateName, procedureTemplateCode } =
+        const { procedureTemplateName, procedureTemplateCode,standardProcedureCodeList } =
           this.workOrderInfo;
         this.templateChoose = procedureTemplateCode || undefined;
         this.templateName = procedureTemplateName || "";
+        if (+this.workOrderInfo.workOrderType === 2) {
+          this.standardProcedureCodeList = standardProcedureCodeList;
+          this.templateChoose =standardProcedureCodeList? standardProcedureCodeList.join(','):'';
+          this.templateName = standardProcedureCodeList?standardProcedureCodeList.join(','):'';
+        }
         if (this.templateChoose && this.templateName) {
           this.getTreeData();
         }
@@ -166,7 +172,7 @@ export default {
       immediate: true,
     },
   },
-  destory() {
+  beforeuUnmount() {
     this.disConnect();
   },
   methods: {
@@ -335,9 +341,14 @@ export default {
     getTreeData() {
       if (!this.templateChoose) return;
       this.treeLoading = true;
+      let params = {templateCode: this.templateChoose};
+      if (+this.workOrderInfo.workOrderType === 2) {
+          delete params.templateCode
+          params.standardProcedureCodeList= this.standardProcedureCodeList
+      }
       getWorkTree({
         workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
+        ...params,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,

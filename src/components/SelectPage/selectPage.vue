@@ -42,16 +42,15 @@ export default {
             "scroll",
             function () {
               const condition =
-                this.scrollHeight - this.scrollTop <= this.clientHeight;
+                this.scrollHeight - this.scrollTop <= this.clientHeight + 5;
               if (condition) {
-                console.log("??????", condition);
                 binding.value.getList(binding.value.popverClass);
               }
             },
             { signal: binding.value.controller.signal }
           );
       },
-      unbind(el, binding) {
+      beforeUnmount(el, binding) {
         binding.value.controller.abort();
       },
     },
@@ -65,7 +64,7 @@ export default {
     //唯一类名
     popverClass: {
       type: String,
-      default: seed(),
+      default: "",
     },
     //必须数组和对象需要将label和value同时返回 如果多选就传数组如果单选就传对象
     defaultSelectVal: {
@@ -105,6 +104,16 @@ export default {
       filterVal: "",
     };
   },
+  watch: {
+    popverClass: {
+      handler(val) {
+        if (!val) {
+          this.selectSetting.popverClass = seed();
+        }
+      },
+      immediate: true,
+    },
+  },
   computed: {
     childSelectedValue: {
       get() {
@@ -116,7 +125,10 @@ export default {
     },
   },
   mounted() {
-    this.selectSearch('');
+    this.selectSearch("");
+  },
+  beforeUnmount() {
+    this.selectSetting.controller && this.selectSetting.controller.abort();
   },
   methods: {
     //下拉框在关闭时即使什么都没输也会出发该方法
@@ -149,11 +161,11 @@ export default {
       this.pageParams.totalPage = totalPage;
       const filterOptions = (options || []).filter((item) => {
         if (Array.isArray(this.defaultSelectVal)) {
-          return !this.defaultSelectVal.find(ele=>(item.value===ele.value));
+          return !this.defaultSelectVal.find((ele) => item.value === ele.value);
         } else if (Object.keys(this.defaultSelectVal).length) {
           return this.defaultSelectVal.value !== item.value;
         }
-        return true
+        return true;
       });
       this.selectOptions = [...this.selectOptions, ...filterOptions];
       if (this.pageParams.pageNum <= totalPage) {

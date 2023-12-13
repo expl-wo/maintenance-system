@@ -419,7 +419,6 @@ export default {
     },
     /**处理图片 */
     handleRemove(file, fileList) {
-      debugger;
       console.log(file, fileList, this.fileList);
     },
     /**

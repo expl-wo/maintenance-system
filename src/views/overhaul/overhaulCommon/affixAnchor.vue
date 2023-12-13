@@ -44,6 +44,12 @@ export default {
       controlTime: null, //定时器
     };
   },
+  beforeuUnmount(){
+    if (this.abortContance) {
+        this.abortContance.abort();
+        this.abortContance = null;
+    }
+  },
   methods: {
     moveTo(e) {
       e.preventDefault();

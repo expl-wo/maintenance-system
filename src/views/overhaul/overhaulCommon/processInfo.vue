@@ -343,8 +343,8 @@ export default {
         this.templateName = procedureTemplateName || "";
         if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
           this.standardProcedureCodeList = standardProcedureCodeList;
-          this.templateChoose = standardProcedureCodeList.join(',');
-          this.templateName = standardProcedureCodeList.join(',');
+          this.templateChoose =standardProcedureCodeList? standardProcedureCodeList.join(','):'';
+          this.templateName = standardProcedureCodeList?standardProcedureCodeList.join(','):'';
         }
         if (this.templateChoose && this.templateName) {
           this.defaultSelectVal = {
