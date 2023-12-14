@@ -19,13 +19,20 @@
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
-          ></el-tree>
+            ><template #default="{ node, data }">
+              <el-icon v-if="data.isDev" style="margin-right: 4px"
+                ><VideoCameraFilled
+              /></el-icon>
+              {{ node.label }}</template
+            >
+          </el-tree>
         </div>
         <div class="video-form">
           <el-select
             v-model="videoForm.channelCode"
             class="filter-item"
-            placeholder="请选择"
+            disabled
+            placeholder="请选择工序树节点"
           >
             <el-option
               v-for="item in channelCodesOptions"
@@ -135,6 +142,7 @@ export default {
       templateName: "",
       workTreeStatus: "",
       aimLoading: false,
+      standardProcedureCodeList: [], //检修工单模板编号
       videoForm: {
         channelCode: undefined,
         videoStartTime: dayjs().startOf("day"),
@@ -148,10 +156,22 @@ export default {
     },
     workOrderInfo: {
       handler(val) {
-        const { procedureTemplateName, procedureTemplateCode } =
-          this.workOrderInfo;
+        const {
+          procedureTemplateName,
+          procedureTemplateCode,
+          standardProcedureCodeList,
+        } = this.workOrderInfo;
         this.templateChoose = procedureTemplateCode || undefined;
         this.templateName = procedureTemplateName || "";
+        if (+this.workOrderInfo.workOrderType === 2) {
+          this.standardProcedureCodeList = standardProcedureCodeList;
+          this.templateChoose = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+          this.templateName = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+        }
         if (this.templateChoose && this.templateName) {
           this.getTreeData();
         }
@@ -159,7 +179,7 @@ export default {
       immediate: true,
     },
   },
-  destory() {
+  beforeUnmount() {
     this.disConnect();
   },
   methods: {
@@ -180,8 +200,8 @@ export default {
       let baseInfo = {
         channelCode: target.label,
         channelName: target.value,
-        workProcedureId: target.workProcedureCode,
-        workProcedureName: target.workProcedureName,
+        workProcedureId: this.currentSelectNode.procedureCode,
+        workProcedureName: this.currentSelectNode.parentProcedureName,
         capTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
       };
       let params = {
@@ -208,7 +228,7 @@ export default {
       if (this.player) {
         this.player.hideWindow();
         this.player.closeVideo();
-        this.player.destory();
+        this.player.destroy();
         this.player = null;
       }
     },
@@ -263,28 +283,65 @@ export default {
       if (!value) return true;
       return data[this.defaultProps.label].indexOf(value) !== -1;
     },
+    //将树和通道组装
+    dealRanderTree(treeData) {
+      if (!this.channelCodesOptions.length || !treeData.length) return [];
+      let result = [];
+      treeData.forEach((item) => {
+        if (item.childNodeList && item.childNodeList.length) {
+          item.childNodeList = this.dealRanderTree(item.childNodeList);
+        }
+        let temp = this.channelCodesOptions.find((a) => {
+          return a.procedureCodeList.includes(item.procedureCode);
+        });
+        if (temp) {
+          item.childNodeList.push({
+            ...temp,
+            procedureName: temp.label,
+            procedureCode: item.uniqueCode,
+            uniqueCode: `${item.uniqueCode}_${temp.channelCode}`,
+            isDev: true,
+            parentProcedureName: item.procedureName,
+          });
+        }
+        result.push(item);
+      });
+      return result;
+    },
     //获取通道list
     getChannelList() {
       getBindDev({
         workCode: this.workOrderInfo.id,
         workOrderSceneType: this.sceneType,
-        procedureCode: this.currentSelectNode.procedureCode,
-        procedureType: this.currentSelectNode.procedureType,
+        procedureCode: "",
+        procedureType: "0",
         ifShowChild: true,
       }).then((res) => {
         const { channelInfoList } = res.data;
         this.channelCodesOptions = (channelInfoList || []).map((item) => ({
           label: item.channelName,
           value: item.channelCode,
+          procedureCodeList: item.channelWorkProcedureDTOList.map((item) =>
+            item.workProcedureId.split("_").slice(1).join("_")
+          ),
         }));
+        if (this.channelCodesOptions.length) {
+          this.treeData = this.dealRanderTree(this.treeData);
+        }
       });
     },
     /**
      * 树节点选中时操作
      */
     handleNodeClick(data) {
-      this.currentSelectNode = data;
-      this.getChannelList();
+      if (data.isDev) {
+        this.currentSelectNode = data;
+        this.videoForm.channelCode = data.value;
+      } else {
+        // this.videoForm.channelCode=undefined
+        this.$message.warning("请选择通道节点！");
+      }
+      // this.getChannelList();
     },
 
     /**
@@ -293,9 +350,14 @@ export default {
     getTreeData() {
       if (!this.templateChoose) return;
       this.treeLoading = true;
+      let params = { templateCode: this.templateChoose };
+      if (+this.workOrderInfo.workOrderType === 2) {
+        delete params.templateCode;
+        params.standardProcedureCodeList = this.standardProcedureCodeList;
+      }
       getWorkTree({
         workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
+        ...params,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,
@@ -329,7 +391,7 @@ export default {
 $left-title-height: 36px;
 $left-search-height: 36px;
 $left-width: 255px;
-$left-search-time: 200px;
+$left-search-time: 150px;
 :deep(.el-input) {
   width: 220px;
 }
@@ -341,7 +403,7 @@ $left-search-time: 200px;
   display: flex;
   width: 100%;
   margin-top: 15px;
-  height: 610px;
+  height: 650px;
   border: 1px solid #e9ebee;
   &-left {
     width: $left-width;

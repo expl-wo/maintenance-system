@@ -1,7 +1,7 @@
 <template>
   <el-dialog draggable
     title="查看"
-    custom-class="detail-modal"
+    class="detail-modal"
     width="520px"
     :model-value="visible"
     :close-on-click-modal="false"

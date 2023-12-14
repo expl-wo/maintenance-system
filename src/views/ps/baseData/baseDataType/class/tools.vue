@@ -4,7 +4,7 @@
 
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="工器具类型名称" >
+        <el-form-item label="工装工具类型名称" >
           <el-input v-model="listQuery.toolsTypeName" placeholder="设备类型名称" style="width: 180px;" class="filter-item" size="small" clearable/>
         </el-form-item>
         <el-form-item >
@@ -17,7 +17,7 @@
           <el-table-column prop="index" label="序号" align="center" min-width="5%">
             <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
           </el-table-column>
-          <el-table-column prop="toolsTypeName" label="工器具类型名称 " align="center" min-width="15%"/>
+          <el-table-column prop="toolsTypeName" label="工装工具类型名称 " align="center" min-width="15%"/>
           <el-table-column label="操作" align="center" width="200">
             <template v-slot="scope">
               <el-button-group>

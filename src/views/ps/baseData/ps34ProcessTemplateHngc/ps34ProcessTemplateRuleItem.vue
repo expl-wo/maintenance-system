@@ -2,11 +2,11 @@
   <div  class="wp hp app-containerC">
     <div class="filter-container searchCon">
        <el-form :inline="true" :model="listItemUpdate" class="demo-form-inline demo-form-zdy">
-         <el-form-item label="工艺模板编号" >
+         <el-form-item label="标准工序编号" >
            <el-input v-model="listItemUpdate.gxName" placeholder="输入标准工序名称" style="width: 120px;"
                   class="filter-item" clearable />
       </el-form-item>
-      <el-form-item label="工艺模板名称" >
+      <el-form-item label="标准工序名称" >
         <el-input v-model="listItemUpdate.gxUId" placeholder="输入标准工序编码" style="width: 120px;" class="filter-item"
                   clearable />
       </el-form-item>
@@ -23,7 +23,7 @@
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
                   style="font-size: 0.7rem">
-        <el-table-column prop="gxUid" align="center" width="60" label="标准工序编号" />
+        <el-table-column prop="gxUid" align="center" width="120" label="标准工序编号" />
         <el-table-column prop="gxName" align="center" label="标准工序名称" />
         <el-table-column label="前置条件" align="center" width="140">
           <template v-slot="scope">
@@ -46,11 +46,11 @@
         <el-table-column header-align="center" align="center" width="150" label="操作">
           <template v-slot="scope">
             <el-button-group>
-              <el-button  title="删除" type="danger" icon="Delete"
-                         @click="handleDelete(scope.row)" />
               <el-button s title="保存" type="primary" icon="Equipment" @click="saveItemDataCondition(scope.row)">
                 保存
               </el-button>
+              <el-button  title="删除" type="danger" icon="Delete"
+                          @click="handleDelete(scope.row)" />
             </el-button-group>
           </template>
         </el-table-column>
@@ -102,7 +102,7 @@
 <script>
 import Constants from "../../../../utils/constants";
 import {
-  procedure, insertGx, deletePlanHngc, queryProduces
+  procedure, insertGxUid, deleteProcedure, queryProduces
 } from "@/api/plan";
 import dictHttp from "@/api/sys/dict";
 import Pagination from "@/components/Pagination/index";
@@ -125,8 +125,8 @@ export default {
         id:'',
           gxUId:'',
           gxName:'',
-        workShopName:'',
-        workShopNumber:'',
+        workSpaceName:'',
+        workSpaceNumber:'',
         processPlanId:'',
 
           pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
@@ -157,8 +157,25 @@ export default {
       this.getDataList() // 查询
     },
 
-    saveItemDataCondition(params) {
-      insertGx(params).then(response => {
+    saveItemDataCondition(row) {
+      let params = {
+        procedures:[{
+          id: row.id,
+          processPlanId: this.listItemUpdate.processPlanId,
+          gxUid: row.gxUid,
+          gxName: row.gxName,
+          processPlanNumber:row.processPlanNumber,
+          processPlanName:row.processPlanName,
+          processTime:row.processTime,
+          workspaceNumber:row.workSpaceNumber,
+          workspaceName:row.workshopName,
+          erpValidationCode:row.erpValidationCode,
+          isUse:row.isUse,
+          preGx:row.preGx,
+
+        }]
+      }
+      insertGxUid(params).then(response => {
         this.$message({
           message: "保存成功",
           type: 'success'
@@ -185,16 +202,27 @@ export default {
     saveItemData(classzzItem) {
       this.dialogConfigCaiGouFormVisible = false;
       let params = {
-        id:classzzItem.id,
-        processPlanId:this.listItemUpdate.processPlanId,
-        gxUid:classzzItem.gxUid,
-        gxName:classzzItem.gxName,
+        procedures:[{
+          id: classzzItem.id,
+          processPlanId: this.listItemUpdate.processPlanId,
+          gxUid: classzzItem.gxUid,
+          gxName: classzzItem.gxName,
+          processPlanNumber:classzzItem.processPlanNumber,
+          processPlanName:classzzItem.processPlanName,
+          processTime:classzzItem.processTime,
+          workspaceNumber:classzzItem.workspaceNumber,
+          workspaceName:classzzItem.workspaceName,
+          erpValidationCode:classzzItem.erpValidationCode,
+          isUse:classzzItem.isUse,
+          preGx:null
+        }]
       }
-      insertGx(params).then(response => {
+      insertGxUid(params).then(response => {
         this.$message({
           message: "新增成功",
           type: 'success'
         })
+        this.getDataList()
       })
     },
 
@@ -210,10 +238,10 @@ export default {
 
     handleDelete(rowData) {
       this.$confirm(Constants.deleteTip).then(() => {
-        deletePlanHngc({
+        deleteProcedure({
           id:rowData.id
         }).then(response => {
-          if (response.err_code === Constants.respCode.success) {
+          if (response.err_code === Constants.statusCode.success) {
             this.$message({
               type: 'success',
               message: '删除成功'
@@ -224,7 +252,7 @@ export default {
               message: '删除失败'
             })
           }
-          this.handleSearch()
+          this.getDataList()
         })
       })
     },
@@ -250,6 +278,8 @@ export default {
         })
       })
     },
+
+
   }
 }
 </script>

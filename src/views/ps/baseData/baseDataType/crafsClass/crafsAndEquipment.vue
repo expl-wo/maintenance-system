@@ -15,12 +15,11 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
-    <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
+    <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="400">
       <el-table-column prop="index" label="序号" align="center" min-width="5%">
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
-      <el-table-column prop="equipmentTypeName" label="设备类型名称 " align="center" min-width="15%"/>
-      <el-table-column prop="crafsName" label="中工序名称" align="center" min-width="15%"/>
+      <el-table-column prop="equipmentTypeName" label="设备类型名称 " align="center" />
       <el-table-column label="操作" align="center" width="200">
         <template v-slot="scope">
           <el-button-group>
@@ -39,30 +38,39 @@
                   @pagination="getList"
     />
     </div>
-    <el-dialog draggable  appendToBody :title="listItemQuery.id? '编辑': '新增'"
-               v-model="dialogVisible" modal width="600">
-      <el-form :model="listItemQuery" class="element-list" ref="form" label-width="160px">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label=" 设备类型名称:" prop="craftsName" >
-              <el-input v-model="listItemQuery.equipmentTypeName" placeholder="请输入设备类型名称" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label=" 中工序名称:" prop="crafsName" >
-              <el-input v-model="listItemQuery.crafsName" placeholder="请输入中工序名称" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer">
-        <el-button size="small" @click="dialogVisible=false">取消</el-button>
-        <el-button size="small" type="primary" @click="saveItemData">保存</el-button>
+    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+      <div class="filter-container searchCon">
+        <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
+          <el-form-item label="设备类型名称" >
+            <el-input v-model="listQuery.equipmentTypeName" placeholder="设备类型名称" style="width: 110px;" class="filter-item" clearable />
+          </el-form-item>
+          <el-form-item >
+            <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
+            </el-button>
+          </el-form-item>
+        </el-form>
       </div>
+      <el-table :data="tableRuleConfigData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe height="300px">
+        <el-table-column prop="equipmentTypeName" label="设备类型名称" align="center" min-width="15%"/>
+        <el-table-column header-align="center" align="center" width="160" label="操作">
+          <template v-slot="scope">
+            <el-button-group>
+              <el-button type="primary"
+                         @click="chooseItemData(scope.row)">
+                选择
+              </el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div>
+        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.equipmentTypeName}}</el-tag>
+      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -70,7 +78,14 @@
 <script>
 
 // 辅材类型查询
-import {deleteEquipment, getCrafsAndEquipment, saveEquipment} from '@/api/eqpLedger'
+import {
+  deleteEquipment,
+  getAuxiliaryType,
+  getCrafsAndEquipment,
+  getEquipmentType, getToolsType,
+  saveAuxiliary,
+  saveEquipment, saveTools
+} from '@/api/eqpLedger'
 import Pagination from "@/components/Pagination/index";
 import Constants from "@/utils/constants";
 
@@ -79,15 +94,10 @@ export default {
   components: {Pagination },
   data() {
     return {
-      dialogVisible:false,
+      checkboxRuleConfigList:[],
+      tableRuleConfigData:[],
+      dialogConfigCaiGouFormVisible:false,
       total: 0, // 角色列表表格总条数
-      listItemQuery:{
-        id:'',
-        crafsId:'',
-        crafsName:'',
-        equipmentTypeName: ''
-
-      },
       listQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
@@ -127,42 +137,44 @@ export default {
       this.onQuery() // 查询
     },
     handleAdd() {
-      this.listItemQuery = {
-        id: '',
-        crafsName: '',
-        equipmentTypeName: '',
-        crafsId: this.listQuery.crafsId,
-
-      }
-      this.dialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.formRef.clearValidate()
-      })
-    },
-    handEdit(row){
-      this.dialogVisible = true
-      this.listItemQuery.id = row.id
-      this.listItemQuery.equipmentTypeName = row.equipmentTypeName
-      this.listItemQuery.crafsName = row.crafsName
-      this.crafsId = this.listQuery.crafsId
+      this.onRuleConfigQuery()
     },
 
-    saveItemData() {
-      this.dialogVisible = false;
+    chooseItemData(row){
+      this.dialogConfigCaiGouFormVisible = false;
+      this.createItemData(row);
+    },
+    //
+    createItemData(classzzItem) {
+      this.saveItemData(classzzItem)
+    },
+    saveItemData(classzzItem) {
+      this.dialogConfigCaiGouFormVisible = false;
       let params = {
-        id:this.listItemQuery.id,
-       equipmentTypeName: this.listItemQuery.equipmentTypeName,
-        crafsName: this.listItemQuery.crafsName,
-        crafsId:this.listQuery.crafsId
+        id:classzzItem.id,
+        crafsId:this.listQuery.crafsId,
+        equipmentTypeName:classzzItem.equipmentTypeName,
       }
       saveEquipment(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
+        if(response.err_code === this.$constants.statusCode.success){
+          this.$message.success('数据保存成功');
+        }else{
+          this.$message.error(response.err_msg);
+        }
         this.onQuery()
       })
     },
+
+    onRuleConfigQuery() {
+      this.tableRuleConfigData = [];
+      getEquipmentType(this.listQuery).then(response => {
+        this.tableRuleConfigData = response.data
+        this.total = response.total_count
+      })
+      this.dialogConfigCaiGouFormVisible = true;
+    },
+
+
 
 
     handleDelete(rowData) {

@@ -147,7 +147,6 @@ export default {
     },
     handleOk() {
       this.$refs["dataForm"].validate(async (valid) => {
-        debugger;
         this.$emit("closeModal", this.modalName);
       });
     },

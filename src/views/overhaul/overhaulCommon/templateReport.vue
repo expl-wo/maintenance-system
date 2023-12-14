@@ -14,6 +14,7 @@
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
+          clearable
           @change="handleTemplateChange"
         >
           <el-option
@@ -49,16 +50,16 @@
           <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
+          ref="reprtUpload"
           v-if="$isAuth(this.menuCodeEdit)"
           class="upload-demo upload-report"
-          :limit="1"
           :disabled="isBtnDisabled || isDisabledStauts"
           v-model:file-list="fileList"
           :before-upload="beforeUpload"
           :http-request="uploadFile"
           :show-file-list="false"
           :auto-upload="true"
-          accept=".doc,.docx"
+          accept=".docx"
         >
           <el-button
             type="primary"
@@ -68,6 +69,7 @@
           >
         </el-upload>
         <el-tag
+          v-if="wordUri"
           :key="REPORT_CHECK_STATUS[templateStatus].label"
           :type="REPORT_CHECK_STATUS[templateStatus].type"
           class="mrl12"
@@ -76,23 +78,18 @@
         >
           {{ REPORT_CHECK_STATUS[templateStatus].label }}
         </el-tag>
+        <el-tag v-else type="warning" class="mrl12" effect="plain" round>
+          未生成文档
+        </el-tag>
       </el-col>
     </el-row>
-    <div class="report-box-editor">
-      <iframe
-        v-if="pdfUri"
-        width="100%"
-        height="100%"
-        :src="pdfUri"
-        frameborder="0"
-      ></iframe>
-      <el-empty
-        v-else
-        style="height: 100%"
-        description="暂无可预览文档"
-        :image-size="200"
-      ></el-empty>
-    </div>
+    <div class="report-box-editor" v-if="wordUri" ref="reportWordRef"></div>
+    <el-empty
+      v-else
+      style="height: 660px"
+      description="暂无可预览文档"
+      :image-size="200"
+    ></el-empty>
   </div>
 </template>
 
@@ -113,6 +110,8 @@ import {
   MENU_CODE,
 } from "@/views/overhaul/constants.js";
 import { downloadClick } from "@/utils";
+import { renderAsync } from "docx-preview";
+import dayjs from "dayjs";
 export default {
   props: {
     //报告模板类型类型
@@ -147,8 +146,6 @@ export default {
     return {
       REPORT_CHECK_STATUS,
       templateStatus: 0,
-      //pdf的回显URL
-      pdfUri: "",
       //wordUri
       wordUri: "",
       loading: false,
@@ -187,6 +184,13 @@ export default {
       );
     },
   },
+  watch: {
+    wordUri(val) {
+      if (val) {
+        this.renderWord(val);
+      }
+    },
+  },
   async mounted() {
     try {
       const {
@@ -202,6 +206,31 @@ export default {
     this.getSaveFile();
   },
   methods: {
+    async renderWord(url) {
+      await this.$nextTick();
+      if (!this.$refs.reportWordRef) return;
+      fetch(url).then((res) => {
+        res.blob().then((res) => {
+          renderAsync(res, this.$refs.reportWordRef, null, {
+            className: "docx", //默认和文档样式类的类名/前缀
+            inWrapper: true, //启用围绕文档内容呈现包装器
+            ignoreWidth: false, //禁用页面的渲染宽度
+            ignoreHeight: false, //禁用页面的渲染高度
+            ignoreFonts: false, //禁用字体渲染
+            breakPages: true, //在分页符上启用分页
+            ignoreLastRenderedPageBreak: true, //在lastRenderedPageBreak元素上禁用分页
+            experimental: false, //启用实验功能（制表符停止计算）
+            trimXmlDeclaration: true, //如果为true，则在解析之前将从xml文档中删除xml声明
+            useBase64URL: false, //如果为true，图像、字体等将转换为base 64 URL，否则使用URL.createObjectURL
+            useMathMLPolyfill: false, //包括用于铬、边等的MathML多填充。
+            showChanges: false, //启用文档更改的实验渲染（插入/删除）
+            debug: false, //启用额外的日志记录
+          }).catch(() => {
+            this.$message.error("该文档无法预览，请下载后查看！");
+          });
+        });
+      });
+    },
     dealUrl(url) {
       if (!url) return "";
       if (url.indexOf("minioServer") < 0) {
@@ -214,10 +243,9 @@ export default {
         workCode: this.workOrderInfo.id,
         workDocType: this.workType,
       }).then(({ data }) => {
-        const { templateCode, reviewStatus, pdfUri, wordUri } = data;
-        this.templateStatus = reviewStatus || 0;
+        const { templateCode, reviewStatus, wordUri } = data;
+        this.templateStatus = +reviewStatus || 0;
         this.templateChoose = templateCode || undefined;
-        this.pdfUri = this.dealUrl(pdfUri);
         this.wordUri = this.dealUrl(wordUri);
       });
     },
@@ -232,26 +260,28 @@ export default {
       return true;
     },
     //保存文档
-    saveFile() {
-      this.loading = true;
-      this.loadingType = 2;
-      if (!this.pdfUri) {
-        this.$message.error("暂无可保存数据！");
-        return;
-      }
-      saveWorkDocmentInfo({
-        workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
-        workDocType: this.workType,
-        wordUri: this.wordUri,
-        pdfUri: this.pdfUri,
-      }).then((res) => {
-        if (res.code !== "0") {
-          this.$message.error(res.errMsg);
-        } else {
-          this.$message.success("保存成功");
+    saveFile(showTips = true) {
+      return new Promise((resolve, reject) => {
+        this.loading = true;
+        this.loadingType = 2;
+        if (!this.wordUri) {
+          this.$message.error("暂无可保存数据！");
+          return;
         }
-        this.loading = false;
+        saveWorkDocmentInfo({
+          workCode: this.workOrderInfo.id,
+          templateCode: this.templateChoose,
+          workDocType: this.workType,
+          wordUri: this.wordUri,
+        }).then((res) => {
+          if (res.code !== "0") {
+            this.$message.error(res.errMsg);
+          } else {
+            showTips && this.$message.success("文档保存成功");
+          }
+          resolve();
+          this.loading = false;
+        });
       });
     },
     uploadFile(file) {
@@ -264,11 +294,13 @@ export default {
       this.loadingType = 4;
       // 调用保存接口 将form的值全都传过去
       uploadWorkDocmentInfo(formData).then((res) => {
+        this.fileList = [];
+        this.$refs.reprtUpload.clearFiles();
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("操作成功，上传文件已自动保存！");
-          this.pdfUri = this.dealUrl(res.data.pdfUri);
+          this.wordUri = this.dealUrl(res.data.wordUri);
           this.templateChoose = undefined;
         }
         this.loading = false;
@@ -283,7 +315,10 @@ export default {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
-          downloadClick(this.dealUrl(res.data.docUri), this.activeLabel);
+          downloadClick(
+            this.dealUrl(res.data.docUri),
+            `${this.activeLabel}_${dayjs().format("YYYY_MM_DD_HH_mm_ss")}`
+          );
         }
       });
     },
@@ -296,7 +331,11 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       })
-        .then(() => {
+        .then(async () => {
+          if (this.templateChoose) {
+            //如果是选择模板的发起审核就先保存之后发起审核
+            await this.saveFile(false);
+          }
           checkWorkDocmentInfo({
             workCode: this.workOrderInfo.id,
             workDocType: this.workType,
@@ -309,7 +348,9 @@ export default {
             this.loading = false;
           });
         })
-        .catch(() => {});
+        .catch(() => {
+          this.loading = false;
+        });
     },
     /**
      * 模板改变操作
@@ -325,11 +366,9 @@ export default {
       }).then((res) => {
         if (res.code !== "0") {
           this.wordUri = "";
-          this.pdfUri = "";
           this.$message.error(res.errMsg);
         } else {
           this.wordUri = this.dealUrl(res.data.ossWordUri);
-          this.pdfUri = this.dealUrl(res.data.ossPdfFileUri);
         }
         this.loading = false;
       });
@@ -346,8 +385,9 @@ export default {
   }
   &-editor {
     width: 100%;
-    height: 600px;
+    height: 680px;
     margin-top: 10px;
+    overflow-y: scroll;
   }
   .upload-report {
     display: inline-block;

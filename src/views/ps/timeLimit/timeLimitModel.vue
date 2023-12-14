@@ -63,7 +63,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="节点类型:" prop="timeLimitId">
-            <el-select v-model="limitModel.timeLimitId" clearable placeholder="请选择期量">
+            <el-select v-model="limitModel.timeLimitId" filterable placeholder="请选择期量">
                 <el-option
                   v-for="item in limitOptions"
                   :key="item.id"

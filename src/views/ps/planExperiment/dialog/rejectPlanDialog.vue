@@ -45,7 +45,6 @@ export default {
       this.dialogVisible = true;
     },
     handleSubmit(){
-      debugger
       this.$refs.form.validate(valid=>{
         if(!valid){
           return;

@@ -2,15 +2,16 @@
   <div class="work-tab-box">
     <el-tabs type="border-card" v-model="activeName">
       <el-tab-pane
-        v-for="item in authTabList"
+        v-for="(item,index) in authTabList"
         :label="item.label"
-        :key="item.name"
+        :key="index"
         :name="item.name"
         lazy
       >
         <component
           :ref="item.name"
           :is="item.components"
+          :key="`${name}_${item.name}`"
           :activeLabel="item.label"
           :onlyTabName="onlyTabName"
           :workType="item.workType"
@@ -28,8 +29,8 @@ import MarkerRecord from "@/views/overhaul/overhaulCommon/markerRecord.vue"; //�
 import ProcessInfo from "@/views/overhaul/overhaulCommon/processInfo.vue"; //工序信息
 import BomVue from "../components/bom/index.vue"; //bom
 // import DeviceList from "../components/deviceList/index.vue"; //设备清单
-import BigComponents from "../components/bigComponents.vue"; //大件设备
-import instrument from "../components/instrument.vue"; //工器具
+import BigComponents from "../components/bigComponents.vue"; //设备
+import instrument from "../components/instrument.vue"; //工装工具
 import materials from "../components/materials.vue"; //材料
 import ReturnList from "../components/returnList.vue"; //返厂清单
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";

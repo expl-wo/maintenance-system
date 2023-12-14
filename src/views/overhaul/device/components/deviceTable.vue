@@ -77,7 +77,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         background
         :current-page="pageNum"
-        :page-sizes="[10, 20, 30, 40]"
+        :page-sizes="[10, 20, 30, 50, 200, 1000]"
         :page-size="pageSize"
         :total="total"
         @size-change="sizeChange"
@@ -118,7 +118,7 @@ export default {
           key: "deviceCode",
           label: "设备编号",
           minWidth: "160px",
-          sortable: "custom",
+          // sortable: "custom",
         },
         {
           prop: "deviceName",
@@ -131,14 +131,14 @@ export default {
           key: "deviceIp",
           label: "IP地址",
           minWidth: "160px",
-          sortable: "custom"
+          // sortable: "custom"
         },
         {
           prop: "devicePort",
           key: "devicePort",
           label: "端口",
           minWidth: "160px",
-          sortable: "custom",
+          // sortable: "custom",
         },
         {
           prop: "deviceType",
@@ -146,14 +146,15 @@ export default {
           columnKey: "deviceType",
           label: "设备类型",
           minWidth: "160px",
-          sortable: "custom"
+          needSlot: true,
+          // sortable: "custom"
         },
-        {
-          prop: "ownerOrgName",
-          key: "ownerOrgName",
-          label: "所属组织",
-          minWidth: "160px"
-        },
+        // {
+        //   prop: "ownerOrgName",
+        //   key: "ownerOrgName",
+        //   label: "所属组织",
+        //   minWidth: "160px"
+        // },
         {
           prop: "isOnline",
           key: "isOnline",
@@ -168,7 +169,6 @@ export default {
       total: 0,
       pageNum: 1,
       pageSize: 10,
-      pageSizeOptions: ["10", "20", "40", "50"],
       selectedNode: { ownerCode: "001" },
       sortInfo: {},
       filterInfo: {},
@@ -176,9 +176,9 @@ export default {
       deviceType: Object.freeze(deviceType)
     };
   },
-  mounted() {
-    this.getData();
-  },
+  // mounted() {
+  //   this.getData();
+  // },
   methods: {
     // 获取表格数据
     getData() {
@@ -274,11 +274,6 @@ export default {
     overflow: auto;
     width: 100%;
     height: 100%;
-  }
-  :deep(.el-table__header-wrapper) {
-    position: sticky;
-    top: 0;
-    z-index: 10;
   }
   :deep(.el-table__body-wrapper) {
     height: calc(100% - 56px);

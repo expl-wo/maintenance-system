@@ -3,7 +3,7 @@
     <el-form :model="model" ref="form" :rules="rules" label-width="140px">
       <el-row>
         <el-col :span="24">
-          <el-form-item prop="toolsTypeName" label="工器具类型名称">
+          <el-form-item prop="toolsTypeName" label="工装工具类型名称">
             <el-input v-model="model.toolsTypeName"  ></el-input>
           </el-form-item>
         </el-col>
@@ -33,7 +33,7 @@ export default {
       dialogVisible: false,
       rules: {
         toolsTypeName: [{
-          required: true, message: '工器具类型名称不能为空', trigger: 'blur'
+          required: true, message: '工装工具类型名称不能为空', trigger: 'blur'
         }],
       }
     }

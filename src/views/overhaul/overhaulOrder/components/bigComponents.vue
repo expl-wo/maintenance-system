@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true">
-      <el-form-item label="大件设备类别/编号">
+      <el-form-item label="设备类别/编号">
         <el-input
           v-model="queryParams.name"
           clearable
@@ -19,7 +19,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="570px"
+      height="610px"
     >
       <template v-for="item in COLUMNS">
         <el-table-column
@@ -43,7 +43,7 @@
       </template>
     </el-table>
     <pagination
-      v-show="pageOptions.total"
+      v-if="pageOptions.total"
       :total="pageOptions.total"
       :page="pageOptions.pageNum"
       :limit="pageOptions.pageSize"
@@ -81,7 +81,7 @@ export default {
       tableData: [],
       //分页参数
       pageOptions: {
-        total: 1,
+        total: 0,
         pageNum: 1,
         pageSize: 20,
       },
@@ -112,12 +112,14 @@ export default {
       getBigComponentList({
         workCode: this.workOrderInfo.id,
         scene: this.sceneType,
-        searchKey:this.queryParams.name
+        searchKey:this.queryParams.name,
+        pageNum:this.pageOptions.pageNum,
+        pageSize:this.pageOptions.pageSize
       }).then((res) => {
         this.listLoading = false;
         const { total, pageList } = res.data;
         this.tableData = (pageList||[]).map((item, index) => ({ ...item, id: index }));
-        this.pageOptions.total=total
+        this.pageOptions.total = total
       });
     },
   },

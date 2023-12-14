@@ -2,6 +2,7 @@
   <el-dialog
     draggable
     title="添加问题"
+    :close-on-click-modal="false"
     :model-value="true"
     :destroy-on-close="true"
     @close="handleClose"
@@ -230,7 +231,7 @@ export default {
       )||{};
       let params = {
         workCode: this.workCode,
-        workProcedureCode: this.operateRow.workProcedureCode.split("_")[1],
+        workProcedureCode: this.operateRow.workProcedureCode.split("_").slice(1).join('_'),
         workProcedureType: this.operateRow.workProcedureType,
         workScene:this.sceneType,
         cateName: problemTypeObj.label,

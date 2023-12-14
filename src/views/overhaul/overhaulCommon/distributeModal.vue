@@ -170,7 +170,7 @@ const OPERATE_MAP = {
   1: { title: "视频绑定配置" },
   2: { title: "复核人员配置" },
   3: { title: "派工配置" },
-  4: { title: "大件设备配置" },
+  4: { title: "设备配置" },
 };
 export default {
   props: {
@@ -222,7 +222,7 @@ export default {
   },
   data() {
     return {
-      //大件设备
+      //设备
       devOptions: [],
       personArea: "",
       saveLoading: false,
@@ -266,6 +266,7 @@ export default {
   mounted() {
     let infoParams;
     let work = this.getProcedureInfoList(3);
+    this.vlidateStep();
     if (work.length === 1) {
       infoParams = {
         workCode: this.workOrderInfo.id,
@@ -330,7 +331,7 @@ export default {
         });
       }
       //复核
-      this.getPersonOptions(this.appointInfo.taskGroupId || "120");
+      this.getPersonOptions(this.appointInfo.taskGroupId);
     } else {
       //视频
       if (infoParams) {
@@ -339,15 +340,24 @@ export default {
           this.form.channelCodes = channelInfoList.map(
             (item) => item.channelCode
           );
-          this.defaultSelectVal = channelInfoList.map(
-            (item) => ({label:item.channelName,value:item.channelCode})
-          );
+          this.defaultSelectVal = channelInfoList.map((item) => ({
+            label: item.channelName,
+            value: item.channelCode,
+          }));
         });
       }
     }
   },
   methods: {
-    /**获取大件设备选项 */
+    vlidateStep() {
+      let work = this.getProcedureInfoList(3);
+      if (!work.length && [1, 2, 3].includes(this.operateRow)) {
+        this.$message.warning("请检查所选工序节点是否包含工步！");
+        return false;
+      }
+      return true;
+    },
+    /**获取设备选项 */
     getDevOptions() {
       const workList = this.currentNode
         .filter((el) => +el.procedureType === 2)
@@ -409,11 +419,14 @@ export default {
           data: { value },
         } = await getPersonByWorkClazz(workClazzId);
         const taskUserIds = this.appointInfo.taskUserIds || [];
-        this.taskPersonOptions = (value || []).map((item) => ({
-          value: item.userId,
-          label: item.userName,
-        }));
-        // .filter((item) => taskUserIds.includes(item.value));
+        this.taskPersonOptions = (value || [])
+          .map((item) => ({
+            value: item.userId,
+            label: item.userName,
+          }))
+          .filter(
+            (item) => this.isFactoryIn || taskUserIds.includes(item.value)
+          );
       } else {
         this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
       }
@@ -443,6 +456,10 @@ export default {
         }
         this.saveLoading = true;
         if (this.operateRow === 1) {
+          if (!this.vlidateStep()) {
+            this.saveLoading = false;
+            return;
+          }
           //视频
           bindDev({
             workCode: this.workOrderInfo.id,
@@ -455,10 +472,14 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else if (this.operateRow === 2) {
+          if (!this.vlidateStep()) {
+            this.saveLoading = false;
+            return;
+          }
           //复核
           bindReview({
             workCode: this.workOrderInfo.id,
@@ -474,10 +495,14 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else if (this.operateRow === 3) {
+          if (!this.vlidateStep()) {
+            this.saveLoading = false;
+            return;
+          }
           //派工
           bindDispatch({
             workCode: this.workOrderInfo.id,
@@ -496,10 +521,15 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         } else {
+          if (!this.form.taskTeamPerson.length) {
+            this.saveLoading = false;
+            this.$message.error("请确认设备是否存在！");
+            return;
+          }
           const reuslt = this.allBigList
             .filter((item) => {
               return this.form.taskTeamPerson.includes(item.value);
@@ -512,14 +542,14 @@ export default {
                 receivePerson: this.appointInfo.projManagerId,
               };
             });
-          //大件设备
+          //设备
           bindBigComponent(reuslt).then((res) => {
             this.saveLoading = false;
             if (res.code !== "0") {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("保存成功！");
-              this.handleClose();
+              this.handleClose(true);
             }
           });
         }

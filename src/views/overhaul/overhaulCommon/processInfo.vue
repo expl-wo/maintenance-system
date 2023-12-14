@@ -1,15 +1,88 @@
 <template>
   <div class="process-box">
-    模板选择：
-    <select-page
-      v-model="templateChoose"
-      :clearable="false"
-      ref="selectRef"
-      :disabled="isRoleContorl.isDisabled"
-      :defaultSelectVal="defaultSelectVal"
-      :getOptions="getProcedureTemplateOptions"
-      @change="handleTemplateChange"
-    />
+    <template v-if="isShowTemplate">
+      模板选择：
+      <select-page
+        v-model="templateChoose"
+        :clearable="false"
+        ref="selectRef"
+        :disabled="isRoleContorl.isDisabled"
+        :defaultSelectVal="defaultSelectVal"
+        :getOptions="getProcedureTemplateOptions"
+        @change="handleTemplateChange"
+      />
+    </template>
+    <template v-if="treeData.length">
+      <div class="operate-wrap-header" v-if="workTreeStatus === 2">
+        <el-button
+          v-if="$isAuth(roleBtnEnum['videoBind']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          @click="openModal(1, 'distributeModalFlag')"
+        >
+          <el-icon class="el-icon--left"><Setting /></el-icon>
+          视频绑定
+        </el-button>
+        <el-button
+          v-if="$isAuth(roleBtnEnum['orderCheck']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          @click="openModal(2, 'distributeModalFlag')"
+        >
+          <el-icon class="el-icon--left"><UserFilled /></el-icon>
+          复核人员
+        </el-button>
+        <el-button
+          v-if="$isAuth(roleBtnEnum['infoAppoint']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          @click="openModal(3, 'distributeModalFlag')"
+        >
+          <el-icon class="el-icon--left"><Pointer /></el-icon>
+          派工
+        </el-button>
+        <el-button
+          v-if="$isAuth(roleBtnEnum['bigComponent']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          @click="openModal(4, 'distributeModalFlag')"
+        >
+          <el-icon class="el-icon--left"><Tools /></el-icon>
+          设备
+        </el-button>
+      </div>
+      <div class="operate-wrap-header" v-else>
+        <el-button
+          v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          title="保存"
+          @click="workTreeSave"
+        >
+          <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
+        </el-button>
+        <el-button
+          v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
+          type="primary"
+          :disabled="isPauseOrFinish"
+          title="发起审核"
+          :loading="checkLoading"
+          @click="workTreeCheck"
+        >
+          <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
+        </el-button>
+        <el-tag
+          :key="WORK_TREE_CHECK_STATUS[workTreeStatus].label"
+          :type="WORK_TREE_CHECK_STATUS[workTreeStatus].type"
+          effect="plain"
+          class="mgl12"
+          round
+        >
+          {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
+        </el-tag>
+      </div>
+    </template>
+
     <div class="process-content" v-if="isRoleContorl.isCanShowTree">
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">工序结构</div>
@@ -34,75 +107,6 @@
         </div>
       </div>
       <div class="process-content-right" v-loading="tableListLoading">
-        <template v-if="columns && treeData.length">
-          <div class="operate-wrap" v-if="workTreeStatus === 2">
-            <el-button
-              v-if="$isAuth(roleBtnEnum['videoBind']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish"
-              @click="openModal(1, 'distributeModalFlag')"
-            >
-              <el-icon class="el-icon--left"><Setting /></el-icon>
-              视频绑定
-            </el-button>
-            <el-button
-              v-if="$isAuth(roleBtnEnum['orderCheck']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish"
-              @click="openModal(2, 'distributeModalFlag')"
-            >
-              <el-icon class="el-icon--left"><UserFilled /></el-icon>
-              复核人员
-            </el-button>
-            <el-button
-              v-if="$isAuth(roleBtnEnum['infoAppoint']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish"
-              @click="openModal(3, 'distributeModalFlag')"
-            >
-              <el-icon class="el-icon--left"><Pointer /></el-icon>
-              派工
-            </el-button>
-            <el-button
-              v-if="$isAuth(roleBtnEnum['bigComponent']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish"
-              @click="openModal(4, 'distributeModalFlag')"
-            >
-              <el-icon class="el-icon--left"><Tools /></el-icon>
-              大件设备
-            </el-button>
-          </div>
-          <div class="operate-wrap" v-else>
-            <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
-              title="保存"
-              @click="workTreeSave"
-            >
-              <el-icon class="el-icon--left"><SuccessFilled /></el-icon>保存
-            </el-button>
-            <el-button
-              v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
-              type="primary"
-              :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
-              title="发起审核"
-              @click="workTreeCheck"
-            >
-              <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
-            </el-button>
-            <el-tag
-              :key="WORK_TREE_CHECK_STATUS[workTreeStatus].label"
-              :type="WORK_TREE_CHECK_STATUS[workTreeStatus].type"
-              effect="plain"
-              class="mgl12"
-              round
-            >
-              {{ WORK_TREE_CHECK_STATUS[workTreeStatus].label }}
-            </el-tag>
-          </div>
-        </template>
         <template v-if="workTreeStatus === 2">
           <template v-if="columns">
             <el-table
@@ -110,7 +114,7 @@
               stripe
               style="width: 100%"
               show-overflow-tooltip
-              height="500px"
+              height="560px"
             >
               <template v-for="item in columns">
                 <el-table-column
@@ -131,7 +135,11 @@
                     <!-- 只有叶子节点有复核 -->
                     <el-button
                       type="primary"
-                      :disabled="isPauseOrFinish"
+                      :disabled="
+                        isPauseOrFinish ||
+                        1 === +row.reviewStatusOld ||
+                        [0, 1, 2].includes(+row.workStatusOld)
+                      "
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
                         $isAuth(roleBtnEnum['review']) &&
@@ -186,7 +194,11 @@
             v-else
           />
         </template>
-        <el-empty v-else description="请先配置工序，并审核通过！" />
+        <el-empty
+          v-else
+          style="height: 100%"
+          description="请先配置工序，并审核通过！"
+        />
         <!-- 派工配置 -->
         <distribute-modal
           v-if="distributeModalFlag"
@@ -246,11 +258,11 @@ import {
   oAExamine,
 } from "@/api/overhaul/workOrderApi.js";
 const sceneType_map = {
-  SURVEY_SCENE: 10,
-  OVER_HAUL_ON_THE_SPOT_SCENE: 5,
-  OVER_HAUL_BACK_CHAI_JIE_SCENE: 23,
-  OVER_HAUL_BACK_INNER_CHAI_JIE_SCENE: 33,
-  OVER_HAUL_BACK_INNER_PRODUCTION_SCENE: 42,
+  SURVEY_SCENE: 0,
+  OVER_HAUL_ON_THE_SPOT_SCENE: 61,
+  OVER_HAUL_BACK_CHAI_JIE_SCENE: 21,
+  OVER_HAUL_BACK_INNER_CHAI_JIE_SCENE: 31,
+  OVER_HAUL_BACK_INNER_PRODUCTION_SCENE: 41,
   OVER_HAUL_BACK_EXPERIMENT_SCENE: 51,
 };
 export default {
@@ -294,11 +306,14 @@ export default {
       PROCESS_NODE_ENUM,
       //工序审核树状态
       workTreeStatus: 0,
+      checkLoading: false,
       //表格loading效果
       tableListLoading: false,
       //tree的loading效果
       treeLoading: false,
       templateChoose: undefined,
+      standardProcedureCodeList: [], //检修工单模板编号
+      isShowTemplate:true,
       defaultSelectVal: {}, //用于回显
       templateName: "", //模板name
       treeData: [],
@@ -329,18 +344,34 @@ export default {
     filterText(val) {
       this.$refs["treeRef"].filter(val);
     },
-    workOrderInfo(val) {
-      const { procedureTemplateName, procedureTemplateCode } =
-        this.workOrderInfo;
-      this.templateChoose = procedureTemplateCode || undefined;
-      this.templateName = procedureTemplateName || "";
-      if (this.templateChoose && this.templateName) {
-        this.defaultSelectVal = {
-          label: this.templateName,
-          value: this.templateChoose,
-        };
-        this.getTreeData();
-      }
+    workOrderInfo: {
+      handler(val) {
+        const {
+          procedureTemplateName,
+          procedureTemplateCode,
+          standardProcedureCodeList,
+        } = this.workOrderInfo;
+        this.templateChoose = procedureTemplateCode || undefined;
+        this.templateName = procedureTemplateName || "";
+        if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+          this.isShowTemplate = false;
+          this.standardProcedureCodeList = standardProcedureCodeList || [];
+          this.templateChoose = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+          this.templateName = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+        }
+        if (this.templateChoose && this.templateName) {
+          this.defaultSelectVal = {
+            label: this.templateName,
+            value: this.templateChoose,
+          };
+          this.getTreeData();
+        }
+      },
+      immediate: true,
     },
   },
   computed: {
@@ -374,19 +405,18 @@ export default {
     isRoleContorl() {
       let isCanShowTree, isDisabled;
       if (+this.workOrderInfo.workOrderType === 1) {
-        isDisabled = ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
-          this.workOrderInfo.orderStatus
-        );
+        //待审核和审核之后均为置灰
+        isDisabled =
+          ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
+            this.workOrderInfo.orderStatus
+          ) || [1, 2].includes(this.workTreeStatus);
         isCanShowTree =
           ![COMMOM_WORK_ORDER_MAP["pointManager"].value].includes(
             this.workOrderInfo.orderStatus
           ) || !!this.templateChoose;
-      } else if (this.isSurvey) {
+      } else {
         //在检修中查看勘查
         isDisabled = true;
-        isCanShowTree = true;
-      } else {
-        isDisabled = [1, 2].includes(this.workTreeStatus); //待审核和审核之后均为置灰
         isCanShowTree = true;
       }
       return {
@@ -402,6 +432,14 @@ export default {
     },
   },
   methods: {
+    //分页发生改变时
+    pageChange({ limit, page }) {
+      this.pageOptions.pageNum = page;
+      if (limit) {
+        this.pageOptions.pageSize = limit;
+      }
+      this.getList();
+    },
     //获取模板列表
     async getProcedureTemplateOptions(pageOptions) {
       const { pageNum, pageSize, searchKey } = pageOptions;
@@ -462,7 +500,7 @@ export default {
           templateCode: this.templateChoose,
           workProcedureType: +this.currentSelectNode.type,
           workProcedureCode: this.currentSelectNode.procedureCode,
-          workOrderSceneType:this.sceneType,
+          workOrderSceneType: this.sceneType,
         };
         getWorkInfoPage(parmas)
           .then((res) => {
@@ -472,6 +510,12 @@ export default {
               ...item,
               reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
               workStatus: WORK_STATUS_ENUM[item.workStatus || 0],
+              workStatusOld: item.workStatus,
+              reviewStatusOld: item.reviewStatus,
+              procedureCode: item.workProcedureCode
+                .split("_")
+                .slice(1)
+                .join("_"),
             }));
           })
           .finally(() => {
@@ -511,7 +555,7 @@ export default {
           workOrderSceneType: this.sceneType,
           treeNode: parmas,
         }).then((res) => {
-          if (res.code === "0") {
+          if (res.code !== "0") {
             this.$message.error(res.errMsg);
           } else {
             this.$message.success("保存成功");
@@ -526,11 +570,17 @@ export default {
     },
     //工序树审核
     workTreeCheck() {
+      this.checkLoading = true;
       //发起审核接口
       oAExamine({
         workCode: this.workOrderInfo.id,
         docType: sceneType_map[this.sceneType],
       }).then((res) => {
+        this.checkLoading = false;
+        if (res.code !== "0") {
+          this.$message.error(res.errMsg);
+          return;
+        }
         this.$message.success("操作成功");
         this.getTreeData();
       });
@@ -601,9 +651,14 @@ export default {
     getTreeData() {
       if (!this.templateChoose) return;
       this.treeLoading = true;
+      let params = { templateCode: this.templateChoose };
+      if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+        delete params.templateCode;
+        params.standardProcedureCodeList = this.standardProcedureCodeList;
+      }
       getWorkTree({
         workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
+        ...params,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,
@@ -642,6 +697,10 @@ export default {
 $left-title-height: 36px;
 $left-search-height: 36px;
 $left-width: 255px;
+.operate-wrap-header {
+  display: inline;
+  margin-left: 10px;
+}
 .process-box {
   width: 100%;
   height: 100%;
@@ -653,7 +712,7 @@ $left-width: 255px;
   display: flex;
   width: 100%;
   margin-top: 15px;
-  height: 610px;
+  height: 670px;
   border: 1px solid #e9ebee;
   &-left {
     width: $left-width;

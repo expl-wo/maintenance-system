@@ -39,7 +39,7 @@ const PROCESS_NODE_ENUM = {
 const COMMON_PROCESS_COLUMNS_MAP = {
     //工序
     [PROCESS_NODE_ENUM.ROOT]: [
-        { type: "selection", width: 30, "show-overflow-tooltip": false },
+        // { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "workProcedureName",
             label: "标准工序名称",
@@ -68,7 +68,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     ],
     //中工序
     [PROCESS_NODE_ENUM.NORM]: [
-        { type: "selection", width: 30, "show-overflow-tooltip": false },
+        // { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "workProcedureName",
             label: "中工序名称",
@@ -89,7 +89,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
     ],
     //工步
     [PROCESS_NODE_ENUM.MIDDLE]: [
-        { type: "selection", width: 30, "show-overflow-tooltip": false },
+        // { type: "selection", width: 30, "show-overflow-tooltip": false },
         {
             prop: "workProcedureName",
             label: "工步名称",
@@ -162,8 +162,8 @@ const MENU_CODE = {
 //工序状态
 const WORK_STATUS_ENUM = {
     0: "未派工",
-    1: "未开工",
-    2: "已开工",
+    1: "已开工",
+    2: "未开工",
     3: "已完工"
 }
 //复核状态

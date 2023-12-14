@@ -1,5 +1,9 @@
 <template>
-  <el-empty description="暂无工作内容数据！" v-if="!dataList.length" />
+  <el-empty
+    description="暂无工作内容数据！"
+    style="height: 100%"
+    v-if="!dataList.length"
+  />
   <div class="work-content-box" v-else v-loading="loading">
     <el-descriptions title="基础信息" :column="4" :style="{ width: '800px' }">
       <template #extra>
@@ -7,7 +11,7 @@
           v-if="isEditAuth"
           type="primary"
           title="开工"
-          :disabled="workStatus !== 1"
+          :disabled="workStatus !== 2"
           @click="editStatus('isStart')"
           >开工</el-button
         >
@@ -15,14 +19,14 @@
           v-if="isEditAuth"
           type="primary"
           title="完工"
-          :disabled="workStatus !== 2"
+          :disabled="workStatus !== 1"
           @click="editStatus('isFinished')"
           >完工</el-button
         >
         <el-button
           v-if="isCheckAuth"
           type="primary"
-          :disabled="recheckStatus === 1 || [0, 1].includes(workStatus)"
+          :disabled="recheckStatus === 1 || [0, 2, 1].includes(workStatus)"
           title="复核"
           @click="check"
           >复核</el-button
@@ -77,7 +81,7 @@
       <el-button
         type="primary"
         title="报工"
-        :disabled="workStatus !== 2 || [0, 1].includes(workStatus)"
+        :disabled="![1].includes(workStatus)"
         @click="reportWorkModal = true"
         >报工</el-button
       >
@@ -94,7 +98,7 @@
     <report-work-modal
       v-if="reportWorkModal"
       :operateRow="currentSelectNode"
-      :progress="contentInfo.progress"
+      :contentInfo="contentInfo"
       modalName="reportWorkModal"
       :sceneType="sceneType"
       :workOrderInfo="workOrderInfo"
@@ -235,7 +239,7 @@ export default {
     searchChange(operationCode) {
       if (!this.dataList.length) return;
       let resultList = this.dataList.filter(
-        (item) => +item.operationCode === +operationCode
+        (item) => item.operationCode === operationCode
       );
       this.batchSearchContent(resultList);
     },
@@ -264,10 +268,10 @@ export default {
           const value = res.data.value || [];
           value.forEach((item) => {
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
-              if (+item.operationType === 3) {
+              if (+item.operationType === 4) {
                 //多选框
                 item.contentInfo = item.contentInfo
-                  ? item.contentInfo.split("|")
+                  ? item.contentInfo.split(",")
                   : [];
               }
               this.$refs[
@@ -276,10 +280,12 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].opearationId = item.id; //赋值ID
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =
-                item.fileList.map((item) => item.fileName).join("|");
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =
-                item.fileList.map((item) => item.fileUrl).join("|");
+              const fileNameStr= item.fileList.map((item) => item.fileName).join("|");
+              const fileUrlStr = item.fileList.map((item) => item.fileUrl).join("|");
+              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =fileNameStr;   
+              this.$refs[`contentItemRef${item.operationCode}`][0].form.fileName =fileNameStr;
+              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =fileUrlStr
+              this.$refs[`contentItemRef${item.operationCode}`][0].form.fileUrl =fileUrlStr
             }
           });
         }
@@ -320,8 +326,8 @@ export default {
           maximumContentLength: +item.maximumContentLength,
           dataUnit: item.dataUnit,
           isRequired: !!+item.isRequired,
-          upperLimit: +item.upperLimit,
-          lowerLimit: +item.lowerLimit,
+          upperLimit: item.upperLimit ? +item.upperLimit : undefined,
+          lowerLimit: item.lowerLimit ? +item.lowerLimit : undefined,
           executionFrequency: +item.executionFrequency,
           dictionaryContent: item.dictionaryContent,
         };
@@ -353,9 +359,9 @@ export default {
       this.dataList.forEach((item) => {
         let refObj = this.$refs[`contentItemRef${item.operationCode}`][0];
         item.contentInfo = refObj.form.contentData;
-        if (+item.operationType === 3) {
+        if (+item.operationType === 4) {
           //多选处理为字符串
-          item.contentInfo = (item.contentInfo || []).join("|");
+          item.contentInfo = (item.contentInfo || []).join(",");
         }
         if (!item.contentInfo && !!+item.isRequired) {
           //检验必填项

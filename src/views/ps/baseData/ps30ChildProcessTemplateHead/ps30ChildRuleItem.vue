@@ -4,7 +4,7 @@
       <el-button @click="handleAdd"  type="primary">新增</el-button></div>
     <div class="panel-menu-list app-container app-containerC otherCon wp"  >
       <div class="otherCon wp xui-table__highlight">
-        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
+        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="400" @row-click="handleClick">
           <el-table-column prop="craftsCode" align="center" label="中工序编码" />
           <el-table-column prop="craftsName" align="center" label="中工序名称" />
 
@@ -31,7 +31,7 @@
                   @pagination="getList"
       />
     </div>
-      <el-dialog draggable  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
+      <el-dialog draggable appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
@@ -68,8 +68,8 @@
         </el-row>
       </el-form>
       <div slot="footer">
-        <el-button size="small" @click="dialogVisible=false">取消</el-button>
-        <el-button size="small" type="primary" @click="saveItemData">保存</el-button>
+        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
+        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
       </div>
     </el-dialog>
   </div>

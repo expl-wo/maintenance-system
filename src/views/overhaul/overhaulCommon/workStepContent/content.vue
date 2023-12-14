@@ -17,7 +17,8 @@
         :cell-class-name="setCellClassName"
         :disabled-date="disabledDate"
         @panel-change="panelChange"
-        @change="searchChange"
+        @change="searchValChange"
+        @focus="focusChange"
         style="width: 200px"
       />
       <el-select
@@ -26,7 +27,7 @@
         class="mgl12"
         placeholder="时间"
         style="width: 200px"
-        @change="searchChange"
+        @change="searchValChange"
         @visible-change="visibleChange"
       >
         <template #prefix
@@ -56,7 +57,7 @@
   </el-row>
   <el-row>
     <el-col :span="6">
-      <el-form-item :label="contentLabel" :required="isRequired">
+      <el-form-item label="填写内容" :required="isRequired">
         <el-input
           v-if="contentType === 0"
           v-model="form.contentData"
@@ -110,6 +111,7 @@
       </el-form-item>
     </el-col>
   </el-row>
+  <el-form-item label="操作描述">{{ contentLabel }}</el-form-item>
   <el-row v-if="requireImageFile">
     <el-col :span="12">
       <el-form-item label="附件">
@@ -164,7 +166,7 @@ export default {
     },
     lowerLimit: {
       type: Number,
-      default: 0,
+      default: undefined,
     },
     dictionaryContent: {
       type: Array,
@@ -178,7 +180,7 @@ export default {
     },
     upperLimit: {
       type: Number,
-      default: 100,
+      default: undefined,
     },
     isRequired: {
       type: Boolean,
@@ -193,7 +195,7 @@ export default {
       default: "",
     },
     maximumContentLength: {
-      type: String,
+      type: [String, Number],
       default: "1000",
     },
     requireImageFile: {
@@ -277,6 +279,9 @@ export default {
         this.getStatus(params.beginTime, params.endTime);
       }
     },
+    focusChange() {
+      this.panelChange(this.form.date, "month");
+    },
     panelChange(data, mode) {
       if (mode === "month") {
         let params;
@@ -318,14 +323,14 @@ export default {
           this.getTimeOptions(false, success);
         } else {
           this.successList = [];
-          this.successList = result.forEach((item) => {
+          this.successList = result.map((item) => {
             return dayjs(item).format("YYYY-MM-DD");
           });
         }
       });
     },
     //查询条件
-    searchChange() {
+    searchValChange() {
       this.resetContent();
       this.$emit("searchChange", this.id, this.beginTime);
     },

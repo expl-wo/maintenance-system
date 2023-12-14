@@ -8,7 +8,7 @@
         <el-icon class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
     </el-row>
-    <el-table :data="tableData" stripe style="width: 100%" height="510px">
+    <el-table :data="tableData" stripe style="width: 100%" height="610px">
       <template v-for="item in RETURN_COLUMNS">
         <el-table-column
           :key="item.prop"
@@ -48,6 +48,7 @@ import {
   exportReturnList,
 } from "@/api/overhaul/returnListApi.js";
 import { exportData } from "@/utils";
+import dayjs from 'dayjs';
 export default {
   name: "ReturnList",
   components: {
@@ -120,7 +121,7 @@ export default {
         pageSize: 10000,
         workCode: this.workOrderInfo.id,
       }).then((res) => {
-        exportData(res, "返厂清单.xls");
+        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xls`);
         this.hadFileNum += 1;
         this.exportLoop();
       });

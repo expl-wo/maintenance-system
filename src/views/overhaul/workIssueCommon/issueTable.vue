@@ -20,7 +20,6 @@
           v-model="queryParams.issue"
           placeholder="请选择"
           clearable
-          @change="getList"
         >
           <el-option
             v-for="item in issueOptions"
@@ -33,7 +32,6 @@
       <el-form-item label="问题所属/提交人">
         <el-input
           v-model="queryParams.searchKey"
-          @keyup.enter="handleFilter"
           clearable
         />
       </el-form-item>
@@ -49,7 +47,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="550"
+      height="610"
       show-overflow-tooltip
     >
       <template v-for="item in ISSUE_COLUMNS" :key="item.prop">
@@ -185,6 +183,10 @@ export default {
     },
     getAndonTypeList() {
       getAndonType().then((res) => {
+        if(res.code!=='0'){
+          this.$message.error(res.errMsg)
+          return
+        }
         this.issueOptions = (res.data.value || []).map((item) => ({
           label: item.cateName,
           value: item.id,

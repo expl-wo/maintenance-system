@@ -45,7 +45,6 @@
       fit
       highlight-current-row
       style="width: 100%"
-      height="calc(100% - 150px)"
       @filter-change="filterChanged"
       @sort-change="sortChanged"
       @selection-change="handleSelectionChange"
@@ -90,7 +89,7 @@
                   type="primary"
                   @click="handleApproval(row)"
                 >
-                  <el-icon><DocumentChecked /></el-icon>
+                  <el-icon><Stamp /></el-icon>
                 </el-button>
                 <!-- 工单结束之后不能再操作 -->
                 <el-button
@@ -147,7 +146,7 @@
           v-else-if="item.prop === 'orderStatus'"
           :label="item.label"
           class-name="status-col"
-          width="100"
+          :width="item.width"
           :column-key="item.prop"
           :filters="satusFilterList"
         >
@@ -487,6 +486,15 @@ export default {
 .mrb15 {
   margin-bottom: 15px;
 }
+:deep(.pagination-container){
+  padding:20px
+}
+:deep(.el-table__column-filter-trigger) {
+  padding-left: 8px;
+  .el-icon-arrow-down {
+    transform: scale(1.5);
+  }
+}
 .mrl10 {
   margin-left: 10px;
 }
@@ -500,11 +508,13 @@ export default {
 }
 .order-list-box {
   position: relative;
+  display: flex;
+  flex-direction: column;
   .order-info {
     position: absolute;
     inset: 0;
     width: 100%;
-    min-width: 1700px;
+    // min-width: 1700px;
     padding: 0;
     z-index: 999;
   }

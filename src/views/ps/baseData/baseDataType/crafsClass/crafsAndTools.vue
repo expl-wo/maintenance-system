@@ -3,8 +3,8 @@
   <div class="app-container app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="工器具类型名称" >
-          <el-input v-model="listQuery.toolsTypeName" placeholder="输入工器具类型名称" style="width: 170px;" class="filter-item"
+        <el-form-item label="工装工具类型名称" >
+          <el-input v-model="listQuery.toolsTypeName" placeholder="输入工装工具类型名称" style="width: 170px;" class="filter-item"
                     clearable />
         </el-form-item>
         <el-form-item >
@@ -19,14 +19,10 @@
           <el-table-column prop="index" label="序号" align="center" min-width="5%">
             <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
           </el-table-column>
-          <el-table-column prop="toolsTypeName" label="工器具类型名称 " align="center" min-width="15%"/>
-          <el-table-column prop="crafsName" label="中工序名称" align="center" min-width="15%"/>
+          <el-table-column prop="toolsTypeName" label="工装工具类型名称 " align="center" />
           <el-table-column label="操作" align="center" width="200">
             <template v-slot="scope">
               <el-button-group>
-                <el-button  type="primary" icon="Edit"
-                            @click="handEdit(scope.row)">
-                </el-button>
                 <el-button type="danger"  icon="Delete"
                            @click="handleDelete(scope.row)">
                 </el-button>
@@ -39,30 +35,39 @@
                   @pagination="getList"
       />
     </div>
-    <el-dialog draggable  appendToBody :title="listItemQuery.id? '编辑': '新增'"
-               v-model="dialogVisible" modal width="600">
-      <el-form :model="listItemQuery" class="element-list" ref="form" label-width="160px">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label=" 工器具类型名称:" prop="craftsName" >
-              <el-input v-model="listItemQuery.toolsTypeName" placeholder="请输入工器具类型名称" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label=" 中工序名称:" prop="crafsName" >
-              <el-input v-model="listItemQuery.crafsName" placeholder="请输入中工序名称" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer">
-        <el-button  @click="dialogVisible=false">取消</el-button>
-        <el-button  type="primary" @click="saveItemData">保存</el-button>
+    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+      <div class="filter-container searchCon">
+        <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
+          <el-form-item label="辅材类型名称" >
+            <el-input v-model="listQuery.toolsTypeName" placeholder="工装工具类型名称" style="width: 110px;" class="filter-item" clearable />
+          </el-form-item>
+          <el-form-item >
+            <el-button type="primary" icon="Search" @click="onRuleConfigQuery">查询
+            </el-button>
+          </el-form-item>
+        </el-form>
       </div>
+      <el-table :data="tableRuleConfigData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe height="300px">
+        <el-table-column prop="toolsTypeName" label="工装工具类型名称" align="center" min-width="15%"/>
+        <el-table-column header-align="center" align="center" width="160" label="操作">
+          <template v-slot="scope">
+            <el-button-group>
+              <el-button type="primary"
+                         @click="chooseItemData(scope.row)">
+                选择
+              </el-button>
+            </el-button-group>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div>
+        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.toolsTypeName}}</el-tag>
+      </div>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+        </div>
+      </template>
     </el-dialog>
   </div>
 </template>
@@ -73,7 +78,7 @@
 import {
   deleteTools,
 
-  getCrafsAndTools,
+  getCrafsAndTools, getToolsType,
   saveTools
 } from '@/api/eqpLedger'
 import Pagination from "@/components/Pagination/index";
@@ -84,7 +89,9 @@ export default {
   components: {Pagination },
   data() {
     return {
-      dialogVisible:false,
+      checkboxRuleConfigList:[],
+      tableRuleConfigData:[],
+      dialogConfigCaiGouFormVisible:false,
       total: 0, // 角色列表表格总条数
       listQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
@@ -93,12 +100,6 @@ export default {
         crafsName:'',
         crafsId:'',
         id:''
-      },
-      listItemQuery:{
-        id:'',
-        crafsId:'',
-        crafsName:'',
-        toolsTypeName:''
       },
       tableData: [], // 角色分类列表表格数据
     }
@@ -129,42 +130,44 @@ export default {
       this.onQuery() // 查询
     },
     handleAdd() {
-      this.listItemQuery = {
-        id: '',
-        crafsName: '',
-        toolsTypeName: '',
-        crafsId: this.listQuery.crafsId,
-
-      }
-      this.dialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.formRef.clearValidate()
-      })
-    },
-    handEdit(row){
-      this.dialogVisible = true
-      this.listItemQuery.id = row.id
-      this.listItemQuery.toolsTypeName = row.toolsTypeName
-      this.listItemQuery.crafsName = row.crafsName
-      this.crafsId = this.listQuery.crafsId
+      this.onRuleConfigQuery()
     },
 
-    saveItemData() {
-      this.dialogVisible = false;
+    chooseItemData(row){
+      this.dialogConfigCaiGouFormVisible = false;
+      this.createItemData(row);
+    },
+    //
+    createItemData(classzzItem) {
+      this.saveItemData(classzzItem)
+    },
+    saveItemData(classzzItem) {
+      this.dialogConfigCaiGouFormVisible = false;
       let params = {
-        id:this.listItemQuery.id,
-        toolsTypeName: this.listItemQuery.toolsTypeName,
-        crafsName: this.listItemQuery.crafsName,
-        crafsId:this.listQuery.crafsId
+        id:classzzItem.id,
+        crafsId:this.listQuery.crafsId,
+        toolsTypeName:classzzItem.toolsTypeName,
       }
       saveTools(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
+        if(response.err_code === this.$constants.statusCode.success){
+          this.$message.success('数据保存成功');
+        }else{
+          this.$message.error(response.err_msg);
+        }
+
         this.onQuery()
       })
     },
+
+    onRuleConfigQuery() {
+      this.tableRuleConfigData = [];
+      getToolsType(this.listQuery).then(response => {
+        this.tableRuleConfigData = response.data
+        this.total = response.total_count
+      })
+      this.dialogConfigCaiGouFormVisible = true;
+    },
+
 
     handleDelete(rowData) {
       this.$confirm(Constants.deleteTip).then(() => {

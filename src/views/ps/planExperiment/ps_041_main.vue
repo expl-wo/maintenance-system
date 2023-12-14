@@ -3,7 +3,7 @@
     <el-row :gutter="12" class="otherCon">
       <el-col :span="8" class="hp p-lf">
         <el-card shadow="hover" class="hp">
-          <optionalProduct ref="optionalProduct"></optionalProduct>
+          <optionalProduct ref="optionalProduct" @refresh="refresh"></optionalProduct>
         </el-card>
       </el-col>
       <el-col :span="16" class="hp p-lf">
@@ -47,6 +47,9 @@ export default {
       this.$refs.optionalProduct.initData(this.isApprove,'experiment');
       this.$refs.planInfo.initData(this.isApprove);
     },
+    refresh(){
+      this.$refs.planInfo.initData(this.isApprove);
+    }
   }
 }
 </script>

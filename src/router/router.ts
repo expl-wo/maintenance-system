@@ -162,7 +162,8 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				component: () => import('@/views/ps/planMain/ps_031_main.vue'),
 				meta: {
 					title: '生产主计划',
-					icon: 'ps_011'
+					icon: 'ps_011',
+					keepAlive: true
 				}
 			},
 			{

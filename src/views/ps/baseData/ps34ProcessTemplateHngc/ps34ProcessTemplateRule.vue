@@ -29,7 +29,7 @@
               <div v-if="row.isUse == 0">否</div>
             </template>
           </el-table-column>
-          <el-table-column align="center" min-width="300" label="操作">
+          <el-table-column align="center" width="250" label="操作">
             <template v-slot="scope">
                 <el-button  title="" type="primary" icon="Edit"
                            @click="initEditData(scope.row)">

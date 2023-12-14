@@ -36,7 +36,7 @@
     </div>
     <el-dialog draggable  appendToBody :title="listQuery.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
-      <el-form :model="listQuery" class="element-list" ref="form"  label-width="160px">
+      <el-form :model="listQuery" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
             <el-form-item label=" 标准工序编码:" prop="craftsName" >
@@ -97,6 +97,14 @@ export default {
         node_id: '', //对应的HB-MES生产关键工序节点基础数据ID
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+      },
+      rules:{
+        gxUid: [{
+          required: true, trigger: 'blur',message: '标准工序编码不能为空'
+        }],
+        gxName: [{
+          required: true,trigger: 'blur', message: '标准工序名称不能为空'
+        }],
       },
       tableData: [],
       selectRow:[]

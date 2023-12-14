@@ -25,7 +25,6 @@
         ref="deviceTempTable"
         v-loading="loading"
         :data="tableData"
-        size="medium"
         border
         @sort-change="sortChange"
         @selection-change="selectionChange"

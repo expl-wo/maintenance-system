@@ -4,6 +4,7 @@
     title="复核"
     :model-value="true"
     :destroy-on-close="true"
+    :close-on-click-modal="false"
     width="500px"
     @close="handleClose"
   >
@@ -85,7 +86,7 @@ export default {
     handleOk() {
       let params = {
         workCode: this.workOrderInfo.id,
-        craftId: this.operateRow.workProcedureCode,
+        craftId: this.operateRow.procedureCode,
         pass: this.form.result,
         workScene: this.sceneType,
         isProblem:this.form.isAddLib
@@ -94,6 +95,7 @@ export default {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
+          this.$message.success('操作成功!')
           this.handleClose(true);
         }
       });

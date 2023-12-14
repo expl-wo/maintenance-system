@@ -38,10 +38,17 @@ export default {
       dragFlag: false,
       cursor: "pointer",
       isOpen: true, //是否展开
-      top: "300px",
-      left: "1740px",
+      top: "40%",
+      left: "90%",
       abortContance: null,
+      controlTime: null, //定时器
     };
+  },
+  beforeUnmount(){
+    if (this.abortContance) {
+        this.abortContance.abort();
+        this.abortContance = null;
+    }
   },
   methods: {
     moveTo(e) {
@@ -50,7 +57,8 @@ export default {
         this.abortContance.abort();
         this.abortContance = null;
       }
-      setTimeout(() => {
+      //设置一个定时器，点击500ms之后才能移动
+      this.controlTime = setTimeout(() => {
         this.abortContance = new AbortController();
         this.cursor = "move"; //更改鼠标样式
         document.addEventListener(
@@ -73,12 +81,17 @@ export default {
           },
           { signal: this.abortContance.signal }
         );
-      }, 100);
+      }, 200);
     },
     moveEnd() {
       if (this.abortContance) {
         this.abortContance.abort();
         this.abortContance = null;
+      }
+      //如果在moveup事件之前cursor不是move则仅是点击事件，不能move
+      if (this.cursor !== "move") {
+        clearTimeout(this.controlTime);
+        this.controlTime = null;
       }
       this.cursor = "pointer";
     },

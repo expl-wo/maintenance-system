@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true">
-      <el-form-item label="工器具名称">
+      <el-form-item label="工装工具名称">
         <el-input
           v-model="queryParams.name"
           clearable
@@ -19,7 +19,7 @@
       v-loading="listLoading"
       stripe
       style="width: 100%"
-      height="510px"
+      height="610px"
     >
       <template v-for="item in COLUMNS">
         <el-table-column

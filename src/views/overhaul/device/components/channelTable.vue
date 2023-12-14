@@ -68,12 +68,13 @@
             :column-key="item.columnKey"
           >
             <template  #default="scope">
-              <div v-if="scope.column.columnKey === 'status'">
+              <span v-if="scope.column.columnKey === 'unitType'">{{ typeOptions[scope.row.unitType] }}</span>
+              <div v-if="scope.column.columnKey === 'isOnline'">
                 <span
                   class="status-dot"
-                  :class="[scope.row.status === 0 ? 'bg-offline' : 'bg-online']"
+                  :class="[scope.row.isOnline === 0 ? 'bg-offline' : 'bg-online']"
                 ></span>
-                <span>{{ scope.row.status === 0 ? "离线" : "在线" }}</span>
+                <span>{{ scope.row.isOnline === 0 ? "离线" : "在线" }}</span>
               </div>
             </template>
           </el-table-column>
@@ -85,7 +86,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         background
         :current-page="pageNum"
-        :page-sizes="[10, 20, 30, 40]"
+        :page-sizes="[10, 20, 30, 50, 200, 1000]"
         :page-size="pageSize"
         :total="total"
         @size-change="sizeChange"
@@ -107,6 +108,14 @@ const devStatusOptions = [
     value: 0,
   },
 ];
+const typeOptions = {
+  1: '视频通道',
+  2: '输出通道',
+  3: '报警输入',
+  4: '报警输出',
+  14: '道闸通道',
+  16: '显示通道'
+}
 export default {
   name: "ChannelTable",
   data() {
@@ -118,7 +127,7 @@ export default {
           key: "channelCode",
           label: "通道编号",
           minWidth: "160px",
-          sortable: "custom",
+          // sortable: "custom",
         },
         {
           prop: "channelName",
@@ -131,28 +140,30 @@ export default {
           key: "unitType",
           label: "通道类型",
           minWidth: "160px",
-          sortable: "custom",
+          columnKey: "unitType",
+          needSlot: true,
+          // sortable: "custom",
         },
         {
           prop: "deviceCode",
           key: "deviceCode",
           label: "所属设备",
           minWidth: "160px",
-          sortable: "custom",
+          // sortable: "custom",
         },
-        {
-          prop: "deviceName",
-          key: "deviceName",
-          label: "设备名称",
-          minWidth: "160px"
-        },
-        {
-          prop: "ownerOrgName",
-          key: "ownerOrgName",
-          label: "所属组织",
-          minWidth: "160px",
-          sortable: "custom",
-        },
+        // {
+        //   prop: "deviceName",
+        //   key: "deviceName",
+        //   label: "设备名称",
+        //   minWidth: "160px"
+        // },
+        // {
+        //   prop: "ownerOrgName",
+        //   key: "ownerOrgName",
+        //   label: "所属组织",
+        //   minWidth: "160px",
+        //   // sortable: "custom",
+        // },
         {
           prop: "isOnline",
           key: "isOnline",
@@ -166,18 +177,19 @@ export default {
       tableData: [],
       tableLoading: false,
       total: 0,
-      pageNum: 0,
+      pageNum: 1,
       pageSize: 10,
       pageSizeOptions: ["10", "20", "40", "50"],
       selectedNode: { ownerCode: "001" },
       sortInfo: {},
       filterInfo: {},
       loading: false,
+      typeOptions: Object.freeze(typeOptions)
     };
   },
-  mounted() {
-    this.getData();
-  },
+  // mounted() {
+  //   this.getData();
+  // },
   methods: {
     // 获取表格数据
     getData() {
@@ -186,15 +198,15 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
         searchKey: this.searchKey,
-        types: [],
+        // types: [],
         ...this.sortInfo,
         ...this.filterInfo
       };
       getChannelList(params)
         .then((res) => {
-          if (res.success && res.data.value) {
+          if (res.success && res.data) {
             this.tableData = res.data.pageData || [];
-            this.total = res.data.totalRows;
+            this.total = res.data.totalRows || 0;
           }
         })
         .catch((err) => {
@@ -274,11 +286,7 @@ export default {
     width: 100%;
     height: 100%;
   }
-  :deep(.el-table__header-wrapper) {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+
   :deep(.el-table__body-wrapper) {
     height: calc(100% - 56px);
     width: 100%;
