@@ -58,7 +58,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
         {
             prop: "progress",
-            label: "工序进度",
+            label: "完成度",
         },
         {
             prop: "operation",
@@ -75,7 +75,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
         },
         {
             prop: "progress",
-            label: "工步完成度",
+            label: "完成度",
         },
         {
             prop: "reviewStatus",

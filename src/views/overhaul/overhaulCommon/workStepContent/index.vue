@@ -280,12 +280,22 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].opearationId = item.id; //赋值ID
-              const fileNameStr= item.fileList.map((item) => item.fileName).join("|");
-              const fileUrlStr = item.fileList.map((item) => item.fileUrl).join("|");
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =fileNameStr;   
-              this.$refs[`contentItemRef${item.operationCode}`][0].form.fileName =fileNameStr;
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =fileUrlStr
-              this.$refs[`contentItemRef${item.operationCode}`][0].form.fileUrl =fileUrlStr
+              const fileNameStr = item.fileList
+                .map((item) => item.fileName)
+                .join("|");
+              const fileUrlStr = item.fileList
+                .map((item) => item.fileUrl)
+                .join("|");
+              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =
+                fileNameStr;
+              this.$refs[
+                `contentItemRef${item.operationCode}`
+              ][0].form.fileName = fileNameStr;
+              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =
+                fileUrlStr;
+              this.$refs[
+                `contentItemRef${item.operationCode}`
+              ][0].form.fileUrl = fileUrlStr;
             }
           });
         }
@@ -390,6 +400,8 @@ export default {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("保存成功！");
+          this.getWorkSteoInfoList();
+          this.getList();
         }
       });
     },

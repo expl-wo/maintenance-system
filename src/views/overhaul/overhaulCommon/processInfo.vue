@@ -313,7 +313,7 @@ export default {
       treeLoading: false,
       templateChoose: undefined,
       standardProcedureCodeList: [], //检修工单模板编号
-      isShowTemplate:true,
+      isShowTemplate: true,
       defaultSelectVal: {}, //用于回显
       templateName: "", //模板name
       treeData: [],
@@ -509,7 +509,9 @@ export default {
             this.tableData = (pageList || []).map((item) => ({
               ...item,
               reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
-              workStatus: WORK_STATUS_ENUM[item.workStatus || 0],
+              workStatus: `${WORK_STATUS_ENUM[item.workStatus || 0]}${
+                [1,3].includes(item.workStatus) ? "(" + item.progress + "%)" : ""
+              }`,
               workStatusOld: item.workStatus,
               reviewStatusOld: item.reviewStatus,
               procedureCode: item.workProcedureCode
