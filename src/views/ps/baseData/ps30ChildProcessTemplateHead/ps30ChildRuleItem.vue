@@ -31,7 +31,7 @@
                   @pagination="getList"
       />
     </div>
-      <el-dialog v-dialogDrag  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
+      <el-dialog draggable  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listItemUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
@@ -68,8 +68,8 @@
         </el-row>
       </el-form>
       <div slot="footer">
-        <el-button size="mini" @click="dialogVisible=false">取消</el-button>
-        <el-button size="mini" type="primary" @click="saveItemData">保存</el-button>
+        <el-button size="small" @click="dialogVisible=false">取消</el-button>
+        <el-button size="small" type="primary" @click="saveItemData">保存</el-button>
       </div>
     </el-dialog>
   </div>

@@ -75,19 +75,7 @@ export default {
     }
   },
   created() {
-
-    let dataList = getDictListByKey(this.itemCode)
-    if (this.includeAll && !this.multiple) {
-      dataList = [{
-        code: this.allValue,
-        name: '全部'
-      }].concat(dataList)
-    }
-    this.dictDataList = dataList
-    this.$nextTick(()=>{
-      this.currentValue = this.modelValue;
-      this.updateCheckboxStatus();
-    });
+    this.itemCodeSet()
   },
   watch: {
     currentValue(newVal) {
@@ -96,9 +84,26 @@ export default {
     modelValue(newVal) {
       this.currentValue = newVal
       this.updateCheckboxStatus();
+    },
+    itemCode(newVal){
+      this.itemCodeSet()
     }
   },
   methods: {
+    itemCodeSet(){
+      let dataList = getDictListByKey(this.itemCode)
+      if (this.includeAll && !this.multiple) {
+        dataList = [{
+          code: this.allValue,
+          name: '全部'
+        }].concat(dataList)
+      }
+      this.dictDataList = dataList
+      this.$nextTick(()=>{
+        this.currentValue = this.modelValue;
+        this.updateCheckboxStatus();
+      });
+    },
     updateCheckboxStatus() {
       //有全选勾选框时
       if (this.showMultipleCheckbox) {

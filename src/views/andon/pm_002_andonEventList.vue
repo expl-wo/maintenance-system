@@ -3,10 +3,10 @@
 
     <div class="filter-container searchCon">
       <el-form ref="listQuery" :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="提报人/响应人/编号" size="mini" prop="keyWord">
-          <el-input v-model="listQuery.keyWord" placeholder="" style="width: 180px;" class="filter-item" size="mini" clearable/>
+        <el-form-item label="提报人/响应人/编号" size="small" prop="keyWord">
+          <el-input v-model="listQuery.keyWord" placeholder="" style="width: 180px;" class="filter-item" size="small" clearable/>
         </el-form-item>
-        <el-form-item label="触发时间:" size="mini" prop="dateCount">
+        <el-form-item label="触发时间:" size="small" prop="dateCount">
           <el-date-picker
             v-model="listQuery.dateCount"
             style="width: 240px;"
@@ -18,12 +18,12 @@
             @input="e=>{ mmediUpdate(itemF,e) }"
           />
         </el-form-item>
-        <el-form-item label="状态：" size="mini">
+        <el-form-item label="状态：" size="small">
           <xui-dict-select multiple item-code="andonStatus" includeAll v-model="listQuery.andonStatus"
                            class="filter-item" clearable
           ></xui-dict-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="Search" @click="init()">查询</el-button>
 <!--          <el-button type="primary" @click="trigger()">提报安灯</el-button>-->
         </el-form-item>
@@ -32,30 +32,30 @@
 
     </div>
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="提报安灯" v-model="andonDialogVisible"
+    <el-dialog draggable :close-on-click-modal="false" title="提报安灯" v-model="andonDialogVisible"
                v-if="andonDialogVisible" width="40%">
       <andonDialog @close="triggerClose()" :product-info="productInfo"></andonDialog>
       <div  class="dialog-footer">
-        <el-button size="mini" @click="andonDialogVisible =false">关闭</el-button>
+        <el-button size="small" @click="andonDialogVisible =false">关闭</el-button>
       </div>
     </el-dialog>
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="提报安灯" v-model="andon"
+    <el-dialog draggable :close-on-click-modal="false" title="提报安灯" v-model="andon"
                v-if="andon" width="40%">
       <el-form ref="model" label-position="right" label-width="90px" :model="andonData">
-        <el-form-item label="编号:" size="mini">
-          <el-input v-model="andonData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="编号:" size="small">
+          <el-input v-model="andonData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="提报人员:" size="mini">
-          <el-input v-model="andonData.triggerName" placeholder="提报人员" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="提报人员:" size="small">
+          <el-input v-model="andonData.triggerName" placeholder="提报人员" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="提报时间:" size="mini">
-          <el-input v-model="andonData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="提报时间:" size="small">
+          <el-input v-model="andonData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="生产号:" size="mini">
-          <el-input v-model="andonData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="生产号:" size="small">
+          <el-input v-model="andonData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="问题描述:" size="mini">
+        <el-form-item label="问题描述:" size="small">
           <el-input v-model="andonData.remarks"
                     placeholder="问题描述"
                     disabled style="width: 320px;"
@@ -63,42 +63,42 @@
                     type="textarea"
                     autosize
                     maxlength="300"
-                    size="mini" />
+                    size="small" />
         </el-form-item>
-        <el-form-item label="处理方案:" size="mini">
+        <el-form-item label="处理方案:" size="small">
             <el-input v-model="andonData.responseDesc"
                       placeholder="处理方案"
                       style="width: 320px;"
                       class="filter-item"
-                      size="mini"
+                      size="small"
                       clearable
                       type="textarea"
                       autosize
                       maxlength="300"
                       show-word-limit/>
         </el-form-item>
-        <el-form-item label="" size="mini">
-          <el-button style="float: left" type="primary" @click="solve()" size="mini">解决</el-button>
+        <el-form-item label="" size="small">
+          <el-button style="float: left" type="primary" @click="solve()" size="small">解决</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="转办安灯" v-model="transfer"
+    <el-dialog draggable :close-on-click-modal="false" title="转办安灯" v-model="transfer"
                v-if="transfer" width="40%">
       <el-form ref="model" label-position="right" label-width="90px" :model="transferData">
-        <el-form-item label="编号:" size="mini">
-          <el-input v-model="transferData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="编号:" size="small">
+          <el-input v-model="transferData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="提报人员:" size="mini">
-          <el-input v-model="transferData.triggerName" placeholder="提报人员" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="提报人员:" size="small">
+          <el-input v-model="transferData.triggerName" placeholder="提报人员" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="提报时间:" size="mini">
-          <el-input v-model="transferData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="提报时间:" size="small">
+          <el-input v-model="transferData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="生产号:" size="mini">
-          <el-input v-model="transferData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="生产号:" size="small">
+          <el-input v-model="transferData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="问题描述:" size="mini">
+        <el-form-item label="问题描述:" size="small">
           <el-input v-model="transferData.remarks"
                     placeholder="问题描述"
                     disabled style="width: 320px;"
@@ -106,10 +106,10 @@
                     type="textarea"
                     autosize
                     maxlength="300"
-                    size="mini" />
+                    size="small" />
         </el-form-item>
 
-        <el-form-item label="转办至:" prop="abnormalId" size="mini">
+        <el-form-item label="转办至:" prop="abnormalId" size="small">
           <el-select v-model="transferData.abnormalId"  placeholder="请选择异常项" filterable @change="queryResponder">
             <el-option
               v-for="item in abnormals"
@@ -119,7 +119,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="响应人:" prop="asResponderId" size="mini">
+        <el-form-item label="响应人:" prop="asResponderId" size="small">
           <el-select v-model="transferData.asResponderId"  placeholder="响应人" filterable>
             <el-option
               v-for="item in responder"
@@ -131,37 +131,37 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="转办原因:" size="mini">
+        <el-form-item label="转办原因:" size="small">
           <el-input v-model="transferData.responseDesc"
                     placeholder=""
                     style="width: 320px;"
                     class="filter-item"
-                    size="mini"
+                    size="small"
                     clearable
                     type="textarea"
                     autosize
                     maxlength="300"
                     show-word-limit/>
         </el-form-item>
-        <el-form-item label="" size="mini">
-          <el-button style="float: left" type="primary" @click="transferCommit()" size="mini">转办</el-button>
+        <el-form-item label="" size="small">
+          <el-button style="float: left" type="primary" @click="transferCommit()" size="small">转办</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
 
-    <el-dialog v-dialogDrag :close-on-click-modal="false" title="转办安灯" v-model="reject"
+    <el-dialog draggable :close-on-click-modal="false" title="转办安灯" v-model="reject"
                v-if="reject" width="40%">
       <el-form ref="model" label-position="right" label-width="90px" :model="rejectData">
-        <el-form-item label="编号:" size="mini">
-          <el-input v-model="rejectData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="编号:" size="small">
+          <el-input v-model="rejectData.andonNumber" placeholder="编号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="提报时间:" size="mini">
-          <el-input v-model="rejectData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="提报时间:" size="small">
+          <el-input v-model="rejectData.triggerDate" placeholder="提报时间" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="生产号:" size="mini">
-          <el-input v-model="rejectData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="生产号:" size="small">
+          <el-input v-model="rejectData.productNo" placeholder="生产号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="问题描述:" size="mini">
+        <el-form-item label="问题描述:" size="small">
           <el-input v-model="rejectData.remarks"
                     placeholder="问题描述"
                     disabled style="width: 320px;"
@@ -169,12 +169,12 @@
                     type="textarea"
                     autosize
                     maxlength="300"
-                    size="mini" />
+                    size="small" />
         </el-form-item>
-        <el-form-item label="响应人:" size="mini">
-          <el-input v-model="rejectData.responseName" placeholder="响应人" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="响应人:" size="small">
+          <el-input v-model="rejectData.responseName" placeholder="响应人" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="处理方案:" size="mini">
+        <el-form-item label="处理方案:" size="small">
           <el-input v-model="rejectData.responseDesc"
                     placeholder="处理方案"
                     disabled style="width: 320px;"
@@ -182,9 +182,9 @@
                     type="textarea"
                     autosize
                     maxlength="300"
-                    size="mini" />
+                    size="small" />
         </el-form-item>
-        <el-form-item label="驳回理由:" size="mini">
+        <el-form-item label="驳回理由:" size="small">
           <el-input v-model="rejectReason"
                     placeholder="驳回理由"
                     style="width: 320px;"
@@ -192,11 +192,11 @@
                     type="textarea"
                     autosize
                     maxlength="300"
-                    size="mini" />
+                    size="small" />
         </el-form-item>
 
-        <el-form-item label="" size="mini">
-          <el-button style="float: left" type="primary" @click="rejectCommit()" size="mini">驳回</el-button>
+        <el-form-item label="" size="small">
+          <el-button style="float: left" type="primary" @click="rejectCommit()" size="small">驳回</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -286,7 +286,7 @@
         width="80"
       >
         <template #default="scope">
-          <el-button v-if="scope.row.picCnt > 0"  type="primary" size="mini" @click="getPic(scope.row)"> 查看 </el-button>
+          <el-button v-if="scope.row.picCnt > 0"  type="primary" size="small" @click="getPic(scope.row)"> 查看 </el-button>
           <span v-if="scope.row.picCnt <= 0"> 无图片 </span>
         </template>
       </el-table-column>
@@ -364,25 +364,25 @@
                        align="center" width="110">
         <template #default="scope">
           <el-button-group>
-            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="small"
                        @click="response(scope.row)">响应
             </el-button>
-            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="small"
                        @click="transferDialog(scope.row)">转办
             </el-button>
-            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 0 && scope.row.asResponderId == userId" type="primary" size="small"
                        @click="aggsinDialog(scope.row.id)">指派
             </el-button>
-            <el-button v-if="scope.row.status === 1 && scope.row.asResponderId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 1 && scope.row.asResponderId == userId" type="primary" size="small"
                        @click="solveDialog(scope.row)">解决
             </el-button>
-            <el-button v-if="(scope.row.status === 0 || scope.row.status === 1) && scope.row.triggerId == userId" type="primary" size="mini"
+            <el-button v-if="(scope.row.status === 0 || scope.row.status === 1) && scope.row.triggerId == userId" type="primary" size="small"
                        @click="close(scope.row)">直接关闭
             </el-button>
-            <el-button v-if="scope.row.status === 3 && scope.row.triggerId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 3 && scope.row.triggerId == userId" type="primary" size="small"
                        @click="close(scope.row)">关闭
             </el-button>
-            <el-button v-if="scope.row.status === 3 && scope.row.triggerId == userId" type="primary" size="mini"
+            <el-button v-if="scope.row.status === 3 && scope.row.triggerId == userId" type="primary" size="small"
                        @click="rejectDialog(scope.row)">驳回
             </el-button>
           </el-button-group>
@@ -402,17 +402,17 @@
         :hide-page="true"
       />
       <div  class="dialog-footer">
-        <el-button size="mini" @click="dialogFileFormVisible = false">关闭</el-button>
+        <el-button size="small" @click="dialogFileFormVisible = false">关闭</el-button>
       </div>
     </el-dialog>
 
     <!--选择人员-->
     <el-dialog  :close-on-click-modal="false" title="选择指派人员" v-model="dialogPeopleFormVisible" class="roleDialog800" >
       <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="" prop="name" size="mini">
+        <el-form-item label="" prop="name" size="small">
           <el-input v-model="listPeopleQuery.searchKey" placeholder="用户姓名/工号" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="Search" @click="btnGetPerson()">查询</el-button>
         </el-form-item>
       </el-form>
@@ -451,7 +451,7 @@
         >
           <template #default="scope">
             <el-button-group>
-              <el-button type="primary" size="mini"
+              <el-button type="primary" size="small"
                          @click="assignCommit(scope.row)">确认
               </el-button>
             </el-button-group>
@@ -460,7 +460,7 @@
       </el-table>
       <pagination :total="peopleTotal" :page="listPeopleQuery.pg_pagenum" :limit="listPeopleQuery.pg_pagesize" :page-sizes="[10, 20, 30, 50,100,200]" @pagination="getPeopleList" class="searchCon wp"/>
       <div class="dialog-footer">
-        <el-button size="mini" @click="dialogPeopleFormVisible = false">取 消</el-button>
+        <el-button size="small" @click="dialogPeopleFormVisible = false">取 消</el-button>
       </div>
     </el-dialog>
 

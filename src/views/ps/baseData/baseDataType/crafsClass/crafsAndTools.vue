@@ -39,7 +39,7 @@
                   @pagination="getList"
       />
     </div>
-    <el-dialog v-dialogDrag  appendToBody :title="listItemQuery.id? '编辑': '新增'"
+    <el-dialog draggable  appendToBody :title="listItemQuery.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listItemQuery" class="element-list" ref="form" label-width="160px">
         <el-row>

@@ -58,7 +58,7 @@
       <pagination :total="total" :page ="listItemUpdate.pg_pagenum" :limit="listItemUpdate.pg_pagesize" class="searchCon"
                   @pagination="getList" />
     </div>
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
+    <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
       <div class="filter-container searchCon">
         <el-form :inline="true" :model="listQueryProduces" class="demo-form-inline demo-form-zdy">
           <el-form-item label="工序编号" >
@@ -92,7 +92,7 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="small">取 消</el-button>
         </div>
       </template>
     </el-dialog>

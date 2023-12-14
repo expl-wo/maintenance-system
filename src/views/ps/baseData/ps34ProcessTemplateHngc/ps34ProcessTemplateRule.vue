@@ -43,7 +43,7 @@
       <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                   @pagination="getList" />
 
-    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
+    <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
       <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
         <el-row>
           <el-col :span="24">
