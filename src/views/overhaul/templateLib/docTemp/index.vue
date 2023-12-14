@@ -146,7 +146,7 @@ const columns = [
   { prop: "", label: "序号", width: "80", type: "index" },
   { prop: "name", label: "模板名称" },
   { prop: "templateType", label: "模板类型", needSlot: true },
-  { prop: "creator", label: "创建人" },
+  { prop: "createrName", label: "创建人" },
   { prop: "updateTime", label: "更新时间", sortable: "custom" },
 ];
 export default {
