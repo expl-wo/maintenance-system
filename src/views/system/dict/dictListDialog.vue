@@ -86,7 +86,7 @@
     <div >
       <el-button size="small" @click="mainDialogVisible=false">关闭</el-button>
     </div>
-    <el-dialog draggable v-model="itemDialogVisible" :close-on-click-modal="false" appendToBody title="选项配置"
+    <el-dialog draggable v-model="itemDialogVisible" :close-on-click-modal="false" append-to-body  title="选项配置"
                modal width="1000px">
       <dict-item-dialog ref="dictItemDialogRef"></dict-item-dialog>
       <div >
@@ -155,8 +155,12 @@ export default {
       })
     },
     handleConfigItem(row){
-      this.$refs.dictItemDialogRef && this.$refs.dictItemDialogRef.refresh(row);
       this.itemDialogVisible = true
+      this.$nextTick( ()=>{
+        this.$refs.dictItemDialogRef.refresh(row);
+
+      })
+
     },
     handleAdd() {
       this.model = {
@@ -165,7 +169,7 @@ export default {
         code: '',
         name: '',
         sort: '',
-        scope: constants.moduleType.qualityCheck,
+        // scope: constants.moduleType.qualityCheck,
       }
       this.dialogVisible = true
     },

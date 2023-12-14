@@ -18,7 +18,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item prop="operationNumber" label="操作项序号：" >
-            <el-input v-model="model.operationNumber"></el-input>
+            <el-input v-model="model.operationNumber"  type="number"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -36,7 +36,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="operationDescription" label="操作项描述：" >
-            <el-input v-model="model.operationDescription"  ></el-input>
+            <el-input v-model="model.operationDescription" type="textarea" ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -122,7 +122,9 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="executionFrequency" label="执行频次：" >
-            <el-input v-model="model.executionFrequency"  ></el-input>
+            <xui-dict-select class="w-100percent" item-code="OperationTimeline"
+                             v-model="model.executionFrequency"
+            ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -239,7 +241,7 @@ export default {
 
   methods: {
     init(data,item,obj) {
-      console.log(data)
+      this.relyPropertyDictCode = ''
       if (obj === null || obj === undefined) {
         //是新增
         this.model = {
@@ -256,11 +258,15 @@ export default {
         this.model.stepCode = data.craftsDeCode
         this.model.stepName = data.craftsDeName
       }
-      this.$refs.form && this.$refs.form.clearValidate();
+      this.$nextTick( ()=>{
+        this.$refs.form && this.$refs.form.clearValidate();
+      })
       this.dialogVisible = true
     },
     selectItem(){
-      this.$refs.dictListDialogRef &&this.$refs.dictListDialogRef.init();
+      this.$nextTick( ()=>{
+        this.$refs.dictListDialogRef &&this.$refs.dictListDialogRef.init();
+      })
     },
 
     relationPropertyChange(selectedId){
@@ -278,7 +284,9 @@ export default {
       this.model.correctValue = '';
     },
     handleSelectDict(){
-      this.$refs.dictListDialogRef && this.$refs.dictListDialogRef.init();
+      this.$nextTick( ()=>{
+        this.$refs.dictListDialogRef && this.$refs.dictListDialogRef.init();
+      })
     },
     handleSubmit(){
       this.$refs.form.validate(val=>{

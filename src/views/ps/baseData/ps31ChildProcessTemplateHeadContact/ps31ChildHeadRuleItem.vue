@@ -78,7 +78,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label=" 是否最后一个工步:" prop="isEnd" >
-              <el-switch v-model="listItemUpdate.isEnd" active-value='1' inactive-value='0' active-color="#13ce66"
+              <el-switch v-model="listItemUpdate.isEnd" :active-value="1" :inactive-value="0" active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>
           </el-col>
@@ -86,7 +86,7 @@
         <el-row>
             <el-col :span="24">
             <el-form-item label=" 是否可见:" prop="isVisible" >
-              <el-switch v-model="listItemUpdate.isVisible" active-value='1' inactive-value='0' active-color="#13ce66"
+              <el-switch v-model="listItemUpdate.isVisible" :active-value="1" :inactive-value="0" active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>
           </el-col>
@@ -110,7 +110,7 @@
         <el-row>
             <el-col :span="24">
               <el-form-item label=" 是否关键工步:" prop="isKeyStep" >
-                <el-switch v-model="listItemUpdate.isKeyStep" active-value='1' inactive-value='0' active-color="#13ce66"
+                <el-switch v-model="listItemUpdate.isKeyStep" :active-value="1" :inactive-value="0" active-color="#13ce66"
                            inactive-color="#808080" />
               </el-form-item>
             </el-col>
@@ -185,7 +185,7 @@ export default {
     }
   },
   mounted() {
-    this.getDataList()
+    // this.getDataList()
   },
   methods: {
 
@@ -209,7 +209,8 @@ export default {
 
 
     handEdit(row){
-      this.dialogVisible = true
+      console.log(row)
+
       this.listItemUpdate.id = row.id
       this.craftsId= this.listItemUpdate.craftsId
       this.listItemUpdate.craftsDeCode = row.craftsDeCode
@@ -221,6 +222,7 @@ export default {
       this.listItemUpdate.qualityRiskIdentification = row.qualityRiskIdentification
       this.listItemUpdate.isKeyStep = row.isKeyStep
       this.listItemUpdate.executionFrequency = row.executionFrequency
+      this.dialogVisible = true
 
     },
     saveItemData() {

@@ -377,7 +377,7 @@ export function insertGxUid(data) {
 /**删除工步**/
 export function deleteWorkContent(data) {
   return request({
-    url: '/api/gcplan/nodeAndPlm/deleteWorkContent',
+      url: '/api/gcplan/nodeAndPlm/deleteWorkContent',
     method: 'post',
     data: data
   })

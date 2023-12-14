@@ -53,8 +53,13 @@
               <xui-dictionary itemCode="yn" :code="row.isRequired"></xui-dictionary>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="依赖操作项"  property="dependentOperation"></el-table-column>
-          <el-table-column align="center" label="依赖操作项选项" property="dependentOperationOption"></el-table-column>
+          <el-table-column align="center" label="依赖操作项" prop="reOperationName">
+          </el-table-column>
+          <el-table-column align="center" label="依赖操作项选项" >
+            <template v-slot="{row}">
+              <xui-dictionary v-if="row.dependentOperation" :item-code="row.reDictionaryCode"  :code="row.dependentOperationOption"></xui-dictionary>
+            </template>
+          </el-table-column>
           <el-table-column align="center" label="执行频次"  property="executionFrequency"></el-table-column>
           <el-table-column align="center" label="合格标准"  property="eligibilityCriteria"></el-table-column>
           <el-table-column align="center" label="复核时效"  property="reviewTimeLimit"></el-table-column>
@@ -146,7 +151,7 @@ export default {
       this.getDataList();
     },
     handleAdd(){
-      this.$refs.checkItemFormDialogRef.init(this.data,this.tableData);
+      this.$refs.checkItemFormDialogRef.init(this.data,this.tableData,null);
     },
     getDataList() {
 
@@ -154,10 +159,10 @@ export default {
       getWorkContent(this.listQuery).then(response => {
         this.tableData = response.data
         this.total = response.total_count
-        response.data.forEach(item=>{
+        this.tableData.forEach(item=>{
           item.allName = item.operationName
-          if(this.$constants.isNotEmpty(item.relyPropertyId)){
-            this.setRelyPropertyAttr(response.data, item);
+          if(this.$constants.isNotEmpty(item.dependentOperation)){
+            this.setRelyPropertyAttr(this.tableData, item);
           }
 
         })
@@ -198,8 +203,9 @@ export default {
 
     setRelyPropertyAttr(dataList, data){
       dataList.some(item=>{
-        if(item.id === data.relyPropertyId){
-          data.operationName = item.operationName;
+        if(item.id === data.dependentOperation){
+          data.reOperationName = item.operationName;
+          data.reDictionaryCode = item.dictionaryCode;
           return true;
         }else{
           return false;
