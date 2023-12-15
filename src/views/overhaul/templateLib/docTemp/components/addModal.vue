@@ -158,7 +158,7 @@ export default {
             this.$refs.templateFrom.resetFields();
             this.$emit("closeModal", "add", true);
           } else {
-            this.$message.error(res.errMsg);
+            this.$message.error(res.errMsg || '操作失败');
           }
         })
         .catch(() => {

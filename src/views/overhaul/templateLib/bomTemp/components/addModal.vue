@@ -439,7 +439,7 @@ export default {
               }
               this.operateType = 1;
             } else {
-              this.$message.error(res.errMsg);
+              this.$message.error(res.errMsg || '操作失败');
             }
           })
           .finally(() => {
@@ -488,7 +488,7 @@ export default {
               this.resetForm();
               this.$emit("closeModal", "add", true);
             } else {
-              this.$message.error(res.errMsg);
+              this.$message.error(res.errMsg || '操作失败');
             }
           })
           .finally(() => {

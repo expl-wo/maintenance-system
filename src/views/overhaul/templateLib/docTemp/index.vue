@@ -199,6 +199,8 @@ export default {
           if (res && res.success) {
             this.tableData = res.data.pageList || [];
             this.total = res.data.total || 0;
+          } else {
+            this.$message.error(res.errMsg || '数据获取失败');
           }
         })
         .catch(() => {
@@ -271,6 +273,8 @@ export default {
                 message: "删除成功!",
               });
               this.getData();
+            } else {
+              this.$message.error(res.errMsg || '操作失败');
             }
           });
         })

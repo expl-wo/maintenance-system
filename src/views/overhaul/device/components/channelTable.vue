@@ -199,6 +199,7 @@ export default {
         pageSize: this.pageSize,
         searchKey: this.searchKey,
         // types: [],
+        unitTypeList: [1],
         ...this.sortInfo,
         ...this.filterInfo
       };
@@ -207,6 +208,8 @@ export default {
           if (res.success && res.data) {
             this.tableData = res.data.pageData || [];
             this.total = res.data.totalRows || 0;
+          } else {
+            this.$message.error(res.errMsg || '数据获取失败');
           }
         })
         .catch((err) => {

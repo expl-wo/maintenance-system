@@ -189,7 +189,7 @@ export default {
           this.tableData = res.data.pageList || [];
           this.total = res.data.total;
         } else {
-          this.$message.error(res.errMsg);
+          this.$message.error(res.errMsg || '数据获取失败');
         }
       })
       .finally(() => {
