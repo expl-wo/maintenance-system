@@ -149,7 +149,7 @@ export default {
           type: this.templateFrom.type,
           content: this.content,
           contentStr: text,
-          creatorId: localStorage.getItem('userId')
+          createrId: localStorage.getItem('userId')
         };
         addOrEditTemplate(params)
         .then((res) => {
