@@ -14,13 +14,13 @@
           <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
         </el-form-item>
         <el-form-item >
-          <el-form-item >
-            <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
-          </el-form-item>
+          <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
-        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
+        <el-table ref="tableRef"
+                  highlight-current-row
+                  :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
           <el-table-column prop="processPlanNumber" align="center" min-width="100" label="工艺模板编码" />
           <el-table-column prop="processPlanName" align="center" min-width="100"  label="工艺模板名称" />
           <el-table-column prop="isUse" align="center" label="是否可用" min-width="70">
@@ -31,11 +31,11 @@
           </el-table-column>
           <el-table-column align="center" width="250" label="操作">
             <template v-slot="scope">
-                <el-button  title="" type="primary" icon="Edit"
+                <el-button  type="primary" icon="edit"
                            @click="initEditData(scope.row)">
                   编辑模板
                 </el-button>
-              <el-button  title="删除" type="danger" icon="Delete"
+              <el-button   type="danger" icon="delete"
                           @click="handleDelete(scope.row)" />
             </template>
           </el-table-column>
@@ -70,7 +70,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <div >
         <el-button  @click="dialogVisible=false"> 取消</el-button>
         <el-button  type="primary" @click="createOrUpdateProcess">保存</el-button>
       </div>
@@ -95,7 +95,7 @@ import Constants from "@/utils/constants";
 
 export default {
   name: 'ps34ProcessTemplateRule',
-  components: {Pagination,ps34ProcessTemplateRuleItem},
+  components: {Pagination},
 
 
   data() {
@@ -132,9 +132,7 @@ export default {
         id: ''
       },
       dialogVisible: false,
-      dialogConfigCaiGouFormVisible: false,
       value: [],
-      lineWorkSpace: [],
       owner: {
         ownerItemArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
         ownerIdArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔

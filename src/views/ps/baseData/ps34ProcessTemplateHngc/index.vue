@@ -25,14 +25,11 @@ export default {
     ps34ProcessTemplateRuleItem
   },
   mounted() {
-    this.onload()
+
   },
   methods: {
     handleUpdateChild(params) {
       this.$refs.ps34ProcessTemplateRuleItemRef && this.$refs.ps34ProcessTemplateRuleItemRef.initData(params)
-    },
-    onload(){
-      this.$refs.ps34ProcessTemplateRuleItemRef.initData()
     }
   }
 }
