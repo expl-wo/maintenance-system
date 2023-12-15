@@ -165,7 +165,7 @@ export default {
       oldTemplateChoose: undefined,
       showAdd: false,
       showPrint: false,
-      acceptType: "image/*",
+      acceptType: ".jpg,.png,.jpeg",
       fileList: [],
       treeData: [],
       operateRow: {},

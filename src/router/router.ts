@@ -465,6 +465,26 @@ export const sysRouter : Array<RouteRecordRaw> = [
           icon: 'sys_005',
           keepAlive: true
         }
+      },
+	  {
+        path: 'iccEvent',
+        name: 'iccEvent',
+        component: () => import('@/views/overhaul/iframeToIcc/eventCenter.vue'),
+        meta: {
+          title: '事件查询',
+          icon: 'sys_005',
+          keepAlive: true
+        }
+      },
+	  {
+        path: 'arVideo',
+        name: 'arVideo',
+        component: () => import('@/views/overhaul/iframeToIcc/arVideo.vue'),
+        meta: {
+          title: '360全景视频',
+          icon: 'sys_005',
+          keepAlive: true
+        }
       }
     ]
   },

@@ -88,7 +88,7 @@
               :fileName="imgFileName"
               :fileMaxSize="MAX_IMG_SIZE"
               btnText="选择图片"
-              accept="image/*"
+              accept=".jpg,.png,.jpeg"
               @uploadSuccess="uploadSuccess"
             ></multi-upload-vue>
           </el-form-item>

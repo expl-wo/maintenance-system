@@ -64,7 +64,7 @@
                   type="primary"
                   v-if="$isAuth('2004_btn_edit')"
                   :disabled="
-                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
+                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus) || [1].includes(+row.approvalStatus)
                   "
                   @click="handleCreate(row, 'update')"
                 >
@@ -84,7 +84,7 @@
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
-                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus
+                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus  || [1].includes(+row.approvalStatus)
                   "
                   type="primary"
                   @click="handleApproval(row)"
@@ -100,7 +100,7 @@
                       : '暂停'
                   "
                   :disabled="
-                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)
+                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="pauseTask(row)"
@@ -117,7 +117,7 @@
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
-                    )
+                    ) || [1].includes(+row.approvalStatus)
                   "
                   title="删除"
                   type="danger"
@@ -132,7 +132,7 @@
                     [
                       WORK_ORDER_MAP['pause'].value,
                       WORK_ORDER_MAP['finish'].value,
-                    ].includes(row.orderStatus)
+                    ].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="closeTask(row)"

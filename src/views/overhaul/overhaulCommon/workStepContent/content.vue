@@ -120,7 +120,7 @@
           :fileUrl="fileUrl"
           :disabled="!isEditAuth"
           :fileName="fileName"
-          accept="video/*,image/*"
+          accept="video/*,.jpg,.png,.jpeg"
           @uploadSuccess="uploadSuccess"
         ></multi-upload-vue>
       </el-form-item>
