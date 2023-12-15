@@ -79,7 +79,7 @@ export default {
   },
   watch: {
     currentValue(newVal) {
-      this.$emit('input', newVal)
+      this.$emit('update:modelValue', newVal)
     },
     modelValue(newVal) {
       this.currentValue = newVal
