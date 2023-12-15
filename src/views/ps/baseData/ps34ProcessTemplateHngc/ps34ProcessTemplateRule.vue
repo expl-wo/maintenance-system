@@ -25,8 +25,8 @@
           <el-table-column prop="processPlanName" align="center" min-width="100"  label="工艺模板名称" />
           <el-table-column prop="isUse" align="center" label="是否可用" min-width="70">
             <template v-slot="{row}">
-              <div v-if="row.isUse == 1">是</div>
-              <div v-if="row.isUse == 0">否</div>
+              <div v-if="row.isUse === 1">是</div>
+              <div v-if="row.isUse === 0">否</div>
             </template>
           </el-table-column>
           <el-table-column align="center" width="250" label="操作">
@@ -44,7 +44,7 @@
                   @pagination="getList" />
 
     <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
-      <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
+      <el-form :model="listModeUpdate" class="element-list" ref="form"  label-width="160px">
         <el-row>
           <el-col :span="24">
             <el-form-item prop="processPlanNumber" label="工艺模板编码" >
@@ -81,16 +81,11 @@
 
 <script>
 import {
-  deleteProcessCraftsDe, deleteProcessPlan,
-  getHbCraftMode, insertGx, insertMaterialNode,
-  insertPLMProcessCrafts,
-  queryMaterialNotNode,
-  queryProduces,
-  saveProcedure,
+  deleteProcessPlan,
+  getHbCraftMode,
   saveProcess
 } from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
-import ps34ProcessTemplateRuleItem from "@/views/ps/baseData/ps34ProcessTemplateHngc/ps34ProcessTemplateRuleItem";
 import Constants from "@/utils/constants";
 
 export default {
@@ -170,22 +165,14 @@ export default {
       this.$emit('updateChild', item)
     },
 
-    clearnModedialog() {
-      this.listModeUpdate.processPlanNumber = null;
-      this.listModeUpdate.processPlanName = null;
-      this.isUse = null;
-    },
-
     handleSearch() {
       this.listQuery.pg_pagenum = 1
       this.onQuery()
     },
     handleAdd(){
-
-      this.listModeUpdate,
-          this.$nextTick(()=>{
-            this.$refs.formRef && this.$refs.formRef.clearValidate();
-          })
+      this.$nextTick(()=>{
+        this.$refs.formRef && this.$refs.formRef.clearValidate();
+      })
       this.dialogVisible  = true;
     },
     createOrUpdateProcess() {
@@ -200,11 +187,19 @@ export default {
 
       }
       saveProcess(params).then(response => {
-        this.$message({
-          message: "新增/修改成功",
-          type: 'success'
-        })
-        this.onQuery()
+        if (response.err_code === 10000){
+          this.$message({
+            message: "新增/修改成功",
+            type: 'success'
+          })
+          this.onQuery()
+        }else {
+          this.$message({
+            message: "新增/修改失败",
+            type: 'error'
+          })
+        }
+
       })
     },
 
@@ -216,7 +211,7 @@ export default {
       this.onQuery() // 查询
     },
     initEditData(row){
-      this.dialogVisible = true,
+      this.dialogVisible = true;
       this.listModeUpdate.processPlanName = row.processPlanName
       this.listModeUpdate.processPlanNumber = row.processPlanNumber
       this.listModeUpdate.processPlanId = row.id

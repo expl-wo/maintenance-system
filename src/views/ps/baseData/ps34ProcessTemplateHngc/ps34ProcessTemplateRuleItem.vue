@@ -111,7 +111,7 @@ import Constants from "@/utils/constants";
 import {
   procedure, insertGxUid, deleteProcedure, queryProduces,productionLine
 } from "@/api/plan";
-import dictHttp from "@/api/sys/dict";
+
 import Pagination from "@/components/Pagination/index";
 
 export default {
@@ -184,9 +184,7 @@ export default {
       }
       this.getDataList() // 查询
     },
-    handleVisibleChange(){
 
-    },
     handleBaseValue(val,data){
 
       data.workspaceNumber = val[val.length-1]
