@@ -18,8 +18,8 @@
         <el-table-column prop="safetyPrecautions" align="center"  width="120"   label="安全注意事项" />
         <el-table-column prop="isKeyStep" label="是否关键工步" align="center" width="100">
           <template v-slot="{row}">
-            <div v-if="row.isKeyStep == 0">否</div>
-            <div v-if="row.isKeyStep == 1">是</div>
+            <div v-if="row.isKeyStep === 0">否</div>
+            <div v-if="row.isKeyStep === 1">是</div>
           </template>
         </el-table-column>
         <el-table-column prop="qualityRiskIdentification" align="center"  width="120"   label="质量风险识别" />
@@ -47,7 +47,7 @@
       <pagination :total="total" :page ="listItemUpdate.pg_pagenum" :limit="listItemUpdate.pg_pagesize" class="searchCon"
                   @pagination="getList"/>
 
-      <el-dialog v-dialogDrag  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
+      <el-dialog draggable  appendToBody :title="listItemUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600"
     >
       <el-form :model="listItemUpdate" ref="formRef" :rules="rules" label-width="160px">
@@ -78,7 +78,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label=" 是否最后一个工步:" prop="isEnd" >
-              <el-switch v-model="listItemUpdate.isEnd" active-value='1' inactive-value='0' active-color="#13ce66"
+              <el-switch v-model="listItemUpdate.isEnd" :active-value="1" :inactive-value="0" active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>
           </el-col>
@@ -86,7 +86,7 @@
         <el-row>
             <el-col :span="24">
             <el-form-item label=" 是否可见:" prop="isVisible" >
-              <el-switch v-model="listItemUpdate.isVisible" active-value='1' inactive-value='0' active-color="#13ce66"
+              <el-switch v-model="listItemUpdate.isVisible" :active-value="1" :inactive-value="0" active-color="#13ce66"
                          inactive-color="#808080" />
             </el-form-item>
           </el-col>
@@ -110,23 +110,23 @@
         <el-row>
             <el-col :span="24">
               <el-form-item label=" 是否关键工步:" prop="isKeyStep" >
-                <el-switch v-model="listItemUpdate.isKeyStep" active-value='1' inactive-value='0' active-color="#13ce66"
+                <el-switch v-model="listItemUpdate.isKeyStep" :active-value="1" :inactive-value="0" active-color="#13ce66"
                            inactive-color="#808080" />
               </el-form-item>
             </el-col>
-          </el-row>
-          <el-row>
+        </el-row>
+        <el-row>
             <el-col :span="24">
               <el-form-item label="执行频次:" prop="executionFrequency" >
                 <el-input v-model="listItemUpdate.executionFrequency" placeholder="请输入执行频次" style="width: 350px;"
                           class="filter-item" />
               </el-form-item>
             </el-col>
-          </el-row>
+        </el-row>
 
 
       </el-form>
-      <div slot="footer">
+      <div>
         <el-button  @click="dialogVisible=false">取消</el-button>
         <el-button  type="primary" @click="saveItemData">保存</el-button>
       </div>
@@ -151,7 +151,7 @@ import { certainProp} from '@/utils'
 
 export default {
   name: 'ps31ChildHeadRuleItem',
-  components: {Pagination,checkItem},
+  components: {Pagination},
   data() {
     return {
       dataList: [],
@@ -185,7 +185,7 @@ export default {
     }
   },
   mounted() {
-    this.getDataList()
+    // this.getDataList()
   },
   methods: {
 
@@ -209,7 +209,8 @@ export default {
 
 
     handEdit(row){
-      this.dialogVisible = true
+      console.log(row)
+
       this.listItemUpdate.id = row.id
       this.craftsId= this.listItemUpdate.craftsId
       this.listItemUpdate.craftsDeCode = row.craftsDeCode
@@ -221,6 +222,7 @@ export default {
       this.listItemUpdate.qualityRiskIdentification = row.qualityRiskIdentification
       this.listItemUpdate.isKeyStep = row.isKeyStep
       this.listItemUpdate.executionFrequency = row.executionFrequency
+      this.dialogVisible = true
 
     },
     saveItemData() {
@@ -270,8 +272,13 @@ export default {
       })
     },
     initData(craftsId) {
+      console.log(craftsId)
+      if (craftsId){
+        this.listItemUpdate.craftsId = craftsId.id
+        this.listItemUpdate.craftsCode = craftsId.craftsCode
+        this.listItemUpdate.craftsName = craftsId.craftsName
+      }
 
-      this.listItemUpdate.craftsId = craftsId ==null ?'':craftsId.id
       // this.timeLimitId = data.id;
      findAllCraftsDes({
         craftsId:this.listItemUpdate.craftsId,
@@ -293,10 +300,10 @@ export default {
     },
 
     handleWorkContent(row) {
-      let params = certainProp(row, ['id', 'tempName'])
+      // let params = certainProp(row, ['id', 'tempName'])
       this.$router.push({
         path: 'checkItem',
-        query: params
+        query: {row: JSON.stringify(row)},
       })
     },
     handleAdd() {

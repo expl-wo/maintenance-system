@@ -61,7 +61,7 @@
         </el-table-column>
       </el-table>
       <div>
-        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.auxiliaryTypeName}}</el-tag>
+        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.toolsTypeName}}</el-tag>
       </div>
       <template #footer>
         <div class="dialog-footer">
@@ -78,7 +78,7 @@
 import {
   deleteTools,
 
-  getCrafsAndTools, getEquipmentType, getToolsType, saveEquipment,
+  getCrafsAndTools, getToolsType,
   saveTools
 } from '@/api/eqpLedger'
 import Pagination from "@/components/Pagination/index";
@@ -100,12 +100,6 @@ export default {
         crafsName:'',
         crafsId:'',
         id:''
-      },
-      listItemQuery:{
-        id:'',
-        crafsId:'',
-        crafsName:'',
-        toolsTypeName:''
       },
       tableData: [], // 角色分类列表表格数据
     }
@@ -152,13 +146,15 @@ export default {
       let params = {
         id:classzzItem.id,
         crafsId:this.listQuery.crafsId,
-        equipmentTypeName:classzzItem.equipmentTypeName,
+        toolsTypeName:classzzItem.toolsTypeName,
       }
       saveTools(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
+        if(response.err_code === this.$constants.statusCode.success){
+          this.$message.success('数据保存成功');
+        }else{
+          this.$message.error(response.err_msg);
+        }
+
         this.onQuery()
       })
     },

@@ -366,9 +366,9 @@ export function saveWorkContent(data) {
 
 
 /**新增工步*/
-export function insertGx(data) {
+export function insertGxUid(data) {
   return request({
-    url: 'api/gcplan/nodeAndPlm/insertGx',
+    url: 'api/gcplan/nodeAndPlm/insertGxUid',
     method: 'post',
     data:data
   })
@@ -377,7 +377,7 @@ export function insertGx(data) {
 /**删除工步**/
 export function deleteWorkContent(data) {
   return request({
-    url: '/api/gcplan/nodeAndPlm/deleteWorkContent',
+      url: '/api/gcplan/nodeAndPlm/deleteWorkContent',
     method: 'post',
     data: data
   })
@@ -413,10 +413,18 @@ export function deleteProcessPlan(data) {
 
 
 /**删除工艺模板对应工序*/
-export function deletePlanHngc(data) {
+export function deleteProcedure(data) {
   return request({
-    url: 'api/gcplan/mesProcessPlan/deletePlanHngc',
+    url: 'api/gcplan/mesProcessPlan/deleteProcedure',
     method: 'post',
     data:data
+  })
+}
+
+//工位查询
+export function productionLine(data) {
+  return request({
+    url: 'api/gcplan/mesProcessPlan/productionLine',
+    method: 'get',
   })
 }

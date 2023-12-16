@@ -3,8 +3,8 @@
 
     <div class="filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item size="mini">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd"></el-button>
+        <el-form-item size="small">
+          <el-button type="primary" icon="plus" @click="onAdd"></el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -57,22 +57,22 @@
     </el-table>
 
     <!--弹窗新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogFormVisible" class="roleDialog" :append-to-body="true">
       <el-form ref="listUpdate" label-position="right" label-width="130px" :rules="submitRules" :model="listUpdate">
-        <el-form-item label="异常项名称:" size="mini">
+        <el-form-item label="异常项名称:" size="small">
           <el-input v-model="listUpdate.abnormaName" placeholder="异常项名称" style="width: 320px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="标签名称:" prop="tagName" size="mini">
+        <el-form-item label="标签名称:" prop="tagName" size="small">
           <el-input v-model="listUpdate.tagName" placeholder="标签名称" style="width: 320px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="标签描述:" size="mini">
+        <el-form-item label="标签描述:" size="small">
           <el-input v-model="listUpdate.tagDesc" placeholder="标签描述" style="width: 320px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="saveData('listUpdate')" size="mini">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="saveData('listUpdate')" size="small">
           保存
         </el-button>
       </div>

@@ -2,7 +2,7 @@
   <div  class="wp hp app-containerC">
     <div class="filter-container searchCon">
       <el-form :inline="true" :model="listQuery" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="中工序编码" >
+        <el-form-item label="中工序编码">
           <el-input v-model="listQuery.craftsCode" placeholder="输入中工序编码" style="width: 120px;"
                     class="filter-item" clearable />
         </el-form-item>
@@ -39,14 +39,9 @@
           <el-table-column header-align="center" align="center" width="160" label="操作">
             <template v-slot="scope">
               <el-button-group>
-                <el-button  title="操作" type="primary" icon="Cellphone"
-                           @click="handleItemSave(scope.row)">
-                  保存
-                </el-button>
-                <el-button  title="编辑" type="primary" icon="Edit"
-                            @click="handEdit(scope.row)" />
-                <el-button  title="删除" type="danger" icon="Delete"
-                            @click="handleDelete(scope.row)" />
+                <el-button title="操作" type="primary" icon="Cellphone" @click="handleItemSave(scope.row)">保存</el-button>
+                <el-button title="编辑" type="primary" icon="Edit"  @click="handEdit(scope.row)" />
+                <el-button title="删除" type="danger" icon="Delete" @click="handleDelete(scope.row)" />
               </el-button-group>
             </template>
           </el-table-column>
@@ -57,7 +52,7 @@
                   @pagination="getList"
       />
     </div>
-    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'"
+    <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'"
                v-model="dialogVisible" modal width="600">
       <el-form :model="listModeUpdate" class="element-list" ref="form"  label-width="160px">
         <el-row>
@@ -85,7 +80,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <div >
         <el-button  @click="dialogVisible=false">取消</el-button>
         <el-button  type="primary" @click="saveItemData">保存</el-button>
       </div>
@@ -106,7 +101,7 @@ import Constants from "@/utils/constants";
 
 export default {
   name: 'ps31ChildHeadRule',
-  components: {Pagination,ps31ChildHeadRuleItem},
+  components: {Pagination},
 
 
   data() {

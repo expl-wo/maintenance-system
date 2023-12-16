@@ -170,7 +170,7 @@ const OPERATE_MAP = {
   1: { title: "视频绑定配置" },
   2: { title: "复核人员配置" },
   3: { title: "派工配置" },
-  4: { title: "大件设备配置" },
+  4: { title: "设备配置" },
 };
 export default {
   props: {
@@ -222,7 +222,7 @@ export default {
   },
   data() {
     return {
-      //大件设备
+      //设备
       devOptions: [],
       personArea: "",
       saveLoading: false,
@@ -357,7 +357,7 @@ export default {
       }
       return true;
     },
-    /**获取大件设备选项 */
+    /**获取设备选项 */
     getDevOptions() {
       const workList = this.currentNode
         .filter((el) => +el.procedureType === 2)
@@ -419,11 +419,14 @@ export default {
           data: { value },
         } = await getPersonByWorkClazz(workClazzId);
         const taskUserIds = this.appointInfo.taskUserIds || [];
-        this.taskPersonOptions = (value || []).map((item) => ({
-          value: item.userId,
-          label: item.userName,
-        }));
-        // .filter((item) => taskUserIds.includes(item.value));
+        this.taskPersonOptions = (value || [])
+          .map((item) => ({
+            value: item.userId,
+            label: item.userName,
+          }))
+          .filter(
+            (item) => this.isFactoryIn || taskUserIds.includes(item.value)
+          );
       } else {
         this.$message.error("未检测到配置班组，请前往业务配置进行班组配置！");
       }
@@ -524,7 +527,7 @@ export default {
         } else {
           if (!this.form.taskTeamPerson.length) {
             this.saveLoading = false;
-            this.$message.error("请确认大件设备是否存在！");
+            this.$message.error("请确认设备是否存在！");
             return;
           }
           const reuslt = this.allBigList
@@ -539,7 +542,7 @@ export default {
                 receivePerson: this.appointInfo.projManagerId,
               };
             });
-          //大件设备
+          //设备
           bindBigComponent(reuslt).then((res) => {
             this.saveLoading = false;
             if (res.code !== "0") {

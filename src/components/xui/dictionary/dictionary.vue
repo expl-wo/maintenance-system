@@ -4,7 +4,7 @@
     <span>{{ dictLabel }}{{suffix}}</span>
   </div>
 </template>
-<script type="text/jsx">
+<script >
 import { transformDictDetail } from './index'
 
 export default {

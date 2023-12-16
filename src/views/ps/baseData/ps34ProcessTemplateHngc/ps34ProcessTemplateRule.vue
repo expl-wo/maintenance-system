@@ -14,28 +14,28 @@
           <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
         </el-form-item>
         <el-form-item >
-          <el-form-item >
-            <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
-          </el-form-item>
+          <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
         </el-form-item>
       </el-form>
     </div>
-        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
+        <el-table ref="tableRef"
+                  highlight-current-row
+                  :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700" @row-click="handleClick">
           <el-table-column prop="processPlanNumber" align="center" min-width="100" label="工艺模板编码" />
           <el-table-column prop="processPlanName" align="center" min-width="100"  label="工艺模板名称" />
           <el-table-column prop="isUse" align="center" label="是否可用" min-width="70">
             <template v-slot="{row}">
-              <div v-if="row.isUse == 1">是</div>
-              <div v-if="row.isUse == 0">否</div>
+              <div v-if="row.isUse === 1">是</div>
+              <div v-if="row.isUse === 0">否</div>
             </template>
           </el-table-column>
-          <el-table-column align="center" min-width="300" label="操作">
+          <el-table-column align="center" width="250" label="操作">
             <template v-slot="scope">
-                <el-button  title="" type="primary" icon="Edit"
+                <el-button  type="primary" icon="edit"
                            @click="initEditData(scope.row)">
                   编辑模板
                 </el-button>
-              <el-button  title="删除" type="danger" icon="Delete"
+              <el-button   type="danger" icon="delete"
                           @click="handleDelete(scope.row)" />
             </template>
           </el-table-column>
@@ -43,8 +43,8 @@
       <pagination :total="total" :page ="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                   @pagination="getList" />
 
-    <el-dialog v-dialogDrag  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
-      <el-form :model="listModeUpdate" class="element-list" ref="form" :rules="rules" label-width="160px">
+    <el-dialog draggable  appendToBody :title="listModeUpdate.id? '编辑': '新增'" v-model="dialogVisible" modal width="600">
+      <el-form :model="listModeUpdate" class="element-list" ref="form"  label-width="160px">
         <el-row>
           <el-col :span="24">
             <el-form-item prop="processPlanNumber" label="工艺模板编码" >
@@ -70,7 +70,7 @@
           </el-col>
         </el-row>
       </el-form>
-      <div slot="footer">
+      <div >
         <el-button  @click="dialogVisible=false"> 取消</el-button>
         <el-button  type="primary" @click="createOrUpdateProcess">保存</el-button>
       </div>
@@ -81,21 +81,16 @@
 
 <script>
 import {
-  deleteProcessCraftsDe, deleteProcessPlan,
-  getHbCraftMode, insertGx, insertMaterialNode,
-  insertPLMProcessCrafts,
-  queryMaterialNotNode,
-  queryProduces,
-  saveProcedure,
+  deleteProcessPlan,
+  getHbCraftMode,
   saveProcess
 } from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
-import ps34ProcessTemplateRuleItem from "@/views/ps/baseData/ps34ProcessTemplateHngc/ps34ProcessTemplateRuleItem";
 import Constants from "@/utils/constants";
 
 export default {
   name: 'ps34ProcessTemplateRule',
-  components: {Pagination,ps34ProcessTemplateRuleItem},
+  components: {Pagination},
 
 
   data() {
@@ -132,9 +127,7 @@ export default {
         id: ''
       },
       dialogVisible: false,
-      dialogConfigCaiGouFormVisible: false,
       value: [],
-      lineWorkSpace: [],
       owner: {
         ownerItemArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
         ownerIdArray: [], // 要分配的用户ID数组，多个用户ID以英文逗号“,”分隔
@@ -172,22 +165,14 @@ export default {
       this.$emit('updateChild', item)
     },
 
-    clearnModedialog() {
-      this.listModeUpdate.processPlanNumber = null;
-      this.listModeUpdate.processPlanName = null;
-      this.isUse = null;
-    },
-
     handleSearch() {
       this.listQuery.pg_pagenum = 1
       this.onQuery()
     },
     handleAdd(){
-
-      this.listModeUpdate,
-          this.$nextTick(()=>{
-            this.$refs.formRef && this.$refs.formRef.clearValidate();
-          })
+      this.$nextTick(()=>{
+        this.$refs.formRef && this.$refs.formRef.clearValidate();
+      })
       this.dialogVisible  = true;
     },
     createOrUpdateProcess() {
@@ -202,11 +187,19 @@ export default {
 
       }
       saveProcess(params).then(response => {
-        this.$message({
-          message: "新增/修改成功",
-          type: 'success'
-        })
-        this.onQuery()
+        if (response.err_code === 10000){
+          this.$message({
+            message: "新增/修改成功",
+            type: 'success'
+          })
+          this.onQuery()
+        }else {
+          this.$message({
+            message: "新增/修改失败",
+            type: 'error'
+          })
+        }
+
       })
     },
 
@@ -218,7 +211,7 @@ export default {
       this.onQuery() // 查询
     },
     initEditData(row){
-      this.dialogVisible = true,
+      this.dialogVisible = true;
       this.listModeUpdate.processPlanName = row.processPlanName
       this.listModeUpdate.processPlanNumber = row.processPlanNumber
       this.listModeUpdate.processPlanId = row.id

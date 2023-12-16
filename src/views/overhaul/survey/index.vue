@@ -45,7 +45,6 @@
       fit
       highlight-current-row
       style="width: 100%"
-      height="calc(100% - 150px)"
       @filter-change="filterChanged"
       @sort-change="sortChanged"
       @selection-change="handleSelectionChange"
@@ -65,7 +64,7 @@
                   type="primary"
                   v-if="$isAuth('2004_btn_edit')"
                   :disabled="
-                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus)
+                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus) || [1].includes(+row.approvalStatus)
                   "
                   @click="handleCreate(row, 'update')"
                 >
@@ -85,12 +84,12 @@
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
-                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus
+                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus  || [1].includes(+row.approvalStatus)
                   "
                   type="primary"
                   @click="handleApproval(row)"
                 >
-                  <el-icon><DocumentChecked /></el-icon>
+                  <el-icon><Stamp /></el-icon>
                 </el-button>
                 <!-- 工单结束之后不能再操作 -->
                 <el-button
@@ -101,7 +100,7 @@
                       : '暂停'
                   "
                   :disabled="
-                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)
+                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="pauseTask(row)"
@@ -118,7 +117,7 @@
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
-                    )
+                    ) || [1].includes(+row.approvalStatus)
                   "
                   title="删除"
                   type="danger"
@@ -133,7 +132,7 @@
                     [
                       WORK_ORDER_MAP['pause'].value,
                       WORK_ORDER_MAP['finish'].value,
-                    ].includes(row.orderStatus)
+                    ].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="closeTask(row)"
@@ -487,6 +486,9 @@ export default {
 .mrb15 {
   margin-bottom: 15px;
 }
+:deep(.pagination-container){
+  padding:20px
+}
 :deep(.el-table__column-filter-trigger) {
   padding-left: 8px;
   .el-icon-arrow-down {
@@ -506,11 +508,13 @@ export default {
 }
 .order-list-box {
   position: relative;
+  display: flex;
+  flex-direction: column;
   .order-info {
     position: absolute;
     inset: 0;
     width: 100%;
-    min-width: 1700px;
+    // min-width: 1700px;
     padding: 0;
     z-index: 999;
   }

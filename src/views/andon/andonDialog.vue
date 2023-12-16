@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
       <el-form ref="model" label-position="right" label-width="90px" :rules="submitRules" :model="model">
-        <el-form-item label="异常分类:" prop="cateId" size="mini">
+        <el-form-item label="异常分类:" prop="cateId" size="small">
           <el-select v-model="model.cateid"  placeholder="请选择异常分类" filterable @change="queryAbnormal">
             <el-option
               v-for="item in cates"
@@ -11,7 +11,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="异常项:" prop="abnormalId" size="mini">
+        <el-form-item label="异常项:" prop="abnormalId" size="small">
           <el-select v-model="model.abnormalId"  placeholder="异常项" filterable @change="queryResponder">
             <el-option
               v-for="item in abnormal"
@@ -21,20 +21,20 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="响应人:" prop="asResponderId" size="mini">
+        <el-form-item label="响应人:" prop="asResponderId" size="small">
           <el-select v-model="model.asResponderId"  placeholder="响应人" filterable>
             <el-option
               v-for="item in responder"
               :key="item.id"
               :label="item.name "
               :value="item.id"
-              @click.native="changeResponder(item)" >
+              @click="changeResponder(item)" >
               <span style="float: left">{{ item.name }}</span>
 <!--              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.number }}</span>-->
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="生产号:" size="mini">
+        <el-form-item label="生产号:" size="small">
           <el-select
             v-model="model.productNo"
             filterable
@@ -48,43 +48,43 @@
               :key="item.productNoFull"
               :label="item.productNoFull"
               :value="item.productNoFull"
-              @click.native="selectProductNo(item)">
+              @click="selectProductNo(item)">
             </el-option>
           </el-select>
-<!--          <el-input v-model="model.productNo" placeholder="生产号" style="width: 320px;" class="filter-item" size="mini" />-->
+<!--          <el-input v-model="model.productNo" placeholder="生产号" style="width: 320px;" class="filter-item" size="small" />-->
         </el-form-item>
-        <el-form-item label="型号:" size="mini">
-          <el-input v-model="model.productModel" placeholder="型号" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="型号:" size="small">
+          <el-input v-model="model.productModel" placeholder="型号" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="项目名称:" size="mini">
-          <el-input v-model="model.projectName" placeholder="项目名称" disabled style="width: 320px;" class="filter-item" size="mini" />
+        <el-form-item label="项目名称:" size="small">
+          <el-input v-model="model.projectName" placeholder="项目名称" disabled style="width: 320px;" class="filter-item" size="small" />
         </el-form-item>
-        <el-form-item label="工序名称:" size="mini">
+        <el-form-item label="工序名称:" size="small">
           <el-select v-model="model.opName"  placeholder="工序名称" filterable @change="queryAbnormal">
             <el-option
               v-for="item in midOps"
               :key="item.id"
               :label="item.opName + (item.opAlias==null?'':'[' +item.opAlias + ']')"
               :value="item.id"
-              @click.native="changeMidOp(item)" >
+              @click="changeMidOp(item)" >
               <span style="float: left">{{ item.opName }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.opAlias }}</span>
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="描述:" size="mini" prop="remarks">
+        <el-form-item label="描述:" size="small" prop="remarks">
           <el-input v-model="model.remarks"
                     placeholder="描述"
                     style="width: 320px;"
                     class="filter-item"
-                    size="mini"
+                    size="small"
                     clearable
                     type="textarea"
                     autosize
                     maxlength="300"
                     show-word-limit/>
         </el-form-item>
-        <el-form-item label="图片:" size="mini" prop="upload">
+        <el-form-item label="图片:" size="small" prop="upload">
           <el-upload
             action="/api/file/upload"
             list-type="picture-card"
@@ -98,7 +98,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button style="float: left" type="primary" @click="submit" size="mini">保存</el-button>
+        <el-button style="float: left" type="primary" @click="submit" size="small">保存</el-button>
       </div>
   </div>
 </template>

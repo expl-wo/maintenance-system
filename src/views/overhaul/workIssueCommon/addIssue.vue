@@ -2,6 +2,7 @@
   <el-dialog
     draggable
     title="添加问题"
+    :close-on-click-modal="false"
     :model-value="true"
     :destroy-on-close="true"
     @close="handleClose"
@@ -87,7 +88,7 @@
               :fileName="imgFileName"
               :fileMaxSize="MAX_IMG_SIZE"
               btnText="选择图片"
-              accept="image/*"
+              accept=".jpg,.png,.jpeg"
               @uploadSuccess="uploadSuccess"
             ></multi-upload-vue>
           </el-form-item>

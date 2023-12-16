@@ -165,7 +165,7 @@ export default {
       oldTemplateChoose: undefined,
       showAdd: false,
       showPrint: false,
-      acceptType: "image/*",
+      acceptType: ".jpg,.png,.jpeg",
       fileList: [],
       treeData: [],
       operateRow: {},
@@ -419,7 +419,6 @@ export default {
     },
     /**处理图片 */
     handleRemove(file, fileList) {
-      debugger;
       console.log(file, fileList, this.fileList);
     },
     /**
@@ -454,11 +453,9 @@ export default {
       let dom = ""; // 拼接的字符串
       targetValue.forEach((item, i) => {
         dom += `<div style='page-break-after:always'>
-        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black' colspan='2'>${this.workOrderInfo.prodNumber}</th>
-        <td rowspan='3' colspan='3'><div id='${item}' style='text-align: center'></div></td>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black;min-width:120px' colspan='2'>${item.prodNumber||''}</th>
+        <td rowspan='3' colspan='3'><div id='${item.serialCode}' style='text-align: center'></div></td>
         </tr>
-        <tr style='border: 1px solid black'> <td colspan='2' style='border: 1px solid black;text-align: center'>${this.workOrderInfo.projName}</td></tr>
-        <tr style='border: 1px solid black'> <td colspan='1' style='border: 1px solid black;text-align: center'>${this.workOrderInfo.prodModel}</td></tr>
         </table>
         </div>
         `;
@@ -469,10 +466,10 @@ export default {
       setTimeout(() => {
         this.printWin.document.title = "衡变MES管理端";
         targetValue.forEach((item) => {
-          new QRCode(this.printWin.document.getElementById(item), {
+          new QRCode(this.printWin.document.getElementById(item.serialCode), {
             width: 80,
             height: 80,
-            text: item,
+            text: JSON.stringify(item),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
             correctLevel: QRCode.CorrectLevel.M, // 降低容错级别

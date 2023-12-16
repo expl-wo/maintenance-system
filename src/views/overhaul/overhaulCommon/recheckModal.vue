@@ -86,7 +86,7 @@ export default {
     handleOk() {
       let params = {
         workCode: this.workOrderInfo.id,
-        craftId: this.operateRow.workProcedureCode,
+        craftId: this.operateRow.procedureCode,
         pass: this.form.result,
         workScene: this.sceneType,
         isProblem:this.form.isAddLib
