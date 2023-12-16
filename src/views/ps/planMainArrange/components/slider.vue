@@ -1,10 +1,7 @@
 <template>
-  <div class="slider" :class="item.sliderClz" v-if="item.widthMe"
-       ref="slider" :style="{ width: item.ratios + '%' ,zIndex: 1000}">
-    <div class="contentWrapper">
-      <!--    <div class="contentItem">
-            <div class="time" v-if="showTimeDetail">{{item.planStartDate}}</div>
-          </div>-->
+  <div class="slider" v-if="item.widthMe"
+       ref="slider" :style="{ width: (item.ratios && item.ratios != '0') ? item.ratios + '%': 0 ,zIndex: 1000}">
+    <div class="contentWrapper" :class="[item.sliderClz,{'slider-half': item.ratios != 100 }]">
     </div>
   </div>
 </template>
@@ -48,17 +45,22 @@ const getStatus = () => {
 </script>
 <style lang="scss">
 
+
+.slider-half{
+  border-radius: 5px 0 0 5px!important;
+}
+
+
 .contentWrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 2000;
   height: 100%;
-  border-radius: 5px;
   padding: 0 2px;
   color: #FFF;
   font-size: 12px;
-
+  border-radius: 5px;
   &.celladvance {
     color: #000;
   }

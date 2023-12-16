@@ -83,6 +83,7 @@ import {ElMessage} from "element-plus";
 import {useRoute} from 'vue-router'
 import {useDeleteConfirm} from "@/components/use/useCommon";
 import rejectDescDialog from './components/rejectDescDialog.vue'
+import exp from "constants";
 
 const pageTypeEnum = {
   arrange: 'arrange',
@@ -252,6 +253,7 @@ const getDataList = async () => {
     ElMessage.error(response.err_msg);
     return;
   }
+  expand.value = false;
   // let response = getData();
   let resultList = [];
   response.data.forEach(item => {
@@ -276,6 +278,9 @@ const getDataList = async () => {
     let children = [];
     if (item.nodeList && item.nodeList.length > 0) {
       item.nodeList.forEach(subItem => {
+        if(subItem.ratios == '0'){
+          subItem.ratios = '';
+        }
         let obj = {
           ...commonAttr,
           ...subItem,
@@ -308,7 +313,9 @@ const handleGoToday = () => {
 }
 
 const handleChangeDateType = dateTypeItem => {
+  expand.value = false;
   dateTypeDesc.value = dateTypeItem.locationDesc;
+  productListRef.value.shrink();
   ganttListRef.value.handleChangeDateType(dateTypeItem);
 }
 

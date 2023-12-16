@@ -73,10 +73,6 @@ export default {
       this.dialogVisible = true;
       this.getDataListFromFlowChart(params.planNodeId);
     },
-    initFromFlowChartLung(opList){
-      this.dialogVisible = true;
-      this.dataList = opList;
-    },
     getDataListFromFlowChart(planNodeId){
       planWeekHttp.searchByPlan({
         planNodeId

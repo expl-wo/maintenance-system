@@ -64,7 +64,7 @@
         </el-table-column>
       </el-table>
       <div>
-        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.auxiliaryTypeName}}</el-tag>
+        <el-tag v-for="x in checkboxRuleConfigList" :key = x.crafsId style="margin-right:10px;">{{x.equipmentTypeName}}</el-tag>
       </div>
       <template #footer>
         <div class="dialog-footer">
@@ -98,13 +98,6 @@ export default {
       tableRuleConfigData:[],
       dialogConfigCaiGouFormVisible:false,
       total: 0, // 角色列表表格总条数
-      listItemQuery:{
-        id:'',
-        crafsId:'',
-        crafsName:'',
-        equipmentTypeName: ''
-
-      },
       listQuery: { // 查询条件
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
@@ -163,10 +156,11 @@ export default {
         equipmentTypeName:classzzItem.equipmentTypeName,
       }
       saveEquipment(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
+        if(response.err_code === this.$constants.statusCode.success){
+          this.$message.success('数据保存成功');
+        }else{
+          this.$message.error(response.err_msg);
+        }
         this.onQuery()
       })
     },

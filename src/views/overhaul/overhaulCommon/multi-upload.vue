@@ -66,7 +66,7 @@ export default {
     },
     accept: {
       type: String,
-      default: ".doc,.docx,.pdf,.xlsx,.xls,image/*",
+      default: ".doc,.docx,.pdf,.xlsx,.xls,.jpg,.png,.jpeg",
     },
     simple: {
       type: Boolean,

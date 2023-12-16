@@ -6,8 +6,9 @@
  */
 import {syncAjax} from "../ajax/syncAjax";
 import {compArrToStr, isNotEmptyArray, splitStrToArr} from "@/utils";
-
+import constants from '@/utils/constants'
 const cacheMap = {};
+const cacheDictItem = {};
 window.cacheMap = cacheMap;
 
 const formatTreeToList = (dictList, result) => {
@@ -26,6 +27,7 @@ const formatTreeToList = (dictList, result) => {
 
 // 翻译，根据key itemCode 翻译得到itemName  如 把 y 翻译成是
 export const transformDictDetail = function (key, value, attr = 'name') {
+
     if (value === undefined || value === null) {
         return ''
     }
@@ -50,6 +52,7 @@ export const transformDictDetail = function (key, value, attr = 'name') {
     if (resultArr.length > 0) {
         retValue = compArrToStr(resultArr);
     }
+
     return retValue;
 };
 
@@ -70,6 +73,7 @@ export const getDictListByKey = function (key, childCode = null) {
         return findChildNode(cacheMap[key], childCode);
     }
 }
+
 
 function findChildNode(data, childCode) {
     let list = []
@@ -118,4 +122,43 @@ function getDict(key, value) {
     return data
 }
 
+export const getDictItem = function(key){
+    if (!cacheDictItem[key]) {
+        let d =  getDictNameAjax(key)
+        if(d){
+            cacheDictItem[key] = d;
+        }
+    }
+    return cacheDictItem[key] ? cacheDictItem[key] : {}
+}
+
+export const getDictNameByItemCode = function(itemCode){
+    let dict = getDictItem(itemCode);
+    if (constants.isEmptyObj(dict)) {
+        return itemCode
+    } else {
+        return dict.name
+    }
+}
+
+function getDictNameAjax(key) {
+    let data = []
+    const url = '/api/pbpermissions/dict/get-itemCode'
+    syncAjax({
+        url: url,
+        type: 'get',
+        data: {
+            itemCode: key
+        },
+        async: false,
+        xhrFields: {
+            withCredentials: true
+        },
+        dataType: 'json',
+        success: function (response) {
+            data = response.data
+        }
+    })
+    return data
+}
 

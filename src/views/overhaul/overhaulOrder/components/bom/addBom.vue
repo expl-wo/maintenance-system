@@ -3,7 +3,6 @@
     draggable
     :title="operateTypeTitle"
     :model-value="true"
-    class="overhaul-bom-modal"
     :destroy-on-close="true"
     width="500"
     @close="handleClose"
@@ -35,7 +34,8 @@
             :label="form.bomNodeType === 1 ? '大部件' : '物料类别'"
             prop="bomNode"
           >
-            <select-page
+            <select-page  
+              v-if="showSelectPage"
               ref="selectRef"
               v-model="form.bomNode"
               :defaultSelectVal="defaultSelectVal"
@@ -148,20 +148,26 @@ export default {
         { label: "物料类别", value: 2 },
       ],
       defaultSelectVal: {},
+      showSelectPage:true
     };
   },
   watch: {
     "form.bomNodeType": {
       handler(val) {
         //切换节点类型时需要重置下拉选择框
-        this.$refs.selectRef && this.$refs.selectRef.selectSearch("");
-        this.form = {
+        this.showSelectPage=false
+        this.$nextTick(()=>{
+          this.showSelectPage=true;
+          this.$refs.selectRef && this.$refs.selectRef.selectSearch("");
+          this.form = {
           ...this.form,
           bomNode: undefined,
           bomCode: "",
           bomName: "",
         };
         this.defaultSelectVal = {};
+        })
+       
       },
     },
   },

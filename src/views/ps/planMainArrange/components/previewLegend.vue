@@ -7,7 +7,7 @@
       </el-icon>
     </span>
     <template #dropdown>
-      <el-dropdown-menu class="xui-legend_wrapper">
+      <el-dropdown-menu class="xui-legend_wrapper" style="width: 140px;">
         <el-dropdown-item v-for="(item, index) in legendList" :key="index">
           <div class="xui-legend__item">
             <div class="xui-legend__block" :class="item.className"></div>
@@ -40,6 +40,9 @@ export default {
       }, {
         className: 'cellsuspend',
         desc: '暂停'
+      }, {
+        className: 'cellalarmArrange',
+        desc: '超工位上限'
       }]
     }
   }

@@ -94,6 +94,17 @@ const ORDER_COLUMNS = [
         width: 110,
     },
     {
+        prop: "projName",
+        label: "项目名称",
+        align: "center",
+    },
+    {
+        prop: "prodModel",
+        label: "产品型号",
+        align: "center",
+        width: 110,
+    },
+    {
         prop: "prodCategoryName",
         label: "产品大类",
         align: "center",
@@ -105,32 +116,26 @@ const ORDER_COLUMNS = [
         align: "center",
         width: 110,
     },
-    {
-        prop: "projName",
-        label: "项目名称",
-        align: "center",
-        width: 110,
-    },
-    {
-        prop: "accountName",
-        label: "账套",
-        align: "center",
-        width: 110,
-    },
+    // {
+    //     prop: "accountName",
+    //     label: "账套",
+    //     align: "center",
+    //     width: 110,
+    // },
     {
         prop: "orderStatus",
         label: "状态",
         align: "center",
         width: 130,
     },
+    // {
+    //     prop: "handlerName",
+    //     label: "当前处理人",
+    //     align: "center",
+    //     width: 110,
+    // },
     {
-        prop: "handlerName",
-        label: "当前处理人",
-        align: "center",
-        width: 110,
-    },
-    {
-        prop: "summitterName",
+        prop: "submitterName",
         label: "提交人",
         align: "center",
         width: 110,

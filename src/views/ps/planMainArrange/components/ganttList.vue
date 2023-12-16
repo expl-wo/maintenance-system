@@ -98,7 +98,8 @@
                   @thunkMousedown="thunkMousedown"
                   @thunkMousemove="thunkMousemove"
               ></slider>
-              <div class="line-label">{{ item.productOrNodeName }}<span v-if="item.ratios != null && item.ratios != ''">({{item.ratios}}%)</span></div>
+              <div class="line-label">{{ item.productOrNodeName }}<span v-if="item.ratios != null && item.ratios != ''">({{ item.ratios }}%)</span>
+              </div>
             </div>
           </div>
         </template>
@@ -524,7 +525,7 @@ const _handleExpandByMainId = (childrenList, expand) => {
 
 //点击行
 const handleClickItem = item => {
-  if(item.dataType === constants.productOrGx.gx){
+  if (item.dataType === constants.productOrGx.gx) {
     productArrangeDialogRef.value.init(item);
   }
 }
@@ -563,13 +564,20 @@ const handleRefresh = () => {
 // 有进度调整进度颜色、无进度修改底图颜色
 
 const setItemClz = item => {
+  // if (process.env.NODE_ENV === "development") {
+  //   item.ratios = '30';
+  // }
   let _status = item._status;
   let clz = '';
-  if(item.isExceedLimit === constants.flag.y){
-    clz = 'cellalarm';
-  }else{
+  if (item.isExceedLimit === constants.flag.y) {
+    clz = 'cellalarmArrange';
+  } else {
     clz = getGantClzByStatus(_status);
   }
+  /* if (process.env.NODE_ENV === "development") {
+     clz = 'normal';
+   }*/
+  // 'normal'   'cellsuspend'    'celladvance'
   if (constants.isEmpty(item.ratios)) {
     item.bgClz = clz;
     item.sliderClz = '';
@@ -585,9 +593,9 @@ const formatDataList = (list, dataType = constants.productOrGx.product) => {
   for (const item of list) {
     item.planStartDate = dateFilter(item.planStartDate);
     item.planEndDate = dateFilter(item.planEndDate);
-    if(item.planStartDate && item.planEndDate){
+    if (item.planStartDate && item.planEndDate) {
       item.allTime = dayjs(item.planEndDate).diff(dayjs(item.planStartDate), "days") + 1;
-    }else{
+    } else {
       item.allTime = "";
     }
     let startTime = item.planStartDate;

@@ -98,12 +98,6 @@ export default {
         crafsId:'',
         id:''
       },
-      listItemQuery:{
-        id:'',
-        crafsId:'',
-        crafsName:'',
-        auxiliaryTypeName:''
-      },
       tableData: [], // 角色分类列表表格数据
     }
   },
@@ -152,10 +146,11 @@ export default {
         auxiliaryTypeName:classzzItem.auxiliaryTypeName,
       }
       saveAuxiliary(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
+        if(response.err_code === this.$constants.statusCode.success){
+          this.$message.success('数据保存成功');
+        }else{
+          this.$message.error(response.err_msg);
+        }
         this.onQuery()
       })
     },

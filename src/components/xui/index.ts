@@ -6,6 +6,7 @@ import xuiPagination from './pagination/pagination.vue'
 import xuiDictionary from './dictionary/dictionary.vue'
 // @ts-ignore
 import xuiDictLabel from './dictLabel/dictLabel.vue'
+import xuiDictName from "./dictionary/dict-name.vue";
 import xuiDictSelect from './select/dict-select.vue'
 import xuiListSelect from './select/list-select.vue'
 import xuiFilter from './filter/filter.vue'
@@ -19,6 +20,7 @@ export const install = function (app) {
     app.component('xuiPagination', xuiPagination);
     app.component('xuiDictionary', xuiDictionary);
     app.component('xuiDictLabel', xuiDictLabel);
+    app.component('xuiDictName', xuiDictName);
     app.component('xuiDictSelect', xuiDictSelect);
     app.component('xuiListSelect', xuiListSelect);
     app.component('xuiFilter', xuiFilter);

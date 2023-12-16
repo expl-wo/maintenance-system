@@ -129,7 +129,7 @@ export default {
           this.tableData = res.data.pageList || [];
           this.total = res.data.total || 0;
         } else {
-          this.$message.error(res.errMsg);
+          this.$message.error(res.errMsg || '数据获取失败');
         }
       })
       .catch(() => {
@@ -205,7 +205,7 @@ export default {
             this.$message.success('操作成功');
             this.getData();
           } else {
-            this.$message.error(res.errMsg);
+            this.$message.error(res.errMsg || '操作失败');
           }
         })
         .catch(err => {

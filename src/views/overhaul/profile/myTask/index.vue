@@ -72,7 +72,7 @@
           </template>
           </el-table-column>
         </template>
-        <el-table-column label="操作" width="100">
+        <!-- <el-table-column label="操作" width="100">
           <template  #default="scope">
             <el-button-group>
               <el-button type="primary" title="查看" @click="jumpTo(scope.row)">
@@ -80,7 +80,7 @@
               </el-button>
             </el-button-group>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <div class="pagination-wrapper" v-if="total">
@@ -177,7 +177,7 @@ export default {
           this.tableData = res.data.pageList || [];
           this.total = res.data.total || 0;
         } else {
-          this.$message.error(res.errMsg);
+          this.$message.error(res.errMsg || '数据获取失败');
         }
       })
       .finally(() => {

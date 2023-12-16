@@ -36,9 +36,11 @@
             :label="item.label"
           >
             <template v-if="item.key === 'orderStatus'">
-              <el-tag v-if="item.value" :type="WORK_ORDER_STATUS[item.value].tagType">{{
-                WORK_ORDER_STATUS[item.value].text
-              }}</el-tag>
+              <el-tag
+                v-if="item.value"
+                :type="WORK_ORDER_STATUS[item.value].tagType"
+                >{{ WORK_ORDER_STATUS[item.value].text }}</el-tag
+              >
             </template>
             <template v-else-if="item.key === 'attachmentUrl'">
               <file-list
@@ -83,6 +85,7 @@
             <middle-ware
               v-else-if="item.name === 'surveyItem'"
               v-bind="item"
+              :key="item.name"
               :workOrderType="2"
               :workOrderInfo="overHaulSurveyData"
               :sceneType="sceneType"
@@ -90,15 +93,18 @@
               :tabList="TAB_LIST_MAP[item.name]"
             ></middle-ware>
             <!-- 中间件 -->
-            <middle-ware
-              v-else
-              v-bind="item"
-              :workOrderType="2"
-              :workOrderInfo="info"
-              :sceneType="sceneType"
-              :appointInfo="appointInfo"
-              :tabList="TAB_LIST_MAP[item.name]"
-            ></middle-ware>
+            <template v-else>
+              <middle-ware
+                v-if="item.isRefrsh"
+                v-bind="item"
+                :key="item.name"
+                :workOrderType="2"
+                :workOrderInfo="info"
+                :sceneType="sceneType"
+                :appointInfo="appointInfo"
+                :tabList="TAB_LIST_MAP[item.name]"
+              ></middle-ware>
+            </template>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -167,7 +173,7 @@ export default {
       overhaulType: 0, //检修类型 0时现场 1 是返厂
       info: {},
       appointInfo: {},
-      overHaulSurveyData: {},
+      overHaulSurveyData: {}
     };
   },
   async mounted() {
@@ -205,7 +211,16 @@ export default {
   watch: {
     activeName: {
       handler(val) {
-        this.getAppointSetting();
+        this.tabList.some((item) => {
+          if (item.name === val) {
+            item.isRefrsh = false;
+            this.$nextTick(() => {
+              this.getAppointSetting();
+              item.isRefrsh = true;
+            });
+            return true;
+          }
+        });
       },
     },
   },
@@ -218,7 +233,8 @@ export default {
         //根据不同的检修类型定义不同的时间轴
         this.overhaulType =
           this.info.retFactory === null ? null : +this.info.retFactory;
-        this.timeLineData =this.overhaulType===null ? []: TIME_LINE[this.overhaulType];
+        this.timeLineData =
+          this.overhaulType === null ? [] : TIME_LINE[this.overhaulType];
 
         this.initBaseInfo(data);
         this.dealProcess(data.timelineList);
@@ -264,13 +280,13 @@ export default {
         this.tabList = TAB_LIST_OUT.slice(0, 2).filter((item) => {
           return this.$isAuth(item.menuCode);
         });
-      } else if(this.overhaulType === 1) {
+      } else if (this.overhaulType === 1) {
         //返厂检修
         this.tabList = TAB_LIST_OUT.filter((item) => {
           return item.name !== "siteOverhaul" && this.$isAuth(item.menuCode);
         });
-      }else{
-          this.tabList = TAB_LIST_OUT.slice(0, 1).filter((item) => {
+      } else {
+        this.tabList = TAB_LIST_OUT.slice(0, 1).filter((item) => {
           return this.$isAuth(item.menuCode);
         });
       }

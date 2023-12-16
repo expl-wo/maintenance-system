@@ -149,7 +149,7 @@ export default {
           type: this.templateFrom.type,
           content: this.content,
           contentStr: text,
-          creatorId: localStorage.getItem('userId')
+          createrId: localStorage.getItem('userId')
         };
         addOrEditTemplate(params)
         .then((res) => {
@@ -158,7 +158,7 @@ export default {
             this.$refs.templateFrom.resetFields();
             this.$emit("closeModal", "add", true);
           } else {
-            this.$message.error(res.errMsg);
+            this.$message.error(res.errMsg || '操作失败');
           }
         })
         .catch(() => {

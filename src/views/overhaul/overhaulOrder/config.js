@@ -177,43 +177,48 @@ const ORDER_COLUMNS = [
         width: 110,
     },
     {
+        prop: "projName",
+        label: "项目名称",
+        align: "center",
+    },
+    {
+        prop: "prodModel",
+        label: "产品型号",
+        align: "center",
+        width: 110,
+    },
+    {
         prop: "prodCategoryName",
         label: "产品大类",
         align: "center",
-        width: 110,
+        width: 100,
     },
     {
         prop: "voltageLevel",
         label: "电压等级",
         align: "center",
-        width: 110,
+        width: 130,
     },
-    {
-        prop: "projName",
-        label: "项目名称",
-        align: "center",
-        width: 110,
-    },
-    {
-        prop: "accountName",
-        label: "账套",
-        align: "center",
-        width: 110,
-    },
+    // {
+    //     prop: "accountName",
+    //     label: "账套",
+    //     align: "center",
+    //     width: 110,
+    // },
     {
         prop: "orderStatus",
         label: "状态",
         align: "center",
         width: 130,
     },
+    // {
+    //     prop: "handlerName",
+    //     label: "当前处理人",
+    //     align: "center",
+    //     width: 110,
+    // },
     {
-        prop: "handlerName",
-        label: "当前处理人",
-        align: "center",
-        width: 110,
-    },
-    {
-        prop: "summitterName",
+        prop: "submitterName",
         label: "提交人",
         align: "center",
         width: 110,
@@ -249,7 +254,7 @@ const ORDER_COLUMNS = [
         prop: "operation",
         label: "操作",
         align: "center",
-        width: 280,
+        width: 200,
         fixed: "right"
     },
 ]
@@ -261,6 +266,7 @@ const TAB_LIST_OUT = [
         workClazzType: "survey", //班组字段
         sceneType: "SURVEY_SCENE",//场景值对应后端参数
         hiddenAssign: true,
+        isRefrsh:true,
         menuCode: "2005_tab_surveyItem"
     },
     {
@@ -269,12 +275,14 @@ const TAB_LIST_OUT = [
         hiddenAssign: false,
         sceneType: "OVER_HAUL_ON_THE_SPOT_SCENE",
         workClazzType: "overhaulGroup",
+        isRefrsh:true,
         menuCode: "2005_tab_siteOverhaul"
     },
     {
         label: "返厂检修-现场拆解",
         name: "siteDismantle",
         hiddenAssign: false,
+        isRefrsh:true,
         sceneType: "OVER_HAUL_BACK_CHAI_JIE_SCENE",
         workClazzType: "overhaulGroup",
         menuCode: "2005_tab_siteDismantle"
@@ -282,6 +290,7 @@ const TAB_LIST_OUT = [
     {
         label: "返厂检修-厂内拆解",
         name: "factoryDismantle",
+        isRefrsh:true,
         workClazzType: "assembleGroup",
         sceneType: "OVER_HAUL_BACK_INNER_CHAI_JIE_SCENE",
         hiddenAssign: false,
@@ -290,6 +299,7 @@ const TAB_LIST_OUT = [
     {
         label: "返厂检修-厂内生产",
         name: "factoryCreate",
+        isRefrsh:true,
         workClazzType: "prodDeptGroup",
         sceneType: "OVER_HAUL_BACK_INNER_PRODUCTION_SCENE",
         hiddenAssign: false,
@@ -298,6 +308,7 @@ const TAB_LIST_OUT = [
     {
         label: "返厂检修-试验",
         name: "experiment",
+        isRefrsh:true,
         workClazzType: "experimentalGroup",
         sceneType: "OVER_HAUL_BACK_EXPERIMENT_SCENE",
         hiddenAssign: false,
@@ -414,7 +425,7 @@ const TAB_LIST_MAP = {
             menuCode: "2005_report_view_7"
         },
         {
-            label: "大件设备清单",
+            label: "设备清单",
             name: "bigComponents",
             components: "BigComponents",
             menuCode: "2005_siteDismantle_big_view"
@@ -426,7 +437,7 @@ const TAB_LIST_MAP = {
             menuCode: "2005_siteDismantle_materials_view"
         },
         {
-            label: "工器具清单",
+            label: "工装工具清单",
             name: "instrument",
             components: "instrument",
             menuCode: "2005_siteDismantle_instrument_view"
@@ -473,7 +484,7 @@ const TAB_LIST_MAP = {
             menuCode: "2005_report_view_3"
         },
         {
-            label: "大件设备清单",
+            label: "设备清单",
             name: "bigComponents",
             components: "BigComponents",
             menuCode: "2005_siteOverhaul_big_view"
@@ -485,7 +496,7 @@ const TAB_LIST_MAP = {
             menuCode: "2005_siteOverhaul_materials_view"
         },
         {
-            label: "工器具清单",
+            label: "工装工具清单",
             name: "instrument",
             components: "instrument",
             menuCode: "2005_siteOverhaul_instrument_edit"
@@ -571,7 +582,7 @@ const RETURN_COLUMNS = [
     //     width: 150,
     // },
 ]
-// 工器具表格项
+// 工装工具表格项
 const INSTRUMENT_COLUMNS = [
     {
         prop: "id",
@@ -581,7 +592,7 @@ const INSTRUMENT_COLUMNS = [
     },
     {
         prop: "toolName",
-        label: "工器具名称",
+        label: "工装工具名称",
         align: "center",
     },
     {
@@ -637,7 +648,7 @@ const MATERIALS_COLUMNS = [
     },
 ]
 
-//大件设备表格项
+//设备表格项
 const BIG_COMPONENTS_COLUMNS = [
     {
         prop: "id",
@@ -647,7 +658,7 @@ const BIG_COMPONENTS_COLUMNS = [
     },
     {
         prop: "equipmentType",
-        label: "大件设备类别",
+        label: "设备类别",
         align: "center",
     },
     {

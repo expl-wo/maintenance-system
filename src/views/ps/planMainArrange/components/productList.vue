@@ -185,7 +185,13 @@ const init = tempDataList => {
   dataList.value = tempDataList;
   nextTick(() => {
     setScroll(0);
+    shrink();
   });
+}
+
+//收缩
+const shrink = ()=>{
+  toggleRowExpansion(false);
 }
 
 //获取选中的行
@@ -235,7 +241,8 @@ defineExpose({
   init,
   handleToggleExpandAll,
   setCurrentRow,
-  getSelectedData
+  getSelectedData,
+  shrink
 })
 </script>
 

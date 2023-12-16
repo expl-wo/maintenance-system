@@ -101,6 +101,7 @@
                 <select-page
                   ref="componentIdRef"
                   v-model="bomForm.componentId"
+                  popverClass="cust-select"
                   :defaultSelectVal="defaultComponent"
                   @change="componentChange"
                   :getOptions="getComponentOptions"
@@ -260,7 +261,7 @@ export default {
           }));
           resolve({
             options: options,
-            totalPage: res.data.total,
+            totalPage: res.data.allPageNum,
           });
         });
       })
@@ -283,7 +284,7 @@ export default {
             }));
             resolve({
               options: options,
-              totalPage: res.data.total,
+              totalPage: res.data.allPageNum,
             });
           });
         } else {
@@ -295,7 +296,7 @@ export default {
             }));
             resolve({
               options: options,
-              totalPage: res.data.total,
+              totalPage: res.data.allPageNum,
             });
           });
         }
@@ -438,7 +439,7 @@ export default {
               }
               this.operateType = 1;
             } else {
-              this.$message.error(res.errMsg);
+              this.$message.error(res.errMsg || '操作失败');
             }
           })
           .finally(() => {
@@ -487,7 +488,7 @@ export default {
               this.resetForm();
               this.$emit("closeModal", "add", true);
             } else {
-              this.$message.error(res.errMsg);
+              this.$message.error(res.errMsg || '操作失败');
             }
           })
           .finally(() => {

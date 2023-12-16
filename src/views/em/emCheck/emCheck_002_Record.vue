@@ -88,8 +88,8 @@
       <el-table-column prop="managerName" align="center" label="责任人" />
       <el-table-column prop="type" align="center" label="点检类型">
         <template  #default="scope">
-          <div v-if="scope.row.type == 0">日常点检</div>
-          <div v-if="scope.row.type == 1">专业点检</div>
+          <div v-if="scope.row.type === 0">日常点检</div>
+          <div v-if="scope.row.type === 1">专业点检</div>
         </template>
       </el-table-column>
       <el-table-column prop="createDt" align="center" width="160" label="任务生成时间" />

@@ -6,7 +6,7 @@
         <el-card shadow="hover" class="hp">
           <div slot="header" class="clearfix">
             <span>异常分类</span>
-            <el-button style="float: right;" size="mini" type="primary" icon="Plus" @click="onAdd" />
+            <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onAdd" />
           </div>
           <el-tree
             :data="dataTree"
@@ -34,7 +34,7 @@
         <el-card shadow="hover" class="hp">
           <div slot="header" class="clearfix">
             <span>【{{listQuery.cateName}}】异常项</span>
-            <el-button style="float: right;" size="mini" type="primary" icon="Plus" @click="onNapeAdd" />
+            <el-button style="float: right;" size="small" type="primary" icon="Plus" @click="onNapeAdd" />
           </div>
 
           <el-table
@@ -105,8 +105,8 @@
           <div slot="header" class="clearfix">
             <span>【{{listUpQuery.abnormalNameLeft}}】异常升级提醒</span>
             <el-button-group style="float: right;">
-              <el-button size="mini" type="primary" @click="onUpTemplateAdd">升级模板</el-button>
-              <el-button size="mini" type="primary" icon="Plus" @click="onUpAdd" />
+              <el-button size="small" type="primary" @click="onUpTemplateAdd">升级模板</el-button>
+              <el-button size="small" type="primary" icon="Plus" @click="onUpAdd" />
             </el-button-group>
           </div>
           <el-table
@@ -175,27 +175,27 @@
     </el-row>
 
     <!--异常分类新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogTreeFormVisible" class="roleDialog">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogTreeFormVisible" class="roleDialog">
       <el-form ref="listTreeUpdate" label-position="right" label-width="90px" :rules="submitTreeRules" :model="listTreeUpdate">
-        <el-form-item label="分类名称:" prop="cateName" size="mini">
+        <el-form-item label="分类名称:" prop="cateName" size="small">
           <el-input v-model="listTreeUpdate.cateName" placeholder="分类名称" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="分类描述:" prop="cateDesc" size="mini">
+        <el-form-item label="分类描述:" prop="cateDesc" size="small">
           <el-input v-model="listTreeUpdate.cateDesc" placeholder="分类描述" style="width: 360px;" class="filter-item" />
         </el-form-item>
-        <el-form-item v-if="!listTreeUpdate.fid" label="节点类型:" prop="andonCate" style="width: 360px;" class="filter-item" size="mini">
+        <el-form-item v-if="!listTreeUpdate.fid" label="节点类型:" prop="andonCate" style="width: 360px;" class="filter-item" size="small">
           <el-select v-model="listTreeUpdate.andonCate" placeholder="节点类型" style="width: 165px;">
             <el-option v-for="item in andonCateList" :key="item.id" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="排序:" prop="cateWeight" size="mini">
+        <el-form-item label="排序:" prop="cateWeight" size="small">
           <el-input-number v-model="listTreeUpdate.cateWeight" placeholder="排序" style="width: 165px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogTreeFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="dialogStatus==='create'?createTreeData('listTreeUpdate', '添加成功'):updateTreeData('listTreeUpdate', '修改成功')">
+        <el-button size="small" @click="dialogTreeFormVisible = false">取 消</el-button>
+        <el-button type="primary" size="small" @click="dialogStatus==='create'?createTreeData('listTreeUpdate', '添加成功'):updateTreeData('listTreeUpdate', '修改成功')">
           保存
         </el-button>
       </div>
@@ -203,35 +203,35 @@
     </el-dialog>
 
     <!--异常项新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogNapeFormVisible" class="roleDialog800">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogNapeFormVisible" class="roleDialog800">
       <el-form ref="listNapeUpdate" label-position="right" label-width="180px" :rules="submitNapeRules" :model="listNapeUpdate">
-        <el-form-item label="异常项所属分类:" size="mini">
+        <el-form-item label="异常项所属分类:" size="small">
           <el-input v-model="listNapeUpdate.cateName" placeholder="异常项所属分类" style="width: 460px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="异常名称:" prop="abnormalName" size="mini">
+        <el-form-item label="异常名称:" prop="abnormalName" size="small">
           <el-input v-model="listNapeUpdate.abnormalName" placeholder="异常名称" style="width: 460px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="异常描述:" prop="abnormalDesc" size="mini">
+        <el-form-item label="异常描述:" prop="abnormalDesc" size="small">
           <el-input v-model="listNapeUpdate.abnormalDesc" placeholder="异常描述" style="width: 460px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="选择异常通知人:" prop="respondersName" size="mini">
+        <el-form-item label="选择异常通知人:" prop="respondersName" size="small">
           <el-input v-model="listNapeUpdate.respondersName" placeholder="选择异常通知人" style="width: 343px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectDept">请选择异常通知人</el-button>
+          <el-button size="small" type="primary" @click="onSelectDept">请选择异常通知人</el-button>
         </el-form-item>
-<!--        <el-form-item label="是否按人数升级:" prop="isUpByPersonCount" size="mini" class="filter-item">-->
+<!--        <el-form-item label="是否按人数升级:" prop="isUpByPersonCount" size="small" class="filter-item">-->
 <!--          <el-select v-model="listNapeUpdate.isUpByPersonCount" placeholder="请选择" style="width: 460px;">-->
 <!--            <el-option label="否" value="0" />-->
 <!--            <el-option label="是" value="1" />-->
 <!--          </el-select>-->
 <!--        </el-form-item>-->
-        <el-form-item label="排序:" prop="abnormalWeight" size="mini">
+        <el-form-item label="排序:" prop="abnormalWeight" size="small">
           <el-input-number v-model="listNapeUpdate.abnormalWeight" placeholder="排序" style="width: 165px;" class="filter-item" />
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-        <el-button size="mini" @click="dialogNapeFormVisible = false">取 消</el-button>
-        <el-button type="primary" size="mini" @click="saveNapeData('listNapeUpdate')">
+        <el-button size="small" @click="dialogNapeFormVisible = false">取 消</el-button>
+        <el-button type="primary" size="small" @click="saveNapeData('listNapeUpdate')">
           保存
         </el-button>
       </div>
@@ -239,27 +239,27 @@
     </el-dialog>
 
     <!--异常升级提醒新增或修改角色定义-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogUpFormVisible" class="roleDialog720">
+    <el-dialog draggable  :close-on-click-modal="false" :title="textMap[dialogStatus]" v-model="dialogUpFormVisible" class="roleDialog720">
       <el-form ref="listUpUpdate" label-position="right" label-width="180px" :rules="submitUpRules" :model="listUpUpdate">
-        <el-form-item label="异常项所属分类:" size="mini">
+        <el-form-item label="异常项所属分类:" size="small">
           <el-input v-model="listUpUpdate.abnormalName" placeholder="异常项所属分类" style="width: 343px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="升级提醒名称:" prop="upgradeName" size="mini">
+        <el-form-item label="升级提醒名称:" prop="upgradeName" size="small">
           <el-input v-model="listUpUpdate.upgradeName" placeholder="升级提醒名称" style="width: 343px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onUpTemplateAdd">请选择升级提醒名称及时间</el-button>
+          <el-button size="small" type="primary" @click="onUpTemplateAdd">请选择升级提醒名称及时间</el-button>
         </el-form-item>
-        <el-form-item label="升级提醒时间(分钟):" size="mini">
+        <el-form-item label="升级提醒时间(分钟):" size="small">
           <el-input v-model="listUpUpdate.upgradeTime" placeholder="升级提醒时间(分钟)" style="width: 343px;" class="filter-item" disabled />
         </el-form-item>
-        <el-form-item label="选择异常通知人:" prop="respondersName" size="mini">
+        <el-form-item label="选择异常通知人:" prop="respondersName" size="small">
           <el-input v-model="listUpUpdate.respondersName" placeholder="选择异常通知人" style="width: 343px;" class="filter-item" disabled />
-          <el-button size="mini" type="primary" @click="onSelectDept">请选择异常通知人</el-button>
+          <el-button size="small" type="primary" @click="onSelectDept">请选择异常通知人</el-button>
         </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialogUpFormVisible = false">取 消</el-button>
-          <el-button type="primary" size="mini" @click="saveUpData('listUpUpdate')">
+          <el-button size="small" @click="dialogUpFormVisible = false">取 消</el-button>
+          <el-button type="primary" size="small" @click="saveUpData('listUpUpdate')">
           保存
           </el-button>
         </div>
@@ -267,18 +267,18 @@
     </el-dialog>
 
     <!--选择人员-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="请选择异常通知人员" v-model="dialogPeopleFormVisible" class="roleDialog800">
+    <el-dialog draggable  :close-on-click-modal="false" title="请选择异常通知人员" v-model="dialogPeopleFormVisible" class="roleDialog800">
       <el-form label-position="right" label-width="90px" :model="listPeopleQuery" :inline="true" class="demo-form-inline demo-form-zdy">
-        <el-form-item label="" prop="name" size="mini">
+        <el-form-item label="" prop="name" size="small">
           <el-input v-model="listPeopleQuery.uName" placeholder="用户姓名" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro" size="small">
           <el-input v-model="listPeopleQuery.userid" placeholder="员工编号" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item label="" prop="intro" size="mini">
+        <el-form-item label="" prop="intro" size="small">
           <el-input v-model="listPeopleQuery.gsbmName" placeholder="归属部门名称" style="width: 180px;" class="filter-item" />
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="Search" @click="onPeopleQuery">查询</el-button>
         </el-form-item>
       </el-form>
@@ -341,8 +341,8 @@
       />
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialogPeopleFormVisible = false">取 消</el-button>
-          <el-button type="primary" size="mini" @click="savePeopleData()">
+          <el-button size="small" @click="dialogPeopleFormVisible = false">取 消</el-button>
+          <el-button type="primary" size="small" @click="savePeopleData()">
           保存
           </el-button>
         </div>
@@ -350,21 +350,21 @@
     </el-dialog>
 
     <!--异常类标签-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="异常类标签" v-model="dialogLabelFormVisible">
+    <el-dialog draggable  :close-on-click-modal="false" title="异常类标签" v-model="dialogLabelFormVisible">
       <abnormalLabel ref="abnormalChild" :abnormal-id-child="listNapeUpdate" />
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialogLabelFormVisible = false">关 闭</el-button>
+          <el-button size="small" @click="dialogLabelFormVisible = false">关 闭</el-button>
         </div>
       </template>
     </el-dialog>
 
     <!--升级模板-->
-    <el-dialog v-dialogDrag  :close-on-click-modal="false" title="升级模板" v-model="dialogUpLabelFormVisible" class="roleDialog800">
+    <el-dialog draggable  :close-on-click-modal="false" title="升级模板" v-model="dialogUpLabelFormVisible" class="roleDialog800">
       <upgradeTemplate ref="upgradeChild" :confirm-btn="confirmBtn" @confirmEmit="confirmEmit" />
       <template #footer>
         <div class="dialog-footer">
-          <el-button size="mini" @click="dialogUpLabelFormVisible = false">关 闭</el-button>
+          <el-button size="small" @click="dialogUpLabelFormVisible = false">关 闭</el-button>
         </div>
       </template>
     </el-dialog>

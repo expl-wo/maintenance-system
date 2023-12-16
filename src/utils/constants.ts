@@ -112,7 +112,7 @@ export default {
         apply: 2,
         pass: 3,
 
-        suspended: 4, //暂停
+        suspended: -50, //暂停
         canAdd: ['-1', '0'], //是否能加入处理
         canAddDesc: '驳回或待排',
         canApproval: ['1'], //是否可预排
@@ -121,7 +121,7 @@ export default {
         waitApprovalDesc: '待审批',
         freeze: ['0', '1', '2', '3', '10'],
         canFreezeDesc: '待排产，粗排，已下发，生成工序计划或已开工',
-        unfreeze: ['-2'],
+        unfreeze: ['-50'],
         canUnFreezeDesc: '冻结',
         canSelect: ['-1', '0', '1', '2'], //是否可选中
         planPageSelected: ['-1', '0', '1', '2'],//周计划预排选择框默认选中内容

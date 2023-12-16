@@ -141,10 +141,12 @@ $circle-width: 20px;
   word-break: break-all;
   margin-left: 35px;
   max-width: 180px;
+  max-height: 50px;
   overflow: hidden;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
   -webkit-box-orient:vertical;
+  display: -webkit-box;
   white-space: normal;
 }
 </style>

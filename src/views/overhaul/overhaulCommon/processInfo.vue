@@ -1,15 +1,17 @@
 <template>
   <div class="process-box">
-    模板选择：
-    <select-page
-      v-model="templateChoose"
-      :clearable="false"
-      ref="selectRef"
-      :disabled="isRoleContorl.isDisabled"
-      :defaultSelectVal="defaultSelectVal"
-      :getOptions="getProcedureTemplateOptions"
-      @change="handleTemplateChange"
-    />
+    <template v-if="isShowTemplate">
+      模板选择：
+      <select-page
+        v-model="templateChoose"
+        :clearable="false"
+        ref="selectRef"
+        :disabled="isRoleContorl.isDisabled"
+        :defaultSelectVal="defaultSelectVal"
+        :getOptions="getProcedureTemplateOptions"
+        @change="handleTemplateChange"
+      />
+    </template>
     <template v-if="treeData.length">
       <div class="operate-wrap-header" v-if="workTreeStatus === 2">
         <el-button
@@ -46,14 +48,14 @@
           @click="openModal(4, 'distributeModalFlag')"
         >
           <el-icon class="el-icon--left"><Tools /></el-icon>
-          大件设备
+          设备
         </el-button>
       </div>
       <div class="operate-wrap-header" v-else>
         <el-button
           v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
           type="primary"
-          :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
+          :disabled="isPauseOrFinish"
           title="保存"
           @click="workTreeSave"
         >
@@ -62,8 +64,9 @@
         <el-button
           v-if="$isAuth(roleBtnEnum['workInfo_check']) && !isSurvey"
           type="primary"
-          :disabled="isPauseOrFinish || isRoleContorl.isDisabled"
+          :disabled="isPauseOrFinish"
           title="发起审核"
+          :loading="checkLoading"
           @click="workTreeCheck"
         >
           <el-icon class="el-icon--left"><Stamp /></el-icon>发起审核
@@ -82,7 +85,32 @@
 
     <div class="process-content" v-if="isRoleContorl.isCanShowTree">
       <div class="process-content-left" v-loading="treeLoading">
-        <div class="process-content-left-title">工序结构</div>
+        <div class="process-content-left-title">
+          <span>工序结构</span>
+          <!-- <el-popover placement="bottom" :width="100" trigger="click">
+            <template #reference>
+              <el-icon title="工序配置筛选" :size="18" class="el-icon--right"
+                ><Menu />
+              </el-icon>
+            </template>
+            <div class="check-group-title">工序配置筛选</div>
+            <el-checkbox
+              v-model="checkAll"
+              :indeterminate="isIndeterminate"
+              @change="handleCheckAllChange"
+              >全选</el-checkbox
+            >
+            <el-checkbox-group
+              v-model="checkedList"
+              @change="handleCheckedCitiesChange"
+              class="check-group"
+            >
+              <el-checkbox v-for="e in checkOptions" :key="e" :label="e">{{
+                e
+              }}</el-checkbox>
+            </el-checkbox-group>
+          </el-popover> -->
+        </div>
         <div class="process-content-left-search">
           <el-input placeholder="输入关键字进行过滤" v-model="filterText">
           </el-input>
@@ -100,7 +128,17 @@
             :filter-node-method="filterNode"
             node-key="uniqueCode"
             @node-click="handleNodeClick"
-          ></el-tree>
+          >
+            <template #default="{ node, data }">
+              {{ node.label }}
+              <el-icon
+                :title="dealCheckStatusTitle(data)"
+                v-if="checkedList.length"
+                style="margin-left: 4px"
+                color="red"
+                ><Warning /></el-icon
+            ></template>
+          </el-tree>
         </div>
       </div>
       <div class="process-content-right" v-loading="tableListLoading">
@@ -132,7 +170,11 @@
                     <!-- 只有叶子节点有复核 -->
                     <el-button
                       type="primary"
-                      :disabled="isPauseOrFinish"
+                      :disabled="
+                        isPauseOrFinish ||
+                        1 === +row.reviewStatusOld ||
+                        [0, 1, 2].includes(+row.workStatusOld)
+                      "
                       v-if="
                         currentSelectNode.type === PROCESS_NODE_ENUM.MIDDLE &&
                         $isAuth(roleBtnEnum['review']) &&
@@ -299,11 +341,14 @@ export default {
       PROCESS_NODE_ENUM,
       //工序审核树状态
       workTreeStatus: 0,
+      checkLoading: false,
       //表格loading效果
       tableListLoading: false,
       //tree的loading效果
       treeLoading: false,
       templateChoose: undefined,
+      standardProcedureCodeList: [], //检修工单模板编号
+      isShowTemplate: true,
       defaultSelectVal: {}, //用于回显
       templateName: "", //模板name
       treeData: [],
@@ -328,24 +373,46 @@ export default {
         pageNum: 1,
         pageSize: 20,
       },
+      //下拉筛选
+      checkAll: false,
+      isIndeterminate: false,
+      checkedList: [],
+      checkOptions: [],
     };
   },
   watch: {
     filterText(val) {
       this.$refs["treeRef"].filter(val);
     },
-    workOrderInfo(val) {
-      const { procedureTemplateName, procedureTemplateCode } =
-        this.workOrderInfo;
-      this.templateChoose = procedureTemplateCode || undefined;
-      this.templateName = procedureTemplateName || "";
-      if (this.templateChoose && this.templateName) {
-        this.defaultSelectVal = {
-          label: this.templateName,
-          value: this.templateChoose,
-        };
-        this.getTreeData();
-      }
+    workOrderInfo: {
+      handler(val) {
+        const {
+          procedureTemplateName,
+          procedureTemplateCode,
+          standardProcedureCodeList,
+        } = this.workOrderInfo;
+        this.templateChoose = procedureTemplateCode || undefined;
+        this.templateName = procedureTemplateName || "";
+        if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+          this.isShowTemplate = false;
+          this.standardProcedureCodeList = standardProcedureCodeList || [];
+          this.templateChoose = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+          this.templateName = standardProcedureCodeList
+            ? standardProcedureCodeList.join(",")
+            : "";
+        }
+        if (this.templateChoose && this.templateName) {
+          this.defaultSelectVal = {
+            label: this.templateName,
+            value: this.templateChoose,
+          };
+          this.getCheckOptions(); //获取筛选框
+          this.getTreeData();
+        }
+      },
+      immediate: true,
     },
   },
   computed: {
@@ -406,6 +473,51 @@ export default {
     },
   },
   methods: {
+    //通过权限获取下拉选择项
+    getCheckOptions() {
+      this.checkOptions = [];
+      const obj = {
+        videoBind: "视频绑定",
+        orderCheck: "复核人员",
+        infoAppoint: "派工",
+        bigComponent: "设备绑定",
+      };
+      Object.keys(obj).forEach((item) => {
+        if (this.$isAuth(this.roleBtnEnum[item]) && !this.isSurvey) {
+          this.checkOptions.push(obj[item]);
+        }
+      });
+    },
+    //过滤筛选时显示对饮未进行的操作
+    dealCheckStatusTitle(node) {
+      const map = {
+        视频绑定: "ifChoice",
+        复核人员: "ifChoice",
+        派工: "ifChoice",
+        设备绑定: "ifChoice",
+      };
+      let title = [];
+      this.checkedList.forEach((item) => {
+        if (node[map[item]]) {
+          title.push(item);
+        }
+      });
+      console.log(node);
+      return `未进行${title.join("、")}操作`;
+    },
+    //工序树的筛选框逻辑
+    handleCheckAllChange(val) {
+      this.checkedList = val ? this.checkOptions : [];
+      this.isIndeterminate = false;
+      this.getTreeData();
+    },
+    handleCheckedCitiesChange(value) {
+      const checkedCount = value.length;
+      this.checkAll = checkedCount === this.checkOptions.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.checkOptions.length;
+      this.getTreeData();
+    },
     //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
@@ -483,7 +595,17 @@ export default {
             this.tableData = (pageList || []).map((item) => ({
               ...item,
               reviewStatus: REVIEW_STATUS_ENUM[item.reviewStatus || 0],
-              workStatus: WORK_STATUS_ENUM[item.workStatus || 0],
+              workStatus: `${WORK_STATUS_ENUM[item.workStatus || 0]}${
+                [1, 3].includes(item.workStatus)
+                  ? "(" + item.progress + "%)"
+                  : ""
+              }`,
+              workStatusOld: item.workStatus,
+              reviewStatusOld: item.reviewStatus,
+              procedureCode: item.workProcedureCode
+                .split("_")
+                .slice(1)
+                .join("_"),
             }));
           })
           .finally(() => {
@@ -538,11 +660,13 @@ export default {
     },
     //工序树审核
     workTreeCheck() {
+      this.checkLoading = true;
       //发起审核接口
       oAExamine({
         workCode: this.workOrderInfo.id,
         docType: sceneType_map[this.sceneType],
       }).then((res) => {
+        this.checkLoading = false;
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
           return;
@@ -617,9 +741,14 @@ export default {
     getTreeData() {
       if (!this.templateChoose) return;
       this.treeLoading = true;
+      let params = { templateCode: this.templateChoose };
+      if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
+        delete params.templateCode;
+        params.standardProcedureCodeList = this.standardProcedureCodeList;
+      }
       getWorkTree({
         workCode: this.workOrderInfo.id,
-        templateCode: this.templateChoose,
+        ...params,
         procedureTypeList: [
           PROCESS_NODE_ENUM.NORM,
           PROCESS_NODE_ENUM.MIDDLE,
@@ -669,6 +798,14 @@ $left-width: 255px;
 .mgl12 {
   margin-left: 12px;
 }
+.check-group {
+  display: flex;
+  flex-direction: column;
+}
+.check-group-title{
+  border-bottom: 1px dashed #ccc;
+  margin-bottom: 5px;
+}
 .process-content {
   display: flex;
   width: 100%;
@@ -685,6 +822,9 @@ $left-width: 255px;
       padding: 0 20px;
     }
     &-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       width: 100%;
       height: $left-title-height;
       line-height: $left-title-height;
@@ -692,6 +832,9 @@ $left-width: 255px;
       border-bottom: 1px solid #e9ebee;
       text-align: left;
       font-weight: 600;
+      i:hover {
+        cursor: pointer;
+      }
     }
     .process-tree {
       overflow: auto;

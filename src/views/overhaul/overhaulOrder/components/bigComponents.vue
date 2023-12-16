@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :inline="true">
-      <el-form-item label="大件设备类别/编号">
+      <el-form-item label="设备类别/编号">
         <el-input
           v-model="queryParams.name"
           clearable

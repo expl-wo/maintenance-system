@@ -89,6 +89,8 @@ export default {
               this.$message.success("操作成功");
               this.$refs.copyForm.resetFields();
               this.$emit("closeModal", "copy", true);
+            } else {
+              this.$message.error(res.errMsg || '操作失败');
             }
           })
           .finally(() => {

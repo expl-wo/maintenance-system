@@ -14,6 +14,7 @@
           v-model="templateChoose"
           class="filter-item"
           placeholder="请选择"
+          clearable
           @change="handleTemplateChange"
         >
           <el-option
@@ -205,7 +206,9 @@ export default {
     this.getSaveFile();
   },
   methods: {
-    renderWord(url) {
+    async renderWord(url) {
+      await this.$nextTick();
+      if (!this.$refs.reportWordRef) return;
       fetch(url).then((res) => {
         res.blob().then((res) => {
           renderAsync(res, this.$refs.reportWordRef, null, {
@@ -222,6 +225,8 @@ export default {
             useMathMLPolyfill: false, //包括用于铬、边等的MathML多填充。
             showChanges: false, //启用文档更改的实验渲染（插入/删除）
             debug: false, //启用额外的日志记录
+          }).catch(() => {
+            this.$message.error("该文档无法预览，请下载后查看！");
           });
         });
       });
@@ -239,7 +244,7 @@ export default {
         workDocType: this.workType,
       }).then(({ data }) => {
         const { templateCode, reviewStatus, wordUri } = data;
-        this.templateStatus = reviewStatus || 0;
+        this.templateStatus = +reviewStatus || 0;
         this.templateChoose = templateCode || undefined;
         this.wordUri = this.dealUrl(wordUri);
       });
