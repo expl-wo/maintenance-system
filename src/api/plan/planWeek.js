@@ -80,6 +80,16 @@ const url = {
   updateProductLimit: '/api/gcplan/productPlan/updateProductLimit',
   //期量表配置-查询期量列表 get
   queryMainList: '/api/gcplan/timelimitMain/query',
+  //查询所有计划节点
+  findAllPlanNode: '/api/gcplan/productPlan/findAllPlanNode',
+  //删除、恢复计划节点
+  modifyPlanNodes: '/api/gcplan/productPlan/modifyPlanNodes',
+  //mes工艺路线绑定获取A10
+  getOrderList: '/api/gcplan/productPlan/getOrderList',
+  //获取MES工艺模板
+  getMesProcessList: '/api/gcplan/productPlan/getMesProcessList',
+  //绑定MES工艺路线
+  bindProcessPlan: '/api/gcplan/productPlan/bindProcessPlan',
 }
 
 export default {
@@ -364,6 +374,47 @@ export default {
     return request({
       url: url.searchByPlan,
       method: 'get',
+      data: params
+    })
+  },
+  findAllPlanNode(params){
+    return request({
+      url: url.findAllPlanNode,
+      method: 'get',
+      data: {
+        planId: params.planId,
+        type: params.type,
+        name: params.name,
+        pg_pagenum: params.pg_pagenum,
+        pg_pagesize: params.pg_pagesize,
+      }
+    })
+  },
+  modifyPlanNodes(params){
+    return request({
+      url: url.modifyPlanNodes,
+      method: 'post',
+      data: params
+    })
+  },
+  getOrderList(params){
+    return request({
+      url: url.getOrderList,
+      method: 'get',
+      data: params
+    })
+  },
+  getMesProcessList(params){
+    return request({
+      url: url.getMesProcessList,
+      method: 'get',
+      data: params
+    })
+  },
+  bindProcessPlan(params){
+    return request({
+      url: url.bindProcessPlan,
+      method: 'post',
       data: params
     })
   },

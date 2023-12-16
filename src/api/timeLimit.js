@@ -132,3 +132,12 @@ export function toMesOrder(params) {
     data: params
   })
 }
+
+// 重排计划
+export function rearrangement(params) {
+  return request({
+    url: '/api/gcplan/timelimit/rearrangement',
+    method: 'get',
+    data: params
+  })
+}

@@ -107,6 +107,20 @@
         label="期量"
         min-width="15%"
       />
+      <el-table-column
+        min-width="10%"
+        align="center"
+        label="操作"
+      >
+        <template #default="scope">
+          <el-button v-if="scope.row.schedulingStatus == 0 || scope.row.schedulingStatus == 10"
+            plain
+            type="primary"
+            @click="Rearrangement(scope.row)"
+          >重排
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                 @pagination="getList" />
@@ -224,7 +238,6 @@
       >
         <template #default="scope">
           <el-button
-
             plain
             type="warning"
             @click="toMesOrder(scope.row)"
@@ -249,7 +262,7 @@
 <script>
   import Pagination from '@/components/Pagination'
   import { ElMessage } from "element-plus";
-  import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder } from '@/api/timeLimit';
+  import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder,rearrangement } from '@/api/timeLimit';
 export default {
   name: 'HBMesOrderPool',
   components: {Pagination},
@@ -276,12 +289,12 @@ export default {
       toMesOrderData: [],
       toMesOrderTotal: 0,
       options: [{
-        value: true,
-        label: 'ERP工单'
-       }, {
         value: false,
         label: 'ERP销售合同'
-       }],
+       },{
+        value: true,
+        label: 'ERP工单'
+      }],
        mesOrderShow: true,
        toMesOrderShow: false,
     }
@@ -335,7 +348,7 @@ export default {
       this.onQuery();
     },
     toMesOrder(row){
-      toMesOrder({"productNo": row.productNo,"isOrder":this.handQuery.isOrder}).then(res=>{
+      toMesOrder({"productNo": row.productNo,"isOrder":this.handQuery.isOrder,"isAuto":false}).then(res=>{
         if(res.err_code===10000){
           this.$message.success("同步成功！");
           this.getToMesOrder();
@@ -374,6 +387,14 @@ export default {
     handleCurrentChange(val) {
       this.handQuery.pg_pagenum = val;
       this.getToMesOrder(); // 查询
+    },
+    Rearrangement(row){
+      rearrangement({"productPlanId": row.productPlanId}).then(res=>{
+        if(res.err_code===10000){
+          this.$message.success("重排成功！");
+          this.getToMesOrder();
+        } else this.$message.error("重排失败"+res.err_msg);
+      })
     },
   },
 }

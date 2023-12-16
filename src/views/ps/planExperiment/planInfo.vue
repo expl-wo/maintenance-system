@@ -24,7 +24,7 @@
           ></el-date-picker>
         </el-form-item>
         <el-button icon="Search"  size="small" v-if="$isAuth('0406Experiment.search')" @click="queryTableDataParam">查询</el-button>
-        <el-button type="primary" icon="Coordinate"  size="small" v-if="$isAuth('0406Experiment.approval')" @click="handleApply">提交审批</el-button>
+<!--        <el-button type="primary" icon="Coordinate"  size="small" v-if="$isAuth('0406Experiment.approval')" @click="handleApply">提交审批</el-button>-->
         <el-button type="danger" icon="Delete"  size="small"  v-if="$isAuth('0406Experiment.delete')" @click="handleDelete">取消计划</el-button>
 <!--        <el-button type="success" icon="SuccessFilled"  size="small" v-if="isApproval === 1" @click="handlePass">审批通过</el-button>-->
 <!--        <el-button type="warning" icon="CircleCloseFilled"  size="small" v-if="isApproval === 1" @click="handleReject">审批驳回</el-button>-->

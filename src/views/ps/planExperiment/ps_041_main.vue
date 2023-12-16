@@ -31,10 +31,8 @@ export default {
   data() {
     let isApprovePage = false , isApprove = this.$constants.isApprove.no;
     let routePath = this.$route.fullPath;
-    if(routePath.indexOf('ps_041_mainApproval')>=0){
-      isApprovePage = true
-      isApprove = this.$constants.isApprove.yes
-    }
+    isApprovePage = true
+    isApprove = this.$constants.isApprove.yes
     return {
       isApprove,
     }

@@ -11,7 +11,7 @@ export function getInfo() {
 // 获取本人当前所使用角色的权限集合
 export function getCurrperm() {
   return request({
-    url: '/my/currperm',
+    url: '/api/pbpermissions/my/currperm',
     method: 'get'
   })
 }
@@ -19,7 +19,7 @@ export function getCurrperm() {
 // 切换我当前的使用角色
 export function getChgcurrrole(data) {
   return request({
-    url: '/my/chgcurrrole',
+    url: '/api/pbpermissions/my/chgcurrrole',
     method: 'post',
     data
   })
@@ -28,7 +28,7 @@ export function getChgcurrrole(data) {
 // 当前用户退出登录
 export function postLogout(data) {
   return request({
-    url: '/my/logout',
+    url: '/api/pbpermissions/my/logout',
     method: 'post',
     data
   })
@@ -36,7 +36,7 @@ export function postLogout(data) {
 //个人消息 列表
 export function getMyMessage(data) {
   return request({
-    url: '/my/msg/list',
+    url: '/api/pbpermissions/my/msg/list',
     method: 'get',
     params:data
   })
@@ -44,7 +44,7 @@ export function getMyMessage(data) {
 //个人消息 列表已读
 export function postMessRead(data) {
   return request({
-    url: '/my/msg/read',
+    url: '/api/pbpermissions/my/msg/read',
     method: 'post',
     data
   })
@@ -52,7 +52,7 @@ export function postMessRead(data) {
 //修改个人密码
 export function postRePassword(data) {
   return request({
-    url: '/my/chgpwd',
+    url: '/api/pbpermissions/my/chgpwd',
     method: 'post',
     data
   })

@@ -1,8 +1,10 @@
 // @ts-ignore
 import {userMenuTree} from "@/api/permission";
+import {getInfo} from "@/api/my";
 import sysConstants from "@/utils/constants";
 
-export const initUserPrivilege = () => {
+export const initUserPrivilege = async () => {
+    await getRole()
     return new Promise((resolve, reject) => {
 
         userMenuTree().then(response => {
@@ -26,6 +28,18 @@ export const initUserPrivilege = () => {
 //
 export const isAuth = (key) => {
     return JSON.parse(sessionStorage.getItem('btnList') || '[]').indexOf(key) !== -1 || false
+}
+
+export const getRole =() =>{
+    debugger
+    //获取角色信息
+    return new Promise((resolve, reject) => {
+        getInfo().then(response => {
+            const roleslogin = response.data
+            sessionStorage.setItem("roleslogin", JSON.stringify(roleslogin));
+            resolve("");
+        })
+    })
 }
 
 const getMenuList = menuList => {

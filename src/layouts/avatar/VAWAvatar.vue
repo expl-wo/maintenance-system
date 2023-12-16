@@ -1,19 +1,19 @@
 <template>
   <div class="vaw-avatar-container">
     <!--切换用户-->
-    <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" v-if="roleslogin && roleslogin.currRole && roleslogin.currRole.v">
+    <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" v-if="this.show" >
       <div class="avatar-wrapper font_size_10" >
-        切换角色-{{roleslogin.currRole.v}}
+        切换角色-{{this.roleslogin.currRole.v}}
         <i class="el-icon-caret-bottom" />
       </div>
 	  <template v-slot:dropdown>
-		  <el-dropdown-menu  class="user-dropdown" v-if="roleslogin.roles && roleslogin.roles.length > 0">
-		    <el-dropdown-item v-for="x in roleslogin.roles" :key="x.id">
-		      <div @click="switchRoles(x)" :class="{'col_blue': roleslogin.currRole.k == x.id}">{{x.roleName}}</div>
+		  <el-dropdown-menu  class="user-dropdown" v-if="this.roleslogin.roles && this.roleslogin.roles.length > 0">
+		    <el-dropdown-item v-for="x in this.roleslogin.roles" :key="x.id">
+		      <div @click="switchRoles(x)" :class="{'col_blue': this.roleslogin.currRole.k == x.id}">{{x.roleName}}</div>
 		    </el-dropdown-item>
 		  </el-dropdown-menu>
 	  </template>
-      
+
     </el-dropdown>
     <el-dropdown>
       <div class="action-wrapper">
@@ -68,16 +68,35 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent,onMounted, ref } from "vue";
 import { ElMessageBox } from "element-plus";
 import { User as UserIcon, SwitchButton } from "@element-plus/icons-vue";
 import useUserStore from "@/store/modules/user";
 import layoutStore from "../store";
 import {getUserInfo, removeToken} from "@/utils/auth";
+import { getChgcurrrole} from '@/api/my'
 
 export default defineComponent({
   name: "VAWAvatar",
+
   setup() {
+    const show = ref(false);
+    let roleslogin = ref({
+      currRole: {
+        k: '',
+        v: ''
+      },
+      roles: [],
+      user: {}
+    });
+    onMounted(()=>{
+      roleslogin.value = JSON.parse(sessionStorage.getItem('roleslogin'))
+      show.value = true;
+      console.log('角色信息1',roleslogin.value)
+     /* console.log('角色信息2:',this.roleslogin && this.roleslogin.currRole && this.roleslogin.currRole.v)
+      console.log('角色信息3:',this.roleslogin.currRole.v)*/
+    })
+
     const useStore = useUserStore();
     function onPersonalCenter() {
       (layoutStore as any).onPersonalCenter &&
@@ -100,7 +119,16 @@ export default defineComponent({
         });
       });
     }
+    // 切换角色
+    function switchRoles(item) {
+      debugger
+      getChgcurrrole({id: item.id}).then(response =>{
+        location.reload()
+        this.$message({ message: '切换成功', type: 'success' })
+      })
+    }
     return {
+      switchRoles,
       useStore,
       onPersonalCenter,
       onLogout,
@@ -108,7 +136,8 @@ export default defineComponent({
       SwitchButton,
       userInfo,
       dialogRePasswordsisible:false,
-      roleslogin:{},
+      roleslogin,
+      show,
       rePasswords:{
         oldPwd:'',
         newPwd:'',

@@ -136,21 +136,21 @@ export const sysRouter : Array<RouteRecordRaw> = [
 		},
 		children: [
 			{
-				//试验计划审批
-				path: 'ps_041_mainApproval',
-				name: '0406ExperimentApproval',
-				component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
-				meta: {
-					title: '试验计划审批',
-					icon: 'ps_011',
-				}
-			},
-			{
 				path: 'MesOrderPool',
 				name: '0401_orderPools',
 				component: () => import('@/views/ps/timeLimit/HNGCMesOrderPool.vue'),
 				meta: {
 					title: '计划工单池',
+					icon: 'qx_002',
+					keepAlive: true
+				}
+			},
+			{
+				path: 'ps_022_bandMesProcessPlan',
+				name: 'ps_022_bandMesProcessPlan',
+				component: () => import('@/views/ps/ps_022_bandMesProcessPlan.vue'),
+				meta: {
+					title: 'MES工艺路线绑定',
 					icon: 'qx_002',
 					keepAlive: true
 				}
@@ -227,7 +227,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				name: '0406Experiment',
 				component: () => import('@/views/ps/planExperiment/ps_041_main.vue'),
 				meta: {
-					title: '试验计划查看',
+					title: '试验计划编制',
 					icon: 'ps_011',
 					keepAlive: true
 				}

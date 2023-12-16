@@ -72,6 +72,7 @@
           <el-button @click="handleChangeCompletionTime" v-if="false">修改生产完工时间</el-button>
           <el-button @click="exportMainPlan" v-if="$isAuth('mainPlan_editData')">导出</el-button>
           <el-button @click="exportBomSum" v-if="$isAuth('mainPlan-exportBom')">导出BOM汇总</el-button>
+          <el-button @click="modifyNode" >修改计划节点数据</el-button>
 <!--          <el-button @click="handleChangeLimitRelationStatus" v-if="$isAuth('mainPlan_editData')">设置工序限制</el-button>-->
         </el-form-item>
       </el-form>
@@ -346,6 +347,7 @@
     <change-completion-time-dialog ref="changeCompletionTimeDialogRef" @refresh="getDataList"></change-completion-time-dialog>
     <limit-relation-dialog ref="limitRelationDialogRef" @refresh="getDataList"></limit-relation-dialog>
     <change-plan-completime-dialog ref="changePlanCompletimeDialogRef" @refresh="getDataList"></change-plan-completime-dialog>
+    <modify-node-dialog ref="modifyNodeRef" @refresh="getDataList"></modify-node-dialog>
   </div>
 </template>
 
@@ -376,6 +378,7 @@ import limitRelationDialog from './dialog/limitRelationDialog'
 import changePlanCompletimeDialog from './dialog/changePlanCompletimeDialog'
 import moment from 'moment'
 import cellTransform from '@/views/ps/_public/cell_transform.vue'
+import modifyNodeDialog from './dialog/modifyNodeDialog'
 
 const propertyClassFromDict = ['designSource', 'importmentLevel', 'urgentLevel', 'processStatus']
 const frozenDesc = '冻结'
@@ -384,7 +387,7 @@ export default {
   components: { Pagination, XuiDictionary, opStatusDialog, OpPurchaseTreeDialog,opStartDateDialog,
     timeLimitDialog, changeDeliveryDialog, selectUserDialog, processFlowchart,configColumnDialog, frozenDialog,
     historyFrozenDialog,remarkDialog,historyRemarkDialog, historyChangeDeliveryDialog,repairDialog,
-    changeCompletionTimeDialog,limitRelationDialog,changePlanCompletimeDialog,cellTransform},
+    changeCompletionTimeDialog,limitRelationDialog,changePlanCompletimeDialog,cellTransform,modifyNodeDialog},
   data() {
     return {
       processType: '',
@@ -937,6 +940,10 @@ export default {
       this.listQuery.yearMonth = null
       this.listQuery.year = nowDate.getFullYear().toString()
       this.listQuery.month = (nowDate.getMonth()+1).toString()
+    },
+    modifyNode(rowData){
+      let selectedData = this.canOnlySelectedOneRow();
+      this.$refs.modifyNodeRef.init(selectedData);
     },
   }
 };
