@@ -183,7 +183,10 @@ export default {
         searchInfo: this.queryParams.name,
       }).then((res) => {
         const { total, pageList } = res.data;
-        this.tableData = pageList || [];
+        this.tableData = (pageList || []).map((item, index) => ({
+          ...item,
+          id: index + 1,
+        }));
         this.pageOptions.total = total;
         this.listLoading = false;
       });
