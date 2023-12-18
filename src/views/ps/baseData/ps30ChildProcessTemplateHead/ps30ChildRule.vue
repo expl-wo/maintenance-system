@@ -8,9 +8,6 @@
         <el-form-item >
           <el-button type="primary" icon="search" @click="handleSearch">查询</el-button>
         </el-form-item>
-        <el-form-item >
-          <el-button type="primary" icon="search" @click="handleAdd">新增</el-button>
-        </el-form-item>
       </el-form>
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp"  >
@@ -18,47 +15,12 @@
         <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
           <el-table-column prop="gxUid" align="center" label="标准工序编码" />
           <el-table-column prop="gxName" align="center" label="标准工序名称" />
-          <el-table-column header-align="center" align="center" width="120" label="操作">
-            <template v-slot="scope">
-              <el-button-group>
-                <el-button  title="编辑" type="primary" icon="Edit"
-                            @click="handEdit(scope.row)" />
-                <el-button  title="删除" type="danger" icon="Delete"
-                            @click="handleDelete(scope.row)" />
-              </el-button-group>
-            </template>
-          </el-table-column>
         </el-table>
       </div>
       <pagination :total="total" :page ="listQueryPlm.pg_pagenum" :limit="listQueryPlm.pg_pagesize" class="searchCon"
                   @pagination="getList"
       />
     </div>
-    <el-dialog draggable  appendToBody :title="listQuery.id? '编辑': '新增'"
-               v-model="dialogVisible" modal width="600">
-      <el-form :model="listQuery" class="element-list" ref="form" :rules="rules" label-width="160px">
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label=" 标准工序编码:" prop="craftsName" >
-              <el-input v-model="listQuery.gxUid" placeholder="请输入标准工序编码" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="标准工序名称:" prop="gxName" >
-              <el-input v-model="listQuery.gxName" placeholder="请输入标准工序名称" style="width: 350px;"
-                        class="filter-item" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-      <div slot="footer">
-        <el-button  @click="dialogVisible=false">取消</el-button>
-        <el-button  type="primary" @click="saveItemData">保存</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -140,60 +102,6 @@ export default {
         this.listQueryPlm.pg_pagesize = val.limit
       }
       this.getDataList() // 查询
-    },
-
-
-    handleAdd() {
-      this.listQuery = {
-        gxUid: '',
-        gxName: '',
-      }
-      this.dialogVisible = true
-      this.$nextTick(() => {
-        this.$refs.formRef.clearValidate()
-      })
-    },
-    handEdit(row){
-      this.dialogVisible = true
-       this.listQuery.id = row.id
-      this.listQuery.gxUid = row.gxUid
-      this.listQuery.gxName = row.gxName
-    },
-
-    saveItemData() {
-      this.dialogVisible = false;
-      let params = {
-          id:this.listQuery.id,
-          gxUid: this.listQuery.gxUid,
-          gxName: this.listQuery.gxName
-      }
-      saveGx(params).then(response => {
-        this.$message({
-          message: "新增成功",
-          type: 'success'
-        })
-        this.getDataList()
-      })
-    },
-    handleDelete(rowData) {
-      this.$confirm(Constants.deleteTip).then(() => {
-        deleteGx({
-          id: rowData.id
-        }).then(response => {
-          if (response.err_code === Constants.respCode.success) {
-            this.$message({
-              type: 'error',
-              message: '删除失败'
-            })
-          } else {
-            this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-          }
-          this.getDataList()
-        })
-      })
     },
 
   }

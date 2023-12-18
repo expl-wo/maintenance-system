@@ -7,13 +7,6 @@
                   style="font-size: 0.7rem">
         <el-table-column prop="craftsDeCode" align="center"  width="120"   label="工步编码" />
         <el-table-column prop="craftsDeName" align="center" width="120" label="工步名称" />
-        <el-table-column label="前置条件" align="center" min-width="200">
-          <template v-slot="scope">
-            <el-select multiple value-key="k" v-model="scope.row.preCraftsDe" style="width: 270px">
-              <el-option v-for="item in scope.row.allCraftsDe" :key="item.k" :value="item" :label="item.v"></el-option>
-            </el-select>
-          </template>
-        </el-table-column>
         <el-table-column prop="standardWorkingHour" align="center"  width="120"   label="标准工时" />
         <el-table-column prop="safetyPrecautions" align="center"  width="120"   label="安全注意事项" />
         <el-table-column prop="isKeyStep" label="是否关键工步" align="center" width="100">
@@ -25,15 +18,11 @@
         <el-table-column prop="qualityRiskIdentification" align="center"  width="120"   label="质量风险识别" />
         <el-table-column prop="executionFrequency" align="center"  width="120"   label="执行频次" />
 
-        <el-table-column header-align="center" align="center" width="300" label="操作">
+        <el-table-column header-align="center" align="center" fixed="right" width="200" label="操作">
           <template v-slot="scope">
             <el-button-group>
               <el-button  title="编辑" type="primary" icon="Edit"
                           @click="handEdit(scope.row)" />
-<!--              <el-button  title="保存" type="primary" icon="Cellphone"-->
-<!--                         @click="saveItemDataCondition(scope.row)">-->
-<!--                保存-->
-<!--              </el-button>-->
               <el-button  title="删除" type="danger" icon="Delete"
                          @click="handleDelete(scope.row)" />
               <el-button  title="查看工作内容" type="primary" icon="Cellphone"
