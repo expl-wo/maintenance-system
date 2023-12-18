@@ -82,7 +82,9 @@
         </el-tag>
       </div>
     </template>
-
+    <!-- <span class="mgl12">项目经理:{{appointInfo.projManagerId}}</span>
+    <span>项目副经理:{{appointInfo.deputyManagerId}}</span>
+    <span>成员:{{appointInfo.taskUserIds}}</span> -->
     <div class="process-content" v-if="isRoleContorl.isCanShowTree">
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">
@@ -802,7 +804,7 @@ $left-width: 255px;
   display: flex;
   flex-direction: column;
 }
-.check-group-title{
+.check-group-title {
   border-bottom: 1px dashed #ccc;
   margin-bottom: 5px;
 }

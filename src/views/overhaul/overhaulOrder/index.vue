@@ -252,11 +252,12 @@ export default {
       setTimeout(() => {
         this.printWin.document.title = "衡变MES管理端-工单二维码打印";
         targetValue.forEach((item) => {
+          let codeInfo = {prodNumber:item.prodNumber,prodModel:item.prodModel,id:item.id}
           new QRCode(this.printWin.document.getElementById(`overhaul_print_${item.codeIndex}`), {
             width: 80,
             height: 80,
             // text: JSON.stringify(item),
-            text: `${item.prodNumber}_${item.prodModel}_${item.id}`,
+            text: JSON.stringify(codeInfo),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
             correctLevel: QRCode.CorrectLevel.M, // 降低容错级别
