@@ -345,9 +345,9 @@ export default {
           label: `${String(index).padStart(2, "0")}:00 ~ ${String(
             index + 1
           ).padStart(2, "0")}:00`,
-          value: `${String(index + 1).padStart(2, "0")}:00`,
+          value: `${String(index).padStart(2, "0")}:00`,
           status: targetStatus.includes(
-            `${String(index + 1).padStart(2, "0")}:00`
+            `${String(index).padStart(2, "0")}:00`
           ),
         });
       });

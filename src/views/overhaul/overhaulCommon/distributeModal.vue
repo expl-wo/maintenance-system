@@ -95,6 +95,7 @@
               v-model="form.members"
               multiple
               style="width: 220px"
+              clearable
               :multiple-limit="20"
               placeholder="请选择"
               class="filter-item"
@@ -263,7 +264,7 @@ export default {
       ].includes(this.onlyTabName);
     },
   },
-  mounted() {
+  async mounted() {
     let infoParams;
     let work = this.getProcedureInfoList(3);
     this.vlidateStep();
@@ -302,6 +303,8 @@ export default {
         console.log(this.devOptions);
       });
     } else if (this.operateRow === 3) {
+      //派工
+      await this.getPersonOptions(this.appointInfo.taskGroupId);
       if (infoParams) {
         getBindDispatch(infoParams).then((res) => {
           const {
@@ -318,9 +321,9 @@ export default {
           this.form.members = memberUserInfoList.map((item) => item.userId);
         });
       }
-      //派工
-      this.getPersonOptions(this.appointInfo.taskGroupId || "120");
     } else if (this.operateRow === 2) {
+      //复核
+      await this.getPersonOptions(this.appointInfo.taskGroupId);
       if (infoParams) {
         getBindReview(infoParams).then((res) => {
           const { checkType, reviewUserInfoList } = res.data;
@@ -330,8 +333,6 @@ export default {
             : undefined;
         });
       }
-      //复核
-      this.getPersonOptions(this.appointInfo.taskGroupId);
     } else {
       //视频
       if (infoParams) {
