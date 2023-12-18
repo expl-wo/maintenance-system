@@ -38,20 +38,14 @@ export default {
           `.${binding.value.popverClass} .el-select-dropdown__wrap`
         );
         SELECTWRAP_DOM &&
-          SELECTWRAP_DOM.addEventListener(
-            "scroll",
-            function () {
-              const condition =
-                this.scrollHeight - this.scrollTop <= this.clientHeight + 5;
-              if (condition) {
-                binding.value.getList(binding.value.popverClass);
-              }
-            },
-            { signal: binding.value.controller.signal }
-          );
+          SELECTWRAP_DOM.addEventListener("scroll", binding.value.scollEnd);
       },
       beforeUnmount(el, binding) {
-        binding.value.controller.abort();
+        const SELECTWRAP_DOM = document.querySelector(
+          `.${binding.value.popverClass} .el-select-dropdown__wrap`
+        );
+        SELECTWRAP_DOM &&
+          SELECTWRAP_DOM.removeEventListener("scroll", binding.value.scollEnd);
       },
     },
   },
@@ -97,11 +91,11 @@ export default {
       },
       selectSetting: {
         popverClass: this.popverClass, //下拉弹出框的类名
-        getList: this.loadMore, //获取options的方法
-        controller: new AbortController(), //用于终止addeventlistener的事件
+        scollEnd: this.scollEnd, //获取options的方法
       },
       selectOptions: [],
       filterVal: "",
+      scollEndFlag: true,//防止多次出发搜索事件
     };
   },
   watch: {
@@ -127,10 +121,16 @@ export default {
   mounted() {
     this.selectSearch("");
   },
-  beforeUnmount() {
-    this.selectSetting.controller && this.selectSetting.controller.abort();
-  },
   methods: {
+    scollEnd(e) {
+      const { target } = e;
+      const condition =
+        target.scrollHeight - target.scrollTop <= target.clientHeight + 5;
+      if (condition && this.scollEndFlag) {
+        this.scollEndFlag = false;
+        this.loadMore();
+      }
+    },
     //下拉框在关闭时即使什么都没输也会出发该方法
     filterMethod(val) {
       if (this.filterVal === val) {
@@ -158,6 +158,7 @@ export default {
     async loadMore() {
       if (this.pageParams.pageNum > this.pageParams.totalPage) return;
       const { options, totalPage } = await this.getOptions(this.pageParams);
+      this.scollEndFlag = true;//滚动标识
       this.pageParams.totalPage = totalPage;
       const filterOptions = (options || []).filter((item) => {
         if (Array.isArray(this.defaultSelectVal)) {

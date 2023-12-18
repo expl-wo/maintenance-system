@@ -135,6 +135,7 @@ import {
 } from "@/views/overhaul/constants.js";
 import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor.vue";
 import dayjs from "dayjs";
+import findLast from 'lodash/findLast'
 export default {
   components: {
     AffixAnchor,
@@ -296,9 +297,7 @@ export default {
      */
     dealProcess(targetList = []) {
       this.timeLineData.forEach((item) => {
-        const arr = targetList.findLast(
-          (ele) => ele.processState === item.processState
-        );
+        const arr = findLast(targetList, (ele) => ele.processState === item.processState);
         item.isActive = false;
         if (!arr) return;
         item.timestamp = dayjs(arr.editTime).format(COMMON_FORMAT);

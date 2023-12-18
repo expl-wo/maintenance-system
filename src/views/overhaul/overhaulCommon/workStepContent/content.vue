@@ -118,7 +118,7 @@
         <multi-upload-vue
           :limit="3"
           :fileUrl="fileUrl"
-          :disabled="!isEditAuth"
+          :disabled="!isEditAuth || ![1].includes(workStatus)"
           :fileName="fileName"
           accept="video/*,.jpg,.png,.jpeg"
           @uploadSuccess="uploadSuccess"
@@ -138,6 +138,10 @@ export default {
     multiUploadVue,
   },
   props: {
+    workStatus:{
+      type: Number,
+      default: 0,
+    },
     //是否能编辑
     isEditAuth: {
       type: Boolean,

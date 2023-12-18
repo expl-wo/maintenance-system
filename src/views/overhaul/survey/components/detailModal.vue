@@ -116,6 +116,7 @@ import SurveyReport from "@/views/overhaul/overhaulCommon/templateReport.vue";
 import IssueTable from "@/views/overhaul/workIssueCommon/issueTable";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
 import AffixAnchor from "@/views/overhaul/overhaulCommon/affixAnchor";
+import findLast from 'lodash/findLast'
 import dayjs from "dayjs";
 export default {
   components: {
@@ -226,6 +227,7 @@ export default {
         this.dealProcess(data.timelineList);
         this.getAppointSetting();
       } catch (error) {
+        console.log(error)
         // this.handleClose(true);
       }
     },
@@ -244,9 +246,7 @@ export default {
      */
     dealProcess(targetList = []) {
       this.timeLineData.forEach((item) => {
-        const arr = targetList.findLast(
-          (ele) => ele.processState === item.processState
-        );
+        const arr = findLast(targetList, (ele) => ele.processState === item.processState);
         item.isActive = false;
         if (!arr) return;
         item.timestamp = dayjs(arr.editTime).format(COMMON_FORMAT);

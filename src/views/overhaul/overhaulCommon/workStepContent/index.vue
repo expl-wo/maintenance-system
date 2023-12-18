@@ -68,6 +68,7 @@
         <content-item
           :ref="`contentItemRef${item.id}`"
           v-bind="item"
+          :workStatus="workStatus"
           :isEditAuth="isEditAuth"
           :workOrderInfo="workOrderInfo"
           :sceneType="sceneType"
@@ -77,7 +78,7 @@
       </template>
     </el-form>
     <div class="operate-wrap" v-if="isEditAuth">
-      <el-button type="primary" title="保存" @click="save"> 保存 </el-button>
+      <el-button type="primary" title="保存" :disabled="![1].includes(workStatus)" @click="save"> 保存 </el-button>
       <el-button
         type="primary"
         title="报工"
