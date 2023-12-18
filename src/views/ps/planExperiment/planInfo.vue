@@ -257,6 +257,7 @@ export default {
       planWeek.delPlan({planType:this.planType,ids:delId}).then(res=>{
         if(res.err_code===10000){
           this.queryTableDataParam()
+          this.$emit('refresh', {})
           this.$message.success("删除成功！");
         } else {
           this.$message.error("删除失败："+res.err_msg);
