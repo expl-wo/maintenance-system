@@ -89,13 +89,16 @@
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">
           <span>工序结构</span>
-          <!-- <el-popover placement="bottom" :width="100" trigger="click">
+          <el-popover placement="bottom" :width="100" v-if="workTreeStatus === 2" trigger="click">
             <template #reference>
               <el-icon title="工序配置筛选" :size="18" class="el-icon--right"
                 ><Menu />
               </el-icon>
             </template>
-            <div class="check-group-title">工序配置筛选</div>
+            <div class="check-group-title">
+              工序配置筛选
+              <el-icon title="筛选出还未配置的工序,筛选后鼠标悬停树节点标记可显示未配置详情" class="check-group-title-question"><QuestionFilled /></el-icon>
+            </div>
             <el-checkbox
               v-model="checkAll"
               :indeterminate="isIndeterminate"
@@ -111,7 +114,7 @@
                 e
               }}</el-checkbox>
             </el-checkbox-group>
-          </el-popover> -->
+          </el-popover>
         </div>
         <div class="process-content-left-search">
           <el-input placeholder="输入关键字进行过滤" v-model="filterText">
@@ -302,6 +305,13 @@ const sceneType_map = {
   OVER_HAUL_BACK_INNER_PRODUCTION_SCENE: 41,
   OVER_HAUL_BACK_EXPERIMENT_SCENE: 51,
 };
+//操作字段枚举
+const OPERATE_MAP = {
+  videoBind: "视频绑定",
+  orderCheck: "复核人员",
+  infoAppoint: "派工",
+  bigComponent: "设备绑定",
+};
 export default {
   name: "ProcessInfo",
   props: {
@@ -478,41 +488,48 @@ export default {
     //通过权限获取下拉选择项
     getCheckOptions() {
       this.checkOptions = [];
-      const obj = {
-        videoBind: "视频绑定",
-        orderCheck: "复核人员",
-        infoAppoint: "派工",
-        bigComponent: "设备绑定",
-      };
-      Object.keys(obj).forEach((item) => {
+      Object.keys(OPERATE_MAP).forEach((item) => {
         if (this.$isAuth(this.roleBtnEnum[item]) && !this.isSurvey) {
-          this.checkOptions.push(obj[item]);
+          this.checkOptions.push(OPERATE_MAP[item]);
         }
       });
     },
-    //过滤筛选时显示对饮未进行的操作
+    //过滤筛选时显示对饮未进行的操作 ifBindVideoDevice
     dealCheckStatusTitle(node) {
+      let mesDevTitle = "MES绑定视频设备";
+      //对应后端字段
       const map = {
-        视频绑定:{
-          value: "ifChoice",
-          procedureType:PROCESS_NODE_ENUM.STEP,
+        [mesDevTitle]: {
+          value: "ifBindVideoDevice",
+          procedureType: PROCESS_NODE_ENUM.MIDDLE,
         },
-        复核人员:{
-          value: "ifChoice",
-          procedureType:PROCESS_NODE_ENUM.STEP,
+        [OPERATE_MAP.videoBind]: {
+          value: "ifBindDevChannel",
+          procedureType: PROCESS_NODE_ENUM.STEP,
         },
-        派工: {
-          value: "ifChoice",
-          procedureType:PROCESS_NODE_ENUM.STEP,
+        [OPERATE_MAP.orderCheck]: {
+          value: "ifBindReviewInfo",
+          procedureType: PROCESS_NODE_ENUM.STEP,
         },
-        设备绑定: {
-          value: "ifChoice",
-          procedureType:PROCESS_NODE_ENUM.MIDDLE,
+        [OPERATE_MAP.infoAppoint]: {
+          value: "ifBindDispatchInfo",
+          procedureType: PROCESS_NODE_ENUM.STEP,
+        },
+        [OPERATE_MAP.bigComponent]: {
+          value: "ifBindBigDevice",
+          procedureType: PROCESS_NODE_ENUM.MIDDLE,
         },
       };
       let title = [];
-      this.checkedList.forEach((item) => {
-        if (+node.procedureType === map[item].procedureType &&node[map[item].value]) {
+      let tempList = [...this.checkedList];
+      if (tempList.includes(OPERATE_MAP.videoBind)) {
+        tempList.push(mesDevTitle);
+      }
+      tempList.forEach((item) => {
+        if (
+          +node.procedureType === map[item].procedureType &&
+          !node[map[item].value]
+        ) {
           title.push(item);
         }
       });
@@ -818,6 +835,12 @@ $left-width: 255px;
 .check-group-title {
   border-bottom: 1px dashed #ccc;
   margin-bottom: 5px;
+  &-question{
+    vertical-align: text-top;
+  }
+  &-question:hover{
+    cursor: pointer;
+  }
 }
 .process-content {
   display: flex;

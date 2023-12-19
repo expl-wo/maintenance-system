@@ -16,7 +16,7 @@
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="商机订单" prop="businessOrderId">
+          <el-form-item label="商机" prop="businessOrderId">
             <select-page
               ref="selectRef"
               v-model="form.businessOrderId"

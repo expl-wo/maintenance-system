@@ -267,7 +267,8 @@ export default {
   async mounted() {
     let infoParams;
     let work = this.getProcedureInfoList(3);
-    this.vlidateStep();
+    const falg = this.vlidateStep();
+    if (!falg) return;
     if (work.length === 1) {
       infoParams = {
         workCode: this.workOrderInfo.id,
@@ -352,7 +353,16 @@ export default {
   methods: {
     vlidateStep() {
       let work = this.getProcedureInfoList(3);
+      let oldWork = [...work]; //暂存数据
+      //如果是绑定视频通道，则需要通过当前工步所在的中工序是否绑定了mes视频设备来判断
+      if (this.operateRow === 1) {
+        work = work.filter((item) => item.ifBindVideoDevice);
+      }
       if (!work.length && [1, 2, 3].includes(this.operateRow)) {
+        if (oldWork.length && this.operateRow === 1) {
+          this.$message.warning("所选工步所在的中工序未绑定mes视频设备！");
+          return false;
+        }
         this.$message.warning("请检查所选工序节点是否包含工步！");
         return false;
       }
@@ -399,7 +409,7 @@ export default {
         pageNum,
         pageSize,
         searchKey,
-        types: [],
+        unitTypeList: [1],
       };
       return new Promise((resolve, reject) => {
         getChannelList(queryParms).then((res) => {
@@ -444,10 +454,13 @@ export default {
     //获取选中的组织节点
     getProcedureInfoList(procedureType = 2) {
       return this.currentNode
-        .filter((el) => +el.procedureType === procedureType)
+        .filter((el) => {
+          return +el.procedureType === procedureType;
+        })
         .map((item) => ({
           procedureCode: item.procedureCode,
           procedureType: item.procedureType,
+          ifBindVideoDevice: item.ifBindVideoDevice,
         }));
     },
     handleOk() {
