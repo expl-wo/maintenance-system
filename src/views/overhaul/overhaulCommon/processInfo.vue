@@ -97,7 +97,7 @@
             </template>
             <div class="check-group-title">
               工序配置筛选
-              <el-icon title="筛选出还未配置的工序,筛选后鼠标悬停树节点标记可显示未配置详情" class="check-group-title-question"><QuestionFilled /></el-icon>
+              <el-icon title="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情" class="check-group-title-question"><QuestionFilled /></el-icon>
             </div>
             <el-checkbox
               v-model="checkAll"

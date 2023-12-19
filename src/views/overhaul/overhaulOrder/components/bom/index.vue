@@ -404,7 +404,7 @@ export default {
      */
     beforeUpload(file) {
       if (this.fileList.length >= this.MAX_IMG_NUM) {
-        this.$message.error(`最大上传${this.MAX_IMG_NUM}张图片`);
+        this.$message.error(`最多上传${this.MAX_IMG_NUM}张图片`);
         return false;
       }
       if (file.size / 1024 / 1024 > MAX_IMG_SIZE) {

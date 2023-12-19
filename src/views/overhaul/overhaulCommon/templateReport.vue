@@ -335,6 +335,8 @@ export default {
             //如果是选择模板的发起审核就先保存之后发起审核
             await this.saveFile(false);
           }
+          this.loading = true;
+          this.loadingType = 3;
           checkWorkDocmentInfo({
             workCode: this.workOrderInfo.id,
             workDocType: this.workType,
@@ -343,6 +345,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("提交审核成功！");
+              this.getSaveFile();
             }
             this.loading = false;
           });
