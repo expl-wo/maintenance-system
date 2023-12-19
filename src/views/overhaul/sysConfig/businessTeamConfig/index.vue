@@ -82,7 +82,8 @@ export default {
           return {
             busId: '',
             workClazzId: this.configForm[item.key],
-            workClazzType: item.key
+            workClazzType: item.key,
+            workClazzName: this.directorMap[this.configForm[item.workClazzType]]
           }
         })
       } else {
