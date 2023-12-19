@@ -16,7 +16,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="qualityRiskIdentification" align="center"  width="120"   label="质量风险识别" />
-        <el-table-column prop="executionFrequency" align="center"  width="120"   label="执行频次" />
+        <el-table-column prop="executionFrequency" align="center"  width="120"   label="执行频次" >
+          <template v-slot="{row}">
+            <div v-if="row.executionFrequency == 0">每小时</div>
+            <div v-if="row.executionFrequency == 1">每天</div>
+            <div v-if="row.executionFrequency == 2">每工单</div>
+          </template>
+        </el-table-column>
 
         <el-table-column header-align="center" align="center" fixed="right" width="200" label="操作">
           <template v-slot="scope">
@@ -107,8 +113,7 @@
         <el-row>
             <el-col :span="24">
               <el-form-item label="执行频次:" prop="executionFrequency" >
-                <el-input v-model="listItemUpdate.executionFrequency" placeholder="请输入执行频次" style="width: 350px;"
-                          class="filter-item" />
+                <xui-dict-select style="width: 100%;" v-model="listItemUpdate.executionFrequency" item-code="OperationTimeline"></xui-dict-select>
               </el-form-item>
             </el-col>
         </el-row>
