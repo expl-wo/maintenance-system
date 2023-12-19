@@ -22,7 +22,6 @@
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
       <el-table-column prop="gxName" label="PLM工序名称" align="center" min-width="15%"/>
-      <el-table-column prop="standardTime" label="标准工时" align="center" min-width="15%"/>
       <el-table-column prop="name" label="节点名称" align="center" min-width="15%"/>
       <el-table-column prop="type" align="center" label="节点类型" min-width="15%">
         <template v-slot:default="scope">

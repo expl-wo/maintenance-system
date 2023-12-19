@@ -119,7 +119,7 @@ export default {
         canApprovalDesc: '预排',
         waitApproval: ['2'], //是否可待审批处理
         waitApprovalDesc: '待审批',
-        freeze: ['0', '1', '2', '3', '10'],
+        freeze: ['0', '10', '15', '20'],
         canFreezeDesc: '待排产，粗排，已下发，生成工序计划或已开工',
         unfreeze: ['-50'],
         canUnFreezeDesc: '冻结',
