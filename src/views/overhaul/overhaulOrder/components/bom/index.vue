@@ -474,7 +474,7 @@ export default {
             text: JSON.stringify(item),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
-            correctLevel: QRCode.CorrectLevel.L, // 降低容错级别
+            correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
           });
         });
         this.printWin.addEventListener("afterprint", this.backWin);
