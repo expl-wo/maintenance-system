@@ -49,13 +49,18 @@ export default {
       directorList: [],
       // 记录
       revData: [],
-      loading: false
+      loading: false,
+      // 班组Id和name的对应关系
+      directorMap: {}
     };
   },
   async mounted() {
     let  res = await getListData();
     if (res.success && res.data) {
       this.directorList = res.data.value || [];
+      this.directorList.map(item => {
+        this.directorMap[item.id] = item.name;
+      })
     }
     let configRes = await getSysConfig();
     if (configRes.success && configRes.data) {
@@ -84,7 +89,8 @@ export default {
         params = this.revData.map(item => {
           return {
             ...item,
-            workClazzId: this.configForm[item.workClazzType]
+            workClazzId: this.configForm[item.workClazzType],
+            workClazzName: this.directorMap[this.configForm[item.workClazzType]]
           }
         })
       }
