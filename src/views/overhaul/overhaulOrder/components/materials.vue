@@ -73,7 +73,7 @@
     >
       <el-form :inline="true" ref="dataForm" :model="form">
         <el-form-item label="数量">
-          <el-input-number v-model="form.num" :min="0" :max="100000" />
+          <el-input-number v-model="form.num" :min="0" :max="10000000" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -154,7 +154,7 @@ export default {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("保存成功！");
-          this.closeModal("closeModal", true);
+          this.closeModal("editModal", true);
         }
       });
     },
@@ -163,6 +163,7 @@ export default {
      */
     openModal(row = null, modeName) {
       this.operateRow = row;
+      this.form.num = +this.operateRow.materialNum;
       this[modeName] = true;
     },
     //分页发生改变时

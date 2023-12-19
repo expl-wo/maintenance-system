@@ -616,22 +616,22 @@ const MATERIALS_COLUMNS = [
         width: 50
     },
     {
-        prop: "productNumber",
+        prop: "materialTypeName",
         label: "材料名称",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "materialType",
         label: "材料类型",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "procedureLevel",
         label: "工序组织",
         align: "center",
     },
     {
-        prop: "num",
+        prop: "materialNum",
         label: "数量",
         align: "center",
     },
