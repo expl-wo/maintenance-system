@@ -134,8 +134,8 @@
             <template #default="{ node, data }">
               {{ node.label }}
               <el-icon
-                :title="dealCheckStatusTitle(data)"
-                v-if="checkedList.length"
+                :title="`未进行${dealCheckStatusTitle(data)}操作`"
+                v-if="dealCheckStatusTitle(data)"
                 style="margin-left: 4px"
                 color="red"
                 ><Warning /></el-icon
@@ -493,19 +493,30 @@ export default {
     //过滤筛选时显示对饮未进行的操作
     dealCheckStatusTitle(node) {
       const map = {
-        视频绑定: "ifChoice",
-        复核人员: "ifChoice",
-        派工: "ifChoice",
-        设备绑定: "ifChoice",
+        视频绑定:{
+          value: "ifChoice",
+          procedureType:PROCESS_NODE_ENUM.STEP,
+        },
+        复核人员:{
+          value: "ifChoice",
+          procedureType:PROCESS_NODE_ENUM.STEP,
+        },
+        派工: {
+          value: "ifChoice",
+          procedureType:PROCESS_NODE_ENUM.STEP,
+        },
+        设备绑定: {
+          value: "ifChoice",
+          procedureType:PROCESS_NODE_ENUM.MIDDLE,
+        },
       };
       let title = [];
       this.checkedList.forEach((item) => {
-        if (node[map[item]]) {
+        if (+node.procedureType === map[item].procedureType &&node[map[item].value]) {
           title.push(item);
         }
       });
-      console.log(node);
-      return `未进行${title.join("、")}操作`;
+      return title.join("、");
     },
     //工序树的筛选框逻辑
     handleCheckAllChange(val) {

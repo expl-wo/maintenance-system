@@ -13,6 +13,9 @@
     <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
       ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
     >
+    <el-button type="primary" @click="openModal('showPrint')"
+      ><el-icon class="el-icon--left"><Printer /></el-icon>打印二维码</el-button
+    >
     <div class="bom-content" v-if="bomTreeId">
       <div class="bom-content-left">
         <div class="bom-content-left-title">BOM结构</div>
@@ -39,11 +42,6 @@
           :column="1"
           :style="{ width: '500px' }"
         >
-          <template #extra>
-            <el-button type="primary" @click="openModal('showPrint')"
-              >打印二维码</el-button
-            >
-          </template>
           <el-descriptions-item label="利旧状态">{{
             utilizeStatusMap[operateRow.utilize] || "-"
           }}</el-descriptions-item>
@@ -453,8 +451,12 @@ export default {
       let dom = ""; // 拼接的字符串
       targetValue.forEach((item, i) => {
         dom += `<div style='page-break-after:always'>
-        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black;min-width:120px' colspan='2'>${item.prodNumber||''}</th>
-        <td rowspan='3' colspan='3'><div id='${item.serialCode}' style='text-align: center'></div></td>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black;min-width:120px' colspan='2'>${
+          item.prodNumber || ""
+        }</th>
+        <td rowspan='3' colspan='3'><div id='${
+          item.serialCode
+        }' style='text-align: center'></div></td>
         </tr>
         </table>
         </div>
@@ -472,7 +474,7 @@ export default {
             text: JSON.stringify(item),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
-            correctLevel: QRCode.CorrectLevel.M, // 降低容错级别
+            correctLevel: QRCode.CorrectLevel.L, // 降低容错级别
           });
         });
         this.printWin.addEventListener("afterprint", this.backWin);
