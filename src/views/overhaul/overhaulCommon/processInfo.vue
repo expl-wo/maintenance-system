@@ -89,7 +89,12 @@
       <div class="process-content-left" v-loading="treeLoading">
         <div class="process-content-left-title">
           <span>工序结构</span>
-          <el-popover placement="bottom" :width="100" v-if="workTreeStatus === 2" trigger="click">
+          <el-popover
+            placement="bottom"
+            :width="100"
+            v-if="workTreeStatus === 2"
+            trigger="click"
+          >
             <template #reference>
               <el-icon title="工序配置筛选" :size="18" class="el-icon--right"
                 ><Menu />
@@ -97,7 +102,11 @@
             </template>
             <div class="check-group-title">
               工序配置筛选
-              <el-icon title="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情" class="check-group-title-question"><QuestionFilled /></el-icon>
+              <el-icon
+                title="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
+                class="check-group-title-question"
+                ><QuestionFilled
+              /></el-icon>
             </div>
             <el-checkbox
               v-model="checkAll"
@@ -107,7 +116,7 @@
             >
             <el-checkbox-group
               v-model="checkedList"
-              @change="handleCheckedCitiesChange"
+              @change="handleCheckedChange"
               class="check-group"
             >
               <el-checkbox v-for="e in checkOptions" :key="e" :label="e">{{
@@ -274,6 +283,7 @@
 </template>
 
 <script>
+import debounce from "lodash/debounce";
 import AddIssue from "@/views/overhaul/workIssueCommon/addIssue.vue";
 import DistributeModal from "./distributeModal.vue"; //派工配置弹窗
 import SelectPage from "@/components/SelectPage/selectPage.vue";
@@ -539,15 +549,19 @@ export default {
     handleCheckAllChange(val) {
       this.checkedList = val ? this.checkOptions : [];
       this.isIndeterminate = false;
-      this.getTreeData();
+      this.debounceGetTreeData();
     },
-    handleCheckedCitiesChange(value) {
+    handleCheckedChange(value) {
       const checkedCount = value.length;
       this.checkAll = checkedCount === this.checkOptions.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.checkOptions.length;
-      this.getTreeData();
+      this.debounceGetTreeData();
     },
+    //防抖查询树接口
+    debounceGetTreeData: debounce(function () {
+      this.getTreeData();
+    }, 500),
     //分页发生改变时
     pageChange({ limit, page }) {
       this.pageOptions.pageNum = page;
@@ -835,10 +849,10 @@ $left-width: 255px;
 .check-group-title {
   border-bottom: 1px dashed #ccc;
   margin-bottom: 5px;
-  &-question{
+  &-question {
     vertical-align: text-top;
   }
-  &-question:hover{
+  &-question:hover {
     cursor: pointer;
   }
 }
