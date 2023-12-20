@@ -62,7 +62,7 @@ export default defineComponent({
   name: "Login",
   setup() {
     const loading = ref(false);
-    const downloadUrl = ref('http://hngcmes-test.tbea-hb.com.cn/d.html');
+    const downloadUrl = ref('http://tnjai-test.tbea-hb.com.cn/d.html');
 
     const rules = reactive({
       username: [{ required: true, trigger: 'blur', message: '用户名不能为空'}],
