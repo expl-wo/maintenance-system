@@ -30,8 +30,10 @@ export default {
       let docData = {};
       let res = await getTemplateData({ type: 0 });
       if (res && res.success && res.data && res.data.value) {
-        docData = res.data.value[0] || {};
+        let revData = res.data.value;
+        if (!revData.length) return;
       }
+      docData = res.data.value[0];
       if (docData.docId) {
         let revRes = await getTemplateById({ docId: docData.docId });
         if (revRes && revRes.success) {
@@ -60,7 +62,9 @@ export default {
       let params = {
         ...this.revData,
         content: this.content,
-        contentStr: this.$refs.editor.editor.getText()
+        contentStr: this.$refs.editor.editor.getText(),
+        type: '0',
+        createrId: localStorage.getItem("userId")
       }
       addOrEditTemplate(params)
       .then(res => {

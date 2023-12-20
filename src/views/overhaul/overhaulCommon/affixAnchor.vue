@@ -40,54 +40,40 @@ export default {
       isOpen: true, //是否展开
       top: "40%",
       left: "90%",
-      abortContance: null,
       controlTime: null, //定时器
     };
   },
   beforeUnmount(){
-    if (this.abortContance) {
-        this.abortContance.abort();
-        this.abortContance = null;
-    }
+    this.removeMouseEvent();
   },
   methods: {
+    //鼠标移动事件
+    mouseMove(e){
+      if (e.buttons !== 1) return;
+      this.left = e.clientX - 23 + "px"; //其中23时按钮的宽的一半 12为高的一半
+      this.top = e.clientY - 12 + "px";
+    },
+    //鼠标抬起事件
+    mouseUp(){
+      document.removeEventListener( "mousemove", this.mouseMove)
+      this.cursor = "pointer";
+    },
     moveTo(e) {
       e.preventDefault();
-      if (this.abortContance) {
-        this.abortContance.abort();
-        this.abortContance = null;
-      }
+      clearTimeout(this.controlTime)
       //设置一个定时器，点击500ms之后才能移动
       this.controlTime = setTimeout(() => {
-        this.abortContance = new AbortController();
         this.cursor = "move"; //更改鼠标样式
-        document.addEventListener(
-          "mousemove",
-          (e) => {
-            if (e.buttons !== 1) return;
-            this.left = e.clientX - 23 + "px"; //其中23时按钮的宽的一半 12为高的一半
-            this.top = e.clientY - 12 + "px";
-          },
-          { signal: this.abortContance.signal }
-        );
-        document.addEventListener(
-          "mouseup",
-          () => {
-            if (this.abortContance) {
-              this.abortContance.abort();
-              this.abortContance = null;
-            }
-            this.cursor = "pointer";
-          },
-          { signal: this.abortContance.signal }
-        );
+        document.addEventListener("mousemove",this.mouseMove);
+        document.addEventListener("mouseup",this.mouseUp);
       }, 200);
     },
+    removeMouseEvent(){
+      document.removeEventListener( "mousemove", this.mouseMove)
+      document.removeEventListener( "mouseup", this.mouseUp)
+    },
     moveEnd() {
-      if (this.abortContance) {
-        this.abortContance.abort();
-        this.abortContance = null;
-      }
+      this.removeMouseEvent();
       //如果在moveup事件之前cursor不是move则仅是点击事件，不能move
       if (this.cursor !== "move") {
         clearTimeout(this.controlTime);

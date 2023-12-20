@@ -44,8 +44,8 @@
           </el-button>
         </div>
       </el-form>
-     <!-- <div class="downloadApp">扫描二维码或访问{{ downloadUrl }}下载App</div>
-      <div id="mesAppDownload" style="width: 150px;height: 150px;"></div>-->
+     <div class="downloadApp">扫描二维码或访问{{ downloadUrl }}下载App</div>
+      <div id="mesAppDownload" style="width: 150px;height: 150px;"></div>
     </div>
   </div>
 </template>
@@ -55,14 +55,14 @@ import {defineComponent, ref, nextTick, reactive, onMounted} from "vue";
 import {ElMessage} from 'element-plus'
 import {useRoute, useRouter} from "vue-router";
 import useUserStore from "@/store/modules/user";
-import QRCode from "qrcodejs2";
+import QRCode from "qrcodejs2-fix";
 import md5 from 'js-md5';
 
 export default defineComponent({
   name: "Login",
   setup() {
     const loading = ref(false);
-    const downloadUrl = ref('http://slm.tbea-hb.com.cn/d.html');
+    const downloadUrl = ref('http://tnjai-test.tbea-hb.com.cn/d.html');
 
     const rules = reactive({
       username: [{ required: true, trigger: 'blur', message: '用户名不能为空'}],
@@ -123,9 +123,9 @@ export default defineComponent({
         correctLevel: QRCode.CorrectLevel.H// 降低容错级别
       })
     }
-    /*onMounted(()=>{
+    onMounted(()=>{
       constructQrCode()
-    })*/
+    })
     return {
       model,
       loginFormRef,

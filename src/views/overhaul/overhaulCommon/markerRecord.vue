@@ -62,7 +62,7 @@
             class="card-list-content-title card-list-content-item"
             :title="item.markName"
           >
-           标记名称: {{ item.markName || '-' }}
+            标记名称: {{ item.markName || "-" }}
           </div>
           <div class="card-list-content-item" :title="item.capTime">
             标记时间:{{ item.capTime }}
@@ -172,7 +172,7 @@ export default {
       //查询参数
       queryParams: {
         time: [
-          dayjs().startOf("day").subtract(7, 'day').format(COMMON_FORMAT),
+          dayjs().startOf("day").subtract(7, "day").format(COMMON_FORMAT),
           dayjs().endOf("day").format(COMMON_FORMAT),
         ],
       },
@@ -197,7 +197,9 @@ export default {
       return this.workOrderInfo.orderStatus === 17;
     },
     editAuth() {
-      return `${MENU_CODE[+this.workOrderType]}_${this.onlyTabName.split("-")[0]}_markerList_edit`;
+      return `${MENU_CODE[+this.workOrderType]}_${
+        this.onlyTabName.split("-")[0]
+      }_markerList_edit`;
     },
   },
   mounted() {

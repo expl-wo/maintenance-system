@@ -44,7 +44,6 @@
         </el-button>
         <el-button
           type="primary"
-          :disabled="isBtnDisabled"
           @click="downLoadFile"
         >
           <el-icon class="el-icon--left"><Download /></el-icon>下载
@@ -226,7 +225,7 @@ export default {
             showChanges: false, //启用文档更改的实验渲染（插入/删除）
             debug: false, //启用额外的日志记录
           }).catch(() => {
-            this.$message.error("该文档无法预览，请下载后查看！");
+            this.$message.error("该文档无法预览，请确认文档是否为加密文档！");
           });
         });
       });
@@ -336,6 +335,8 @@ export default {
             //如果是选择模板的发起审核就先保存之后发起审核
             await this.saveFile(false);
           }
+          this.loading = true;
+          this.loadingType = 3;
           checkWorkDocmentInfo({
             workCode: this.workOrderInfo.id,
             workDocType: this.workType,
@@ -344,6 +345,7 @@ export default {
               this.$message.error(res.errMsg);
             } else {
               this.$message.success("提交审核成功！");
+              this.getSaveFile();
             }
             this.loading = false;
           });

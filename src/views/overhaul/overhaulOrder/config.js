@@ -340,8 +340,8 @@ const TAB_LIST_MAP = {
             workType: 13,
             menuCode: "2005_report_view_13"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_experiment_videoMarker" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_experiment_markerList_view" }
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_experiment_videoMarker" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_experiment_markerList_view" }
         ],
     //厂内生产
     factoryCreate: [
@@ -368,21 +368,16 @@ const TAB_LIST_MAP = {
             workType: 11,
             menuCode: "2005_report_view_11"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryCreate_videoMarker" },
-        {
-            label: "标记记录", name: "markRecord", components: "MarkerRecord",
-            menuCode: "2005_factoryCreate_markerList_view"
-        }
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryCreate_videoMarker" },
+        // {
+        //     label: "标记记录", name: "markRecord", components: "MarkerRecord",
+        //     menuCode: "2005_factoryCreate_markerList_view"
+        // }
     ],
     //厂内拆解
     factoryDismantle: [
         { label: "工序信息", name: "processInfo", components: "ProcessInfo", menuCode: "2005_factoryDismantle_processInfo" },
         { label: "工序问题查看", name: "issueTable", components: "IssueTable", menuCode: "2005_factoryDismantle_issue" },
-        // {
-        //     label: "施工方案",
-        //     name: "constructionScheme",
-        //     components: "TemplateReport",
-        // },
         {
             label: "厂内拆解作业指导书",
             name: "returnInstruction",
@@ -403,8 +398,8 @@ const TAB_LIST_MAP = {
             workType: 9,
             menuCode: "2005_report_view_9"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryDismantle_videoMarker" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_factoryDismantle_markerList_view" }
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_factoryDismantle_videoMarker" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_factoryDismantle_markerList_view" }
     ],
     //现场拆解
     siteDismantle: [
@@ -462,8 +457,8 @@ const TAB_LIST_MAP = {
             workType: 15,
             menuCode: "2005_report_view_15"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_siteDismantle_videoMarker" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_siteDismantle_markerList_view" }
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark", menuCode: "2005_siteDismantle_videoMarker" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord", menuCode: "2005_siteDismantle_markerList_view" }
     ],
     //现场检修，
     siteOverhaul: [
@@ -515,8 +510,8 @@ const TAB_LIST_MAP = {
             workType: 5,
             menuCode: "2005_report_view_5"
         },
-        { label: "录像标记", name: "videoAndImg", components: "videoMark",menuCode: "2005_siteOverhaul_videoMarker" },
-        { label: "标记记录", name: "markRecord", components: "MarkerRecord",menuCode: "2005_siteOverhaul_markerList_view" }
+        // { label: "录像标记", name: "videoAndImg", components: "videoMark",menuCode: "2005_siteOverhaul_videoMarker" },
+        // { label: "标记记录", name: "markRecord", components: "MarkerRecord",menuCode: "2005_siteOverhaul_markerList_view" }
     ],
     //现场勘探
     surveyItem: [
@@ -621,22 +616,22 @@ const MATERIALS_COLUMNS = [
         width: 50
     },
     {
-        prop: "productNumber",
+        prop: "materialTypeName",
         label: "材料名称",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "materialType",
         label: "材料类型",
         align: "center",
     },
     {
-        prop: "materialName",
+        prop: "procedureLevel",
         label: "工序组织",
         align: "center",
     },
     {
-        prop: "num",
+        prop: "materialNum",
         label: "数量",
         align: "center",
     },

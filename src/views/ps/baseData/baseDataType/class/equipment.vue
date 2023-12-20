@@ -9,7 +9,6 @@
         </el-form-item>
         <el-form-item >
           <el-button type="primary" icon="search" @click="onBtnQuery">查询</el-button>
-          <el-button type="primary"  icon="Plus"  @click="handleAdd" >新增</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -21,18 +20,6 @@
           <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
         </el-table-column>
         <el-table-column prop="equipmentTypeName" label="设备类型名称 " align="center" min-width="15%"/>
-        <el-table-column label="操作" align="center" width="200">
-          <template v-slot="scope">
-            <el-button-group>
-              <el-button  type="primary" icon="Edit"
-                          @click="handleEdit(scope.row)">
-              </el-button>
-              <el-button type="danger"  icon="Delete"
-                         @click="handleDelete(scope.row)">
-              </el-button>
-            </el-button-group>
-          </template>
-        </el-table-column>
       </el-table>
     </div>
 

@@ -161,7 +161,7 @@ export default {
           this.tableData =
             pageList.map((item, index) => ({
               ...item,
-              id: index,
+              id: index+1,
               examineStatus: BOM_STATUS[+item.examineStatus],
             })) || [];
           this.pageOptions.total = total;

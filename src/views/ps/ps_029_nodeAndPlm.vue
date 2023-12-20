@@ -22,7 +22,6 @@
         <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
       </el-table-column>
       <el-table-column prop="gxName" label="PLM工序名称" align="center" min-width="15%"/>
-      <el-table-column prop="standardTime" label="标准工时" align="center" min-width="15%"/>
       <el-table-column prop="name" label="节点名称" align="center" min-width="15%"/>
       <el-table-column prop="type" align="center" label="节点类型" min-width="15%">
         <template v-slot:default="scope">
@@ -42,12 +41,11 @@
 </template>
 
 <script>
-import TableSimple from '@/components/Table/index'
 import { PlmProcessNode} from '@/api/plan'
 import Pagination from "@/components/Pagination/index";
 export default {
   name: 'Table',
-  components: { TableSimple,Pagination },
+  components: { Pagination },
   data() {
     return {
       total: 0, // 角色列表表格总条数
@@ -89,7 +87,7 @@ export default {
     // 分页数据发生变化
     handlePagination({ page, limit }) {
       this.listQuery.pg_pagenum = page
-      this.pg_pagesize = limit
+      this.listQuery.pg_pagesize = limit
       this.onQuery()
     },
   }

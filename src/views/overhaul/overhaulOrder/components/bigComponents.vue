@@ -118,7 +118,7 @@ export default {
       }).then((res) => {
         this.listLoading = false;
         const { total, pageList } = res.data;
-        this.tableData = (pageList||[]).map((item, index) => ({ ...item, id: index }));
+        this.tableData = (pageList||[]).map((item, index) => ({ ...item, id: index+1 }));
         this.pageOptions.total = total
       });
     },

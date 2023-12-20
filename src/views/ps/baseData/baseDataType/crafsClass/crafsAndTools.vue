@@ -16,7 +16,7 @@
     <div class="panel-menu-list app-container app-containerC otherCon wp">
       <div class="otherCon wp xui-table__highlight">
         <el-table ref ="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700">
-          <el-table-column prop="index" label="序号" align="center" min-width="5%">
+          <el-table-column prop="index" label="序号" align="center" min-width="10%">
             <template v-slot:default="scope"><span>{{ (scope.$index + 1) }} </span></template>
           </el-table-column>
           <el-table-column prop="toolsTypeName" label="工装工具类型名称 " align="center" />

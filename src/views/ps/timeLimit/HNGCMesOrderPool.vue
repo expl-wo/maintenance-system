@@ -41,6 +41,17 @@
         min-width="15%"
       />
       <el-table-column
+          prop="retFactory"
+          label="是否返厂"
+          align="center"
+          min-width="5%"
+      >
+        <template v-slot="{row}">
+          <div v-if="row.retFactory === '1'">是</div>
+          <div v-if="row.retFactory === '0'">否</div>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="productModel"
         align="center"
         label="型号"
@@ -118,6 +129,11 @@
             type="primary"
             @click="Rearrangement(scope.row)"
           >重排
+          </el-button>
+          <el-button plain
+                     type="primary"
+                     @click="propertySetPre(scope.row)"
+          >返厂
           </el-button>
         </template>
       </el-table-column>
@@ -256,6 +272,21 @@
       @current-change="handleCurrentChange()"
     />
   </el-dialog>
+
+    <el-dialog title="工单属性设置" v-model="propertySetDialog" :close-on-click-modal="false" :show-close="false">
+      <el-form>
+        <el-form-item label="是否返厂">
+          <xui-dict-select itemCode="flag01" v-model="orderPropertyParam.property" style="width: 100%;"></xui-dict-select>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="propertySetDialog = false">取 消</el-button>
+          <el-button type="primary" @click="propertySetDialog = false;propertySetHandle()">确 定</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -263,6 +294,7 @@
   import Pagination from '@/components/Pagination'
   import { ElMessage } from "element-plus";
   import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder,rearrangement } from '@/api/timeLimit';
+  import mesOrder from '@/api/plan/mesOrder';
 export default {
   name: 'HBMesOrderPool',
   components: {Pagination},
@@ -297,6 +329,11 @@ export default {
       }],
        mesOrderShow: true,
        toMesOrderShow: false,
+      propertySetDialog : false,
+      orderPropertyParam: {
+        orderId: null,
+        property: null
+      }
     }
   },
   mounted() {
@@ -392,8 +429,21 @@ export default {
       rearrangement({"productPlanId": row.productPlanId}).then(res=>{
         if(res.err_code===10000){
           this.$message.success("重排成功！");
-          this.getToMesOrder();
+          this.onQuery();
         } else this.$message.error("重排失败"+res.err_msg);
+      })
+    },
+    propertySetPre(row){
+      this.propertySetDialog = true
+      this.orderPropertyParam.property = row.retFactory
+      this.orderPropertyParam.orderId = row.id
+    },
+    propertySetHandle(){
+      mesOrder.propertySet(this.orderPropertyParam).then(res=>{
+        if(res.err_code===10000){
+          this.$message.success("需要改成功！");
+          this.onQuery();
+        } else this.$message.error("修改失败失败"+res.err_msg);
       })
     },
   },

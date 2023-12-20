@@ -64,7 +64,8 @@
                   type="primary"
                   v-if="$isAuth('2004_btn_edit')"
                   :disabled="
-                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus) || [1].includes(+row.approvalStatus)
+                    [WORK_ORDER_MAP['pause'].value].includes(row.orderStatus) ||
+                    [1].includes(+row.approvalStatus)
                   "
                   @click="handleCreate(row, 'update')"
                 >
@@ -79,12 +80,16 @@
                 </el-button>
                 <!-- 暂停或者说非创建工单均不能操作 -->
                 <el-button
-                  title="发起审核"
+                  :title="
+                    [1].includes(+row.approvalStatus) ? '审核中' : '发起审核'
+                  "
                   v-if="$isAuth('2004_btn_check')"
                   :disabled="
                     ![WORK_ORDER_MAP['createOrder'].value].includes(
                       row.orderStatus
-                    ) || WORK_ORDER_MAP['pause'].value === row.orderStatus  || [1].includes(+row.approvalStatus)
+                    ) ||
+                    WORK_ORDER_MAP['pause'].value === row.orderStatus ||
+                    [1].includes(+row.approvalStatus)
                   "
                   type="primary"
                   @click="handleApproval(row)"
@@ -100,7 +105,9 @@
                       : '暂停'
                   "
                   :disabled="
-                    [WORK_ORDER_MAP['finish'].value].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
+                    [WORK_ORDER_MAP['finish'].value].includes(
+                      row.orderStatus
+                    ) || [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="pauseTask(row)"
@@ -132,7 +139,8 @@
                     [
                       WORK_ORDER_MAP['pause'].value,
                       WORK_ORDER_MAP['finish'].value,
-                    ].includes(row.orderStatus)|| [1].includes(+row.approvalStatus)
+                    ].includes(row.orderStatus) ||
+                    [1].includes(+row.approvalStatus)
                   "
                   type="danger"
                   @click="closeTask(row)"
@@ -486,8 +494,8 @@ export default {
 .mrb15 {
   margin-bottom: 15px;
 }
-:deep(.pagination-container){
-  padding:20px
+:deep(.pagination-container) {
+  padding: 20px;
 }
 :deep(.el-table__column-filter-trigger) {
   padding-left: 8px;

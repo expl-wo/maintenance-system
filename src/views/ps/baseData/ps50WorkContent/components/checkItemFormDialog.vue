@@ -1,5 +1,5 @@
 <template>
-  <el-dialog draggable destroy-on-close appendToBody :title="model.id? '编辑': '新增'" width="800px" v-model="dialogVisible" modal>
+  <el-dialog draggable destroy-on-close appendToBody :title="model.id? '编辑': '新增'" width="1200px" v-model="dialogVisible" modal>
     <el-form :model="model" ref="form" :rules="rules" label-width="140px" >
 
       <el-row>
@@ -44,14 +44,14 @@
       <el-row>
         <el-col :span="12">
           <el-form-item prop="operationType" label="操作项类型：" >
-            <xui-dict-select class="w-100percent" item-code="WorkContentType"
+            <xui-dict-select class="width100Percent" item-code="WorkContentType"
                              v-model="model.operationType"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="isRequired" label="是否必填：" >
-            <xui-dict-select class="w-100percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="yn"
                              v-model="model.isRequired"
             ></xui-dict-select>
           </el-form-item>
@@ -77,7 +77,7 @@
         <el-col :span="12">
           <el-form-item prop="correctValue" label="正确值：" >
             <xui-dict-select v-if="model.operationType === '3' || model.operationType === '4'"
-                             class="w-100percent"
+                             class="width100Percent"
 
                              :item-code="model.dictionaryCode" size="small"
                              v-model="model.correctValue" clearable>
@@ -108,28 +108,28 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="isMultiline" label="是否多行：" >
-            <xui-dict-select class="w-100percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="yn"
                              v-model="model.isMultiline"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="requireImageFile" label="是否上传图片/文件：" >
-            <xui-dict-select class="w-100percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="yn"
                              v-model="model.requireImageFile"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="executionFrequency" label="执行频次：" >
-            <xui-dict-select class="w-100percent" item-code="OperationTimeline"
+            <xui-dict-select class="width100Percent" item-code="OperationTimeline"
                              v-model="model.executionFrequency"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="eligibilityCriteria" label="合格标准：" >
-            <el-input v-model="model.eligibilityCriteria"></el-input>
+            <el-input v-model="model.eligibilityCriteria" type="textarea" ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -142,15 +142,15 @@
 
       <el-row>
         <el-col :span="12">
-          <el-form-item prop="relyPropertyId" class="formItemSelectBtn" label="依赖操作项">
-            <el-select v-model="model.dependentOperation" placeholder="请选择" class="w-100percent" @change="relationPropertyChange" clearable>
+          <el-form-item prop="relyPropertyId" label="依赖操作项">
+            <el-select v-model="model.dependentOperation" placeholder="请选择" class="width100Percent" @change="relationPropertyChange" clearable>
               <el-option v-for="x in propertyList" :key="x.id" :label="x.allName" :value="x.id" />
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="dependentOperationOption" label="依赖操作项选项：" >
-            <xui-dict-select class="w-100percent" :item-code="relyPropertyDictCode"
+            <xui-dict-select class="width100Percent" :item-code="relyPropertyDictCode"
                              v-model="model.dependentOperationOption"
             ></xui-dict-select>
           </el-form-item>

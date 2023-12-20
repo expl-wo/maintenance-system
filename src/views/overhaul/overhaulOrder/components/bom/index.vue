@@ -13,6 +13,9 @@
     <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
       ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
     >
+    <el-button type="primary" @click="openModal('showPrint')"
+      ><el-icon class="el-icon--left"><Printer /></el-icon>打印二维码</el-button
+    >
     <div class="bom-content" v-if="bomTreeId">
       <div class="bom-content-left">
         <div class="bom-content-left-title">BOM结构</div>
@@ -39,11 +42,6 @@
           :column="1"
           :style="{ width: '500px' }"
         >
-          <template #extra>
-            <el-button type="primary" @click="openModal('showPrint')"
-              >打印二维码</el-button
-            >
-          </template>
           <el-descriptions-item label="利旧状态">{{
             utilizeStatusMap[operateRow.utilize] || "-"
           }}</el-descriptions-item>
@@ -72,12 +70,10 @@
                 v-if="operateRow.ptreeId"
                 class="upload-demo"
                 action="#"
-                :on-remove="handleRemove"
                 :before-upload="beforeUpload"
                 :http-request="uploadFile"
                 :accept="acceptType"
                 list-type="picture"
-                :on-exceed="onExceed"
                 :show-file-list="false"
               >
                 <el-button type="primary">点击上传</el-button>
@@ -227,7 +223,6 @@ export default {
         }
         const { id } = res.data;
         this.bomTreeId = id;
-
         if (id) {
           this.treeData = [res.data];
           // this.oldTemplateChoose = id;
@@ -235,10 +230,6 @@ export default {
           this.treeData = [];
         }
       });
-    },
-    //图片限制
-    onExceed() {
-      this.$message.error(`最多上传${MAX_IMG_NUM}个附件 `);
     },
     // 上传图片
     uploadFile(file) {
@@ -286,7 +277,7 @@ export default {
           if (index >= 0) {
             this.fileList.splice(index, 1);
           }
-          this.updateBomImgNode();
+          this.updateBomImgList();
         })
         .catch(() => {
           this.$message.info("操作已取消!");
@@ -412,14 +403,14 @@ export default {
      * 上传
      */
     beforeUpload(file) {
+      if (this.fileList.length >= this.MAX_IMG_NUM) {
+        this.$message.error(`最多上传${this.MAX_IMG_NUM}张图片`);
+        return false;
+      }
       if (file.size / 1024 / 1024 > MAX_IMG_SIZE) {
         this.$message.error(`图片大小请勿超过${MAX_IMG_SIZE}M`);
         return false;
       }
-    },
-    /**处理图片 */
-    handleRemove(file, fileList) {
-      console.log(file, fileList, this.fileList);
     },
     /**
      * 关闭弹窗
@@ -453,8 +444,12 @@ export default {
       let dom = ""; // 拼接的字符串
       targetValue.forEach((item, i) => {
         dom += `<div style='page-break-after:always'>
-        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black;min-width:120px' colspan='2'>${item.prodNumber||''}</th>
-        <td rowspan='3' colspan='3'><div id='${item.serialCode}' style='text-align: center'></div></td>
+        <table align='center' style='border: 1px solid black'> <tr style='border: 1px solid black'> <th style='border: 1px solid black;min-width:120px' colspan='2'>${
+          item.prodNumber || ""
+        }</th>
+        <td rowspan='3' colspan='3'><div id='${
+          item.serialCode
+        }' style='text-align: center'></div></td>
         </tr>
         </table>
         </div>
@@ -467,12 +462,12 @@ export default {
         this.printWin.document.title = "衡变MES管理端";
         targetValue.forEach((item) => {
           new QRCode(this.printWin.document.getElementById(item.serialCode), {
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             text: JSON.stringify(item),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色
-            correctLevel: QRCode.CorrectLevel.M, // 降低容错级别
+            correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
           });
         });
         this.printWin.addEventListener("afterprint", this.backWin);

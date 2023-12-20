@@ -95,6 +95,7 @@
               v-model="form.members"
               multiple
               style="width: 220px"
+              clearable
               :multiple-limit="20"
               placeholder="请选择"
               class="filter-item"
@@ -134,7 +135,7 @@
                 ><QuestionFilled
               /></el-icon>
             </template>
-            <span>{{ devUserInfo }}</span>
+            <span>{{ devUserInfo.projectName }}</span>
           </el-popover>
         </template>
       </el-cascader-panel>
@@ -248,6 +249,7 @@ export default {
       channelOptions: [],
       taskPersonOptions: [], //任务人员
       allBigList: [],
+      devUserInfo:{}
     };
   },
   computed: {
@@ -263,10 +265,11 @@ export default {
       ].includes(this.onlyTabName);
     },
   },
-  mounted() {
+  async mounted() {
     let infoParams;
     let work = this.getProcedureInfoList(3);
-    this.vlidateStep();
+    const falg = this.vlidateStep();
+    if (!falg) return;
     if (work.length === 1) {
       infoParams = {
         workCode: this.workOrderInfo.id,
@@ -302,6 +305,8 @@ export default {
         console.log(this.devOptions);
       });
     } else if (this.operateRow === 3) {
+      //派工
+      await this.getPersonOptions(this.appointInfo.taskGroupId);
       if (infoParams) {
         getBindDispatch(infoParams).then((res) => {
           const {
@@ -318,9 +323,9 @@ export default {
           this.form.members = memberUserInfoList.map((item) => item.userId);
         });
       }
-      //派工
-      this.getPersonOptions(this.appointInfo.taskGroupId || "120");
     } else if (this.operateRow === 2) {
+      //复核
+      await this.getPersonOptions(this.appointInfo.taskGroupId);
       if (infoParams) {
         getBindReview(infoParams).then((res) => {
           const { checkType, reviewUserInfoList } = res.data;
@@ -330,8 +335,6 @@ export default {
             : undefined;
         });
       }
-      //复核
-      this.getPersonOptions(this.appointInfo.taskGroupId);
     } else {
       //视频
       if (infoParams) {
@@ -351,7 +354,16 @@ export default {
   methods: {
     vlidateStep() {
       let work = this.getProcedureInfoList(3);
+      let oldWork = [...work]; //暂存数据
+      //如果是绑定视频通道，则需要通过当前工步所在的中工序是否绑定了mes视频设备来判断
+      if (this.operateRow === 1) {
+        work = work.filter((item) => item.ifBindVideoDevice);
+      }
       if (!work.length && [1, 2, 3].includes(this.operateRow)) {
+        if (oldWork.length && this.operateRow === 1) {
+          this.$message.warning("所选工步所在的中工序未绑定mes视频设备！");
+          return false;
+        }
         this.$message.warning("请检查所选工序节点是否包含工步！");
         return false;
       }
@@ -398,7 +410,7 @@ export default {
         pageNum,
         pageSize,
         searchKey,
-        types: [],
+        unitTypeList: [1],
       };
       return new Promise((resolve, reject) => {
         getChannelList(queryParms).then((res) => {
@@ -443,10 +455,13 @@ export default {
     //获取选中的组织节点
     getProcedureInfoList(procedureType = 2) {
       return this.currentNode
-        .filter((el) => +el.procedureType === procedureType)
+        .filter((el) => {
+          return +el.procedureType === procedureType;
+        })
         .map((item) => ({
           procedureCode: item.procedureCode,
           procedureType: item.procedureType,
+          ifBindVideoDevice: item.ifBindVideoDevice,
         }));
     },
     handleOk() {

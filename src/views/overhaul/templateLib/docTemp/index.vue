@@ -69,21 +69,25 @@
           <template  #default="scope">
             <el-button-group>
               <el-button
+                title="预览"
                 type="primary"
                 @click="openModal(scope.$index, scope.row, 'preview')"
               ><el-icon><Platform /></el-icon
               > </el-button>
               <el-button
+                title="预览"
                 type="primary"
                 @click="openModal(scope.$index, scope.row, 'add')"
               > <el-icon><Edit /></el-icon
               ></el-button>
               <el-button
+                title="复制"
                 type="primary"
                 @click="openModal(scope.$index, scope.row, 'copy')"
               > <el-icon><DocumentCopy /></el-icon
               ></el-button>
               <el-button
+                title="删除"
                 type="danger"
                 @click="onDelete(scope.$index, scope.row)"
               >  <el-icon><Delete /></el-icon
@@ -253,6 +257,7 @@ export default {
     // 关闭弹框
     closeModal(type, flag) {
       this[`${type}ModalFlag`] = false;
+      this.recordInfo = null;
       flag && this.getData();
     },
     // 删除
