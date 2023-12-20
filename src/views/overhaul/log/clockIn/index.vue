@@ -84,8 +84,8 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="pageSize"
         :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handlePageChange"
+        @size-change="sizeChange"
+        @current-change="pageChange"
       >
       </el-pagination>
     </div>
