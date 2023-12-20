@@ -462,8 +462,8 @@ export default {
         this.printWin.document.title = "衡变MES管理端";
         targetValue.forEach((item) => {
           new QRCode(this.printWin.document.getElementById(item.serialCode), {
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             text: JSON.stringify(item),
             colorDark: "#000000", // 前景色
             colorLight: "#ffffff", // 背景色

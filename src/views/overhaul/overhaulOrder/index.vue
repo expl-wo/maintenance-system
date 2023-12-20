@@ -254,8 +254,8 @@ export default {
         targetValue.forEach((item) => {
           let codeInfo = {prodNumber:item.prodNumber,prodModel:item.prodModel,id:item.id}
           new QRCode(this.printWin.document.getElementById(`overhaul_print_${item.codeIndex}`), {
-            width: 80,
-            height: 80,
+            width: 100,
+            height: 100,
             // text: JSON.stringify(item),
             text: JSON.stringify(codeInfo),
             colorDark: "#000000", // 前景色

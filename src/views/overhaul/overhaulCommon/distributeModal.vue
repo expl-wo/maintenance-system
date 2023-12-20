@@ -135,7 +135,7 @@
                 ><QuestionFilled
               /></el-icon>
             </template>
-            <span>{{ devUserInfo }}</span>
+            <span>{{ devUserInfo.projectName }}</span>
           </el-popover>
         </template>
       </el-cascader-panel>
@@ -249,6 +249,7 @@ export default {
       channelOptions: [],
       taskPersonOptions: [], //任务人员
       allBigList: [],
+      devUserInfo:{}
     };
   },
   computed: {

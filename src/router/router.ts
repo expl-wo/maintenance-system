@@ -481,7 +481,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
         name: 'arVideo',
         component: () => import('@/views/overhaul/iframeToIcc/arVideo.vue'),
         meta: {
-          title: '360全景视频',
+          title: '360视频',
           icon: 'sys_005',
           keepAlive: true
         }
