@@ -74,6 +74,7 @@ const url = {
   clearTankRecord: '/api/gcproduction/dryingInout/clearTankRecord',
   dryingRecord: '/api/gcproduction/dryingInout/dryingRecord',
   inTankProduct: '/api/gcproduction/dryingInout/inTankProduct',
+  cancelSingle: '/api/gcproduction/dryingInout/cancelSingle',
 }
 
 export default {
@@ -243,5 +244,11 @@ export default {
       data: params
     })
   },
-
+  cancelSingle(params) {
+    return request({
+      url: url.cancelSingle,
+      method: 'get',
+      data: params
+    })
+  },
 }

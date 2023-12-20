@@ -524,7 +524,6 @@ import  {isAuth} from "@/utils/control"
       },
       rowClick (row) {
         this.row=row
-        console.log(row)
         this.outForm.planOutDate = row.planOutDate
         this.statusForm.status = row.status == null?0:row.status
         this.inProducts()
@@ -688,6 +687,7 @@ import  {isAuth} from "@/utils/control"
         })
       },
       inProducts(){
+        this.inTankProductData = []
         dryingManage.inTankProduct({recordId:this.row.recordId}).then(res=>{
           this.inTankProductData = res.data
         })
@@ -695,8 +695,9 @@ import  {isAuth} from "@/utils/control"
       cancelSingle(productRow){
         dryingManage.cancelSingle({recordId:this.row.recordId,productRecordId:productRow.id}).then(res=>{
           if (res.err_code === 10000) {
-            this.$message.success("取消成功！")
             this.getTableDate()
+            this.$message.success("取消成功！")
+
           }
         })
       }
