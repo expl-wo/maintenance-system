@@ -65,7 +65,7 @@
       </div>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="dialogConfigCaiGouFormVisible = false" size="mini">取 消</el-button>
+          <el-button @click="dialogConfigCaiGouFormVisible = false" size="small">取 消</el-button>
         </div>
       </template>
     </el-dialog>

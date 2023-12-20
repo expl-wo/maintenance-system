@@ -55,16 +55,16 @@
           <el-input v-model="listUpdate.requirement" type="textarea" :rows="3" style="width: 245px;" class="filter-item"  />
         </el-form-item>
         <el-form-item label="计划开始时间:" prop="planStarttime"  size="small">
-          <el-date-picker v-model="listUpdate.planStarttime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="计划开始时间" style="width: 245px;" class="filter-item" />
+          <el-date-picker v-model="listUpdate.planStarttime" value-format="YYYY-MM-DD HH:mm:ss" type="datetime" placeholder="计划开始时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="计划结束时间:" prop="planEndtime"  size="small">
-          <el-date-picker v-model="listUpdate.planEndtime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="计划结束时间" style="width: 245px;" class="filter-item" />
+          <el-date-picker v-model="listUpdate.planEndtime" value-format="YYYY-MM-DD HH:mm:ss" type="datetime" placeholder="计划结束时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="实际开始时间:"  size="small">
-          <el-date-picker v-model="listUpdate.starttime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="实际开始时间" style="width: 245px;" class="filter-item" />
+          <el-date-picker v-model="listUpdate.starttime" value-format="YYYY-MM-DD HH:mm:ss" type="datetime" placeholder="实际开始时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="实际结束时间:"  size="small">
-          <el-date-picker v-model="listUpdate.endtime" value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="实际结束时间" style="width: 245px;" class="filter-item" />
+          <el-date-picker v-model="listUpdate.endtime" value-format="YYYY-MM-DD HH:mm:ss" type="datetime" placeholder="实际结束时间" style="width: 245px;" class="filter-item" />
         </el-form-item>
         <el-form-item label="申请提交部门:" prop="subDepName"  size="small">
           <el-input v-model="listUpdate.subDepName" style="width: 245px;" class="filter-item"  disabled/>

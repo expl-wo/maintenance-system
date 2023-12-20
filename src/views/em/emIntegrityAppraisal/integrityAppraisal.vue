@@ -23,7 +23,7 @@
       </el-form>
     </div>
 
-    <el-table highlight-current-row 
+    <el-table highlight-current-row
       id="forExportExcelFile"
       :data="tableData"
       class="otherCon wp"
@@ -53,7 +53,7 @@
       </el-table-column>
       <el-table-column prop="name" align="center" width="250" label="设备完好性鉴定名称" />
       <el-table-column prop="cycle" align="center" label="鉴定周期" />
-      <el-table-column prop="cycleUnit" align="center" width="200" label="周期单位" />
+      <el-table-column prop="cycleUnit" align="center"  label="周期单位" />
       <el-table-column prop="remindDay" align="center" label="鉴定提前提醒日">
         <template  #default="scope">
           <span>{{scope.row.remindDay}}天</span>
@@ -64,7 +64,7 @@
             <span>{{scope.row.waringDay}}天</span>
         </template>
       </el-table-column>
-      <el-table-column header-align="center" align="center" width="260" label="操作">
+      <el-table-column header-align="center" align="center" width="300" label="操作">
         <template  #default="scope">
           <el-button-group>
             <el-button size="small" title="编辑" type="primary" icon="Edit" @click="addOrUpdate(scope.row)"></el-button>
