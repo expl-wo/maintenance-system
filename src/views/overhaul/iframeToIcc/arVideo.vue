@@ -35,7 +35,7 @@ export default {
     this.url = `https://ims.cloud-hb.com/#/thirdOAuth?username=${
       userInfo.username
     }&password=${userInfo.password}&redirect=${encodeURIComponent(
-      "https://ims.cloud-hb.com/Evo-web-logis/#/webHome/logistics"
+      "https://ims.cloud-hb.com/Evo-web-logis/#/realTimeVideo"
     )}`;
   },
 };
