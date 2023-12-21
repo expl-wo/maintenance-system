@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <div class="wp hp login-container-mask app-containerC cc animation-scale-up">
-      <h1 class="col_white" style="margin:0 0 0.67em 0;">湖南工程MES系统</h1>
+      <h1 class="col_white" style="margin:0 0 0.67em 0;">特能建AI</h1>
       <el-form ref="loginFormRef" class="login-form" auto-complete="on"
                label-position="left" :model="model" :rules="rules">
         <div class="wp hp loginForm_border">

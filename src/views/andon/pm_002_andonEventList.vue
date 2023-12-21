@@ -208,7 +208,6 @@
               border
               :data="tableData"
               style="font-size: 0.7rem"
-              :cell-style="cellStyle"
     >
       <el-table-column
         type="selection"
