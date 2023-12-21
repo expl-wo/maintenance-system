@@ -8,11 +8,11 @@
         <el-form :inline="true" :model="searchModel" class="demo-form-inline">
           <el-form-item label="" size="small">
             <el-input type="text" size="small" v-model="searchModel.keywords" class="form-control" placeholder="选项编码或名称"
-                      @keyup.enter="handleSearch"  style="width: 200px;" prefix-icon="el-icon-search"
+                      @keyup.enter="handleSearch"  style="width: 200px;" prefix-icon="search"
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button @click="handleSearch"  icon="el-icon-search" size="small">查询</el-button>
+            <el-button @click="handleSearch"  icon="search" size="small">查询</el-button>
             <el-button type="primary"  icon="plus"  @click="handleAdd" size="small">新增
             </el-button>
           </el-form-item>

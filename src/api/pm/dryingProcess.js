@@ -1,16 +1,16 @@
 import request from '@/utils/request'
 
 const url = {
-  planList: '/api/gcproduction/dryingProcess/getList',
-  planDeList: '/api/gcproduction/dryingProcess/planDe/getList',
-  planAddOrUpdt: '/api/gcproduction/dryingProcess/addOrUpdate',
-  planDeAddOrUpdt: '/api/gcproduction/dryingProcess/planDe/addOrUpdate',
-  planDelete: '/api/gcproduction/dryingProcess/delete',
-  planDeDelete: '/api/gcproduction/dryingProcess/planDe/delete',
-  voltageList: '/api/gcproduction/dryingProcess/voltage/getList',
-  voltageAddOrUpdt: '/api/gcproduction/dryingProcess/voltage/addOrUpdate',
-  voltageDelete: '/api/gcproduction/dryingProcess/voltage/delete',
-  tankPlan: '/api/gcproduction/dryingProcess/tankPlan',
+  planList: '/api/gcplan/dryingProcess/getList',
+  planDeList: '/api/gcplan/dryingProcess/planDe/getList',
+  planAddOrUpdt: '/api/gcplan/dryingProcess/addOrUpdate',
+  planDeAddOrUpdt: '/api/gcplan/dryingProcess/planDe/addOrUpdate',
+  planDelete: '/api/gcplan/dryingProcess/delete',
+  planDeDelete: '/api/gcplan/dryingProcess/planDe/delete',
+  voltageList: '/api/gcplan/dryingProcess/voltage/getList',
+  voltageAddOrUpdt: '/api/gcplan/dryingProcess/voltage/addOrUpdate',
+  voltageDelete: '/api/gcplan/dryingProcess/voltage/delete',
+  tankPlan: '/api/gcplan/dryingProcess/tankPlan',
 
 }
 

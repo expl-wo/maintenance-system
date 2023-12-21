@@ -115,7 +115,7 @@
                       </el-date-picker>
                     </el-form-item>
                     <el-form-item size="small">
-                      <el-button type="primary" icon="el-icon-search" @click="getProductData()">查询</el-button>
+                      <el-button type="primary" icon="search" @click="getProductData()">查询</el-button>
                     </el-form-item>
                   </el-form>
                 </div>
@@ -138,6 +138,7 @@
                   <el-table-column prop="startDate" align="center" width="200" label="计划入炉时间" />
                   <el-table-column prop="quantity" align="center" label="数量" />
                 </el-table>
+                <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon" @pagination="getList" />
               </div>
             </el-tab-pane>
             <el-tab-pane label="已入炉产品" >
@@ -156,6 +157,7 @@
                 <el-table-column prop="productNo" align="center" label="生产号"  width="250"/>
                 <el-table-column prop="model" align="center" label="型号" width="300" />
                 <el-table-column prop="dryingProductType" align="center" label="类型" />
+                <el-table-column prop="insulationWeight" align="center" label="绝缘重量" />
                 <el-table-column prop="output" align="center" label="产量(万kVA)" />
                 <el-table-column prop="amount" align="center" label="产值(万元)" />
                 <el-table-column prop="planStartDate" align="center" label="计划入炉时间" />
@@ -214,9 +216,9 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="绝缘重量统计:"  size="small">
-            <el-input v-model="putForm.insulationWeight" placeholder="绝缘重量统计" style="width: 320px;" class="filter-item" size="small" />
-          </el-form-item>
+<!--          <el-form-item label="绝缘重量统计:"  size="small">-->
+<!--            <el-input v-model="putForm.insulationWeight" placeholder="绝缘重量统计" style="width: 320px;" class="filter-item" size="small" />-->
+<!--          </el-form-item>-->
           <el-form-item label="检查情况(入炉):" prop="putCheck"  size="small">
             <el-input v-model="putForm.putCheck" placeholder="检查情况(入炉)" style="width: 320px;" class="filter-item" size="small" />
           </el-form-item>
@@ -247,6 +249,15 @@
             <xui-dict-select item-code="dryingClassification" size="small" v-model="putForm.dryingProductType"
                              class="filter-item" clearable></xui-dict-select>
           </el-form-item>
+          <el-table border :data="selectData">
+            <el-table-column type="index" label="序号"></el-table-column>
+            <el-table-column prop="productNo" label="生产号"></el-table-column>
+            <el-table-column label="绝缘重量">
+              <template #default="scope">
+                <el-input v-model="scope.row.insulationWeight"></el-input>
+              </template>
+            </el-table-column>
+          </el-table>
         </el-form>
       </div>
       <div  class="dialog-footer">
@@ -370,6 +381,7 @@
 </template>
 
 <script>
+import Pagination from '@/components/Pagination/index.vue'
 import dryingProcess from '@/api/pm/dryingProcess'
 import dryingManage from "@/api/plan/dryingManage";
 import dict from '@/api/sys/dict'
@@ -379,6 +391,7 @@ import  {isAuth} from "@/utils/control"
 
   export default {
     name: 'dryingInout',
+    components: { Pagination },
     data() {
       return {
         tableData: [],
@@ -473,7 +486,6 @@ import  {isAuth} from "@/utils/control"
         })
       },
       getModeData(){
-        console.log(111333)
         dict.getDetail({"code":"","name":"","itemCode":"dryingMethod"}).then(res=>{
           this.modeData = res.data
         })
@@ -557,19 +569,30 @@ import  {isAuth} from "@/utils/control"
                     this.$message.success("入炉登记成功！")
                     this.dataInit()
                     this.putDialogVisible = false;
+                  }else {
+                    this.$message.error("入炉登记失败！")
+
                   }
                 })
               } else if (formName=='statusForm') {
                 this.statusForm.recordId = this.row.recordId
                 dryingManage.update(this.statusForm).then(res=>{
-                  if (res.err_code == 10000) this.$message.success("修改状态成功！")
+                  if (res.err_code == 10000) {
+                    this.$message.success("修改状态成功！")
+                  }else{
+                    this.$message.error("修改状态失败！")
+                  }
                   this.dataInit()
                   this.statusDialogVisible = false;
                 })
               } else if (formName=='outForm') {
                 this.outForm.id = this.row.id
                 dryingManage.outRecord(this.outForm).then(res=>{
-                  if (res.err_code == 10000) this.$message.success("出炉成功！")
+                  if (res.err_code == 10000) {
+                    this.$message.success("出炉成功！")
+                  }else{
+                    this.$message.error("出炉失败！")
+                  }
                   this.dataInit()
                   this.outDialogVisible = false;
                 })
@@ -602,7 +625,10 @@ import  {isAuth} from "@/utils/control"
           this.putForm.recordId = this.row.recordId
           let param = {
             'record': this.putForm,
-            'pl15ids': this.selectData.map(item=>{return item.planNodeId})
+            'pl15ids': this.selectData.map(item=>{return {
+              k:item.planNodeId,
+              v:item.insulationWeight
+            }})
           }
           dryingManage.putRecordConfirm(param).then(res=>{
             if (res.err_code == 10000) {
@@ -662,7 +688,7 @@ import  {isAuth} from "@/utils/control"
           processMode: this.changeForm.processMode
         }
         dryingManage.furnaceEntryChange(param).then(res=>{
-          if (res.err_code == 10000) {
+          if (res.err_code === 10000) {
             this.$message.success("变更成功！")
             this.getTableDate()
             this.changeForm = {
@@ -671,6 +697,9 @@ import  {isAuth} from "@/utils/control"
               putDate:null
             }
             this.changeDialogVisible = false
+          }else {
+            console.log("操作失败123")
+            this.$message.error("操作失败");
           }
         })
       },
@@ -694,10 +723,12 @@ import  {isAuth} from "@/utils/control"
       },
       cancelSingle(productRow){
         dryingManage.cancelSingle({recordId:this.row.recordId,productRecordId:productRow.id}).then(res=>{
-          if (res.err_code === 10000) {
+          if (res.err_code == 10000) {
             this.getTableDate()
+            this.inProducts()
             this.$message.success("取消成功！")
-
+          }else {
+            this.$message.error("取消失败！")
           }
         })
       }

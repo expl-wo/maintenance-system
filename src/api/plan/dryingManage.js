@@ -31,31 +31,31 @@ const url = {
   getEquipmentList: '/api/gcplan/dryingTank/getEquipmentList',
 
   //干燥罐信息-新增时获取干燥班组列表  GET
-  getClazzList: '/api/gcproduction/dryingTank/getClazzList',
+  getClazzList: '/api/gcplan/dryingTank/getClazzList',
 
   //干燥罐信息-新增时获取组织信息  GET
-  getWorkShop: '/api/gcproduction/dryingTank/getWorkShop',
+  getWorkShop: '/api/gcplan/dryingTank/getWorkShop',
 
   //干燥罐入出炉登记-查询干燥罐及最新入出炉状态数据 GET
-  queryDryingInout: '/api/gcproduction/dryingInout/queryDryingInout',
+  queryDryingInout: '/api/gcplan/dryingInout/queryDryingInout',
 
   //干燥罐入出炉登记-入炉登记 POST
-  putRecord: '/api/gcproduction/dryingInout/putRecord',
+  putRecord: '/api/gcplan/dryingInout/putRecord',
 
   //干燥罐入出炉登记-入炉登记确认 POST
-  putRecordConfirm: '/api/gcproduction/dryingInout/putRecordConfirm',
+  putRecordConfirm: '/api/gcplan/dryingInout/putRecordConfirm',
 
   //干燥罐入出炉登记-出炉登记 POST
-  outRecord: '/api/gcproduction/dryingInout/outRecord',
+  outRecord: '/api/gcplan/dryingInout/outRecord',
 
   //干燥罐入出炉登记-出炉登记确认 POST
-  outRecordConfirm: '/api/gcproduction/dryingInout/outRecordConfirm',
+  outRecordConfirm: '/api/gcplan/dryingInout/outRecordConfirm',
 
   //干燥罐入出炉登记-查询可入炉 & 已入炉生产号  GET
-  getDryingInoutProduct: '/api/gcproduction/dryingInout/getDryingInoutProduct',
+  getDryingInoutProduct: '/api/gcplan/dryingInout/getDryingInoutProduct',
 
   //干燥罐入出炉登记-修改状态 POST
-  update: '/api/gcproduction/dryingInout/update',
+  update: '/api/gcplan/dryingInout/update',
 
   //工艺方案管理-查询 GET
   getList: '/processPlan/getList',
@@ -69,12 +69,12 @@ const url = {
   //工艺方案管理-新增/删除 DELETE
   delete: '/processPlan/delete',
   // 入炉变更
-  furnaceEntryChange: '/api/gcproduction/dryingInout/furnaceEntryChange',
+  furnaceEntryChange: '/api/gcplan/dryingInout/furnaceEntryChange',
   // 清空入炉
-  clearTankRecord: '/api/gcproduction/dryingInout/clearTankRecord',
-  dryingRecord: '/api/gcproduction/dryingInout/dryingRecord',
-  inTankProduct: '/api/gcproduction/dryingInout/inTankProduct',
-  cancelSingle: '/api/gcproduction/dryingInout/cancelSingle',
+  clearTankRecord: '/api/gcplan/dryingInout/clearTankRecord',
+  dryingRecord: '/api/gcplan/dryingInout/dryingRecord',
+  inTankProduct: '/api/gcplan/dryingInout/inTankProduct',
+  cancelSingle: '/api/gcplan/dryingInout/cancelSingle',
 }
 
 export default {

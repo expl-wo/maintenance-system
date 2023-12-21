@@ -104,7 +104,7 @@ export function getUserLgnCrd(data) {
 
 export function getRepairUser(params) {
   return request({
-    url: '/api/gcproduction/reportInfo/getReporterUser',
+    url: '/api/gcplan/reportInfo/getReporterUser',
     method: 'get',
     data: {
       pg_pagesize: params.pg_pagesize, // 每页显示多少条数据，默认为10条

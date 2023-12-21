@@ -1,6 +1,6 @@
 <template>
-  <div class="wp hp app-containerC">
-    <div class="filter-container">
+  <div class="wp hp app-container app-containerC">
+    <div class=" filter-container">
       <el-form :inline="true" class="demo-form-inline demo-form-zdy">
         <el-form-item label="干燥罐" size="small">
           <el-select v-model="listQuery.tankCodeId" @change="getRecord()" clearable placeholder="请选择">
@@ -26,7 +26,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item size="small">
-          <el-button type="primary" icon="el-icon-search" @click="getRecord()">{{ $t('button.query') }}</el-button>
+          <el-button type="primary" icon="search" @click="getRecord()">查询</el-button>
           <el-button type="primary" size="small" @click="recordExport()">记录导出</el-button>
         </el-form-item>
       </el-form>

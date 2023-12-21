@@ -5,22 +5,22 @@
         <el-form-item label="关键字">
         <el-input v-model="listQuery.keyWord" placeholder="生产号/图号/项目名称" style="width: 180px;" class="filter-item" clearable/>
         </el-form-item>
-        <el-form-item label="是否绑定" size="mini">
-          <el-select v-model="listQuery.processPlanSource" size="mini" placeholder="是否绑定mes工艺模板"
+        <el-form-item label="是否绑定" size="small">
+          <el-select v-model="listQuery.processPlanSource" size="small" placeholder="是否绑定mes工艺模板"
                      style="width: 170px;" clearable>
             <el-option label="否" value="0" />
             <el-option label="是" value="1" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="primary" icon="Search" @click="onQuery">查询</el-button>
         </el-form-item>
-        <el-form-item label="" size="mini">
+        <el-form-item label="" size="small">
           <el-select v-model="scheduleParam.planId" placeholder="请选择工艺计划" style="width: 140px;" clearable>
             <el-option v-for="item in processPlanList" :key="item.id" :label="item.pName" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item size="mini">
+        <el-form-item size="small">
           <el-button type="success" @click="bindFront">绑定</el-button>
         </el-form-item>
       </el-form>

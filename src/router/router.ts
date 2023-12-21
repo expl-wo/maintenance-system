@@ -144,6 +144,16 @@ export const sysRouter : Array<RouteRecordRaw> = [
 					keepAlive: true
 				}
 			},
+			{
+				path: 'dryingRecord',
+				name: '0502_dryingRecord',
+				component: () => import('@/views/production/dryingInout/pm008_02_dryingRecord.vue'),
+				meta: {
+					title: '干燥罐入出炉登记',
+					icon: 'sys_005',
+					keepAlive: true
+				}
+			}
 		]
 	},
 	{
@@ -761,6 +771,15 @@ export const sysRouter : Array<RouteRecordRaw> = [
 								}
 							},
 						]
+					},
+					{
+						path: 'dryingProcess',
+						name: 'dp001_dryingProcess',
+						component: () => import('@/views/production/dryingProcess/pm_dp001_dryingProcess.vue'),
+						meta:{
+							title: '干燥罐工艺方案',
+							icon: 'ps_011'
+						}
 					},
 				]
 			},

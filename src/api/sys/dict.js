@@ -24,7 +24,7 @@ export default {
     return request({
       url: url.list,
       method: 'get',
-      params
+      data: params
     })
   },
   codeUnion(params) {
@@ -45,7 +45,7 @@ export default {
     return request({
       url: url.getItem,
       method: 'get',
-      params
+      data: params
     })
   },
   getByCode(params) {
