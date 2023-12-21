@@ -31,31 +31,31 @@ const url = {
   getEquipmentList: '/api/gcplan/dryingTank/getEquipmentList',
 
   //干燥罐信息-新增时获取干燥班组列表  GET
-  getClazzList: '/dryingTank/getClazzList',
+  getClazzList: '/api/gcproduction/dryingTank/getClazzList',
 
   //干燥罐信息-新增时获取组织信息  GET
-  getWorkShop: '/dryingTank/getWorkShop',
+  getWorkShop: '/api/gcproduction/dryingTank/getWorkShop',
 
   //干燥罐入出炉登记-查询干燥罐及最新入出炉状态数据 GET
-  queryDryingInout: '/dryingInout/queryDryingInout',
+  queryDryingInout: '/api/gcproduction/dryingInout/queryDryingInout',
 
   //干燥罐入出炉登记-入炉登记 POST
-  putRecord: '/dryingInout/putRecord',
+  putRecord: '/api/gcproduction/dryingInout/putRecord',
 
   //干燥罐入出炉登记-入炉登记确认 POST
-  putRecordConfirm: '/dryingInout/putRecordConfirm',
+  putRecordConfirm: '/api/gcproduction/dryingInout/putRecordConfirm',
 
   //干燥罐入出炉登记-出炉登记 POST
-  outRecord: '/dryingInout/outRecord',
+  outRecord: '/api/gcproduction/dryingInout/outRecord',
 
   //干燥罐入出炉登记-出炉登记确认 POST
-  outRecordConfirm: '/dryingInout/outRecordConfirm',
+  outRecordConfirm: '/api/gcproduction/dryingInout/outRecordConfirm',
 
   //干燥罐入出炉登记-查询可入炉 & 已入炉生产号  GET
-  getDryingInoutProduct: '/dryingInout/getDryingInoutProduct',
+  getDryingInoutProduct: '/api/gcproduction/dryingInout/getDryingInoutProduct',
 
   //干燥罐入出炉登记-修改状态 POST
-  update: '/dryingInout/update',
+  update: '/api/gcproduction/dryingInout/update',
 
   //工艺方案管理-查询 GET
   getList: '/processPlan/getList',
@@ -69,19 +69,21 @@ const url = {
   //工艺方案管理-新增/删除 DELETE
   delete: '/processPlan/delete',
   // 入炉变更
-  furnaceEntryChange: '/dryingInout/furnaceEntryChange',
+  furnaceEntryChange: '/api/gcproduction/dryingInout/furnaceEntryChange',
   // 清空入炉
-  clearTankRecord: '/dryingInout/clearTankRecord',
-  dryingRecord: '/dryingInout/dryingRecord',
-  inTankProduct: '/dryingInout/inTankProduct',
+  clearTankRecord: '/api/gcproduction/dryingInout/clearTankRecord',
+  dryingRecord: '/api/gcproduction/dryingInout/dryingRecord',
+  inTankProduct: '/api/gcproduction/dryingInout/inTankProduct',
+  cancelSingle: '/api/gcproduction/dryingInout/cancelSingle',
 }
 
 export default {
+
   getWorkShop(params) {
     return request({
       url: url.getWorkShop,
       method: 'get',
-      params
+      data: params
     })
   },
   insertDryingTank(params) {
@@ -134,14 +136,14 @@ export default {
     return request({
       url: url.getClazzList,
       method: 'get',
-      params
+      data: params
     })
   },
   queryDryingInout(params) {
     return request({
       url: url.queryDryingInout,
       method: 'get',
-      params
+      data: params
     })
   },
   putRecord(params) {
@@ -162,7 +164,7 @@ export default {
     return request({
       url: url.getDryingInoutProduct,
       method: 'get',
-      params
+      data: params
     })
   },
   update(params) {
@@ -176,14 +178,14 @@ export default {
     return request({
       url: url.getList,
       method: 'get',
-      params
+      data: params
     })
   },
   getListPage(params) {
     return request({
       url: url.getListPage,
       method: 'get',
-      params
+      data: params
     })
   },
   addOrUpdate(params) {
@@ -232,14 +234,21 @@ export default {
     return request({
       url: url.dryingRecord,
       method: 'get',
-      params
+      data: params
     })
   },
   inTankProduct(params) {
     return request({
       url: url.inTankProduct,
+      method: 'GET',
+      data: params
+    })
+  },
+  cancelSingle(params) {
+    return request({
+      url: url.cancelSingle,
       method: 'get',
-      params
+      data: params
     })
   },
 }

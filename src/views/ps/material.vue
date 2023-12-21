@@ -2,7 +2,7 @@
   <!--角色分类列表-->
   <div class="app-container">
     <!-- <div class="titlePrompt">1TT.201.21345</div> -->
-    <el-table highlight-current-row 
+    <el-table highlight-current-row
       :data="tableData"
       height="300"
       style="width: 100%;height:300px;font-size:12px;"
@@ -23,7 +23,7 @@
         label="物料编码"
         width="200"
       >
-        <template slot-scope="scope">
+        <template #default="scope">
           <a @click="downFileByDrawingNo(scope.row.number)">{{ scope.row.number }}</a>
         </template>
       </el-table-column>

@@ -274,10 +274,10 @@ export default {
         { key: "projName", label: "项目名称", value: targetData["projName"] },
         {
           key: "businessOrderName",
-          label: "商机订单",
+          label: "商机",
           value: targetData["businessOrderName"],
         },
-        // { key: "remark", label: "备注信息", value: targetData["remark"] },
+        { key: "remark", label: "备注", value: targetData["orderNote"] },
         {
           key: "manufacturer",
           label: "厂商",

@@ -20,7 +20,7 @@
           <el-form-item label="复核结果" required>
             <el-radio-group v-model="form.result">
               <el-radio :label="1">通过</el-radio>
-              <el-radio :label="2">未通过</el-radio>
+              <el-radio :label="0">未通过</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>

@@ -16,7 +16,7 @@
     >
       <el-row type="flex" align="middle" justify="space-between">
         <el-col :span="12">
-          <el-form-item label="商机订单" prop="businessOrderId">
+          <el-form-item label="商机" prop="businessOrderId">
             <select-page
               ref="selectRef"
               v-model="form.businessOrderId"
@@ -144,6 +144,18 @@
       </el-row>
       <el-row type="flex" align="middle" justify="start">
         <el-col :span="12">
+          <el-form-item label="备注">
+            <el-input
+              v-model="form.orderNote"
+               type="textarea"
+              :maxlength="500"
+              :rows="2"
+              clearable
+              :disabled="onlyEditFile"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
           <el-form-item label="附件上传">
             <multi-upload-vue
               :limit="maxUpload"
@@ -248,6 +260,7 @@ export default {
         workOrderType: 1,
         attachmentName: "",
         attachmentUrl: "",
+        orderNote:""
       },
       fileList: [],
       fileUrl: "",
@@ -260,6 +273,7 @@ export default {
         customName: safeLimit("", true),
         prodCategory: requiredVerify(),
         voltageLevel: safeLimit("", true),
+        orderNote:safeLimit("", true),
         // prodModel: safeLimit("", false),
       },
       prodCategoryOptions: [],

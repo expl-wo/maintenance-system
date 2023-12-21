@@ -1672,6 +1672,28 @@ export const MENU_CODE_LIST = {
             type: 1,
             url: "/overhaul/problemLib",
             viewPath: null
+        },
+        {
+            code: "2009_iccEvent",
+            level: 2,
+            method: "GET",
+            name: "事件查询",
+            showOrder: null,
+            sub: [],
+            type: 1,
+            url: "/overhaul/iccEvent",
+            viewPath: null
+        },
+        {
+            code: "2010_arVideo",
+            level: 2,
+            method: "GET",
+            name: "360视频",
+            showOrder: null,
+            sub: [],
+            type: 1,
+            url: "/overhaul/arVideo",
+            viewPath: null
         }
     ],
     type: 1,

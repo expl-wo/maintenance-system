@@ -31,7 +31,6 @@ export const isAuth = (key) => {
 }
 
 export const getRole =() =>{
-    debugger
     //获取角色信息
     return new Promise((resolve, reject) => {
         getInfo().then(response => {

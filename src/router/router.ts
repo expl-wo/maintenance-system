@@ -126,6 +126,27 @@ export const sysRouter : Array<RouteRecordRaw> = [
 		]
 	},
 	{
+		path: '/production',
+		component: Layout,
+		name: '05_productionGL',
+		meta: {
+			title: '生产管理',
+			icon: 'production'
+		},
+		children: [
+			{
+				path: 'dryingOut',
+				name: '0501_dryingOut',
+				component: () => import('@/views/production/dryingInout/pm008_dryingInout.vue'),
+				meta: {
+					title: '干燥罐入出炉登记',
+					icon: 'sys_005',
+					keepAlive: true
+				}
+			},
+		]
+	},
+	{
 		path: '/ps',
 		component: Layout,
 		redirect: '/ps/productConfig',
@@ -297,7 +318,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
 			},
       ],
   },
-  {
+  	{
     path: '/overHaul',
     component: Layout,
     redirect: '/overHaul/survey',
@@ -481,7 +502,7 @@ export const sysRouter : Array<RouteRecordRaw> = [
         name: 'arVideo',
         component: () => import('@/views/overhaul/iframeToIcc/arVideo.vue'),
         meta: {
-          title: '360全景视频',
+          title: '360视频',
           icon: 'sys_005',
           keepAlive: true
         }
