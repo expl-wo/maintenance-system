@@ -1,11 +1,7 @@
 <template>
   <div class="full-content">
     <div class="full-content editor-wrapper">
-      <Toolbar
-        :editor="editor"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-      />
+      <Toolbar :editor="editor" :defaultConfig="toolbarConfig" :mode="mode" />
       <Editor
         class="editor-content"
         v-model="html"
@@ -14,7 +10,11 @@
         @onCreated="onCreated"
       />
     </div>
-    <preview-modal :visible="visible" :editorHtml="html" @closeDialog="closeDialog" />
+    <preview-modal
+      :visible="visible"
+      :editorHtml="html"
+      @closeDialog="closeDialog"
+    />
   </div>
 </template>
 <script>
@@ -24,36 +24,44 @@ export default {
   components: {
     Editor,
     Toolbar,
-    PreviewModal
+    PreviewModal,
   },
   props: {
     contentHtml: {
       type: String,
-      default: ''
+      default: "",
     },
-
   },
   data() {
-    return  {
+    return {
       editor: null,
-      html: '',
+      html: "",
       toolbarConfig: {
-        excludeKeys: ["group-video", "fullScreen"]
+        excludeKeys: [
+          "group-video",
+          "fullScreen",
+          "group-image",
+          "insertTable",
+          "insertLink",
+          "codeBlock",
+          "emotion",
+          "bgColor"
+        ],
       },
       editorConfig: {
-        placeholder: "请输入内容..."
+        placeholder: "请输入内容...",
       },
-      mode: 'default',
-      visible: false
-    }
+      mode: "default",
+      visible: false,
+    };
   },
   watch: {
     contentHtml(newVal, oldVal) {
       this.html = newVal;
     },
     html(newVal, oldVal) {
-      this.$emit('valChange', newVal);
-    }
+      this.$emit("valChange", newVal);
+    },
   },
   methods: {
     onCreated(editor) {
@@ -66,22 +74,22 @@ export default {
     // 关闭预览框
     closeDialog() {
       this.visible = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style src="@wangeditor/editor/dist/css/style.css"></style>
 <style lang="scss" scoped>
-  .full-content {
-    width: 100%;
-    height: 100%;
+.full-content {
+  width: 100%;
+  height: 100%;
+}
+.editor-wrapper {
+  border-bottom: 1px solid #ccc;
+  .editor-content {
+    height: calc(100% - 40px) !important;
+    border-top: 1px solid #ccc;
+    overflow-y: hidden;
   }
-  .editor-wrapper {
-    border-bottom: 1px solid #ccc;
-    .editor-content {
-      height: calc(100% - 40px) !important;
-      border-top: 1px solid #ccc;
-      overflow-y: hidden;
-    }
-  }
+}
 </style>
