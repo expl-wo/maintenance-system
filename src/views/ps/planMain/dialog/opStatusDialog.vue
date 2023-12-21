@@ -36,8 +36,9 @@
     </el-table>
     <template #footer>
       <div class="dialog-footer">
-      <el-button @click="dialogVisible=false">关闭</el-button>
-      </div></template>
+        <el-button @click="dialogVisible=false">关闭</el-button>
+      </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -66,7 +67,7 @@ export default {
       planWeekHttp.searchByPlan({
         planNodeId: this.params[this.nodeIdProperty]
       }).then(response=>{
-        this.dataList = response.data;
+        this.dataList = [];
       })
     },
     initFromFlowChart(params){
@@ -77,7 +78,7 @@ export default {
       planWeekHttp.searchByPlan({
         planNodeId
       }).then(response=>{
-        this.dataList = response.data;
+        this.dataList = [];
       })
     },
   }

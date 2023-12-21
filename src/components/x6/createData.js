@@ -43,7 +43,7 @@ class CreateData {
    */
   async getResult() {
     await this.init();
-    console.log(this.edgeList.concat(this.nodeList))
+    console.log('初始化:',this.edgeList.concat(this.nodeList))
     return this.edgeList.concat(this.nodeList)
   }
 
@@ -166,6 +166,7 @@ class CreateData {
   }
 
   formatTime(node){
+    debugger
     return {
       startDate: this.subTime(node.startDate), //计划开始日期
       nodeDate: this.subTime(node.nodeDate), //计划结束日期
@@ -173,7 +174,7 @@ class CreateData {
       finishDate: this.subTime(node.finishDate),//finishDate
       difDay: node.difDay,
       planNodeId: node.id,
-      type: node.type
+      type: node.pnType
     }
   }
 
@@ -181,6 +182,7 @@ class CreateData {
   //获取节点状态，包括提前、滞后、暂停  原材料、电抗  不是所有
   getNodeStatusAndTime(node){
     debugger
+    console.log("getNodeStatusAndTime",this.sourceDataList)
     let sourceNode = this.sourceDataList.find(item=>{
       return node.id == item.nodeId;
     })
@@ -191,22 +193,22 @@ class CreateData {
       }
     }
     let timeStatus = 'forward', typeStatus = '';
-    if(sourceNode.pnType == Constants.processType.product) {
+    if(sourceNode.pnType === Constants.processType.product) {
       typeStatus = 'product';
-    }else if(sourceNode.pnType == Constants.processType.design){
+    }else if(sourceNode.pnType === Constants.processType.design){
       // typeStatus = 'design'
-    }else if(sourceNode.pnType == Constants.processType.purchase){
+    }else if(sourceNode.pnType === Constants.processType.purchase){
       typeStatus = 'purchase'
     }
 
     //status  状态：-1：超期；0：正常；1：提前
     //progressStatus进度状态：4：暂停
-    if(sourceNode.progressStatus == 4) {
+    if(sourceNode.status === 4) {
       timeStatus = 'pause'
     }else {
-      if(sourceNode.status ==  1) {
+      if(sourceNode.pnStatus ===  1) {
         timeStatus = 'forward'
-      }else if(sourceNode.status == -1) {
+      }else if(sourceNode.pnStatus === -1) {
         timeStatus = 'delay'
       }
     }

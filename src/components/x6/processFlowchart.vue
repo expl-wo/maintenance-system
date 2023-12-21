@@ -125,6 +125,7 @@ export default {
       })
     },
     handleNodeClick(nodeData){
+      debugger
       if(nodeData.type ==this.$constants.processType.product) {
         if(nodeData.planNodeId === 'lung'){
           this.$refs.opLungStatusDialog.init(nodeData.opPlanList)
