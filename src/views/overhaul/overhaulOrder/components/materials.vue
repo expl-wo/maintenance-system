@@ -29,6 +29,12 @@
         >
           <template #default="{ row }">
             <el-button
+              v-if="$isAuth(`2005_${onlyTabName.split('-')[0]}_materials_edit`)"
+              :disabled="
+                [
+                  COMMOM_WORK_ORDER_MAP['pause'].value,
+                  COMMOM_WORK_ORDER_MAP['finish'].value,
+                ].includes(workOrderInfo.orderStatus)"
               type="primary"
               title="编辑数量"
               @click="openModal(row, 'editModal')"
@@ -90,12 +96,19 @@
 import Pagination from "@/components/Pagination"; // 分页
 import { getMaterials, editMaterialsNum } from "@/api/overhaul/workOrderApi.js";
 import { MATERIALS_COLUMNS } from "../config.js";
+import {
+  COMMOM_WORK_ORDER_MAP
+} from "@/views/overhaul/constants.js";
 export default {
   name: "Materials",
   components: {
     Pagination,
   },
   props: {
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
     //当前工单的详情
     workOrderInfo: {
       type: Object,
@@ -110,6 +123,7 @@ export default {
   },
   data() {
     return {
+      COMMOM_WORK_ORDER_MAP,
       COLUMNS: Object.freeze(MATERIALS_COLUMNS),
       listLoading: true,
       tableData: [],

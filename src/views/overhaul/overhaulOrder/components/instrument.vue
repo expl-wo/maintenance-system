@@ -29,8 +29,14 @@
         >
           <template #default="{ row }">
             <el-button
+              v-if="$isAuth(`2005_${onlyTabName.split('-')[0]}_instrument_edit`)"
               type="primary"
               title="编辑数量"
+              :disabled="
+                [
+                  COMMOM_WORK_ORDER_MAP['pause'].value,
+                  COMMOM_WORK_ORDER_MAP['finish'].value,
+                ].includes(workOrderInfo.orderStatus)"
               @click="openModal(row, 'editModal')"
             >
               <el-icon><Edit /></el-icon>
@@ -89,10 +95,17 @@
 <script>
 import Pagination from "@/components/Pagination"; // 分页
 import { INSTRUMENT_COLUMNS } from "../config.js";
+import {
+  COMMOM_WORK_ORDER_MAP
+} from "@/views/overhaul/constants.js";
 import { editToolNum, getTools } from "@/api/overhaul/workOrderApi.js";
 export default {
   name: "Instrument",
   props: {
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
     //当前工单的详情
     workOrderInfo: {
       type: Object,
@@ -110,6 +123,7 @@ export default {
   },
   data() {
     return {
+      COMMOM_WORK_ORDER_MAP,
       COLUMNS: Object.freeze(INSTRUMENT_COLUMNS),
       listLoading: true,
       tableData: [],
@@ -163,7 +177,7 @@ export default {
      */
     openModal(row = null, modeName) {
       this.operateRow = row;
-      this.form.num=this.operateRow.toolNum;
+      this.form.num = this.operateRow.toolNum;
       this[modeName] = true;
     },
     //分页发生改变时
