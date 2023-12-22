@@ -118,6 +118,7 @@ export default {
     async exportLoop() {
       if (this.hadFileNum >= this.maxPageNum) {
         this.listLoading = false;
+        this.hadFileNum = 0
         return;
       }
       await exportReturnList({
@@ -125,7 +126,7 @@ export default {
         pageSize: 10000,
         workCode: this.workOrderInfo.id,
       }).then((res) => {
-        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xls`);
+        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xlsx`);
         this.hadFileNum += 1;
         this.exportLoop();
       });

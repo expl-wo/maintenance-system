@@ -392,7 +392,7 @@ export default {
       issueModal: false,
       recheckModal: false,
       operateRow: null,
-      isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是勘查工单
+      isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是检修工单中嵌入勘查工单
       //分页相关数据
       pageOptions: {
         total: 0,

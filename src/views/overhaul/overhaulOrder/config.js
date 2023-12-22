@@ -550,6 +550,11 @@ const RETURN_COLUMNS = [
         align: "center",
     },
     {
+        prop: "serialCode",
+        label: "流水码",
+        align: "center",
+    },
+    {
         prop: "parentSerialCode",
         label: "父节点流水码",
         align: "center",
