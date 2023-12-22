@@ -470,16 +470,15 @@ export default {
             correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
           });
         });
-        this.printWin.addEventListener("afterprint", this.backWin);
+        this.printWin.addEventListener("afterprint", () => {
+            if (this.printWin) {
+              this.printWin.close();
+              this.printWin = null;
+            }
+          },
+          { once: true });
         this.printWin.print();
       }, 100);
-    },
-    backWin() {
-      if (this.printWin) {
-        this.printWin.close();
-        this.printWin.removeEventListener("afterprint", this.backWin);
-        this.printWin = null;
-      }
     },
   },
 };
