@@ -225,6 +225,9 @@ export default {
         isMultiline: [{
           required: true, message: '不能为空', trigger: 'blur'
         }],
+        executionFrequency: [{
+          required: true, message: '不能为空', trigger: 'blur'
+        }],
       }
     }
   },
