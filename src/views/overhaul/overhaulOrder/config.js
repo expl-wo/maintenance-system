@@ -320,7 +320,7 @@ const TAB_LIST_OUT = [
     //     hiddenAssign: true,
     // },
 ]
-//每个流程对应的tab项
+//每个流程对应的tab项，如果有一些公共组件没法兼容了，公共组件复制并且定制化后修改components即可，
 const TAB_LIST_MAP = {
     //试验
     experiment:
