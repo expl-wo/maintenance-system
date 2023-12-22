@@ -182,6 +182,7 @@ export default {
     return {
       initModel: {
         itemId: '',
+        stepId:'',
         stepCode:'',
         stepName:'',
         operationNumber:'',
@@ -255,6 +256,7 @@ export default {
       }
       this.propertyList = item.filter( i => i.id !== data.id)
       if (data){
+        this.model.stepId   = data.id
         this.model.stepCode = data.craftsDeCode
         this.model.stepName = data.craftsDeName
       }

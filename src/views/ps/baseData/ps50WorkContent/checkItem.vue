@@ -100,27 +100,7 @@ export default {
       dataList: [],
       hidden:false,
       listQuery:{
-        stepCode:'',
-        stepName:'',
-        operationNumber:'',
-        operationCode:'',
-        operationDescription:'',
-        operationType:'',
-        operationName:'',
-        dictionaryCode:'',
-        lowerLimit:'',
-        upperLimit:'',
-        correctValue:'',
-        dataUnit:'',
-        maximumContentLength:'',
-        requireImageFile:'',
-        isMultiline:'',
-        isRequire:'',
-        dependentOperation:'',
-        dependentOperationOption:'',
-        executionFrequency:'',
-        eligibilityCriteria:'',
-        reviewTimeLimit:'',
+        stepId:'',
         pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
       },
@@ -136,7 +116,7 @@ export default {
   },
   mounted() {
     if (this.data){
-      this.listQuery.stepCode = this.data.craftsDeCode
+      this.listQuery.stepId = this.data.id
       this.hidden = true
     }
     this.getDataList();
@@ -154,7 +134,6 @@ export default {
       this.$refs.checkItemFormDialogRef.init(this.data,this.tableData,null);
     },
     getDataList() {
-
       this.tableData = []
       getWorkContent(this.listQuery).then(response => {
         this.tableData = response.data
@@ -214,7 +193,7 @@ export default {
     },
 
     initData(stepId) {
-
+      console.log(stepId)
       let temp = stepId ==null ?'':stepId.id
       getWorkContent({
         stepId: temp,
