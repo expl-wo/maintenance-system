@@ -494,7 +494,7 @@ const TAB_LIST_MAP = {
             label: "工装工具清单",
             name: "instrument",
             components: "instrument",
-            menuCode: "2005_siteOverhaul_instrument_edit"
+            menuCode: "2005_siteOverhaul_instrument_view"
         },
         {
             label: "现场检修试验报告",

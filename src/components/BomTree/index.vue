@@ -29,6 +29,7 @@
               >{{ node.label }}</span
             >
             <span
+              v-if="isCanEditAuth"
               :class="[
                 'bom-tree-node-show',
                 currentNode && data.$treeNodeId === currentNode.$treeNodeId
@@ -86,6 +87,10 @@ export default {
       default() {
         return [];
       },
+    },
+    isCanEditAuth:{
+      type: Boolean,
+      default: true,
     },
     changeDataEmit: {
       type: Boolean,
