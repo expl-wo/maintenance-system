@@ -10,7 +10,6 @@
   >
     <el-form
       ref="dataForm"
-      :rules="rules"
       :model="form"
       label-position="right"
       label-width="150px"

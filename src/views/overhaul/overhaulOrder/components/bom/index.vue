@@ -1,6 +1,6 @@
 <template>
   <div class="bom-box">
-    <template v-if="isShowTemplate">
+    <template v-if="isShowTemplate && isEditAuth">
       <span class="mrl10">bom模板:</span>
       <select-page
         v-model="templateChoose"
@@ -10,10 +10,10 @@
         @change="handleTemplateChange"
       />
     </template>
-    <el-button type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
+    <el-button v-if="isEditAuth" type="primary" class="mrl10" title="同步PLM" @click="syncPLM"
       ><el-icon class="el-icon--left"><Refresh /></el-icon>同步PLM</el-button
     >
-    <el-button type="primary" @click="openModal('showPrint')"
+    <el-button v-if="isEditAuth" type="primary" @click="openModal('showPrint')"
       ><el-icon class="el-icon--left"><Printer /></el-icon>打印二维码</el-button
     >
     <div class="bom-content" v-if="bomTreeId">
@@ -24,6 +24,7 @@
             ref="bomTreeRef"
             labelWidth="150px"
             :treeData="treeData"
+            :isCanEditAuth="isEditAuth"
             :defaultProps="defaultProps"
             :changeDataEmit="true"
             @nodeClick="handleNodeClick"
@@ -67,7 +68,7 @@
           <el-descriptions-item label="拆解照片">
             <div>
               <el-upload
-                v-if="operateRow.ptreeId"
+                v-if="operateRow.ptreeId && isEditAuth"
                 class="upload-demo"
                 action="#"
                 :before-upload="beforeUpload"
@@ -85,7 +86,7 @@
                   </div>
                 </template>
               </el-upload>
-              <file-list :fileList="fileList" @onDelete="deletePic"></file-list>
+              <file-list :fileList="fileList" :isCanDelete="isEditAuth" @onDelete="deletePic"></file-list>
             </div>
           </el-descriptions-item>
         </el-descriptions>
@@ -191,6 +192,10 @@ export default {
     this.getBomTree();
   },
   computed: {
+    //编辑权限
+    isEditAuth(){
+      return this.$isAuth(`2005_${this.onlyTabName.split('-')[0]}_bom_edit`)
+    },
     imgType() {
       let map_type = {
         "siteDismantle-BomVue": 1,
@@ -470,16 +475,15 @@ export default {
             correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
           });
         });
-        this.printWin.addEventListener("afterprint", this.backWin);
+        this.printWin.addEventListener("afterprint", () => {
+            if (this.printWin) {
+              this.printWin.close();
+              this.printWin = null;
+            }
+          },
+          { once: true });
         this.printWin.print();
       }, 100);
-    },
-    backWin() {
-      if (this.printWin) {
-        this.printWin.close();
-        this.printWin.removeEventListener("afterprint", this.backWin);
-        this.printWin = null;
-      }
     },
   },
 };

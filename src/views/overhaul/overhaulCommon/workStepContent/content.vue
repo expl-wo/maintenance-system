@@ -83,7 +83,10 @@
         <el-date-picker
           v-else-if="contentType === 2"
           v-model="form.contentData"
-          type="date"
+          value-format="YYYY-MM-DD HH:mm"
+          format="YYYY-MM-DD HH:mm"
+          type="datetime"
+          time-format="HH:mm"
           style="width: 100%"
         />
         <el-radio-group
@@ -104,9 +107,8 @@
           <el-checkbox
             v-for="(item, index) in dictionaryContent"
             :key="index"
-            :label="item.name"
-            :value="item.code"
-          />
+            :label="item.code"
+          > {{item.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-col>
@@ -215,6 +217,7 @@ export default {
       default: "",
     },
   },
+  emits: ['searchChange'],
   data() {
     return {
       COMMON_FORMAT,
@@ -226,7 +229,7 @@ export default {
       form: {
         date: dayjs().format(COMMON_FORMAT),
         time: "01:00",
-        contentData: "",
+        contentData: undefined,
         fileUrl: "",
         fileName: "",
       },
@@ -235,21 +238,21 @@ export default {
   created() {
     this.getTimeOptions();
   },
-  watch: {
-    dictionaryContent: {
-      handler(val) {
-        if (
-          Array.isArray(val) &&
-          val.length &&
-          !this.form.contentData &&
-          +this.contentType === 3
-        ) {
-          this.form.contentData = val[0].code;
-        }
-      },
-      immediate: true,
-    },
-  },
+  // watch: {
+  //   dictionaryContent: {
+  //     handler(val) {
+  //       if (
+  //         Array.isArray(val) &&
+  //         val.length &&
+  //         !this.form.contentData &&
+  //         +this.contentType === 3
+  //       ) {
+  //         this.form.contentData = val[0].code;
+  //       }
+  //     },
+  //     immediate: true,
+  //   },
+  // },
   computed: {
     beginTime() {
       let beginTime = "";
@@ -267,7 +270,7 @@ export default {
   },
   methods: {
     resetContent() {
-      this.form.contentData = "";
+      this.form.contentData = undefined;
       this.form.fileUrl = "";
       this.form.fileName = "";
       this.fileUrl = "";

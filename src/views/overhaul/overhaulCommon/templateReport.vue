@@ -158,7 +158,7 @@ export default {
   computed: {
     //编辑权限
     menuCodeEdit() {
-      return `${MENU_CODE[this.workOrderType]}_report_view_${this.workType}`;
+      return `${MENU_CODE[this.workOrderType]}_report_edit_${this.workType}`;
     },
     loadingText() {
       const textMap = {

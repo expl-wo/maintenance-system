@@ -320,7 +320,7 @@ const TAB_LIST_OUT = [
     //     hiddenAssign: true,
     // },
 ]
-//每个流程对应的tab项
+//每个流程对应的tab项，如果有一些公共组件没法兼容了，公共组件复制并且定制化后修改components即可，
 const TAB_LIST_MAP = {
     //试验
     experiment:
@@ -494,7 +494,7 @@ const TAB_LIST_MAP = {
             label: "工装工具清单",
             name: "instrument",
             components: "instrument",
-            menuCode: "2005_siteOverhaul_instrument_edit"
+            menuCode: "2005_siteOverhaul_instrument_view"
         },
         {
             label: "现场检修试验报告",
@@ -547,6 +547,11 @@ const RETURN_COLUMNS = [
     {
         prop: "materialTypeName",
         label: "物料(材料)分类名称",
+        align: "center",
+    },
+    {
+        prop: "serialCode",
+        label: "流水码",
         align: "center",
     },
     {

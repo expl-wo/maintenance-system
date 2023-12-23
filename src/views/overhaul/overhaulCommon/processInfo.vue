@@ -1,5 +1,6 @@
 <template>
   <div class="process-box">
+    <!-- 检修工单不用进行模板选择 -->
     <template v-if="isShowTemplate">
       模板选择：
       <select-page
@@ -13,6 +14,7 @@
       />
     </template>
     <template v-if="treeData.length">
+      <!-- 需要将工序树审核之后，才可以进行视频绑定等操作 -->
       <div class="operate-wrap-header" v-if="workTreeStatus === 2">
         <el-button
           v-if="$isAuth(roleBtnEnum['videoBind']) && !isSurvey"
@@ -181,7 +183,7 @@
                     >
                       <el-icon><DocumentAdd /></el-icon>
                     </el-button>
-                    <!-- 只有叶子节点有复核 -->
+                    <!-- 只有工步才有复核 -->
                     <el-button
                       type="primary"
                       :disabled="
@@ -269,6 +271,7 @@
           modalName="issueModal"
           @closeModal="closeModal"
         ></add-issue>
+        <!-- 工步复核操作 -->
         <recheck-modal
           v-if="recheckModal"
           :workOrderInfo="workOrderInfo"
@@ -307,6 +310,7 @@ import {
   getWorkInfoPage,
   oAExamine,
 } from "@/api/overhaul/workOrderApi.js";
+//不同场景对应的工序树发起审核时的枚举
 const sceneType_map = {
   SURVEY_SCENE: 0,
   OVER_HAUL_ON_THE_SPOT_SCENE: 61,
@@ -388,7 +392,7 @@ export default {
       issueModal: false,
       recheckModal: false,
       operateRow: null,
-      isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是勘查工单
+      isSurvey: this.onlyTabName === "surveyItem-processInfo", //是否是检修工单中嵌入勘查工单
       //分页相关数据
       pageOptions: {
         total: 0,
