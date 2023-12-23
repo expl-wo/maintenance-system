@@ -82,6 +82,7 @@
               style="height: 100%"
               description="暂无关联的勘查工单数据"
             />
+            <!-- 检修工单中查看勘查工单信息，单独组件处理 -->
             <middle-ware
               v-else-if="item.name === 'surveyItem'"
               v-bind="item"
@@ -109,6 +110,7 @@
         </el-tabs>
       </div>
     </section>
+    <!-- 工序指派组件 -->
     <dispatch-modal
       v-if="showAppoint"
       :operateRow="operateRow"

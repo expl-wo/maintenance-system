@@ -122,7 +122,6 @@ export default {
         code: '',
         name: '',
         sort: '',
-        scope: constants,
       },
       rules: {
         code: [{
@@ -148,8 +147,7 @@ export default {
     },
     handleSearch() {
       dictHttp.getItem({
-        keywords: this.searchModel.keywords,
-        scope: constants
+        keywords: this.searchModel.keywords
       }).then(response => {
         this.dataList = response.data
       })

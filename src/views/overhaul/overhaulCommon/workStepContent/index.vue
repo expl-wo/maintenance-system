@@ -63,7 +63,7 @@
     >
       执行项
     </div>
-    <el-form label-width="120px" class="work-centent-body">
+    <el-form label-width="120px" class="work-centent-body" v-if="isRender">
       <template v-for="(item, index) in contentList" :key="index">
         <content-item
           :ref="`contentItemRef${item.id}`"
@@ -78,7 +78,14 @@
       </template>
     </el-form>
     <div class="operate-wrap" v-if="isEditAuth">
-      <el-button type="primary" title="保存" :disabled="![1].includes(workStatus)" @click="save"> 保存 </el-button>
+      <el-button
+        type="primary"
+        title="保存"
+        :disabled="![1].includes(workStatus)"
+        @click="save"
+      >
+        保存
+      </el-button>
       <el-button
         type="primary"
         title="报工"
@@ -171,6 +178,7 @@ export default {
     return {
       recheckModal: false,
       reportWorkModal: false,
+      isRender: true,
       contentInfo: {},
       REVIEW_STATUS_ENUM,
       WORK_STATUS_ENUM,
@@ -221,10 +229,12 @@ export default {
         craftId: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
       };
+      this.isRender = false;
       getWorkContent(parmas)
         .then((res) => {
           const { value } = res.data;
           this.dataList = value || [];
+          this.isRender = true;
           this.createdContentList(); //形成操作项
           this.batchSearchContent(this.dataList);
         })
@@ -333,7 +343,7 @@ export default {
           contentType: +item.operationType,
           contentHeader: `${index + 1}.${item.operationName}`,
           contentLabel: item.operationDescription,
-          requireImageFile: !!item.requireImageFile,
+          requireImageFile: !!+item.requireImageFile,
           maximumContentLength: +item.maximumContentLength,
           dataUnit: item.dataUnit,
           isRequired: !!+item.isRequired,

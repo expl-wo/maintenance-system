@@ -252,28 +252,38 @@ export default {
       setTimeout(() => {
         this.printWin.document.title = "衡变MES管理端-工单二维码打印";
         targetValue.forEach((item) => {
-          let codeInfo = {prodNumber:item.prodNumber,prodModel:item.prodModel,id:item.id}
-          new QRCode(this.printWin.document.getElementById(`overhaul_print_${item.codeIndex}`), {
-            width: 100,
-            height: 100,
-            // text: JSON.stringify(item),
-            text: JSON.stringify(codeInfo),
-            colorDark: "#000000", // 前景色
-            colorLight: "#ffffff", // 背景色
-            correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
-          });
+          let codeInfo = {
+            prodNumber: item.prodNumber,
+            prodModel: item.prodModel,
+            id: item.id,
+          };
+          new QRCode(
+            this.printWin.document.getElementById(
+              `overhaul_print_${item.codeIndex}`
+            ),
+            {
+              width: 100,
+              height: 100,
+              // text: JSON.stringify(item),
+              text: JSON.stringify(codeInfo),
+              colorDark: "#000000", // 前景色
+              colorLight: "#ffffff", // 背景色
+              correctLevel: QRCode.CorrectLevel.H, // 降低容错级别
+            }
+          );
         });
-        this.printWin.addEventListener("afterprint", this.backWin);
+        this.printWin.addEventListener(
+          "afterprint",
+          () => {
+            if (this.printWin) {
+              this.printWin.close();
+              this.printWin = null;
+            }
+          },
+          { once: true }
+        );
         this.printWin.print();
       }, 100);
-    },
-    backWin() {
-      console.log("打印结束")
-      if (this.printWin) {
-        this.printWin.close();
-        this.printWin.removeEventListener("afterprint", this.backWin);
-        this.printWin = null;
-      }
     },
     /**
      * row 所选行 审批之后不能删除
@@ -440,8 +450,8 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-:deep(.pagination-container){
-  padding:20px
+:deep(.pagination-container) {
+  padding: 20px;
 }
 :deep(.main-layout_fixed-nav-bar) {
   overflow-y: auto;

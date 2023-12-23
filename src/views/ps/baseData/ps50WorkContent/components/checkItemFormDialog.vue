@@ -182,6 +182,7 @@ export default {
     return {
       initModel: {
         itemId: '',
+        stepId:'',
         stepCode:'',
         stepName:'',
         operationNumber:'',
@@ -224,6 +225,9 @@ export default {
         isMultiline: [{
           required: true, message: '不能为空', trigger: 'blur'
         }],
+        executionFrequency: [{
+          required: true, message: '不能为空', trigger: 'blur'
+        }],
       }
     }
   },
@@ -255,6 +259,7 @@ export default {
       }
       this.propertyList = item.filter( i => i.id !== data.id)
       if (data){
+        this.model.stepId   = data.id
         this.model.stepCode = data.craftsDeCode
         this.model.stepName = data.craftsDeName
       }

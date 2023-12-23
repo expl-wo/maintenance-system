@@ -147,26 +147,23 @@
                         stripe
                         row-key="id"
                         border
-                        :cell-style ="{borderColor:'#538bea'}"
-              >
+                        :cell-style ="{borderColor:'#538bea'}">
                 <el-table-column prop="option" align="center" width="100" label="操作">
                   <template #default="scope">
                     <el-button type="primary" size="small" @click="cancelSingle(scope.row)">取消</el-button>
                   </template>
                 </el-table-column>
-                <el-table-column prop="productNo" align="center" label="生产号"  width="250"/>
-                <el-table-column prop="model" align="center" label="型号" width="300" />
+                <el-table-column prop="productNo" align="center" label="生产号"  width="200"/>
+                <el-table-column prop="model" align="center" label="型号" width="200" />
                 <el-table-column prop="dryingProductType" align="center" label="类型" />
                 <el-table-column prop="insulationWeight" align="center" label="绝缘重量" />
-                <el-table-column prop="output" align="center" label="产量(万kVA)" />
+                <el-table-column prop="output" align="center" label="产量(万kVA)" width="100" />
                 <el-table-column prop="amount" align="center" label="产值(万元)" />
-                <el-table-column prop="planStartDate" align="center" label="计划入炉时间" />
+                <el-table-column prop="planStartDate" align="center" label="计划入炉时间" width="200" />
               </el-table>
             </el-tab-pane>
           </el-tabs>
         </div>
-
-
       </el-col>
     </el-row>
 
@@ -246,7 +243,7 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="类别" size="small">
-            <xui-dict-select item-code="dryingClassification" size="small" v-model="putForm.dryingProductType"
+            <xui-dict-select item-code="dryingProductType" size="small" v-model="putForm.dryingProductType"
                              class="filter-item" clearable></xui-dict-select>
           </el-form-item>
           <el-table border :data="selectData">
@@ -372,7 +369,7 @@
         </el-form>
       </div>
       <div  class="dialog-footer">
-        <el-button size="small" @click="putDialogVisible = false">取 消</el-button>
+        <el-button size="small" @click="changeDialogVisible = false">取 消</el-button>
         <el-button type="primary" size="small" @click="changeConfirm()">确认</el-button>
       </div>
     </el-dialog>
@@ -530,7 +527,7 @@ import  {isAuth} from "@/utils/control"
         this.selectData = select
       },
       clickStyle ({row, rowIndex}) {
-        if (this.row == row ) {
+        if (this.row === row ) {
           return "selected-row";
         }
       },

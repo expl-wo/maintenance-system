@@ -46,3 +46,11 @@ export function getWorkByChannel(data) {
         data
     })
 }
+//获取icc鉴权信息
+export function getUserToIcc() {
+    return request({
+        url: '/api/evo-ims-overhaul/user-info/query',
+        method: 'get',
+        data
+    })
+}

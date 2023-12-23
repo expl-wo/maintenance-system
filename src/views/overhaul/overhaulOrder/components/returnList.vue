@@ -4,7 +4,7 @@
       <el-button type="primary" @click="getList">
         <el-icon class="el-icon--left"><Refresh /></el-icon> 刷新
       </el-button>
-      <el-button type="primary" @click="download">
+      <el-button type="primary" @click="download" v-if="$isAuth(`2005_${onlyTabName.split('-')[0]}_returnList_download`)">
         <el-icon class="el-icon--left"><Download /></el-icon> 导出
       </el-button>
     </el-row>
@@ -55,6 +55,10 @@ export default {
     Pagination,
   },
   props: {
+    onlyTabName: {
+      type: String,
+      default: "",
+    },
     //当前工单的详情
     workOrderInfo: {
       type: Object,
@@ -114,6 +118,7 @@ export default {
     async exportLoop() {
       if (this.hadFileNum >= this.maxPageNum) {
         this.listLoading = false;
+        this.hadFileNum = 0
         return;
       }
       await exportReturnList({
@@ -121,7 +126,7 @@ export default {
         pageSize: 10000,
         workCode: this.workOrderInfo.id,
       }).then((res) => {
-        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xls`);
+        exportData(res, `返厂清单_${dayjs().format('YYYY_MM_DD_HH_mm_ss')}.xlsx`);
         this.hadFileNum += 1;
         this.exportLoop();
       });
