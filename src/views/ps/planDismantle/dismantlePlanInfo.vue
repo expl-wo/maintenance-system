@@ -84,6 +84,13 @@ export default {
     AddProductDialog,
   },
   data() {
+    let routePath = this.$route.fullPath;
+    let planType = ''
+    if(routePath.indexOf('0407dismantling_plan_approval')>=0||routePath.indexOf('0407dismantling_plan')>=0){
+      planType= 'dismantle'
+    }else if(routePath.indexOf('0407out_dismantling_plan_approval')>=0||routePath.indexOf('0407out_dismantling_plan')>=0){
+      planType = 'outDismantle'
+    }
     return {
       tableData: [],
       loadingData: true,
@@ -98,7 +105,7 @@ export default {
         sortedBy:'',
       },
       laminationTables:[],
-      planType: 'dismantle',
+      planType,
     }
   },
   created(){

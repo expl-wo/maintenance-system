@@ -90,6 +90,8 @@ const url = {
   getMesProcessList: '/api/gcplan/productPlan/getMesProcessList',
   //绑定MES工艺路线
   bindProcessPlan: '/api/gcplan/productPlan/bindProcessPlan',
+  //根据中工步查询工步
+  searchCraftsByProcess: '/api/gcplan/productPlan/searchCraftsByProcess',
 }
 
 export default {
@@ -415,6 +417,13 @@ export default {
     return request({
       url: url.bindProcessPlan,
       method: 'post',
+      data: params
+    })
+  },
+  searchCraftsByProcess(params) {
+    return request({
+      url: url.searchCraftsByProcess,
+      method: 'get',
       data: params
     })
   },

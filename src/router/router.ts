@@ -296,27 +296,49 @@ export const sysRouter : Array<RouteRecordRaw> = [
 			// 	}
 			// },
 		{
-        //拆解计划
-        path: '0407dismantling_plan',
-        name: '0407DismantlingPlan',
+        //厂外拆解计划
+        path: '0407out_dismantling_plan',
+        name: '0407out_DismantlingPlan',
         component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
         meta: {
-          title: '拆解计划',
+          title: '厂外拆解计划',
           icon: 'ps_011',
           keepAlive: true
         }
       },
       {
-        //拆解计划审批
-        path: '0407dismantling_plan_approval',
-        name: '0406DismantlingApproval',
+        //厂外拆解计划审批
+        path: '0407out_dismantling_plan_approval',
+        name: '0406out_DismantlingApproval',
         component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
         meta: {
-          title: '拆解计划审批',
+          title: '厂外拆解计划审批',
           icon: 'ps_011',
           keepAlive: true
         }
       },
+			{
+				//厂内拆解计划
+				path: '0407dismantling_plan',
+				name: '0407DismantlingPlan',
+				component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
+				meta: {
+					title: '厂内拆解计划',
+					icon: 'ps_011',
+					keepAlive: true
+				}
+			},
+			{
+				//厂内拆解计划审批
+				path: '0407dismantling_plan_approval',
+				name: '0406DismantlingApproval',
+				component: () => import('@/views/ps/planDismantle/ps_dismant_main.vue'),
+				meta: {
+					title: '厂内拆解计划审批',
+					icon: 'ps_011',
+					keepAlive: true
+				}
+			},
 			{
 				path: 'ps_004_mbom',
 				name: 'mbom',

@@ -282,7 +282,7 @@
         <el-form-item label="周期:" prop="duration">
           <el-input v-model="addOrUpdateForm.duration" placeholder="周期" style="width: 180px;" class="filter-item"
                    >
-            <template v-slot:append>天</template>
+            <template v-slot:append>小时</template>
           </el-input>
         </el-form-item>
       </el-form>

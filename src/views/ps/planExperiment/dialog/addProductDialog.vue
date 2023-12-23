@@ -8,13 +8,18 @@
 <!--          placeholder="请选择计划开工时间">-->
 <!--        </el-date-picker>-->
 <!--      </el-form-item>-->
+      <el-form-item label="试验站:" prop="duration">
+        <el-input v-model="dialogForm.trialShop" placeholder="试验4站" style="width: 180px;" class="filter-item" readonly
+        >
+        </el-input>
+      </el-form-item>
       <el-form-item label="试验场所">
         <el-select  size="small" v-model="dialogForm.spt"  label="试验场所：" placeholder="请选择">
           <el-option
-            v-for="item in dialogForm.laminationTables"
-            :key="item.id"
-            :label="item.trialShopName"
-            :value="item.id">
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
@@ -63,8 +68,16 @@ export default {
         spt: '',
         isMultipleType: '0',
         laminationTables:[],
-        dateValue: []
+        dateValue: [],
+        trialShop: '试验4站'
       },
+      options: [{
+        value: '0',
+        label: '试验1工位'
+      }, {
+        value: '1',
+        label: '试验2工位'
+      }],
       nodeInfo: [],
       rowData:{},
       addInfo:{},
@@ -79,7 +92,8 @@ export default {
         planEndTime: [
           {required: true,validator: this.validateEndTime, trigger: 'blur' }
         ],
-        dateValue: [{required: true,validator: this.validaterangeTime, trigger: 'blur' }]
+        dateValue: [{required: true,validator: this.validaterangeTime, trigger: 'blur' }],
+        spt: [{required: true,trigger: 'blur',message: '试验工位不能为空'}]
       },
     }
   },
@@ -129,7 +143,7 @@ export default {
           this.addInfo.id = this.rowData.id
 
           this.nodeInfo.push(this.addInfo);
-          this.laminationTable = this.dialogForm.laminationTables.find(item => item.id === this.dialogForm.spt);
+          this.laminationTable = this.dialogForm.spt;
           if(this.isAdd === this.$constants.flag01.y){
             planWeekHttp.addToExperimentPlan({planType:this.planType,nodeInfo:this.nodeInfo,workSpaceTable:this.laminationTable,isApproval:this.isApproval}).then(res=>{
               if(res.err_code===10000){
