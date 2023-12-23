@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { getUserToIcc } from "@/api/overhaul/videoApi.js";
+// import { getUserToIcc } from "@/api/overhaul/videoApi.js";
 export default {
   data() {
     return {
@@ -39,12 +39,10 @@ export default {
   },
   mounted() {
     window.addEventListener("message", this.iframeMessage);
-    getUserToIcc().then((res) => {
-      let { userInfoPd, userInfoId } = res.data;
-      this.url = `https://ims.cloud-hb.com/#/thirdOAuth?username=${userInfoId}&password=${userInfoPd}&redirect=${encodeURIComponent(
-      "https://ims.cloud-hb.com/Evo-web-logis/#/realTimeVideo"
-      )}`;
-    });
+    const userInfo = JSON.parse(localStorage.getItem("digital_web_userInfo"));
+    this.url = `https://ims.cloud-hb.com/#/thirdOAuth?username=${userInfo.username}&password=${userInfo.password}&redirect=${encodeURIComponent(
+    "https://ims.cloud-hb.com/Evo-web-logis/#/realTimeVideo"
+    )}`;
   },
 };
 </script>

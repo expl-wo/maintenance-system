@@ -11,14 +11,12 @@ export default {
     };
   },
   mounted() {
-    getUserToIcc().then((res) => {
-      let { userInfoPd, userInfoId } = res.data;
-       this.url = `https://ims.cloud-hb.com/?username=${
-      userInfoId
-    }&password=${userInfoPd}&redirect=${encodeURIComponent(
+    const userInfo = JSON.parse(localStorage.getItem("digital_web_userInfo"));
+    this.url = `https://ims.cloud-hb.com/?username=${
+      userInfo.username
+    }&password=${userInfo.password}&redirect=${encodeURIComponent(
       "https://ims.cloud-hb.com/ec/#/eventQuery"
     )}#/thirdOAuth`;
-    });
   },
 };
 </script>
