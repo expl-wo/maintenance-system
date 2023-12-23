@@ -107,9 +107,8 @@
           <el-checkbox
             v-for="(item, index) in dictionaryContent"
             :key="index"
-            :label="item.name"
-            :value="item.code"
-          />
+            :label="item.code"
+          > {{item.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
     </el-col>
@@ -271,7 +270,7 @@ export default {
   },
   methods: {
     resetContent() {
-      this.form.contentData = "";
+      this.form.contentData = undefined;
       this.form.fileUrl = "";
       this.form.fileName = "";
       this.fileUrl = "";

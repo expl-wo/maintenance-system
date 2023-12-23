@@ -23,9 +23,23 @@
     >
       <template v-for="item in COLUMNS">
         <el-table-column
+          v-if="item.prop === 'materialNum'"
           :key="item.prop"
           v-bind="item"
-          v-if="item.prop === 'operation'"
+        >
+          <template #default="{ row }">
+            <el-input-number
+              v-model="row.materialNum"
+              :min="0"
+              :max="10000000"
+              :value-on-clear="0"
+            />
+          </template>
+        </el-table-column>
+        <el-table-column
+          :key="item.prop"
+          v-bind="item"
+          v-else-if="item.prop === 'operation'"
         >
           <template #default="{ row }">
             <el-button
@@ -34,12 +48,12 @@
                 [
                   COMMOM_WORK_ORDER_MAP['pause'].value,
                   COMMOM_WORK_ORDER_MAP['finish'].value,
-                ].includes(workOrderInfo.orderStatus)"
+                ].includes(workOrderInfo.orderStatus)
+              "
               type="primary"
-              title="编辑数量"
-              @click="openModal(row, 'editModal')"
+              @click="updateNum(row)"
             >
-              <el-icon><Edit /></el-icon>
+              保存
             </el-button>
           </template>
         </el-table-column>
@@ -70,25 +84,6 @@
       :limit="pageOptions.pageSize"
       @pagination="pageChange"
     />
-    <el-dialog
-      title="编辑"
-      :model-value="editModal"
-      width="400"
-      :destroy-on-close="true"
-      @close="closeModal('editModal')"
-    >
-      <el-form :inline="true" ref="dataForm" :model="form">
-        <el-form-item label="数量">
-          <el-input-number v-model="form.num" :min="0" :max="10000000" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div>
-          <el-button @click.stop="closeModal('editModal')"> 取消 </el-button>
-          <el-button type="primary" @click="updateNum"> 保存 </el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -96,9 +91,7 @@
 import Pagination from "@/components/Pagination"; // 分页
 import { getMaterials, editMaterialsNum } from "@/api/overhaul/workOrderApi.js";
 import { MATERIALS_COLUMNS } from "../config.js";
-import {
-  COMMOM_WORK_ORDER_MAP
-} from "@/views/overhaul/constants.js";
+import { COMMOM_WORK_ORDER_MAP } from "@/views/overhaul/constants.js";
 export default {
   name: "Materials",
   components: {
@@ -137,11 +130,6 @@ export default {
       queryParams: {
         name: "",
       },
-      form: {
-        num: 1,
-      },
-      editModal: false,
-      operateRow: null, //操作行
     };
   },
   mounted() {
@@ -152,33 +140,17 @@ export default {
       this.pageOptions.pageNum = 1;
       this.getList();
     },
-    /**
-     * 关闭弹窗
-     */
-    closeModal(modeName, isSearch = false) {
-      this[modeName] = false;
-      isSearch && this.getList();
-    },
-    updateNum() {
+    updateNum(row) {
       editMaterialsNum({
-        changeId: this.operateRow.materialId,
-        changeNum: this.form.num,
+        changeId: row.materialId,
+        changeNum: row.materialNum || 0,
       }).then((res) => {
         if (res.code !== "0") {
           this.$message.error(res.errMsg);
         } else {
           this.$message.success("保存成功！");
-          this.closeModal("editModal", true);
         }
       });
-    },
-    /**
-     * 打开弹窗
-     */
-    openModal(row = null, modeName) {
-      this.operateRow = row;
-      this.form.num = +this.operateRow.materialNum;
-      this[modeName] = true;
     },
     //分页发生改变时
     pageChange({ limit, page }) {
