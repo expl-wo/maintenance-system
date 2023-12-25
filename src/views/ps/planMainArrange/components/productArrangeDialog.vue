@@ -134,6 +134,8 @@
 
 	const init = async(row) => {
     console.log(row);
+    model.length = 0;
+    midOp.length = 0;
     let data = {
       ...initModel,
     }
