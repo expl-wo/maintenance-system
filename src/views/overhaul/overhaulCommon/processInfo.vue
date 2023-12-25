@@ -104,11 +104,13 @@
             </template>
             <div class="check-group-title">
               工序配置筛选
-              <el-icon
-                title="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
-                class="check-group-title-question"
-                ><QuestionFilled
-              /></el-icon>
+              <el-tooltip
+                effect="dark"
+                content="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
+                placement="top"
+              >
+                <el-icon  class="check-group-title-question"><QuestionFilled /></el-icon>
+              </el-tooltip>
             </div>
             <el-checkbox
               v-model="checkAll"
@@ -412,10 +414,8 @@ export default {
     },
     workOrderInfo: {
       handler(val) {
-        const {
-          procedureTemplateName,
-          procedureTemplateCode,
-        } = this.workOrderInfo;
+        const { procedureTemplateName, procedureTemplateCode } =
+          this.workOrderInfo;
         this.templateChoose = procedureTemplateCode || undefined;
         this.templateName = procedureTemplateName || "";
         if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
@@ -894,13 +894,13 @@ $left-width: 255px;
     }
     .process-tree {
       overflow: auto;
-      width:240px;
+      width: 240px;
       height: calc(100% - #{$left-title-height} - #{$left-search-height});
       margin: 10px;
-      ::v-deep(.el-tree){
+      ::v-deep(.el-tree) {
         width: fit-content;
       }
-      ::v-deep(.el-tree__empty-block){
+      ::v-deep(.el-tree__empty-block) {
         width: 240px;
       }
     }
