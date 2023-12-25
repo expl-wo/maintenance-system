@@ -894,8 +894,15 @@ $left-width: 255px;
     }
     .process-tree {
       overflow: auto;
+      width:240px;
       height: calc(100% - #{$left-title-height} - #{$left-search-height});
       margin: 10px;
+      ::v-deep(.el-tree){
+        width: fit-content;
+      }
+      ::v-deep(.el-tree__empty-block){
+        width: 240px;
+      }
     }
   }
   &-right {
