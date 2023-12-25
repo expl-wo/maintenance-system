@@ -415,19 +415,21 @@ export default {
         const {
           procedureTemplateName,
           procedureTemplateCode,
-          standardProcedureCodeList,
         } = this.workOrderInfo;
         this.templateChoose = procedureTemplateCode || undefined;
         this.templateName = procedureTemplateName || "";
         if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
           this.isShowTemplate = false;
-          this.standardProcedureCodeList = standardProcedureCodeList || [];
-          this.templateChoose = standardProcedureCodeList
-            ? standardProcedureCodeList.join(",")
-            : "";
-          this.templateName = standardProcedureCodeList
-            ? standardProcedureCodeList.join(",")
-            : "";
+          // this.standardProcedureCodeList = standardProcedureCodeList || [];
+          // this.templateChoose = standardProcedureCodeList
+          //   ? standardProcedureCodeList.join(",")
+          //   : "1";
+          // this.templateName = standardProcedureCodeList
+          //   ? standardProcedureCodeList.join(",")
+          //   : "1";
+          //需求变更内容，为了不大变原来逻辑，默认都置为true
+          this.templateChoose = true;
+          this.templateName = true;
         }
         if (this.templateChoose && this.templateName) {
           this.defaultSelectVal = {
@@ -792,7 +794,7 @@ export default {
       let params = { templateCode: this.templateChoose };
       if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
         delete params.templateCode;
-        params.standardProcedureCodeList = this.standardProcedureCodeList;
+        // params.standardProcedureCodeList = this.standardProcedureCodeList;
       }
       getWorkTree({
         workCode: this.workOrderInfo.id,
