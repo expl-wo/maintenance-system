@@ -659,10 +659,11 @@ export default {
             this.$refs.timeLimitDialogRef.init(row)
           }
         } else if (column.property === 'dateEnd') {
-          if(this.$isAuth('mainPlan-factoryStorageDate')){
-            //修改厂内完成时间（交货期）弹框
-            this.$refs.changeDeliveryDialogRef.init(row)
-          }
+          //交货期不允许从MES修改
+          // if(this.$isAuth('mainPlan-factoryStorageDate')){
+          //   //修改厂内完成时间（交货期）弹框
+          //   this.$refs.changeDeliveryDialogRef.init(row)
+          // }
         } else if (column.property === 'completionTime') {
           if(this.$isAuth('mesGYBD50031.submit')){
             this.dealCompletion(row)
