@@ -113,6 +113,7 @@ const TIME_LINE = {
         timestamp: "",
         otherInfo: "",
         isActive: false,
+        isShowLine: false,
         processState: 14,
     },
         // {

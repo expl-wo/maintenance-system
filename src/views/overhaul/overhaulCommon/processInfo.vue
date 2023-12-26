@@ -104,11 +104,13 @@
             </template>
             <div class="check-group-title">
               工序配置筛选
-              <el-icon
-                title="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
-                class="check-group-title-question"
-                ><QuestionFilled
-              /></el-icon>
+              <el-tooltip
+                effect="dark"
+                content="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
+                placement="top"
+              >
+                <el-icon  class="check-group-title-question"><QuestionFilled /></el-icon>
+              </el-tooltip>
             </div>
             <el-checkbox
               v-model="checkAll"
@@ -412,22 +414,22 @@ export default {
     },
     workOrderInfo: {
       handler(val) {
-        const {
-          procedureTemplateName,
-          procedureTemplateCode,
-          standardProcedureCodeList,
-        } = this.workOrderInfo;
+        const { procedureTemplateName, procedureTemplateCode } =
+          this.workOrderInfo;
         this.templateChoose = procedureTemplateCode || undefined;
         this.templateName = procedureTemplateName || "";
         if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
           this.isShowTemplate = false;
-          this.standardProcedureCodeList = standardProcedureCodeList || [];
-          this.templateChoose = standardProcedureCodeList
-            ? standardProcedureCodeList.join(",")
-            : "";
-          this.templateName = standardProcedureCodeList
-            ? standardProcedureCodeList.join(",")
-            : "";
+          // this.standardProcedureCodeList = standardProcedureCodeList || [];
+          // this.templateChoose = standardProcedureCodeList
+          //   ? standardProcedureCodeList.join(",")
+          //   : "1";
+          // this.templateName = standardProcedureCodeList
+          //   ? standardProcedureCodeList.join(",")
+          //   : "1";
+          //需求变更内容，为了不大变原来逻辑，默认都置为true
+          this.templateChoose = true;
+          this.templateName = true;
         }
         if (this.templateChoose && this.templateName) {
           this.defaultSelectVal = {
@@ -792,7 +794,7 @@ export default {
       let params = { templateCode: this.templateChoose };
       if (+this.workOrderInfo.workOrderType === 2 && !this.isSurvey) {
         delete params.templateCode;
-        params.standardProcedureCodeList = this.standardProcedureCodeList;
+        // params.standardProcedureCodeList = this.standardProcedureCodeList;
       }
       getWorkTree({
         workCode: this.workOrderInfo.id,
@@ -892,8 +894,15 @@ $left-width: 255px;
     }
     .process-tree {
       overflow: auto;
+      width: 240px;
       height: calc(100% - #{$left-title-height} - #{$left-search-height});
       margin: 10px;
+      ::v-deep(.el-tree) {
+        width: fit-content;
+      }
+      ::v-deep(.el-tree__empty-block) {
+        width: 240px;
+      }
     }
   }
   &-right {

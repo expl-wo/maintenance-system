@@ -40,21 +40,20 @@
           <el-table-column align="center" label="内容最大长度" width="100" property="maximumContentLength"></el-table-column>
           <el-table-column prop="requireImageFile" align="center" width="100" label="是否上传图片/文件">
             <template v-slot="{row}">
-              <xui-dictionary itemCode="yn" :code="row.requireImageFile"></xui-dictionary>
+              <xui-dictionary itemCode="flag01" :code="row.requireImageFile"></xui-dictionary>
             </template>
           </el-table-column>
           <el-table-column prop="isMultiline" align="center" width="100" label="是否多行">
             <template v-slot="{row}">
-              <xui-dictionary itemCode="yn" :code="row.isMultiline"></xui-dictionary>
+              <xui-dictionary itemCode="flag01" :code="row.isMultiline"></xui-dictionary>
             </template>
           </el-table-column>
           <el-table-column prop="isRequire" align="center" width="100" label="是否必填">
             <template v-slot="{row}">
-              <xui-dictionary itemCode="yn" :code="row.isRequired"></xui-dictionary>
+              <xui-dictionary itemCode="flag01" :code="row.isRequired"></xui-dictionary>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="依赖操作项" prop="reOperationName">
-          </el-table-column>
+          <el-table-column align="center" label="依赖操作项" prop="reOperationName"></el-table-column>
           <el-table-column align="center" label="依赖操作项选项" >
             <template v-slot="{row}">
               <xui-dictionary v-if="row.dependentOperation" :item-code="row.reDictionaryCode"  :code="row.dependentOperationOption"></xui-dictionary>

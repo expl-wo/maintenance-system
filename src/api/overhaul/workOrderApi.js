@@ -364,7 +364,7 @@ export function batchWorkContent(data) {
     return request({
         url: '/api/evo-ims-overhaul/work-content/query-batch',
         method: 'post',
-        data
+        data:{queryList:data}
     })
 }
 //获取工序内容时间完成情况

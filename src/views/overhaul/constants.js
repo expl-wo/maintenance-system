@@ -45,7 +45,7 @@ const COMMON_PROCESS_COLUMNS_MAP = {
             label: "标准工序名称",
         },
         {
-            prop: "workProcedureCode",
+            prop: "mesStandardProcedureCode",
             label: "标准工序编号",
         },
         // {

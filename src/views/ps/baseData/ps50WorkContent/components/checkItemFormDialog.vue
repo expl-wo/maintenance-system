@@ -51,7 +51,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="isRequired" label="是否必填：" >
-            <xui-dict-select class="width100Percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="flag01"
                              v-model="model.isRequired"
             ></xui-dict-select>
           </el-form-item>
@@ -108,14 +108,14 @@
         </el-col>
         <el-col :span="12">
           <el-form-item prop="isMultiline" label="是否多行：" >
-            <xui-dict-select class="width100Percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="flag01"
                              v-model="model.isMultiline"
             ></xui-dict-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item prop="requireImageFile" label="是否上传图片/文件：" >
-            <xui-dict-select class="width100Percent" item-code="yn"
+            <xui-dict-select class="width100Percent" item-code="flag01"
                              v-model="model.requireImageFile"
             ></xui-dict-select>
           </el-form-item>

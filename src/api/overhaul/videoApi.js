@@ -50,7 +50,6 @@ export function getWorkByChannel(data) {
 export function getUserToIcc() {
     return request({
         url: '/api/evo-ims-overhaul/user-info/query',
-        method: 'get',
-        data
+        method: 'get'
     })
 }
