@@ -898,6 +898,7 @@ $left-width: 255px;
       height: calc(100% - #{$left-title-height} - #{$left-search-height});
       margin: 10px;
       ::v-deep(.el-tree) {
+        min-width: 240px;
         width: fit-content;
       }
       ::v-deep(.el-tree__empty-block) {

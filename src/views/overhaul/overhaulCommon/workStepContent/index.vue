@@ -291,10 +291,10 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].opearationId = item.id; //赋值ID
-              const fileNameStr = item.fileList
+              const fileNameStr = (item.fileList || [])
                 .map((item) => item.fileName)
                 .join("|");
-              const fileUrlStr = item.fileList
+              const fileUrlStr = (item.fileList || [])
                 .map((item) => item.fileUrl)
                 .join("|");
               this.$refs[`contentItemRef${item.operationCode}`][0].fileName =

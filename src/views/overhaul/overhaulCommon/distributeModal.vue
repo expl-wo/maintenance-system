@@ -284,7 +284,7 @@ export default {
       const middleId = this.devOptions.map((item) => item.value);
       getBigComponent(middleId).then(({ data }) => {
         this.devOptions.forEach((element) => {
-          const target = data[+element.value];
+          const target = data[String(element.value)];
           element.disabled = true;
           if (!target) return;
           element.children = element.children.map((el) => {
@@ -374,7 +374,7 @@ export default {
       const workList = this.currentNode
         .filter((el) => +el.procedureType === 2)
         .map((item) => ({
-          value: item.procedureCode,
+          value: String(item.procedureCode),
           label: item.procedureName,
           children: [
             {

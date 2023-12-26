@@ -56,7 +56,7 @@
     </el-col>
   </el-row>
   <el-row>
-    <el-col :span="6">
+    <el-col :span="8">
       <el-form-item label="填写内容" :required="isRequired">
         <el-input
           v-if="contentType === 0"
@@ -108,7 +108,9 @@
             v-for="(item, index) in dictionaryContent"
             :key="index"
             :label="item.code"
-          > {{item.name}}</el-checkbox>
+          >
+            {{ item.name }}</el-checkbox
+          >
         </el-checkbox-group>
       </el-form-item>
     </el-col>
@@ -121,6 +123,7 @@
           :limit="3"
           :fileUrl="fileUrl"
           :disabled="!isEditAuth || ![1].includes(workStatus)"
+          :isCanDelete="isEditAuth && [1].includes(workStatus)"
           :fileName="fileName"
           accept="video/*,.jpg,.png,.jpeg"
           @uploadSuccess="uploadSuccess"
@@ -140,7 +143,7 @@ export default {
     multiUploadVue,
   },
   props: {
-    workStatus:{
+    workStatus: {
       type: Number,
       default: 0,
     },
@@ -217,7 +220,7 @@ export default {
       default: "",
     },
   },
-  emits: ['searchChange'],
+  emits: ["searchChange"],
   data() {
     return {
       COMMON_FORMAT,
@@ -291,25 +294,24 @@ export default {
     },
     panelChange(data, mode) {
       if (mode === "month") {
-        let params;
         //每小时
-        if (this.executionFrequency === 0) {
-          params = {
-            beginTime: dayjs(data).startOf("day").format(COMMON_FORMAT),
-            endTime: dayjs(data).endOf("day").format(COMMON_FORMAT),
-          };
-        } else {
-          params = {
-            beginTime: dayjs(data)
-              .startOf("month")
-              .startOf("day")
-              .format(COMMON_FORMAT),
-            endTime: dayjs(data)
-              .endOf("month")
-              .endOf("day")
-              .format(COMMON_FORMAT),
-          };
-        }
+        // if (this.executionFrequency === 0) {
+        //   params = {
+        //     beginTime: dayjs(data).startOf("day").format(COMMON_FORMAT),
+        //     endTime: dayjs(data).endOf("day").format(COMMON_FORMAT),
+        //   };
+        // } else {
+        let params = {
+          beginTime: dayjs(data)
+            .startOf("month")
+            .startOf("day")
+            .format(COMMON_FORMAT),
+          endTime: dayjs(data)
+            .endOf("month")
+            .endOf("day")
+            .format(COMMON_FORMAT),
+        };
+        // }
         this.getStatus(params.beginTime, params.endTime);
       }
     },
@@ -323,16 +325,15 @@ export default {
         workScene: this.sceneType,
       }).then((res) => {
         const result = res.data.value;
+        //日期选择框
+        this.successList = result.map((item) => {
+          return dayjs(item).format("YYYY-MM-DD");
+        });
         if (this.executionFrequency === 0) {
           const success = result.map((item) => {
             return dayjs(item).startOf("hour").format("HH:mm");
           });
           this.getTimeOptions(false, success);
-        } else {
-          this.successList = [];
-          this.successList = result.map((item) => {
-            return dayjs(item).format("YYYY-MM-DD");
-          });
         }
       });
     },
@@ -353,9 +354,7 @@ export default {
             index + 1
           ).padStart(2, "0")}:00`,
           value: `${String(index).padStart(2, "0")}:00`,
-          status: targetStatus.includes(
-            `${String(index).padStart(2, "0")}:00`
-          ),
+          status: targetStatus.includes(`${String(index).padStart(2, "0")}:00`),
         });
       });
       if (isSetTime) {
@@ -368,7 +367,7 @@ export default {
     },
     setCellClassName(data) {
       let time = dayjs(data).format("YYYY-MM-DD");
-      if (dayjs(data).isAfter(dayjs()) || this.executionFrequency === 0) {
+      if (dayjs(data).isAfter(dayjs())) {
         return "";
       } else if (this.successList.includes(time)) {
         return "success-pick";
