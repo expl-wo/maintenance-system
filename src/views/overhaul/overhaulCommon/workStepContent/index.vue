@@ -5,7 +5,7 @@
     v-if="!dataList.length"
   />
   <div class="work-content-box" v-else v-loading="loading">
-    <el-descriptions title="基础信息" :column="4" :style="{ width: '800px' }">
+    <el-descriptions title="基础信息" :column="4" :style="{ width: '900px' }">
       <template #extra>
         <el-button
           v-if="isEditAuth"

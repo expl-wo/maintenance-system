@@ -101,7 +101,7 @@
               :fileName="videoFileName"
               btnText="选择视频"
               :fileMaxSize="MAX_VIDEO_SZIE"
-              accept="video/*"
+              accept=".mp4,.ogv,.ogg"
               @uploadSuccess="videoUploadSuccess"
             ></multi-upload-vue>
           </el-form-item>

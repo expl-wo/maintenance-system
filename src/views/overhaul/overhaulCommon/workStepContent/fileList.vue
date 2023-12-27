@@ -67,7 +67,7 @@
                 placeholder="请输入问题描述"
               />
             </el-descriptions-item>
-            <el-descriptions-item label="图片智能校验结果："
+            <el-descriptions-item label="图片智能校验结果："  v-if="currentData.appendixType === 2"
               ><el-tag
                 size="small"
                 :type="appendixFlagName === '正常' ? '' : 'danger'"

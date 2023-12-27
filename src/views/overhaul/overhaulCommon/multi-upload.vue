@@ -145,7 +145,7 @@ export default {
     FileList,
     WorkStepContentFileList,
   },
-  emits: ["update:modelValue", "uploadSuccess","aiAppendixDTOListChange"],
+  emits: ["update:modelValue", "uploadSuccess", "aiAppendixDTOListChange"],
   setup(props, { emit }) {
     const uploadRef = ref();
     const { formItem } = useFormItem();
@@ -175,6 +175,11 @@ export default {
     });
 
     const beforeUploadFun = (file) => {
+      const fileFix = file.name.split(".").pop().toLowerCase();
+      if (props.accept.indexOf(fileFix) === -1) {
+        ElMessage.error(`上传格式不支持,仅支持${props.accept}`);
+        return false;
+      }
       if (fileList.value.length + 1 > props.limit) {
         ElMessage.error(`最多上传${props.limit}个附件 `);
         return false;

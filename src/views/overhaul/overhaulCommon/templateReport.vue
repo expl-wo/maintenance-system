@@ -256,6 +256,11 @@ export default {
         this.$message.error(`附件大小请勿超过${MAX_FILE_SIZE}M`);
         return false;
       }
+      const fileFix = file.name.split(".").pop().toLowerCase();
+      if ('.docx'.indexOf(fileFix) === -1) {
+        this.$message.error(`上传格式不支持,仅支持.docx`);
+        return false;
+      }
       return true;
     },
     //保存文档

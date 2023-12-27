@@ -128,7 +128,7 @@
           :isCanDelete="isEditAuth && [1].includes(workStatus)"
           :aiAppendixDTOList="aiAppendixDTOList"
           :unusualFlagList="unusualFlagList"
-          accept="video/*,.jpg,.png,.jpeg"
+          accept=".mp4,.ogv,.ogg,.webm,.jpg,.png,.jpeg"
           @aiAppendixDTOListChange="aiAppendixDTOListChange"
           @uploadSuccess="uploadSuccess"
         ></multi-upload-vue>
@@ -253,7 +253,9 @@ export default {
     //显示标记异常的附件
     unusualFlagList() {
       return this.aiAppendixDTOList.filter(
-        (item) => item.appendixFlag === 1 || item.appendixFlag === null
+        (item) =>
+          item.appendixType === 2 &&
+          (item.appendixFlag === 1 || item.appendixFlag === null)
       );
     },
     beginTime() {
