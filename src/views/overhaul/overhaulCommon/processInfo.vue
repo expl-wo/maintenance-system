@@ -109,7 +109,9 @@
                 content="标记出还未配置的工序,鼠标悬停树节点标记可显示未配置详情"
                 placement="top"
               >
-                <el-icon  class="check-group-title-question"><QuestionFilled /></el-icon>
+                <el-icon class="check-group-title-question"
+                  ><QuestionFilled
+                /></el-icon>
               </el-tooltip>
             </div>
             <el-checkbox
@@ -149,13 +151,17 @@
           >
             <template #default="{ node, data }">
               {{ node.label }}
-              <el-icon
-                :title="`未进行${dealCheckStatusTitle(data)}操作`"
+              <el-tooltip
                 v-if="dealCheckStatusTitle(data)"
-                style="margin-left: 4px"
-                color="red"
-                ><Warning /></el-icon
-            ></template>
+                effect="dark"
+                :content="`未进行${dealCheckStatusTitle(data)}操作`"
+                placement="top"
+              >
+                <el-icon style="margin-left: 4px" color="red"
+                  ><Warning
+                /></el-icon>
+              </el-tooltip>
+            </template>
           </el-tree>
         </div>
       </div>
