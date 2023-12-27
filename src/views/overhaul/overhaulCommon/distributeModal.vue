@@ -282,6 +282,10 @@ export default {
       this.allBigList = [];
       this.getDevOptions();
       const middleId = this.devOptions.map((item) => item.value);
+      if(!middleId.length){
+        this.$message.warning('请检查所选工序节点是否包含中工步！');
+        return
+      }
       getBigComponent(middleId).then(({ data }) => {
         this.devOptions.forEach((element) => {
           const target = data[String(element.value)];
