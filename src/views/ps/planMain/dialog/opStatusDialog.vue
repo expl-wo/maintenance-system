@@ -3,11 +3,11 @@
     <el-row :gutter="12" class="hp">
       <el-col :span="9" class="hp p-lf">中工序进度
         <el-card shadow="hover" class="hp">
-          <el-table ref="processTableRef" :data="processTableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700"  @row-click="handleClick">
+          <el-table ref="processTableRef" :data="processTableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="workProcedureInfoId" height="700"  @row-click="handleClick">
             <el-table-column prop="procedureName" align="center" label="中工序名称"/>
             <el-table-column prop="workProgress" align="center" label="中工序进度" width="100">
               <template #default="scope">
-                <el-progress percentage={{ scope.row.workProgress }} />
+                <el-progress :percentage=scope.row.workProgress />
               </template>
             </el-table-column>
           </el-table>
@@ -15,9 +15,13 @@
       </el-col>
       <el-col :span="15" class="hp p-lf">工步进度
         <el-card shadow="hover" class="hp">
-          <el-table ref="craftsTableRef" :data="craftsTableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="700"  @row-click="handleClick">
+          <el-table ref="craftsTableRef" :data="craftsTableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="workProcedureInfoId" height="700" >
             <el-table-column prop="procedureName" align="center" label="工步名称"/>
-            <el-table-column prop="workProgress" align="center" label="工步进度" width="100"/>
+            <el-table-column prop="workProgress" align="center" label="工步进度" width="100">
+              <template #default="scope">
+                <el-progress :percentage=scope.row.workProgress />
+              </template>
+            </el-table-column>
           </el-table>
         </el-card>
       </el-col>
