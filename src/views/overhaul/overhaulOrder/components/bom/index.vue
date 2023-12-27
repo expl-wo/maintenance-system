@@ -495,6 +495,9 @@ $left-width: 330px;
 :deep(.el-input) {
   width: 100%;
 }
+:deep(.el-tree) {
+  width: fit-content;
+}
 .mrl10 {
   margin-left: 10px;
 }

@@ -31,11 +31,26 @@
         </div>
       </template>
     </el-upload>
+    <!-- 通用的filelist -->
     <file-list
+      v-if="fileListMode"
       :fileList="fileList"
       :isCanDelete="isCanDelete"
       @onDelete="handleDelete"
     ></file-list>
+    <!-- 工作内容的filelist -->
+    <work-step-content-file-list
+      v-else
+      :aiAppendixDTOList="aiAppendixDTOList"
+      :unusualFlagList="unusualFlagList"
+      :isCanDelete="isCanDelete"
+      @onDelete="handleDelete"
+      @aiAppendixDTOListChange="
+        (val, index) => {
+          $emit('aiAppendixDTOListChange', val, index);
+        }
+      "
+    ></work-step-content-file-list>
     <el-progress v-if="!simple && progressFlag" :percentage="percentage" />
   </div>
 </template>
@@ -43,6 +58,7 @@
 <script>
 import { ref, nextTick, computed, watchEffect } from "vue";
 import FileList from "@/views/overhaul/overhaulCommon/fileList.vue";
+import WorkStepContentFileList from "@/views/overhaul/overhaulCommon/workStepContent/fileList.vue";
 import { completeMultipart, initMultipart, upload } from "@/api/file";
 import { getFileType } from "@/utils";
 import Constants from "@/utils/constants";
@@ -56,6 +72,25 @@ import Axios from "axios";
 export default {
   name: "multiUpload",
   props: {
+    //是否开启异常信息标识 通过url来进行判断
+    unusualFlagList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    //ai识别信息 仅工步使用
+    aiAppendixDTOList: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    //展示的filelist模式
+    fileListMode: {
+      type: Boolean,
+      default: true,
+    },
     disabled: {
       type: Boolean,
       default: false,
@@ -108,8 +143,9 @@ export default {
   },
   components: {
     FileList,
+    WorkStepContentFileList,
   },
-  emits: ["update:modelValue", "uploadSuccess"],
+  emits: ["update:modelValue", "uploadSuccess","aiAppendixDTOListChange"],
   setup(props, { emit }) {
     const uploadRef = ref();
     const { formItem } = useFormItem();
@@ -160,7 +196,7 @@ export default {
       return percentage.value > 0 && percentage.value < 100;
     });
 
-    const emitData = () => {
+    const emitData = (uploadUrlObj) => {
       let filePathArr = [],
         fileNameArr = [];
       fileList.value.forEach((item) => {
@@ -168,7 +204,12 @@ export default {
         fileNameArr.push(item.fileName);
       });
       emit("update:modelValue", filePathArr.join("|"));
-      emit("uploadSuccess", fileNameArr.join("|"), fileList.value);
+      emit(
+        "uploadSuccess",
+        fileNameArr.join("|"),
+        fileList.value,
+        uploadUrlObj
+      );
     };
 
     const initUpload = async (file) => {
@@ -297,7 +338,13 @@ export default {
           fileUrl: response.data.filePath,
           fileName: response.data.fileName,
         });
-        emitData();
+        emitData({
+          type: "upload",
+          url: {
+            fileUrl: response.data.filePath,
+            fileName: response.data.fileName,
+          },
+        });
         uploadRef.value?.clearFiles();
         nextTick(() => {
           formItem?.validate("");
@@ -311,11 +358,15 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       }).then((response) => {
-        let index = fileList.value.indexOf(item);
+        let index = fileList.value.findIndex(
+          (el) => el.fileUrl === item.fileUrl
+        );
+        let delurl;
         if (index >= 0) {
+          delurl = fileList.value[index];
           fileList.value.splice(index, 1);
         }
-        emitData();
+        emitData({ type: "del", url: delurl });
         nextTick(() => {
           formItem?.validate("");
         });

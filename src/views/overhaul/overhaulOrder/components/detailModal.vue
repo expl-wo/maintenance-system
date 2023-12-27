@@ -247,7 +247,7 @@ export default {
       this.dealTabList(); //获取当前用户的工序权限
       this.getAppointSetting();
     },
-    //获取配置信息
+    //获取指派配置信息
     async getAppointSetting() {
       const targetTabIndex = this.tabList.findIndex(
         (item) => item.name === this.activeName
@@ -295,7 +295,7 @@ export default {
       }
     },
     /**
-     * 处理事件轴顺序
+     * 处理时间轴顺序
      */
     dealProcess(targetList = []) {
       this.timeLineData.forEach((item) => {

@@ -203,6 +203,7 @@ export default {
     },
   },
   methods: {
+    //获取当前工步的一些基本信息
     getWorkSteoInfoList() {
       getWorkStepInfo({
         workCode: this.workOrderInfo.id,
@@ -291,22 +292,12 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].opearationId = item.id; //赋值ID
-              const fileNameStr = (item.fileList || [])
-                .map((item) => item.fileName)
-                .join("|");
-              const fileUrlStr = (item.fileList || [])
-                .map((item) => item.fileUrl)
-                .join("|");
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =
-                fileNameStr;
               this.$refs[
                 `contentItemRef${item.operationCode}`
-              ][0].form.fileName = fileNameStr;
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =
-                fileUrlStr;
+              ][0].aiAppendixDTOList = item.aiAppendixDTOList || [];
               this.$refs[
                 `contentItemRef${item.operationCode}`
-              ][0].form.fileUrl = fileUrlStr;
+              ][0].getDeafultFile();
             }
           });
         }
@@ -390,10 +381,7 @@ export default {
         }
         item.workPlanTime = refObj.beginTime;
         item.id = refObj.opearationId;
-        item.fileList = this.getFileList(
-          refObj.form.fileUrl,
-          refObj.form.fileName
-        );
+        item.aiAppendixList = refObj.aiAppendixDTOList || [];
         result.push(item);
       });
       if (!validFlag) {
