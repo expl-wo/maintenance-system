@@ -249,7 +249,6 @@
             :onlyTabName="onlyTabName"
             :sceneType="sceneType"
             :currentSelectNode="currentSelectNode"
-            :templateChoose="templateChoose"
             v-else
           />
         </template>
