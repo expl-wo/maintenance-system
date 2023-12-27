@@ -383,6 +383,7 @@ import modifyNodeDialog from './dialog/modifyNodeDialog'
 const propertyClassFromDict = ['designSource', 'importmentLevel', 'urgentLevel', 'processStatus']
 const frozenDesc = '冻结'
 export default {
+  name: 'ps_031_main',
   mixins: [ formatPlanMixins, configColumnMixins],
   components: { Pagination, XuiDictionary, opStatusDialog, OpPurchaseTreeDialog,opStartDateDialog,
     timeLimitDialog, changeDeliveryDialog, selectUserDialog, processFlowchart,configColumnDialog, frozenDialog,
