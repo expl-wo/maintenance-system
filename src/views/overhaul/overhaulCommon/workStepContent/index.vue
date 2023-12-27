@@ -32,18 +32,22 @@
           >复核</el-button
         >
       </template>
-      <el-descriptions-item label="工作内容名称">{{
-        contentInfo.workProcedureName
-      }}</el-descriptions-item>
+      <el-descriptions-item label="工作内容名称">
+        <el-text class="text-el-box" :title="contentInfo.workProcedureName " truncated>
+          {{ contentInfo.workProcedureName }}
+        </el-text>
+      </el-descriptions-item>
       <el-descriptions-item label="组长">{{
         contentInfo.leaderName
       }}</el-descriptions-item>
       <el-descriptions-item label="副组长">{{
         contentInfo.deputyLeaderName
       }}</el-descriptions-item>
-      <el-descriptions-item label="成员">{{
-        contentInfo.memberName
-      }}</el-descriptions-item>
+      <el-descriptions-item label="成员">
+        <el-text class="text-el-box" :title="contentInfo.memberName" truncated>
+          {{ contentInfo.memberName }}
+        </el-text>
+      </el-descriptions-item>
       <el-descriptions-item label="开工时间">{{
         contentInfo.workBeginDate || "-"
       }}</el-descriptions-item>
@@ -168,10 +172,6 @@ export default {
     onlyTabName: {
       type: String,
       default: "",
-    },
-    templateChoose: {
-      type: String,
-      default: undefined,
     },
   },
   data() {
@@ -411,6 +411,10 @@ export default {
 <style lang="scss" scoped>
 .content-wrap {
   margin-bottom: 12px;
+}
+.text-el-box {
+  vertical-align: bottom;
+  max-width: 250px;
 }
 .mgl12 {
   margin-left: 12px;
