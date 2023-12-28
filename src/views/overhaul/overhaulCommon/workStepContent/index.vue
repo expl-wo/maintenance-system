@@ -228,7 +228,7 @@ export default {
         // this.getList();
       }
     },
-    //获取列表
+    //获取当前工步的所有操作项
     getList() {
       this.loading = true;
       let parmas = {
@@ -240,7 +240,7 @@ export default {
         item.operationCode &&
           (this.beginTimeMap[item.operationCode] = item.workPlanTime);
       });
-      this.isRender = false;
+      this.isRender = false;//重置操作项重新渲染
       getWorkContent(parmas)
         .then((res) => {
           const { value } = res.data;
@@ -257,7 +257,7 @@ export default {
     cancel() {
       this.getList();
     },
-    //分页查询内容
+    //切换时间时重新请求数据
     searchChange(operationCode) {
       if (!this.dataList.length) return;
       let resultList = this.dataList.filter(
@@ -266,7 +266,7 @@ export default {
       this.beginTimeMap = {}; //切换时重置缓存
       this.batchSearchContent(resultList);
     },
-    //批量查询工作内容
+    //批量查询工作内容，渲染操作项的数据
     async batchSearchContent(targetList) {
       await this.$nextTick();
       let params = [];
@@ -294,6 +294,7 @@ export default {
         } else {
           const value = res.data.value || [];
           value.forEach((item) => {
+            //给每个操作项赋值
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
               if (+item.operationType === 4) {
                 //多选框
