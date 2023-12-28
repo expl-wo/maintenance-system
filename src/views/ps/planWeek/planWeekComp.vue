@@ -89,63 +89,65 @@
           <el-table-column align="center" label="实际完工" prop="finishDate"></el-table-column>
         </el-table>
       </el-affix>
-      <el-table
-          border
-          :data="item"
-          :key="index"
-          class="otherCon wp myTable"
-          v-for="(item,index) in tableData"
-          :show-header="false"
-          show-summary
-          stripe
-          :id="'TableRef'+index"
-          :summary-method="getSummaries"
-          :cell-class-name="cellClassName"
-          lazy
-      >
-        <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
-        <el-table-column align="center" label="生产号" prop="productNo"></el-table-column>
-        <el-table-column align="center" label="型号"   prop="pcModel"></el-table-column>
-        <el-table-column align="center" label="台数"   prop="">1</el-table-column>
-        <el-table-column align="center" label="状态" width="200"  prop="status">
-          <template #default="scope">
-            <span v-if="scope.row.status == -100">已取消</span>
-            <span v-if="scope.row.status == -50">冻结</span>
-            <span v-if="scope.row.status == -5">返工</span>
-            <span v-if="scope.row.status ==  0">待排产</span>
-            <span v-if="scope.row.status ==  5">仅拆解计划</span>
-            <span v-if="scope.row.status ==  10">预排节点计划</span>
-            <span v-if="scope.row.status ==  15">已下发计划</span>
-            <span v-if="scope.row.status ==  20">开工中</span>
-            <span v-if="scope.row.status ==  25">已完工</span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="计划产值" prop="noTaxAmount"></el-table-column>
-        <el-table-column align="center" label="实际产值" prop="">
-          <template #default="scope">
+      <div class="myTable" style="height: 100%;overflow: auto">
+        <el-table
+            border
+            :data="item"
+            :key="index"
+            class="otherCon wp myTable"
+            v-for="(item,index) in tableData"
+            :show-header="false"
+            show-summary
+            stripe
+            :id="'TableRef'+index"
+            :summary-method="getSummaries"
+            :cell-class-name="cellClassName"
+            lazy
+        >
+          <el-table-column align="center" type="index" label="序号" width="50"></el-table-column>
+          <el-table-column align="center" label="生产号" prop="productNo"></el-table-column>
+          <el-table-column align="center" label="型号"   prop="pcModel"></el-table-column>
+          <el-table-column align="center" label="台数"   prop="">1</el-table-column>
+          <el-table-column align="center" label="状态" width="200"  prop="status">
+            <template #default="scope">
+              <span v-if="scope.row.status == -100">已取消</span>
+              <span v-if="scope.row.status == -50">冻结</span>
+              <span v-if="scope.row.status == -5">返工</span>
+              <span v-if="scope.row.status ==  0">待排产</span>
+              <span v-if="scope.row.status ==  5">仅拆解计划</span>
+              <span v-if="scope.row.status ==  10">预排节点计划</span>
+              <span v-if="scope.row.status ==  15">已下发计划</span>
+              <span v-if="scope.row.status ==  20">开工中</span>
+              <span v-if="scope.row.status ==  25">已完工</span>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="计划产值" prop="noTaxAmount"></el-table-column>
+          <el-table-column align="center" label="实际产值" prop="">
+            <template #default="scope">
           <span v-if="scope.row.status == 25  ">
             {{scope.row.noTaxAmount}}
           </span>
-            <span v-else}}>
+              <span v-else}}>
             0.00
           </span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="计划产量" prop="outPut"></el-table-column>
-        <el-table-column align="center" label="实际产量" prop="">
-          <template #default="scope">
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="计划产量" prop="outPut"></el-table-column>
+          <el-table-column align="center" label="实际产量" prop="">
+            <template #default="scope">
           <span v-if="scope.row.status == 25  ">
             {{scope.row.outPut}}
           </span>
-            <span v-else}}>
+              <span v-else}}>
             0.00
           </span>
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="计划开工" prop="planStartDate"></el-table-column>
-        <el-table-column align="center" label="计划完工" prop="planCompletime"></el-table-column>
-        <el-table-column align="center" label="实际完工" prop="finishDate"></el-table-column>
-      </el-table>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="计划开工" prop="planStartDate"></el-table-column>
+          <el-table-column align="center" label="计划完工" prop="planCompletime"></el-table-column>
+          <el-table-column align="center" label="实际完工" prop="finishDate"></el-table-column>
+        </el-table>
+      </div>
       <div v-show="tableData.length === 0" >
         <el-empty  description="暂无数据" />
       </div>
@@ -161,7 +163,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import planWeek from '@/api/plan/planWeek'
 import dayjs from "dayjs";
 import {transformDictDetail} from "@/components/xui/dictionary";
@@ -177,9 +179,19 @@ const listQuery = reactive({
   week:'',
   nodeId:[]
 });
+
 onMounted(() => {
   getWeek();
 })
+const headTable = ref<any>(null);
+const tableCon = ref<any>(null)
+
+const headTableScrollHandler = () => {
+  tableCon.value.scrollLeft = headTable.value.scrollLeft;
+}
+const tableConScrollHandler = () => {
+  headTable.value.scrollLeft = tableCon.value.scrollLeft;
+}
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
   if (column.property === 'status') {
     //从字典中获取数据
@@ -198,6 +210,8 @@ const handleSearch = () => {
   getDataList();
 }
 const getDataList = () => {
+
+
   let data = []
   planWeek.weekPlanList(listQuery).then(res =>{
     if ((res as any).err_code === 10000){
@@ -377,16 +391,18 @@ const onExport = () =>{
   font-size: 15px;
 }
 :deep(.el-table thead .cell){
-  color: #ffffff;
+  color: #030000;
 }
 .myTable{
-  min-width: 1200px;
+  width: 100%;
+  min-width: 1050px;
+}
+.myTable::-webkit-scrollbar{
+  width: 0;
 }
 .table-container {
   width: 100%;
   height: calc(100% - 50px);
-  overflow: auto;
-  overflow-x: scroll;
 }
 </style>
 
