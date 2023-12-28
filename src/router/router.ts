@@ -199,6 +199,16 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				}
 			},
 			{
+				path: 'planWeek',
+				name: '0408_planWeek',
+				component: () => import('@/views/ps/planWeek/planWeekComp.vue'),
+				meta: {
+					title: '生产周计划',
+					icon: 'ps_011',
+					keepAlive: true
+				}
+			},
+			{
 				//生产主计划编制
 				path: 'ps_050_main_arrange',
 				name: 'ps_050_main_arrange',

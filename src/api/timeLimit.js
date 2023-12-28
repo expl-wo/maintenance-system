@@ -115,12 +115,7 @@ export function queryHandToMesOrder(params) {
   return request({
     url: '/api/gcplan/timelimit/queryHandToMesOrder',
     method: 'get',
-    data: {
-      pg_pagesize: params.pagesize || 10, // 每页显示多少条数据，默认为10条
-      pg_pagenum: params.pagenum || 1, // 查询第几页数据，默认第一页
-      productNo: params.productNo || null, // 模糊匹配，分类名称
-      isOrder: params.isOrder || false,
-    }
+    data: params
   })
 }
 

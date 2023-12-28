@@ -192,7 +192,6 @@ export default {
       activeIndex: 0,
       loading: false,
       contentList: [],
-      beginTimeMap: {}, //回填时间
     };
   },
   watch: {
@@ -228,26 +227,26 @@ export default {
         // this.getList();
       }
     },
-    //获取列表
+    //获取当前工步的所有操作项
     getList() {
       this.loading = true;
       let parmas = {
         craftId: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
       };
-      this.beginTimeMap = {}; //暂存时间
+      let beginTimeMap = {}; //暂存时间
       this.dataList.forEach((item) => {
         item.operationCode &&
-          (this.beginTimeMap[item.operationCode] = item.workPlanTime);
+          (beginTimeMap[item.operationCode] = item.workPlanTime);
       });
-      this.isRender = false;
+      this.isRender = false;//重置操作项重新渲染
       getWorkContent(parmas)
         .then((res) => {
           const { value } = res.data;
           this.dataList = value || [];
           this.isRender = true;
           this.createdContentList(); //形成操作项
-          this.batchSearchContent(this.dataList);
+          this.batchSearchContent(this.dataList,beginTimeMap);
         })
         .finally(() => {
           this.loading = false;
@@ -257,17 +256,16 @@ export default {
     cancel() {
       this.getList();
     },
-    //分页查询内容
+    //切换时间时重新请求数据
     searchChange(operationCode) {
       if (!this.dataList.length) return;
       let resultList = this.dataList.filter(
         (item) => item.operationCode === operationCode
       );
-      this.beginTimeMap = {}; //切换时重置缓存
-      this.batchSearchContent(resultList);
+      this.batchSearchContent(resultList, {});
     },
-    //批量查询工作内容
-    async batchSearchContent(targetList) {
+    //批量查询工作内容，渲染操作项的数据
+    async batchSearchContent(targetList,beginTimeMap) {
       await this.$nextTick();
       let params = [];
       targetList.forEach((item) => {
@@ -275,8 +273,8 @@ export default {
           ? this.$refs[`contentItemRef${item.operationCode}`][0].beginTime
           : dayjs().format(COMMON_FORMAT);
         //回显上次时间
-        if (this.beginTimeMap[item.operationCode]) {
-          beginTime = this.beginTimeMap[item.operationCode];
+        if (beginTimeMap[item.operationCode]) {
+          beginTime = beginTimeMap[item.operationCode];
         }
         params.push({
           workCode: this.workOrderInfo.id,
@@ -294,6 +292,7 @@ export default {
         } else {
           const value = res.data.value || [];
           value.forEach((item) => {
+            //给每个操作项赋值
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
               if (+item.operationType === 4) {
                 //多选框
@@ -302,11 +301,11 @@ export default {
                   : [];
               }
               //如果是保存后回显则回填时间
-              if (this.beginTimeMap[item.operationCode]) {
+              if (beginTimeMap[item.operationCode]) {
                 this.$refs[`contentItemRef${item.operationCode}`][0].form.date =
-                  this.beginTimeMap[item.operationCode];
+                  beginTimeMap[item.operationCode];
                 this.$refs[`contentItemRef${item.operationCode}`][0].form.time =
-                  dayjs(this.beginTimeMap[item.operationCode])
+                  dayjs(beginTimeMap[item.operationCode])
                     .startOf("hour")
                     .format("HH:mm");
               }
@@ -322,7 +321,6 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].getDeafultFile();
-              this.beginTimeMap = {};
             }
           });
         }

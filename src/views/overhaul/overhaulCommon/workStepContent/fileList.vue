@@ -62,9 +62,9 @@
               <el-input
                 v-model="flagDesc"
                 type="textarea"
-                :maxlength="500"
+                :maxlength="140"
                 :rows="2"
-                placeholder="请输入问题描述"
+                placeholder="请输入异常描述"
               />
             </el-descriptions-item>
             <el-descriptions-item label="图片智能校验结果："  v-if="currentData.appendixType === 2"
@@ -81,7 +81,7 @@
                 v-if="isCanDelete"
                 type="primary"
                 @click="aiAppendixDTOListChange(item.appendixUrl)"
-                >保存</el-button
+                >确定</el-button
               ></el-col
             >
           </el-row>
