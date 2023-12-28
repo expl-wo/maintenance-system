@@ -92,6 +92,9 @@ const url = {
   bindProcessPlan: '/api/gcplan/productPlan/bindProcessPlan',
   //根据中工步查询工步
   searchCraftsByProcess: '/api/gcplan/productPlan/searchCraftsByProcess',
+  getWeekList:'/api/gcplan/productPlan/planWeekList',
+  getNodeData:'/api/gcplan/productPlan/getWeekPlanNode',
+  weekPlanList:'/api/gcplan/productPlan/weekPlanList',
 }
 
 export default {
@@ -427,4 +430,35 @@ export default {
       data: params
     })
   },
+  getWeekList(params){
+    return request({
+      url: url.getWeekList,
+      method: 'get',
+      data: params
+    })
+  },
+  getNodeData(params){
+    return request({
+      url: url.getNodeData,
+      method: 'get',
+      data: params
+    })
+  },
+  weekPlanList(params){
+    return request({
+      url: url.weekPlanList,
+      method: 'post',
+      data: params
+    })
+  },
+  exportWeekPlanRecord(params) {
+    return request({
+      url: '/api/equipment/eqpCheck/exportCheckRecord',
+      method: 'POST',
+      config: {
+        responseType: 'blob' // 表明返回服务器返回的数据类型'
+      },
+      data:params
+    })
+  }
 }

@@ -411,7 +411,7 @@ export default {
             )
               ? 2
               : 1,
-            workPlanTime:this.beginTime,
+            workPlanTime: this.beginTime,
             appendixUrl: urlObj.url.fileUrl,
           };
           this.uploadLoading = true;
@@ -422,7 +422,10 @@ export default {
                 this.getDeafultFile();
               } else {
                 this.$message.success("上传成功");
-                this.aiAppendixDTOList.push(res.data);
+                this.aiAppendixDTOList.push({
+                  ...res.data,
+                  workPlanTime: res.data.workPlanTime || "",
+                });
               }
             })
             .finally(() => {

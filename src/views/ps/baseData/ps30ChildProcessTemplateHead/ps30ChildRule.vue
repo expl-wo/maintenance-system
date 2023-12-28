@@ -12,7 +12,8 @@
     </div>
     <div class="panel-menu-list app-container app-containerC otherCon wp"  >
       <div class="otherCon wp xui-table__highlight">
-        <el-table ref="tableRef" :data="tableData" :border="true" header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
+        <el-table ref="tableRef" :data="tableData" :border="true"
+                  header-cell-class-name="bgblue" style="width: 100%" stripe row-key="id" height="500" @row-click="handleClick">
           <el-table-column prop="gxUid" align="center" label="标准工序编码" />
           <el-table-column prop="gxName" align="center" label="标准工序名称" />
         </el-table>
@@ -31,7 +32,7 @@ import ps30ChildRuleItem from "@/views/ps/baseData/ps30ChildProcessTemplateHead/
 import Constants from "@/utils/constants";
 
 export default {
-  components: {Pagination,ps30ChildRuleItem},
+  components: {Pagination},
   name: 'ps30ChildRule',
 
 
