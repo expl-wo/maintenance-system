@@ -62,9 +62,9 @@
               <el-input
                 v-model="flagDesc"
                 type="textarea"
-                :maxlength="500"
+                :maxlength="140"
                 :rows="2"
-                placeholder="请输入问题描述"
+                placeholder="请输入异常描述"
               />
             </el-descriptions-item>
             <el-descriptions-item label="图片智能校验结果："  v-if="currentData.appendixType === 2"
