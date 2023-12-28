@@ -15,30 +15,30 @@
     </div>
 
     <el-table
-      v-if="mesOrderShow"
-      :data="tableData"
-      :border="true"
-      header-cell-class-name="bgblue"
-      style="width: 100%"
-      stripe
-      row-key="id"
-      height="700"
+        v-if="mesOrderShow"
+        :data="tableData"
+        :border="true"
+        header-cell-class-name="bgblue"
+        style="width: 100%"
+        stripe
+        row-key="id"
+        height="700"
     >
       <el-table-column
-        prop="index"
-        label="序号"
-        align="center"
-        min-width="5%"
+          prop="index"
+          label="序号"
+          align="center"
+          min-width="5%"
       >
         <template v-slot:default="scope">
           <span>{{ (scope.$index + 1) }} </span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="productNo"
-        label="生产号"
-        align="center"
-        min-width="15%"
+          prop="productNo"
+          label="生产号"
+          align="center"
+          min-width="15%"
       />
       <el-table-column
           prop="retFactory"
@@ -52,82 +52,82 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="productModel"
-        align="center"
-        label="型号"
-        min-width="15%"
+          prop="productModel"
+          align="center"
+          label="型号"
+          min-width="15%"
       />
       <el-table-column
-        prop="drawingNo"
-        align="center"
-        label="图号"
-        min-width="5%"
+          prop="drawingNo"
+          align="center"
+          label="图号"
+          min-width="5%"
       />
       <el-table-column
-        prop="quantity"
-        align="center"
-        label="台量"
-        min-width="5%"
+          prop="quantity"
+          align="center"
+          label="台量"
+          min-width="5%"
       />
       <el-table-column
-        prop="customerName"
-        align="center"
-        label="用户单位"
-        min-width="15%"
+          prop="customerName"
+          align="center"
+          label="用户单位"
+          min-width="15%"
       />
       <el-table-column
-        header-align="center"
-        align="center"
-        label="不含税产值"
-        property="noTaxAmount"
-        width="150"
+          header-align="center"
+          align="center"
+          label="不含税产值"
+          property="noTaxAmount"
+          width="150"
       >
         <template #default="scope">
           {{numFilter(scope.row.noTaxAmount)}}
         </template>
       </el-table-column>
       <el-table-column
-        prop="outPut"
-        align="center"
-        label="产量"
-        min-width="5%"
+          prop="outPut"
+          align="center"
+          label="产量"
+          min-width="5%"
       />
       <el-table-column
-        prop="delivery"
-        align="center"
-        label="交货期"
-        min-width="5%"
+          prop="delivery"
+          align="center"
+          label="交货期"
+          min-width="5%"
       >
         <template #default="scope">
           {{timeTranslate(scope.row.delivery)}}
         </template>
       </el-table-column>
       <el-table-column
-        prop="factoryStorageDate"
-        align="center"
-        label="厂内完成时间"
-        min-width="10%"
+          prop="factoryStorageDate"
+          align="center"
+          label="厂内完成时间"
+          min-width="10%"
       >
         <template #default="scope">
           {{timeTranslate(scope.row.factoryStorageDate)}}
         </template>
       </el-table-column>
       <el-table-column
-        prop="limitName"
-        align="center"
-        label="期量"
-        min-width="15%"
+          prop="limitName"
+          align="center"
+          label="期量"
+          min-width="15%"
       />
       <el-table-column
-        min-width="10%"
-        align="center"
-        label="操作"
+          min-width="10%"
+          align="center"
+          label="操作"
       >
         <template #default="scope">
           <el-button v-if="scope.row.schedulingStatus == 0 || scope.row.schedulingStatus == 10"
-            plain
-            type="primary"
-            @click="Rearrangement(scope.row)"
+                     plain
+                     type="primary"
+                     @click="Rearrangement(scope.row)"
           >重排
           </el-button>
           <el-button plain
@@ -141,137 +141,136 @@
     <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" class="searchCon"
                 @pagination="getList" />
 
-  <el-dialog draggable  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
-    <el-form :inline="true" :model="handQuery" class="demo-form-inline demo-form-zdy">
-      <el-form-item label="数据来源:" prop="nodeType">
-        <el-select v-model="handQuery.isOrder" placeholder="请选择节点类型">
+    <el-dialog draggable  :close-on-click-modal="false" title="手动同步" v-model="dialogVisible" @close="dialogClose" width="1200">
+      <el-form :inline="true" :model="handQuery" class="demo-form-inline demo-form-zdy">
+        <el-form-item label="数据来源:" prop="nodeType">
+          <el-select v-model="handQuery.isOrder" placeholder="请选择节点类型">
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
             </el-option>
           </el-select>
-      </el-form-item>
-      <el-form-item label="生产号">
-        <el-input v-model="handQuery.productNo" placeholder="生产号" style="width: 180px;" class="filter-item" clearable/>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="Search" @click="getToMesOrder">查询</el-button>
-      </el-form-item>
-      <el-form-item>
-      </el-form-item>
-    </el-form>
-    <el-table
-      v-if="toMesOrderShow"
-      :data="toMesOrderData"
-      :border="true"
-      header-cell-class-name="bgblue"
-      style="width: 100%"
-      stripe
-      row-key="id"
-      height="500"
-    >
-      <el-table-column
-        prop="index"
-        label="序号"
-        align="center"
-        min-width="5%"
+        </el-form-item>
+        <el-form-item label="只展示本公司订单:" style="width:170px;">
+          <xui-dict-select item-code="yn"  size="small" v-model="handQuery.isOwnerCompany"
+                            class="filter-item" :clearable="false"></xui-dict-select>
+        </el-form-item>
+        <el-form-item label="是否同步:" style="width:120px;">
+          <xui-dict-select item-code="yn"  size="small" include-all v-model="handQuery.isSync"
+                           class="filter-item" :clearable="false"></xui-dict-select>
+        </el-form-item>
+        <el-form-item label="生产号">
+          <el-input v-model="handQuery.productNo" placeholder="生产号" style="width: 180px;" class="filter-item" clearable/>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="Search" @click="getToMesOrder">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+        </el-form-item>
+      </el-form>
+      <el-table
+          v-if="toMesOrderShow"
+          :data="toMesOrderData"
+          :border="true"
+          header-cell-class-name="bgblue"
+          style="width: 100%"
+          stripe
+          row-key="id"
+          height="500"
       >
-        <template v-slot:default="scope">
-          <span>{{ (scope.$index + 1) }} </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="productNo"
-        label="生产号"
-        align="center"
-        min-width="10%"
-      />
-      <el-table-column
-        prop="productModel"
-        align="center"
-        label="型号"
-        min-width="15%"
-      />
-      <el-table-column
-        prop="drawingNo"
-        align="center"
-        label="图号"
-        min-width="15%"
-      />
-      <el-table-column
-        prop="quantity"
-        align="center"
-        label="台量"
-        min-width="8%"
-      />
-      <el-table-column
-        prop="customerName"
-        align="center"
-        label="用户单位"
-        min-width="20%"
-      />
-      <el-table-column
-        header-align="center"
-        align="center"
-        label="不含税产值"
-        property="noTaxAmount"
-        width="140"
-      >
+        <el-table-column
+            prop="index"
+            label="序号"
+            align="center"
+            min-width="5%"
+        >
+          <template v-slot:default="scope">
+            <span>{{ (scope.$index + 1) }} </span>
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="productNo"
+            label="生产号"
+            align="center"
+            min-width="10%"
+        />
+        <el-table-column
+            prop="productModel"
+            align="center"
+            label="型号"
+            min-width="15%"
+        />
+        <el-table-column
+            prop="drawingNo"
+            align="center"
+            label="图号"
+            min-width="15%"
+        />
+        <el-table-column
+            prop="quantity"
+            align="center"
+            label="台量"
+            min-width="8%"
+        />
+        <el-table-column
+            prop="customerName"
+            align="center"
+            label="用户单位"
+            min-width="20%"
+        />
+        <el-table-column
+            header-align="center"
+            align="center"
+            label="不含税产值(万元)"
+            property="noTaxAmount"
+            min-width="10%"
+        >
+          <template #default="scope">
+            {{numFilter(scope.row.noTaxAmount/10000)}}
+          </template>
+        </el-table-column>
+        <el-table-column
+            prop="outPut"
+            align="center"
+            label="产量(万kVa)"
+            min-width="10%"
+        >
         <template #default="scope">
-          {{numFilter(scope.row.noTaxAmount)}}
+          {{numFilter(scope.row.outPut/10000)}}
         </template>
-      </el-table-column>
-      <el-table-column
-        prop="outPut"
-        align="center"
-        label="产量"
-        min-width="8%"
-      />
-      <el-table-column
-        prop="projectName"
-        align="center"
-        label="项目名称"
-        min-width="20%"
-      />
-      <el-table-column
-        prop="limitName"
-        align="center"
-        label="期量"
-        min-width="10%"
-      />
-      <el-table-column
-        prop="remarks"
-        align="center"
-        label="备注"
-        min-width="8%"
-      />
-      <el-table-column
-        min-width="10%"
-        align="center"
-        label="操作"
-      >
-        <template #default="scope">
-          <el-button
-            plain
-            type="warning"
-            @click="toMesOrder(scope.row)"
-          >同步
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="handQuery.pagenum"
-      :page-sizes="[100, 200, 500]"
-      :page-size="handQuery.pagesize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="toMesOrderTotal"
-      @size-change="handleSizeChange()"
-      @current-change="handleCurrentChange()"
-    />
-  </el-dialog>
+        </el-table-column>
+        <el-table-column
+            prop="projectName"
+            align="center"
+            label="项目名称"
+            min-width="20%"
+        />
+        <el-table-column
+            prop="remarks"
+            align="center"
+            label="备注"
+            min-width="8%"
+        />
+        <el-table-column
+            min-width="10%"
+            align="center"
+            label="操作"
+        >
+          <template #default="scope">
+            <el-button
+                plain
+                type="warning"
+                @click="toMesOrder(scope.row)"
+            >同步
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination :total="toMesOrderTotal" :page="handQuery.pg_pagenum" :limit="handQuery.pg_pagesize" class="searchCon"
+                  @pagination="handlePagination" />
+    </el-dialog>
 
     <el-dialog title="工单属性设置" v-model="propertySetDialog" :close-on-click-modal="false" :show-close="false">
       <el-form>
@@ -291,13 +290,14 @@
 </template>
 
 <script>
-  import Pagination from '@/components/Pagination'
-  import { ElMessage } from "element-plus";
-  import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder,rearrangement } from '@/api/timeLimit';
-  import mesOrder from '@/api/plan/mesOrder';
+import Pagination from '@/components/Pagination'
+import { ElMessage } from "element-plus";
+import { queryHNGCMesOrderList, queryHandToMesOrder, toMesOrder,rearrangement } from '@/api/timeLimit';
+import mesOrder from '@/api/plan/mesOrder';
+import XuiDictSelect from "@/components/xui/select/dict-select.vue";
 export default {
   name: 'HBMesOrderPool',
-  components: {Pagination},
+  components: {XuiDictSelect, Pagination},
   data() {
     return {
       total: 0, // 角色列表表格总条数
@@ -313,22 +313,24 @@ export default {
       dialogVisible: false,
       productNo: null,
       handQuery: { // 查询条件
-        pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
-        pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+        pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
+        pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         productNo: null,
         isOrder: false,
+        isOwnerCompany: 'y',
+        isSync: 'n',
       },
       toMesOrderData: [],
       toMesOrderTotal: 0,
       options: [{
         value: false,
         label: 'ERP销售合同'
-       },{
+      },{
         value: true,
         label: 'ERP工单'
       }],
-       mesOrderShow: true,
-       toMesOrderShow: false,
+      mesOrderShow: true,
+      toMesOrderShow: false,
       propertySetDialog : false,
       orderPropertyParam: {
         orderId: null,
@@ -340,9 +342,9 @@ export default {
     this.onload();
   },
   computed:{
-      isOrder(){
-          return this.handQuery.isOrder
-      }
+    isOrder(){
+      return this.handQuery.isOrder
+    }
   },
   watch:{
     isOrder:function(newValue, oldValue){
@@ -367,10 +369,15 @@ export default {
       }
       this.onQuery() // 查询
     },
+    handlePagination({ page, limit }) {
+      this.handQuery.pg_pagenum = page
+      this.handQuery.pg_pagesize = limit
+      this.getToMesOrder()
+    },
     getToMesOrder(){
       queryHandToMesOrder(this.handQuery).then(res=>{
-          this.toMesOrderData = res.data;
-          this.toMesOrderTotal = res.total_count;
+        this.toMesOrderData = res.data;
+        this.toMesOrderTotal = res.total_count;
       })
     },
     handSyn(){
