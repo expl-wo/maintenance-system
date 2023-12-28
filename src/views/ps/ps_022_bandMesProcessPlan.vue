@@ -24,7 +24,8 @@
           <el-button type="success" @click="bindFront">绑定</el-button>
         </el-form-item>
       </el-form>
-      <el-table stripe ref="tableRef" height="400" highlight-current-row border :data="dataList"
+    </div>
+      <el-table stripe ref="tableRef" height="100%" highlight-current-row border :data="dataList"
                 style="font-size: 0.7rem"
       >
         <el-table-column header-align="center" align="center" type="selection" fixed width="40" property="selection"
@@ -45,7 +46,7 @@
           prop="drawingNo"
           align="center"
           label="图号"
-          min-width="5%"
+          min-width="15%"
         />
         <el-table-column
           prop="quantity"
@@ -80,7 +81,7 @@
           prop="delivery"
           align="center"
           label="交货期"
-          min-width="5%"
+          min-width="10%"
         >
           <template #default="scope">
             {{ timeTranslate(scope.row.delivery) }}
@@ -119,15 +120,7 @@
           min-width="15%"
         />
       </el-table>
-      <el-pagination
-        :current-page="listQuery.pg_pagenum"
-        :page-sizes="[10, 20, 50,100]"
-        :page-size="listQuery.pg_pagesize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination" class="searchCon" />
       <el-dialog title="绑定原因" v-model="dialogFormVisible" :close-on-click-modal="false" :show-close="false">
         <el-form :model="scheduleParam">
           <el-form-item label="原因" :label-width="formLabelWidth">
@@ -141,16 +134,17 @@
           </div>
         </template>
       </el-dialog>
-    </div>
+
   </div>
 </template>
 
 <script>
 import planWeek from '@/api/plan/planWeek'
 import XuiDictionary from '@/components/xui/dictionary/dictionary.vue'
+import Pagination from "@/components/Pagination/index.vue";
 export default {
   name: "ps_022_bandMesProcessPlan",
-  components: {XuiDictionary},
+  components: {Pagination, XuiDictionary},
   data() {
     return {
       total: 0, // 列表表格总条数
@@ -196,13 +190,10 @@ export default {
       });
     },
     // 分页数据发生变化
-    handleSizeChange(val) {
-      this.listQuery.pg_pagesize = val;
-      this.getDataList(); // 查询
-    },
-    handleCurrentChange(val) {
-      this.listQuery.pg_pagenum = val;
-      this.getDataList(); // 查询
+    handlePagination({ page, limit }) {
+      this.listQuery.pg_pagenum = page
+      this.listQuery.pg_pagesize = limit
+      this.onQuery()
     },
     bindFront(){
       this.checkboxData = this.$refs.tableRef.getSelectionRows();

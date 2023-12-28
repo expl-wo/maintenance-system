@@ -39,8 +39,7 @@
       <el-table-column prop="outPut" label="产量（万kVA）" align="center"></el-table-column>
       <el-table-column prop="noTaxAmount" label="产值（万元）" align="center"></el-table-column>
     </el-table>
-    <xui-pagination :total="total" :page="pageNum" :limit="pageSize" :layout="'total,prev, pager, next'"
-                    @pagination="handlePagination" class="searchCon wp" />
+    <pagination :total="total" :page="pageNum" :limit="pageSize" @pagination="handlePagination" class="searchCon" />
 
   </div>
 </template>
@@ -49,11 +48,13 @@
 import planWeekHttp from "@/api/plan/planWeek";
 import addProductDialog from "./dialog/addProductDialog.vue";
 import addDismantlProductDialog from "@/views/ps/planDismantle/dialog/addProductDialog.vue";
+import Pagination from "@/components/Pagination/index.vue";
 
 export default {
   name: "optionalProduct",
 
   components: {
+    Pagination,
     addProductDialog,
     addDismantlProductDialog,
   },
