@@ -118,7 +118,7 @@
         list: null,
         listQuery: {
           pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
-          pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+          pg_pagesize: 20, // 查询第几页数据，默认第一页 pg_pagesize
           name: '', // 节点名称
           workshopName: '', // 车间名称
           workshopId: '', //车间id

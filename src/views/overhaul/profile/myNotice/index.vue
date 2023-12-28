@@ -142,8 +142,10 @@ const statusOptions = [
   { value: 1, text: "已读" },
 ];
 const typeOptions = [
-  { value: 1, text: "任务通知" },
-  { value: 2, text: "超时通知" },
+  { value: 1, text: "指派任务通知" },
+  { value: 2, text: "派工任务通知" },
+  { value: 3, text: "复核任务通知" },
+  { value: 4, text: "超时通知" }
 ];
 export default {
   components: {

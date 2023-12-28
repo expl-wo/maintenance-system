@@ -52,7 +52,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <xui-pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination" class="searchCon wp"/>
+
+    <pagination :total="total" :page="listQuery.pg_pagenum" :limit="listQuery.pg_pagesize" @pagination="handlePagination" class="searchCon wp"/>
 
 
     <el-dialog draggable  :close-on-click-modal="false" title="选择" v-model="dialogConfigCaiGouFormVisible">
@@ -80,7 +81,7 @@
       >
         <el-table-column
           prop="materialCode"
-          label="物料分类的编号"
+          label="物料分类编码"
           align="center"
           min-width="15%"
         />
@@ -120,15 +121,17 @@
   import {getRooturl} from '@/api/endpoint'
   import {getEqCateList} from '@/api/em/eqpLedger'
   import { Vue } from 'vue';
+  import Pagination from "@/components/Pagination/index.vue";
   export default {
     name: 'Table',
+    components: {Pagination},
     data() {
       return {
         total: 0, // 总个数
         clazzTotal: 0,
         listQuery: {
           pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
-          pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
+          pg_pagesize: 20, // 查询第几页数据，默认第一页 pg_pagesize
           name: '', // 节点名称
           workshopName: '', // 车间名称
           workshopId: '', //车间id
@@ -198,8 +201,8 @@
       },
       // 分页数据发生变化
       handlePagination({ page, limit }) {
-        this.pageNum = page
-        this.pageSize = limit
+        this.listQuery.pg_pagenum = page
+        this.listQuery.pg_pagesize = limit
         this.onQuery()
       },
       // 判断有没有展开的下拉项，有的话重新查找

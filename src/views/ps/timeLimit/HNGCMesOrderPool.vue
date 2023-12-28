@@ -316,7 +316,7 @@ export default {
         pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
         pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
         productNo: null,
-        isOrder: true,
+        isOrder: false,
       },
       toMesOrderData: [],
       toMesOrderTotal: 0,

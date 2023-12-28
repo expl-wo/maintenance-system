@@ -15,3 +15,11 @@ export function delProblem(data) {
         data: data.id
     })
 }
+// 查询执行结果
+export function getExecutionResult(data) {
+    return request({
+        url: '/api/evo-ims-overhaul/work-content-problem/query-operation-batch',
+        method: 'post',
+        data
+    })
+}

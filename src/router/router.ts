@@ -194,7 +194,8 @@ export const sysRouter : Array<RouteRecordRaw> = [
 				meta: {
 					title: '生产主计划',
 					icon: 'ps_011',
-					keepAlive: true
+					keepAlive: true,
+					keepAliveName: ['ps_031_main']
 				}
 			},
 			{

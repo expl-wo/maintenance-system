@@ -412,6 +412,11 @@ export default {
         this.$message.error(`最多上传${this.MAX_IMG_NUM}张图片`);
         return false;
       }
+      const fileFix = file.name.split(".").pop().toLowerCase();
+      if (this.acceptType.indexOf(fileFix) === -1) {
+        this.$message.error(`上传格式不支持,仅支持${this.acceptType}`);
+        return false;
+      }
       if (file.size / 1024 / 1024 > MAX_IMG_SIZE) {
         this.$message.error(`图片大小请勿超过${MAX_IMG_SIZE}M`);
         return false;
@@ -494,6 +499,9 @@ $left-title-height: 50px;
 $left-width: 330px;
 :deep(.el-input) {
   width: 100%;
+}
+:deep(.el-tree) {
+  width: fit-content;
 }
 .mrl10 {
   margin-left: 10px;

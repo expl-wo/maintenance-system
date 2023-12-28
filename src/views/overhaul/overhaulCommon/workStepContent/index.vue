@@ -5,7 +5,7 @@
     v-if="!dataList.length"
   />
   <div class="work-content-box" v-else v-loading="loading">
-    <el-descriptions title="基础信息" :column="4" :style="{ width: '800px' }">
+    <el-descriptions title="基础信息" :column="4" :style="{ width: '900px' }">
       <template #extra>
         <el-button
           v-if="isEditAuth"
@@ -32,18 +32,26 @@
           >复核</el-button
         >
       </template>
-      <el-descriptions-item label="工作内容名称">{{
-        contentInfo.workProcedureName
-      }}</el-descriptions-item>
+      <el-descriptions-item label="工作内容名称">
+        <el-text
+          class="text-el-box"
+          :title="contentInfo.workProcedureName"
+          truncated
+        >
+          {{ contentInfo.workProcedureName }}
+        </el-text>
+      </el-descriptions-item>
       <el-descriptions-item label="组长">{{
         contentInfo.leaderName
       }}</el-descriptions-item>
       <el-descriptions-item label="副组长">{{
         contentInfo.deputyLeaderName
       }}</el-descriptions-item>
-      <el-descriptions-item label="成员">{{
-        contentInfo.memberName
-      }}</el-descriptions-item>
+      <el-descriptions-item label="成员">
+        <el-text class="text-el-box" :title="contentInfo.memberName" truncated>
+          {{ contentInfo.memberName }}
+        </el-text>
+      </el-descriptions-item>
       <el-descriptions-item label="开工时间">{{
         contentInfo.workBeginDate || "-"
       }}</el-descriptions-item>
@@ -169,10 +177,6 @@ export default {
       type: String,
       default: "",
     },
-    templateChoose: {
-      type: String,
-      default: undefined,
-    },
   },
   data() {
     return {
@@ -203,6 +207,7 @@ export default {
     },
   },
   methods: {
+    //获取当前工步的一些基本信息
     getWorkSteoInfoList() {
       getWorkStepInfo({
         workCode: this.workOrderInfo.id,
@@ -219,24 +224,29 @@ export default {
       this[modeName] = false;
       if (isSearch) {
         this.getWorkSteoInfoList();
-        this.getList();
+        // this.getList();
       }
     },
-    //获取列表
+    //获取当前工步的所有操作项
     getList() {
       this.loading = true;
       let parmas = {
         craftId: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
       };
-      this.isRender = false;
+      let beginTimeMap = {}; //暂存时间
+      this.dataList.forEach((item) => {
+        item.operationCode &&
+          (beginTimeMap[item.operationCode] = item.workPlanTime);
+      });
+      this.isRender = false;//重置操作项重新渲染
       getWorkContent(parmas)
         .then((res) => {
           const { value } = res.data;
           this.dataList = value || [];
           this.isRender = true;
           this.createdContentList(); //形成操作项
-          this.batchSearchContent(this.dataList);
+          this.batchSearchContent(this.dataList,beginTimeMap);
         })
         .finally(() => {
           this.loading = false;
@@ -246,22 +256,26 @@ export default {
     cancel() {
       this.getList();
     },
-    //分页查询内容
+    //切换时间时重新请求数据
     searchChange(operationCode) {
       if (!this.dataList.length) return;
       let resultList = this.dataList.filter(
         (item) => item.operationCode === operationCode
       );
-      this.batchSearchContent(resultList);
+      this.batchSearchContent(resultList, {});
     },
-    //批量查询工作内容
-    async batchSearchContent(targetList) {
+    //批量查询工作内容，渲染操作项的数据
+    async batchSearchContent(targetList,beginTimeMap) {
       await this.$nextTick();
       let params = [];
       targetList.forEach((item) => {
-        const beginTime = this.$refs[`contentItemRef${item.operationCode}`][0]
+        let beginTime = this.$refs[`contentItemRef${item.operationCode}`][0]
           ? this.$refs[`contentItemRef${item.operationCode}`][0].beginTime
           : dayjs().format(COMMON_FORMAT);
+        //回显上次时间
+        if (beginTimeMap[item.operationCode]) {
+          beginTime = beginTimeMap[item.operationCode];
+        }
         params.push({
           workCode: this.workOrderInfo.id,
           craftCode: this.currentSelectNode.procedureCode,
@@ -278,6 +292,7 @@ export default {
         } else {
           const value = res.data.value || [];
           value.forEach((item) => {
+            //给每个操作项赋值
             if (this.$refs[`contentItemRef${item.operationCode}`]) {
               if (+item.operationType === 4) {
                 //多选框
@@ -285,28 +300,27 @@ export default {
                   ? item.contentInfo.split(",")
                   : [];
               }
+              //如果是保存后回显则回填时间
+              if (beginTimeMap[item.operationCode]) {
+                this.$refs[`contentItemRef${item.operationCode}`][0].form.date =
+                  beginTimeMap[item.operationCode];
+                this.$refs[`contentItemRef${item.operationCode}`][0].form.time =
+                  dayjs(beginTimeMap[item.operationCode])
+                    .startOf("hour")
+                    .format("HH:mm");
+              }
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].form.contentData = item.contentInfo;
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].opearationId = item.id; //赋值ID
-              const fileNameStr = item.fileList
-                .map((item) => item.fileName)
-                .join("|");
-              const fileUrlStr = item.fileList
-                .map((item) => item.fileUrl)
-                .join("|");
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileName =
-                fileNameStr;
               this.$refs[
                 `contentItemRef${item.operationCode}`
-              ][0].form.fileName = fileNameStr;
-              this.$refs[`contentItemRef${item.operationCode}`][0].fileUrl =
-                fileUrlStr;
+              ][0].aiAppendixDTOList = item.aiAppendixDTOList || [];
               this.$refs[
                 `contentItemRef${item.operationCode}`
-              ][0].form.fileUrl = fileUrlStr;
+              ][0].getDeafultFile();
             }
           });
         }
@@ -390,10 +404,7 @@ export default {
         }
         item.workPlanTime = refObj.beginTime;
         item.id = refObj.opearationId;
-        item.fileList = this.getFileList(
-          refObj.form.fileUrl,
-          refObj.form.fileName
-        );
+        item.aiAppendixList = refObj.aiAppendixDTOList || [];
         result.push(item);
       });
       if (!validFlag) {
@@ -423,6 +434,10 @@ export default {
 <style lang="scss" scoped>
 .content-wrap {
   margin-bottom: 12px;
+}
+.text-el-box {
+  vertical-align: bottom;
+  max-width: 250px;
 }
 .mgl12 {
   margin-left: 12px;

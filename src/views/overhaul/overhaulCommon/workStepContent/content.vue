@@ -56,7 +56,7 @@
     </el-col>
   </el-row>
   <el-row>
-    <el-col :span="6">
+    <el-col :span="8">
       <el-form-item label="填写内容" :required="isRequired">
         <el-input
           v-if="contentType === 0"
@@ -108,21 +108,28 @@
             v-for="(item, index) in dictionaryContent"
             :key="index"
             :label="item.code"
-          > {{item.name}}</el-checkbox>
+          >
+            {{ item.name }}</el-checkbox
+          >
         </el-checkbox-group>
       </el-form-item>
     </el-col>
   </el-row>
   <el-form-item label="操作描述">{{ contentLabel }}</el-form-item>
-  <el-row v-if="requireImageFile">
+  <el-row v-if="requireImageFile" v-loading="uploadLoading">
     <el-col :span="12">
       <el-form-item label="附件">
         <multi-upload-vue
-          :limit="3"
+          :limit="1000"
           :fileUrl="fileUrl"
-          :disabled="!isEditAuth || ![1].includes(workStatus)"
           :fileName="fileName"
-          accept="video/*,.jpg,.png,.jpeg"
+          :fileListMode="false"
+          :disabled="!isEditAuth || ![1].includes(workStatus)"
+          :isCanDelete="isEditAuth && [1].includes(workStatus)"
+          :aiAppendixDTOList="aiAppendixDTOList"
+          :unusualFlagList="unusualFlagList"
+          accept=".mp4,.ogv,.ogg,.webm,.jpg,.png,.jpeg"
+          @aiAppendixDTOListChange="aiAppendixDTOListChange"
           @uploadSuccess="uploadSuccess"
         ></multi-upload-vue>
       </el-form-item>
@@ -134,13 +141,17 @@
 import multiUploadVue from "@/views/overhaul/overhaulCommon/multi-upload.vue";
 import dayjs from "dayjs";
 import { COMMON_FORMAT } from "@/views/overhaul/constants.js";
-import { getWorkStatusByTime } from "@/api/overhaul/workOrderApi.js";
+import {
+  getWorkStatusByTime,
+  uploadWorkCententImg,
+  deleteWorkCententImg,
+} from "@/api/overhaul/workOrderApi.js";
 export default {
   components: {
     multiUploadVue,
   },
   props: {
-    workStatus:{
+    workStatus: {
       type: Number,
       default: 0,
     },
@@ -217,7 +228,7 @@ export default {
       default: "",
     },
   },
-  emits: ['searchChange'],
+  emits: ["searchChange"],
   data() {
     return {
       COMMON_FORMAT,
@@ -226,34 +237,27 @@ export default {
       timeOptions: [],
       opearationId: "",
       successList: [],
+      aiAppendixDTOList: [], //视频方案数据列表
       form: {
         date: dayjs().format(COMMON_FORMAT),
         time: "01:00",
         contentData: undefined,
-        fileUrl: "",
-        fileName: "",
       },
+      uploadLoading: false,
     };
   },
   created() {
     this.getTimeOptions();
   },
-  // watch: {
-  //   dictionaryContent: {
-  //     handler(val) {
-  //       if (
-  //         Array.isArray(val) &&
-  //         val.length &&
-  //         !this.form.contentData &&
-  //         +this.contentType === 3
-  //       ) {
-  //         this.form.contentData = val[0].code;
-  //       }
-  //     },
-  //     immediate: true,
-  //   },
-  // },
   computed: {
+    //显示标记异常的附件
+    unusualFlagList() {
+      return this.aiAppendixDTOList.filter(
+        (item) =>
+          item.appendixType === 2 &&
+          (item.appendixFlag === 1 || item.appendixFlag === null)
+      );
+    },
     beginTime() {
       let beginTime = "";
       if (this.executionFrequency === 0) {
@@ -269,14 +273,28 @@ export default {
     },
   },
   methods: {
+    //回填默认的上传列表
+    async getDeafultFile() {
+      this.fileName = "";
+      this.fileUrl = "";
+      await this.$nextTick();
+      const fileNameStr = (this.aiAppendixDTOList || [])
+        .map((item) => item.appendixName)
+        .join("|");
+      const fileUrlStr = (this.aiAppendixDTOList || [])
+        .map((item) => item.appendixUrl)
+        .join("|");
+      this.fileName = fileNameStr;
+      this.fileUrl = fileUrlStr;
+    },
     resetContent() {
       this.form.contentData = undefined;
-      this.form.fileUrl = "";
-      this.form.fileName = "";
+      this.aiAppendixDTOList = [];
       this.fileUrl = "";
       this.fileName = "";
       this.opearationId = "";
     },
+    //下拉框打开时需要获取已填写选项
     visibleChange(open) {
       if (open) {
         let params = {
@@ -286,33 +304,48 @@ export default {
         this.getStatus(params.beginTime, params.endTime);
       }
     },
+    //孙子 组件传过来的值
+    aiAppendixDTOListChange(val, index) {
+      this.aiAppendixDTOList[index] = val;
+    },
     focusChange() {
       this.panelChange(this.form.date, "month");
     },
+    //日期选择框发生改变时，需要回填已填写的天
     panelChange(data, mode) {
       if (mode === "month") {
-        let params;
         //每小时
-        if (this.executionFrequency === 0) {
-          params = {
-            beginTime: dayjs(data).startOf("day").format(COMMON_FORMAT),
-            endTime: dayjs(data).endOf("day").format(COMMON_FORMAT),
-          };
-        } else {
-          params = {
-            beginTime: dayjs(data)
-              .startOf("month")
-              .startOf("day")
-              .format(COMMON_FORMAT),
-            endTime: dayjs(data)
-              .endOf("month")
-              .endOf("day")
-              .format(COMMON_FORMAT),
-          };
-        }
+        // if (this.executionFrequency === 0) {
+        //   params = {
+        //     beginTime: dayjs(data).startOf("day").format(COMMON_FORMAT),
+        //     endTime: dayjs(data).endOf("day").format(COMMON_FORMAT),
+        //   };
+        // } else {
+        let params = {
+          beginTime: dayjs(data)
+            .startOf("month")
+            .startOf("day")
+            .format(COMMON_FORMAT),
+          endTime: dayjs(data)
+            .endOf("month")
+            .endOf("day")
+            .format(COMMON_FORMAT),
+        };
+        // }
         this.getStatus(params.beginTime, params.endTime);
       }
     },
+    setCellClassName(data) {
+      let time = dayjs(data).format("YYYY-MM-DD");
+      if (dayjs(data).isAfter(dayjs())) {
+        return "";
+      } else if (this.successList.includes(time)) {
+        return "success-pick";
+      } else {
+        return "warn-pick";
+      }
+    },
+    //获取已经填写的状态时间
     getStatus(beginTime, endTime) {
       getWorkStatusByTime({
         workCode: this.workOrderInfo.id,
@@ -323,16 +356,15 @@ export default {
         workScene: this.sceneType,
       }).then((res) => {
         const result = res.data.value;
+        //日期选择框
+        this.successList = result.map((item) => {
+          return dayjs(item).format("YYYY-MM-DD");
+        });
         if (this.executionFrequency === 0) {
           const success = result.map((item) => {
             return dayjs(item).startOf("hour").format("HH:mm");
           });
           this.getTimeOptions(false, success);
-        } else {
-          this.successList = [];
-          this.successList = result.map((item) => {
-            return dayjs(item).format("YYYY-MM-DD");
-          });
         }
       });
     },
@@ -345,6 +377,7 @@ export default {
     disabledDate(Date) {
       return dayjs(Date).isAfter(dayjs());
     },
+    //处理事件选择项
     getTimeOptions(isSetTime = true, targetStatus = []) {
       this.timeOptions = [];
       new Array(24).fill(1).forEach((item, index) => {
@@ -353,27 +386,71 @@ export default {
             index + 1
           ).padStart(2, "0")}:00`,
           value: `${String(index).padStart(2, "0")}:00`,
-          status: targetStatus.includes(
-            `${String(index).padStart(2, "0")}:00`
-          ),
+          status: targetStatus.includes(`${String(index).padStart(2, "0")}:00`),
         });
       });
       if (isSetTime) {
         this.form.time = dayjs().startOf("hour").format("HH:mm"); //设置临近的时间点
       }
     },
-    uploadSuccess(fileName, fileList) {
-      this.form.fileName = fileName;
-      this.form.fileUrl = fileList.map((item) => item.fileUrl || []).join("|");
-    },
-    setCellClassName(data) {
-      let time = dayjs(data).format("YYYY-MM-DD");
-      if (dayjs(data).isAfter(dayjs()) || this.executionFrequency === 0) {
-        return "";
-      } else if (this.successList.includes(time)) {
-        return "success-pick";
-      } else {
-        return "warn-pick";
+    //在附件删除和上传时需要调用后端接口
+    uploadSuccess(fileName, fileList, urlObj = {}) {
+      if (Reflect.has(urlObj, "type")) {
+        if (urlObj.type === "upload") {
+          let params = {
+            workCode: this.workOrderInfo.id,
+            workScene: this.sceneType,
+            projName: this.workOrderInfo.projName,
+            prodNumber: this.workOrderInfo.prodNumber,
+            operationCode: this.id,
+            appendixName: urlObj.url.fileName,
+            appendixType: [".jpg", ".png", ".jpeg"].includes(
+              urlObj.url.fileUrl
+                .substring(urlObj.url.fileUrl.lastIndexOf("."))
+                .toLowerCase()
+            )
+              ? 2
+              : 1,
+            workPlanTime: this.beginTime,
+            appendixUrl: urlObj.url.fileUrl,
+          };
+          this.uploadLoading = true;
+          uploadWorkCententImg(params)
+            .then((res) => {
+              if (res.code !== "0") {
+                this.$message.error(res.errMsg);
+                this.getDeafultFile();
+              } else {
+                this.$message.success("上传成功");
+                this.aiAppendixDTOList.push({
+                  ...res.data,
+                  workPlanTime: res.data.workPlanTime || "",
+                });
+              }
+            })
+            .finally(() => {
+              this.uploadLoading = false;
+            });
+        } else if (urlObj.type === "del") {
+          let index = this.aiAppendixDTOList.findIndex(
+            (item) => item.appendixUrl === urlObj.url.fileUrl
+          );
+          if (index > -1) {
+            this.uploadLoading = true;
+            deleteWorkCententImg(this.aiAppendixDTOList[index].id)
+              .then((res) => {
+                if (res.code !== "0") {
+                  this.$message.error(res.errMsg);
+                  this.getDeafultFile();
+                } else {
+                  this.aiAppendixDTOList.splice(index, 1);
+                }
+              })
+              .finally(() => {
+                this.uploadLoading = false;
+              });
+          }
+        }
       }
     },
   },

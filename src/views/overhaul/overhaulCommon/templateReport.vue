@@ -7,7 +7,7 @@
     element-loading-background="rgba(0, 0, 0, 0.8)"
   >
     <el-row type="flex" justify="start">
-      <el-col :span="4">
+      <el-col :span="24">
         模板选择
         <el-select
           :disabled="isBtnDisabled || isDisabledStauts"
@@ -24,9 +24,8 @@
             :value="item.value"
           />
         </el-select>
-      </el-col>
-      <el-col :span="10">
         <el-button
+          class="mrl12"
           v-if="$isAuth(this.menuCodeEdit)"
           type="primary"
           :disabled="isBtnDisabled || !templateChoose || isDisabledStauts"
@@ -42,10 +41,7 @@
         >
           <el-icon class="el-icon--left"><Stamp /></el-icon> 发起审核
         </el-button>
-        <el-button
-          type="primary"
-          @click="downLoadFile"
-        >
+        <el-button type="primary" @click="downLoadFile">
           <el-icon class="el-icon--left"><Download /></el-icon>下载
         </el-button>
         <el-upload
@@ -254,6 +250,11 @@ export default {
     beforeUpload(file) {
       if (file.size / 1024 / 1024 > MAX_FILE_SIZE) {
         this.$message.error(`附件大小请勿超过${MAX_FILE_SIZE}M`);
+        return false;
+      }
+      const fileFix = file.name.split(".").pop().toLowerCase();
+      if (".docx".indexOf(fileFix) === -1) {
+        this.$message.error(`上传格式不支持,仅支持.docx`);
         return false;
       }
       return true;

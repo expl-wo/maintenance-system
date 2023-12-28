@@ -31,9 +31,6 @@ class CreateData {
        "attrs": { "line": { "stroke": "#333" } },
        "zIndex": 0,
      };
-
-     this.showLungNode = false;
-     this.lungNodeDetail = null;
    }
 
 
@@ -49,31 +46,8 @@ class CreateData {
 
   //初始化数据
   async init() {
-    //获取肺叶节点信息
-    await this.initLungParams();
     this.createNode();
     this.createEdge();
-  }
-
-  async initLungParams(){
-    return new Promise((resolve, reject)=>{
-      planWeek.isMagnetic({
-        planId: this.id
-      }).then(response=>{
-        if(response.err_code === Constants.statusCode.success){
-          let data = response.data;
-          if(data.isMagnetic === 1){ //有磁屏蔽
-            this.showLungNode  = true;
-            this.lungNodeDetail = data.opPlanList;
-          }else{
-            this.showLungNode = false;
-          }
-        }else{
-          this.showLungNode = false;
-        }
-        resolve()
-      })
-    })
   }
 
   //如果节点的2个坐标都有数据才为有效点
@@ -104,56 +78,7 @@ class CreateData {
     })
 
     this.nodeList = nodeList;
-    if(this.showLungNode){
-      let lundLobeNode = this.getLungLobeNode();
-      this.nodeList.push(lundLobeNode);
-    }
   }
-
-  //增加一个查看肺叶磁屏蔽节点
-  getLungLobeNode(){
-    let item = {
-      id: 'lung',
-      name: '肺叶磁屏蔽',
-      type: Constants.processType.product
-    }
-    let statusAndTime = {
-      timeStatus : 'forward',
-      typeStatus : 'product',
-      startDate: '', //计划开始日期
-      nodeDate: '', //计划结束日期
-      actualStartDate: '',//actualStartDate
-      finishDate: '',//finishDate
-      difDay: '',
-      planNodeId: item.id,
-      type: item.type
-    }
-    let node = {
-      id: item.id,
-      name: item.name,
-      x: this.firstNode.x + this.intervalX * (7.5 - 1),
-      y: this.firstNode.y + this.intervalY * (2 - 1),
-      ...this.nodePublicInfo,
-      ...this.addPortInfo(item),
-      "data": {"text": item.name, ...statusAndTime, opPlanList: this.lungNodeDetail, "selected": false},
-      "zIndex": 5
-    }
-    return node;
-  }
-
-
-  getLungLobeEdge(){
-    let preNode = {
-      id: 'lung',
-      coordinateX: 7,
-    }
-    let node = {
-      id: '16',
-      coordinateX: 6,
-    }
-   return this.getEdge(preNode, node, 0);
-  }
-
 
   subTime(time){
     if(typeof(time) === 'string'){
@@ -226,10 +151,6 @@ class CreateData {
         this.constructorEdge(item)
       }
     })
-    if(this.showLungNode){
-      let lundLobeEdge = this.getLungLobeEdge();
-      this.edgeList.push(lundLobeEdge)
-    }
   }
 
   //构造连接线

@@ -375,6 +375,23 @@ export function getWorkStatusByTime(data) {
         data
     })
 }
+
+//上传图片内容
+export function uploadWorkCententImg(data) {
+    return request({
+        url: '/api/evo-ims-link/ai/local-upload',
+        method: 'post',
+        data
+    })
+}
+//删除图片记录
+export function deleteWorkCententImg(data) {
+    return request({
+        url: `/api/evo-ims-link/ai/delete/${data}`,
+        method: 'post',
+    })
+}
+
 // 报工
 export function reportWorkContent(data) {
     return request({
