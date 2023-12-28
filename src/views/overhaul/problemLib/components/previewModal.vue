@@ -33,13 +33,13 @@
               >
                 <video
                   v-if="file.appendixType === 1"
-                  style="width: 80px; height: 60px"
                   :src="this.dealUrl(file.appendixUrl)"
+                  class="file"
                   @click="showVideoModal(file.appendixUrl)"
                 ></video>
                 <el-image
                   v-else
-                  style="width: 80px; height: 60px"
+                  class="file"
                   :preview-src-list="[this.dealUrl(file.appendixUrl)]"
                   :src="this.dealUrl(file.appendixUrl)"
                   fit="cover"
@@ -59,11 +59,11 @@
         v-model="dialogVisible"
         title="视频"
         width="30%"
-        :before-close="handleClose"
+        @close="dialogVisible = false"
       >
         <div class="video-box">
           <video
-            style="width: 400px; height: 400px"
+            style="width: 400px; height: 300px"
             controls="controls"
             :src="currentVideoUrl"
           ></video>
@@ -123,10 +123,7 @@ export default {
             if (r.operationType === "3") {
               r.dictionaryContent &&
                 r.dictionaryContent.forEach((d) => {
-                  if (
-                    d.code === r.contentInfo ||
-                    d.name === r.contentInfo
-                  ) {
+                  if (d.code === r.contentInfo || d.name === r.contentInfo) {
                     r.contentInfo = d.name;
                   }
                 });
@@ -166,6 +163,7 @@ export default {
     height: 100%;
     overflow-y: auto;
     .content-item {
+      margin-bottom: 10px;
       .title {
         margin-bottom: 10px;
         font-weight: bolder;
@@ -179,8 +177,13 @@ export default {
           display: flex;
           flex-wrap: wrap;
           .file-item {
-            width: 80px;
-            height: 60px;
+            width: 60px;
+            height: 40px;
+            margin: 2px 2px;
+            .file {
+              width: 60px;
+              height: 40px;
+            }
           }
         }
       }
