@@ -228,6 +228,12 @@ export default {
         executionFrequency: [{
           required: true, message: '不能为空', trigger: 'blur'
         }],
+        operationNumber: [{
+          required: true, message: '不能为空', trigger: ['blur','change']
+        }],
+        operationCode: [{
+          required: true, message: '不能为空', trigger: ['blur','change']
+        }],
       }
     }
   },
