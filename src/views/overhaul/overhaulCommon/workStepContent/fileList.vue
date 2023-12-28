@@ -81,7 +81,7 @@
                 v-if="isCanDelete"
                 type="primary"
                 @click="aiAppendixDTOListChange(item.appendixUrl)"
-                >保存</el-button
+                >确定</el-button
               ></el-col
             >
           </el-row>
