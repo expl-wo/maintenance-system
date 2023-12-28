@@ -289,6 +289,7 @@ export default {
     },
     resetContent() {
       this.form.contentData = undefined;
+      this.aiAppendixDTOList = [];
       this.fileUrl = "";
       this.fileName = "";
       this.opearationId = "";
@@ -410,6 +411,7 @@ export default {
             )
               ? 2
               : 1,
+            workPlanTime:this.beginTime,
             appendixUrl: urlObj.url.fileUrl,
           };
           this.uploadLoading = true;

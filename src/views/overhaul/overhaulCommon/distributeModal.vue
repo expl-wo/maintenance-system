@@ -249,7 +249,7 @@ export default {
       channelOptions: [],
       taskPersonOptions: [], //任务人员
       allBigList: [],
-      devUserInfo:{}
+      devUserInfo: {},
     };
   },
   computed: {
@@ -282,6 +282,10 @@ export default {
       this.allBigList = [];
       this.getDevOptions();
       const middleId = this.devOptions.map((item) => item.value);
+      if (!middleId.length) {
+        this.$message.warning("请检查所选工序节点是否包含中工步！");
+        return;
+      }
       getBigComponent(middleId).then(({ data }) => {
         this.devOptions.forEach((element) => {
           const target = data[String(element.value)];
@@ -346,12 +350,14 @@ export default {
           this.defaultSelectVal = channelInfoList.map((item) => ({
             label: item.channelName,
             value: item.channelCode,
+            ...item
           }));
         });
       }
     }
   },
   methods: {
+    //检验绑定设备绑定
     vlidateStep() {
       let work = this.getProcedureInfoList(3);
       let oldWork = [...work]; //暂存数据
@@ -475,12 +481,17 @@ export default {
             this.saveLoading = false;
             return;
           }
+          //获取设备数据
+          const options = this.$refs.selectRef.selectOptions;
+          let channelList = options.filter((item) => {
+            return this.form.channelCodes.includes(item.value);
+          });
           //视频
           bindDev({
             workCode: this.workOrderInfo.id,
             workOrderSceneType: this.sceneType,
             procedureInfoList: this.getProcedureInfoList(3),
-            deviceInfoList: this.form.channelList,
+            deviceInfoList: channelList,
           }).then((res) => {
             this.saveLoading = false;
             if (res.code !== "0") {

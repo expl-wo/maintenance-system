@@ -33,7 +33,11 @@
         >
       </template>
       <el-descriptions-item label="工作内容名称">
-        <el-text class="text-el-box" :title="contentInfo.workProcedureName " truncated>
+        <el-text
+          class="text-el-box"
+          :title="contentInfo.workProcedureName"
+          truncated
+        >
           {{ contentInfo.workProcedureName }}
         </el-text>
       </el-descriptions-item>
@@ -188,6 +192,7 @@ export default {
       activeIndex: 0,
       loading: false,
       contentList: [],
+      beginTimeMap: {}, //回填时间
     };
   },
   watch: {
@@ -220,7 +225,7 @@ export default {
       this[modeName] = false;
       if (isSearch) {
         this.getWorkSteoInfoList();
-        this.getList();
+        // this.getList();
       }
     },
     //获取列表
@@ -230,6 +235,11 @@ export default {
         craftId: this.currentSelectNode.procedureCode,
         workScene: this.sceneType,
       };
+      this.beginTimeMap = {}; //暂存时间
+      this.dataList.forEach((item) => {
+        item.operationCode &&
+          (this.beginTimeMap[item.operationCode] = item.workPlanTime);
+      });
       this.isRender = false;
       getWorkContent(parmas)
         .then((res) => {
@@ -253,6 +263,7 @@ export default {
       let resultList = this.dataList.filter(
         (item) => item.operationCode === operationCode
       );
+      this.beginTimeMap = {}; //切换时重置缓存
       this.batchSearchContent(resultList);
     },
     //批量查询工作内容
@@ -260,9 +271,13 @@ export default {
       await this.$nextTick();
       let params = [];
       targetList.forEach((item) => {
-        const beginTime = this.$refs[`contentItemRef${item.operationCode}`][0]
+        let beginTime = this.$refs[`contentItemRef${item.operationCode}`][0]
           ? this.$refs[`contentItemRef${item.operationCode}`][0].beginTime
           : dayjs().format(COMMON_FORMAT);
+        //回显上次时间
+        if (this.beginTimeMap[item.operationCode]) {
+          beginTime = this.beginTimeMap[item.operationCode];
+        }
         params.push({
           workCode: this.workOrderInfo.id,
           craftCode: this.currentSelectNode.procedureCode,
@@ -286,6 +301,15 @@ export default {
                   ? item.contentInfo.split(",")
                   : [];
               }
+              //如果是保存后回显则回填时间
+              if (this.beginTimeMap[item.operationCode]) {
+                this.$refs[`contentItemRef${item.operationCode}`][0].form.date =
+                  this.beginTimeMap[item.operationCode];
+                this.$refs[`contentItemRef${item.operationCode}`][0].form.time =
+                  dayjs(this.beginTimeMap[item.operationCode])
+                    .startOf("hour")
+                    .format("HH:mm");
+              }
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].form.contentData = item.contentInfo;
@@ -298,6 +322,7 @@ export default {
               this.$refs[
                 `contentItemRef${item.operationCode}`
               ][0].getDeafultFile();
+              this.beginTimeMap = {};
             }
           });
         }
