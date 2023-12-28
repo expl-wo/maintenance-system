@@ -758,7 +758,7 @@ export default {
         this.listUpdate.roleName = row.rName; // 角色名称
         this.dialogTableVisible = false;
       } else if (type === "dept") {
-        this.listUpdate.limitZt = row.limitZt || 0; // 是否限制账套
+        this.listUpdate.limitZt = row.limitZt || 1; // 是否限制账套
         this.listUpdate.deptId = row.id; // 要授权管理的组织ID，如果使用默认部门【useLsbm==1】则此值为空
         this.listUpdate.deptName = row.name; // 要授权管理的组织名称，如果使用默认部门【useLsbm==1】则此值为空
         this.listUpdate.useGsbm = 0; // bool值，是否默认使用授权用户的归属部门作为授权部门
