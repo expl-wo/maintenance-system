@@ -124,8 +124,8 @@ export default {
               r.dictionaryContent &&
                 r.dictionaryContent.forEach((d) => {
                   if (
-                    d.code === record.contentInfo ||
-                    d.name === record.contentInfo
+                    d.code === r.contentInfo ||
+                    d.name === r.contentInfo
                   ) {
                     r.contentInfo = d.name;
                   }
