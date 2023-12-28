@@ -8,8 +8,9 @@
               type="month"
               placeholder="选择月"
               size="small"
-              value-format="YYYY-MM-YY"
+              value-format="YYYY-MM"
               style="width: 100px"
+              :default-value="new Date()"
               @change="monthChange"
           />
         </el-form-item>
@@ -37,10 +38,9 @@
         <el-table
             border
             :data="dataModel"
-            class="otherCon wp headerTable myTable "
+            class="otherCon wp  myTable headerTable"
             :header-cell-class-name="headerClassName"
             stripe
-
             id="TableHeader"
             :cell-class-name="cellClassName"
             lazy
@@ -146,6 +146,9 @@
         <el-table-column align="center" label="计划完工" prop="planCompletime"></el-table-column>
         <el-table-column align="center" label="实际完工" prop="finishDate"></el-table-column>
       </el-table>
+      <div v-show="tableData.length === 0" >
+        <el-empty  description="暂无数据" />
+      </div>
     </div>
 
   </div>
@@ -158,8 +161,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import {defineComponent, computed, onMounted, ref, reactive, nextTick, defineEmits} from "vue";
+import {onMounted, reactive} from "vue";
 import planWeek from '@/api/plan/planWeek'
+import dayjs from "dayjs";
 import {transformDictDetail} from "@/components/xui/dictionary";
 import constants from "@/utils/constants";
 import {exportData} from "@/utils";
@@ -169,13 +173,13 @@ const nodeData = reactive([])
 const listQuery = reactive({
   pg_pagenum: 1, // 每页显示多少条数据，默认为10条 pg_pagenum
   pg_pagesize: 10, // 查询第几页数据，默认第一页 pg_pagesize
-  month:'',
+  month:dayjs(new Date()).format("YYYY-MM"),
   week:'',
   nodeId:[]
 });
-const syncScroll = () => {
-
-}
+onMounted(() => {
+  getWeek();
+})
 const cellClassName = ({row, column, rowIndex, columnIndex}) => {
   if (column.property === 'status') {
     //从字典中获取数据
@@ -186,8 +190,9 @@ const cellClassName = ({row, column, rowIndex, columnIndex}) => {
     return ''
   }
 }
-const weekData = reactive([]);
+const weekData = reactive([])
 const tableData = reactive([]);
+
 const handleSearch = () => {
   listQuery.pg_pagenum = 1
   getDataList();
@@ -202,9 +207,7 @@ const getDataList = () => {
     }
   })
 }
-const load = () => {
 
-}
 const getWeek = () =>{
   weekData.length = 0;
   let data = []
